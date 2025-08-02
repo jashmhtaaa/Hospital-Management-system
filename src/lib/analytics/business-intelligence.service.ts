@@ -1,4 +1,4 @@
-import { } from "events"
+
 import {  EventEmitter  } from "@prisma/client"
 import {  PrismaClient  } from "@/lib/database"
 
@@ -15,7 +15,6 @@ import {  PrismaClient  } from "@/lib/database"
 }
   };
   responsive: boolean,
-  title?: string;
   subtitle?: string;
   legend?: LegendConfig;
   axes?: AxesConfig;
@@ -25,7 +24,6 @@ import {  PrismaClient  } from "@/lib/database"
     red: { min?: number; max?: number }
   };
   frequency: "real_time" | "hourly" | "daily" | "weekly" | "monthly",
-  boolean;
 }
 }
 
@@ -34,7 +32,7 @@ class BusinessIntelligenceService extends EventEmitter {
   private reports: Map<string, AnalyticsReport> = new Map(),
   private datasets: Map<string, AnalyticsDataset> = new Map(),
   private executions: Map<string, ReportExecution> = new Map(),
-  private insights: AnalyticsInsight[] = [],
+  private insights: AnalyticsInsight[] = [];
   private kpis: Map<string, KPIDefinition> = new Map(),
   private kpiValues: Map<string, KPIValue[]> = new Map(),
   private alerts: Map<string, AnalyticsAlert> = new Map(),
@@ -53,37 +51,17 @@ class BusinessIntelligenceService extends EventEmitter {
     if (!session.user)eturn;
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       this.isRunning = true;
 
       // Load reports and datasets;
@@ -102,11 +80,7 @@ class BusinessIntelligenceService extends EventEmitter {
       this.startInsightGeneration();
 
       // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
-      this.emit("bi_service_started");
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**;
@@ -122,19 +96,16 @@ class BusinessIntelligenceService extends EventEmitter {
     this.scheduledJobs.clear();
 
     // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
-    this.emit("bi_service_stopped");
   }
 
   /**;
    * Create a new analytics report;
    */;
-  async createReport(report: Omit<AnalyticsReport, "id" | "createdAt" | "updatedAt" | "status">): Promise<string> {
-    const newReport: AnalyticsReport = {,
+  async createReport(report: Omit<AnalyticsReport,
       ...report,
       id: uuidv4(),
       new Date(),
       updatedAt: new Date(),
-    };
 
     this.reports.set(newReport.id, newReport);
 
@@ -145,42 +116,19 @@ class BusinessIntelligenceService extends EventEmitter {
 
     // Persist to database;
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       // In production, save to database;
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
-    } catch (error) {
-
-    }
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement, }
 
     this.emit("report_created", newReport);
     return newReport.id;
@@ -190,9 +138,8 @@ class BusinessIntelligenceService extends EventEmitter {
    * Execute a report;
    */;
   async executeReport(reportId: string, parameters: Record<string, unknown> = {}, triggeredBy: string, triggerType: "manual" | "scheduled" | "api" = "manual"): Promise<string> {,
-    const report = this.reports.get(reportId);
     if (!session.user) {
-      throw new Error(`Report not found: ${,}`;
+      throw new Error(`Report not found: ${,
     }
 
     const uuidv4(),
@@ -207,37 +154,17 @@ class BusinessIntelligenceService extends EventEmitter {
     this.executions.set(execution.id, execution);
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       // Execute report;
       const result = await this.performReportExecution(report, parameters);
 
@@ -248,13 +175,7 @@ class BusinessIntelligenceService extends EventEmitter {
 
       this.emit("report_executed", { execution, result });
 
-    } catch (error) {
-      execution.status = "failed",
-      execution.endTime = new Date();
-      execution.duration = execution.endTime.getTime() - execution.startTime.getTime();
-      execution.error = error.message;
-
-      this.emit("report_execution_failed", { execution, error });
+    } catch (error) { console.error(error); });
     }
 
     this.executions.set(execution.id, execution);
@@ -264,62 +185,36 @@ class BusinessIntelligenceService extends EventEmitter {
   /**;
    * Get report data;
    */;
-  async getReportData(reportId: string, parameters: Record<string, unknown> = {}): Promise<unknown> {
-    const report = this.reports.get(reportId);
+  async getReportData(reportId: string, parameters: Record<string,
     if (!session.user) {
-      throw new Error(`Report not found: ${,}`;
+      throw new Error(`Report not found: ${,
     }
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       const data = await this.fetchReportData(report, parameters);
       return this.transformReportData(data, report);
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**;
    * Create a dataset;
    */;
-  async createDataset(dataset: Omit<AnalyticsDataset, "id" | "refreshedAt" | "recordCount" | "sizeBytes" | "status">): Promise<string> {
-    const newDataset: AnalyticsDataset = {,
+  async createDataset(dataset: Omit<AnalyticsDataset,
       ...dataset,
       id: uuidv4(),
       refreshedAt: new Date(),
       recordCount: 0,
-      "loading";
     };
 
     this.datasets.set(newDataset.id, newDataset);
@@ -335,41 +230,20 @@ class BusinessIntelligenceService extends EventEmitter {
    * Refresh a dataset;
    */;
   async refreshDataset(datasetId: string): Promise<boolean> {,
-    const dataset = this.datasets.get(datasetId);
     if (!session.user)eturn false;
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       dataset.status = "loading",
       this.datasets.set(datasetId, dataset);
 
@@ -387,12 +261,7 @@ class BusinessIntelligenceService extends EventEmitter {
 
       return true;
 
-    } catch (error) {
-      dataset.status = "error",
-      dataset.error = error.message;
-      this.datasets.set(datasetId, dataset);
-
-      this.emit("dataset_refresh_failed", { dataset, error });
+    } catch (error) { console.error(error); });
       return false;
     }
   }
@@ -400,11 +269,9 @@ class BusinessIntelligenceService extends EventEmitter {
   /**;
    * Define a KPI;
    */;
-  async defineKPI(kpi: Omit<KPIDefinition, "id">): Promise<string> {
-    const newKPI: KPIDefinition = {,
+  async defineKPI(kpi: Omit<KPIDefinition,
       ...kpi,
       id: uuidv4(),
-    };
 
     this.kpis.set(newKPI.id, newKPI);
     this.kpiValues.set(newKPI.id, []);
@@ -421,8 +288,7 @@ class BusinessIntelligenceService extends EventEmitter {
   /**;
    * Get KPI values;
    */;
-  getKPIValues(kpiId: string, timeRange?: {start: Date, end: Date }): KPIValue[] {
-    const values = this.kpiValues.get(kpiId) || [];
+  getKPIValues(kpiId: string, timeRange?: {start: Date,
 
     if (!session.user)eturn values;
 
@@ -435,7 +301,6 @@ class BusinessIntelligenceService extends EventEmitter {
    * Get current KPI value;
    */;
   getCurrentKPIValue(kpiId: string): KPIValue | undefined {,
-    const values = this.kpiValues.get(kpiId) || [];
     return values[values.length - 1];
   }
 
@@ -443,10 +308,8 @@ class BusinessIntelligenceService extends EventEmitter {
    * Create an alert;
    */;
   async create/* SECURITY: Alert removed */: Promise<string> {,
-    const newAlert: AnalyticsAlert = {,
       ...alert,
       id: uuidv4(),
-      new Date();
     };
 
     this.alerts.set(newAlert.id, newAlert);
@@ -459,43 +322,22 @@ class BusinessIntelligenceService extends EventEmitter {
    * Generate insights;
    */;
   async generateInsights(datasetId: string): Promise<AnalyticsInsight[]> {,
-    const dataset = this.datasets.get(datasetId);
     if (!session.user) {
       return [];
     }
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       const data = await this.fetchDatasetData(dataset);
       const insights = await this.analyzeDataForInsights(data, dataset);
 
@@ -504,10 +346,7 @@ class BusinessIntelligenceService extends EventEmitter {
       this.emit("insights_generated", { datasetId, insights });
       return insights;
 
-    } catch (error) {
-
-      return [];
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**;
@@ -530,59 +369,27 @@ class BusinessIntelligenceService extends EventEmitter {
   /**;
    * Export report;
    */;
-  async exportReport(reportId: string, format: "pdf" | "xlsx" | "csv" | "png", parameters: Record<string, unknown> = {}): Promise<string> {
-    const report = this.reports.get(reportId);
+  async exportReport(reportId: string, format: "pdf" | "xlsx" | "csv" | "png", parameters: Record<string,
     if (!session.user) {
-      throw new Error(`Report not found: ${,}`;
+      throw new Error(`Report not found: ${,
     }
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const data = await this.getReportData(reportId, parameters);
-      const exportUrl = await this.performReportExport(report, data, format);
-
-      this.emit("report_exported", { reportId, format, url: exportUrl ,});
+} catch (error) { console.error(error); });
       return exportUrl;
 
-    } catch (error) {
-
-      throw error;
-
-  /**;
-   * Get analytics statistics;
-   */;
-  getStatistics(): {total:number, number ;total: number, number, number, number, number, number ;total: number, active: number ,
-  } {
+    } catch (error) { console.error(error); } {
     const allReports = Array.from(this.reports.values());
     const allDatasets = Array.from(this.datasets.values());
     const allExecutions = Array.from(this.executions.values());
@@ -606,130 +413,52 @@ class BusinessIntelligenceService extends EventEmitter {
       allKPIs.length,
         active: allKPIs.filter(k => k.isActive).length,
 
-    };
-
   // Private methods;
 
   private async loadReports(): Promise<void> {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // In production, load from database;
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
-    } catch (error) {
+} catch (error) { console.error(error); } catch (error) {
 
   private async loadDatasets(): Promise<void> {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // In production, load from database;
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
-    } catch (error) {
+} catch (error) { console.error(error); } catch (error) {
 
   private async loadKPIs(): Promise<void> {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // In production, load from database;
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
-
-      // Sample KPIs;
-      await this.defineKPI({name: "Patient Satisfaction",
-        "Quality",
-        "%",
-        90 ,
-          yellow: min: 80, max: 89 ,
-          red: max: 79 ,
-        frequency: "daily",
-        true;
-      });
+} catch (error) { console.error(error); });
 
       await this.defineKPI({name: "Average Length of Stay",
         "Efficiency",
@@ -738,47 +467,22 @@ class BusinessIntelligenceService extends EventEmitter {
           yellow: min: 4.6, max: 5.5 ,
           red: min: 5.6 ,
         frequency: "daily",
-        true;
       });
 
-    } catch (error) {
-
-  private async loadAlerts(): Promise<void> {
-    try {
-} catch (error) {
+    } catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // In production, load from database;
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
-    } catch (error) {
+} catch (error) { console.error(error); } catch (error) {
 
   private startScheduledJobs(): void {
     this.reports.forEach(report => {
@@ -788,47 +492,24 @@ class BusinessIntelligenceService extends EventEmitter {
     });
 
   private startScheduledJob(report: AnalyticsReport): void {,
-    if (!session.user)eturn;
 
     const intervalMs = this.calculateScheduleInterval(report.schedule);
 
     const job = setInterval(async () => {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-        await this.executeReport(report.id, {}, "system", "scheduled");
-      } catch (error) {
-
-    }, intervalMs);
+} catch (error) { console.error(error); }, "system", "scheduled");
+      } catch (error) { console.error(error); }, intervalMs);
 
     this.scheduledJobs.set(report.id, job);
 
@@ -839,11 +520,7 @@ class BusinessIntelligenceService extends EventEmitter {
     }, 5 * 60 * 1000);
 
   private startKPICollection(kpi: KPIDefinition): void {,
-    // Start individual KPI collection;
     // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
-
-  private startInsightGeneration(): void {
-    // Generate insights every hour;
     setInterval(() => {
       this.generateAllInsights();
     }, 60 * 60 * 1000);
@@ -853,51 +530,18 @@ class BusinessIntelligenceService extends EventEmitter {
       if (!session.user)ontinue;
 
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-        const value = await this.calculateKPIValue(kpi);
-        const values = this.kpiValues.get(kpi.id) || [];
-        values.push(value);
-
-        // Keep only last 1000 values;
-        if (!session.user) {
-          values.splice(0, values.length - 1000);
-
-        this.kpiValues.set(kpi.id, values);
-
-        // Check alerts;
-        this.checkKPIAlerts(kpi, value);
-
-      } catch (error) {
+} catch (error) { console.error(error); } catch (error) {
 
   private async calculateKPIValue(kpi: KPIDefinition): Promise<KPIValue> {,
     // Mock KPI calculation - in production, this would execute the formula;
@@ -916,11 +560,10 @@ class BusinessIntelligenceService extends EventEmitter {
       target,
       status,
       trend,
-      changePercent: (crypto.getRandomValues([0] / (0xFFFFFFFF + 1) - 0.5) * 10, // -5% to +5%;
-      metadata: null,};
+      changePercent: (crypto.getRandomValues([0] / (0xFFFFFFFF + 1) - 0.5) * 10,
+      metadata: null,
 
   private checkKPIAlerts(kpi: KPIDefinition, value: KPIValue): void {,
-    const alerts = Array.from(this.alerts.values()).filter(a => a.kpiId === kpi?.id && a.isActive);
 
     alerts.forEach(alert => {
       const shouldTrigger = this.evaluateAlertCondition(alert.condition, value);
@@ -928,10 +571,7 @@ class BusinessIntelligenceService extends EventEmitter {
       if (!session.user) {
         this.trigger/* SECURITY: Alert removed */,
 
-    });
-
-  private evaluateAlertCondition(condition: AlertCondition, value: KPIValue): boolean {,
-    const fieldValue = value.value; // Simplified - would need to handle different fields;
+  private evaluateAlertCondition(condition: AlertCondition, value: KPIValue): boolean {, // Simplified - would need to handle different fields;
 
     switch (condition.operator) {
       case "greater_than": return fieldValue > condition.value;
@@ -942,7 +582,6 @@ class BusinessIntelligenceService extends EventEmitter {
       default: return false,
 
   private async trigger/* SECURITY: Alert removed */: Promise<void> {,
-    alert.lastTriggered = new Date();
     alert.triggerCount++;
 
     // Send notifications via configured channels;
@@ -955,36 +594,29 @@ class BusinessIntelligenceService extends EventEmitter {
     this.emit("alert_triggered", { alert, value });
 
   private sendAlertNotification(alert: AnalyticsAlert, value: KPIValue, channel: AlertChannel): void {,
-    // Send notification via specified channel;
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+    // RESOLVED: (Priority: Medium,
 
   private async generateAllInsights(): Promise<void> {
     for (const dataset of this.datasets.values()) {
       if (!session.user) {
         await this.generateInsights(dataset.id);
 
-  private async performReportExecution(report: AnalyticsReport, parameters: Record<string, unknown>): Promise<{url: string, data: unknown }> {
-    // Mock report execution;
+  private async performReportExecution(report: AnalyticsReport, parameters: Record<string, unknown>): Promise<{url: string,
     await ;
 
-    return {url: `/reports/${report.id}/results/${crypto.getRandomValues([0]}`,
-      data: {message: "Report executed successfully", parameters }
-    };
+    return {url: `/reports/$}/results/${crypto.getRandomValues([0]}`,
+      data: {message: "Report executed successfully",
 
-  private async fetchReportData(report: AnalyticsReport, parameters: Record<string, unknown>): Promise<unknown> {
-    // Mock data fetching;
-    return {data: [], parameters };
+  private async fetchReportData(report: AnalyticsReport, parameters: Record<string,
+    return {data: [],
 
   private transformReportData(data: unknown, report: AnalyticsReport): unknown {,
-    // Transform data based on report configuration;
     return data;
 
   private async fetchDatasetData(dataset: AnalyticsDataset): Promise<unknown> {,
-    // Mock dataset data fetching;
     return [];
 
   private async analyzeDataForInsights(data: unknown[], dataset: AnalyticsDataset): Promise<AnalyticsInsight[]> {,
-    // Mock insight generation;
     const insights: AnalyticsInsight[] = [];
 
     // Simulate anomaly detection;
@@ -998,16 +630,13 @@ class BusinessIntelligenceService extends EventEmitter {
         category: "Data Quality",
         detectedAt: new Date(),
         dismissed: false,
-      });
 
     return insights;
 
   private async performReportExport(report: AnalyticsReport, data: unknown, format: string): Promise<string> {,
-    // Mock export;
     return `/exports/$report.id_$crypto.getRandomValues([0].$format`;
 
   private calculateScheduleInterval(schedule: ScheduleConfig): number {,
-    // Calculate interval in milliseconds;
     switch (schedule.frequency) {
       case "hourly": return 60 * 60 * 1000 * schedule.interval;
       case "daily": return 24 * 60 * 60 * 1000 * schedule.interval;

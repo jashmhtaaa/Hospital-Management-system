@@ -1,4 +1,4 @@
-import { } from "@hookform/resolvers/zod"
+
 import "react";
 import "react-hook-form";
 import "zod";
@@ -39,34 +39,34 @@ import { { useToast } from "@/components/ui/use-toast"
 
 // Define Zod schema for form validation;
 const registrationSchema = z;
-  .object({searchMrn:z.string().optional(), // MRN for searching existing patient;
+  .object({searchMrn: z.string().optional(),
     firstName: z.string().min(1, "First name is required").optional(),
     lastName: z.string().min(1, "Last name is required").optional(),
-    dob: z.string().optional(), // Consider using a date type if input is date picker;
+    dob: z.string().optional(),
     sex: z.enum(["Male", "Female", "Other"]).optional(),
     chiefComplaint: z.string().min(1, "Chief complaint is required"),
     arrivalMode: z.string().optional(),
-  });
   .refine();
     (data) => {}
       !!data.searchMrn ||;
       (!!data?.firstName && !!data?.lastName && !!data?.dob && !!data.sex),
       message: "Either search for an existing patient or provide full details for a new patient.",
-      path: ["firstName"], // Attach error to a relevant field;
+      path: ["firstName"],
   );
 
 type RegistrationFormValues = z.infer>;
 
 // Define interfaces for API responses (adjust based on actual API);
-interface PatientResponse {id:string,
+interface PatientResponse {
+  id:string,
+}
   string,
   string,
   sex: string,
 }
 
 interface ERVisitResponse {
-  id: string,
-  visit_number?: string; // Optional visit number;
+  id: string, // Optional visit number;
   patient_id: string,
   status: string,
 }
@@ -77,8 +77,7 @@ interface ApiErrorResponse {
 
 interface ERRegistrationModalProperties {
   isOpen: boolean,
-  onClose: () => void,
-  onSuccess?: (visit: ERVisitResponse) => void; // Optional callback on successful registration;
+  onClose: () => void, // Optional callback on successful registration;
 export default const _ERRegistrationModal = ({
   isOpen,
   onClose,
@@ -125,48 +124,24 @@ export default const _ERRegistrationModal = ({
   const handleSearchPatient = async () => {
     const mrn = form.getValues("searchMrn");
     if (!session.user) {
-      toast({title:"MRN Required",
-        "destructive";
+      toast({title: "MRN Required",
       });
       return;
     }
     setIsSearching(true),
     setFoundPatient(undefined);
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
-      // const _response = await fetch(`/api/patients?mrn=/* SECURITY: Safe parameter encoding */`);
       // if (!session.user) { ... handle not found or other errors ... }
       // const _patientData: PatientResponse = await response.json();
 
@@ -178,23 +153,16 @@ export default const _ERRegistrationModal = ({
           "John",
           "1979-01-15", // Example format;
           sex: "Male",
-        };
         setFoundPatient(mockPatient),
         toast({
           title: "Patient Found",
           description: `Found /* SECURITY: Template literal eliminated */,
-        });
       } else {
         toast({title:"Patient Not Found",
           description: `No patient found with MRN ${mrn}.`,
           variant: "default",
-        });
 
-    } catch (error) {
-
-      toast({title:"Search Failed",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
     } finally {
       setIsSearching(false);
 
@@ -204,47 +172,19 @@ export default const _ERRegistrationModal = ({
     setIsLoading(true);
     // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
 
-    let patientId = foundPatient?.id;
-
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // Step 1: Create/Verify Patient,
-      if (!session.user) {
-        // Create new patient if details are provided;
-        if (!session.user) {
-          // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
-          // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
-          // const _patientResponse = await fetch("/api/patients", { ... });
+} catch (error) { console.error(error); });
           // if (!session.user) { ... handle error ... }
           // const _newPatient: PatientResponse = await patientResponse.json();
           // patientId = newPatient.id;
@@ -252,68 +192,42 @@ export default const _ERRegistrationModal = ({
           // Mock new patient creation;
           await new Promise((resolve) => setTimeout(resolve, 500));
           patientId = `new_patient_${crypto.getRandomValues([0]}`;
-          // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+          // RESOLVED: (Priority: Medium,
         } else {
           // This case should ideally be prevented by the form validation (refine);
           throw new Error("Patient details incomplete for new registration.");
 
       // Step 2: Create ER Visit;
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+      // RESOLVED: (Priority: Medium,
+      // RESOLVED: (Priority: Medium,
       const visitResponse = await fetch("/api/er/visits", {method:"POST",
         headers: { "Content-Type": "application/json" },
         patientId,
           data.arrivalMode || "Walk-in",
-          initial_location: "Waiting Room", // Or Triage if direct;
+          initial_location: "Waiting Room",
           initial_status: "Triage",
-        })});
 
       if (!session.user) {
         let errorMessage = "Failed to create ER visit";
         try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-          // FIX: Use defined type for errorData,
-          const errorData: ApiErrorResponse = await visitResponse.json(),
-          errorMessage = errorData.error || errorMessage;
-        } catch {
+} catch (error) { console.error(error); } catch {
           // Ignore if response is not JSON;
 
         throw new Error(errorMessage);
 
       // FIX: Use defined type for newVisit,
-      const newVisit: ERVisitResponse = await visitResponse.json(),
-      toast({title:"ER Visit Registered",
-        description: `Visit ${newVisit.visit_number || newVisit.id} created for patient ${patientId}.`});
+      toast({title: "ER Visit Registered",
 
       if (!session.user) {
         onSuccess(newVisit);
@@ -321,16 +235,7 @@ export default const _ERRegistrationModal = ({
       form.reset(),
       setFoundPatient(undefined);
       onClose(); // Close modal on success;
-    } catch (error: unknown) {
-      // FIX: Use unknown for catch block,
-
-      const message =;
-        error instanceof Error;
-          ? error.message;
-          : "An unexpected error occurred.";
-      toast({title:"Registration Failed",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
     } finally {
       setIsLoading(false);
 

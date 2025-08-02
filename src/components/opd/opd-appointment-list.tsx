@@ -1,4 +1,4 @@
-import { } from "react"
+
 import React
 import useEffect } from "next/navigation"
 import {
@@ -25,7 +25,9 @@ import { Badge } from "@/components/ui/badge"; // Assuming this exists or will b
   DialogTrigger} from "@/components/ui/dialog"; // Assuming this exists or will be created;
 // Removed direct import: import { hasPermission } from "@/lib/session";
 
-interface Appointment {id:number,
+interface Appointment {
+  id:number,
+}
   string,
   string,
   | "scheduled";
@@ -38,8 +40,6 @@ interface Appointment {id:number,
 }
 
 // FIX: Define API response types,
-interface PermissionApiResponse {
-    hasPermission?: boolean;
   error?: string;
 }
 
@@ -52,9 +52,6 @@ interface ApiErrorResponse {
 
 interface OPDAppointmentListProperties {
   date: Date,
-export default const _OPDAppointmentList = ({
-  date}: OPDAppointmentListProperties) {
-  const router = useRouter();
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>();
@@ -66,37 +63,17 @@ export default const _OPDAppointmentList = ({
     const checkPermissions = async () => {
       setLoadingPermissions(true);
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
         const [checkInResponse, cancelResponse] = await Promise.all([;
           fetch("/api/auth/check-permission?permission=appointment:check-in"),
           fetch("/api/auth/check-permission?permission=appointment:cancel")]),
@@ -109,15 +86,10 @@ export default const _OPDAppointmentList = ({
         }
 
         // FIX: Type the response data,
-        const checkInData: PermissionApiResponse = await checkInResponse.json(),
-        const cancelData: PermissionApiResponse = await cancelResponse.json(),
+        const cancelData: PermissionApiResponse = await cancelResponse.json();
         setCanCheckIn(checkInData.hasPermission || false);
         setCanCancel(cancelData.hasPermission || false);
-      } catch (err) { // Declare error variable for the catch block;
-        // Debug logging removed // Log the caught error;
-        setCanCheckIn(false),
-        setCanCancel(false);
-      } finally {
+      } catch (error) { console.error(error); } finally {
         setLoadingPermissions(false);
       }
     };
@@ -131,75 +103,35 @@ export default const _OPDAppointmentList = ({
       setError(undefined);
 
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
         const formattedDate = date.toISOString().split("T")[0];
         const response = await fetch(`/api/appointments?date=${}`;
 
         if (!session.user) {
           const errorMessage = "Failed to fetch appointments";
           try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
-            const errorData: ApiErrorResponse = await response.json(),
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+            const errorData: ApiErrorResponse = await response.json();
             errorMessage = errorData.error || errorMessage;
           } catch {
             /* Ignore */;
@@ -208,7 +140,6 @@ export default const _OPDAppointmentList = ({
         }
 
         // FIX: Type the response data,
-        const data: AppointmentsApiResponse = await response.json();
         // Ensure data is an array before setting state;
         if (!session.user) {
           setAppointments(data);
@@ -217,15 +148,7 @@ export default const _OPDAppointmentList = ({
 
           setAppointments([]); // Default to empty array on unexpected format;
         }
-      } catch (error_: unknown) {
-        // FIX: Use unknown,
-        const messageText =;
-          error_ instanceof Error;
-            ? error_.message;
-            : "An unknown error occurred";
-        setError(messageText);
-
-      } finally {
+      } catch (error) { console.error(error); } finally {
         setLoading(false);
       }
     };
@@ -236,36 +159,16 @@ export default const _OPDAppointmentList = ({
 
   const handleCheckIn = async (appointmentId: number) => {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
 
       const response = await fetch();
         `/api/appointments/${appointmentId}/check-in`,
@@ -275,40 +178,18 @@ export default const _OPDAppointmentList = ({
 
       if (!session.user) {
         const errorMessage = "Failed to check in patient", try {
- } catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+ } catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-          const errorData: ApiErrorResponse = await response.json(),
-          errorMessage = errorData.error || errorMessage;
-        } catch {
+} catch (error) { console.error(error); } catch {
           /* Ignore */;
 
         throw new Error(errorMessage);
@@ -321,91 +202,40 @@ export default const _OPDAppointmentList = ({
             : appointment;
         );
       );
-    } catch (error_: unknown) {
-      // FIX: Use unknown,
-      const messageText =;
-        error_ instanceof Error ? error_.message : "An unknown error occurred";
-
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
-      /* SECURITY: Console statement removed */ // Placeholder alert,
-
-  };
+    } catch (error) { console.error(error); };
 
   const handleCancel = async (appointmentId: number) => {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const response = await fetch();
-        `/api/appointments/${appointmentId}/cancel`,
+} catch (error) { console.error(error); }/cancel`,
         { method: "POST";
 
       );
 
       if (!session.user) {
         const errorMessage = "Failed to cancel appointment", try {
- } catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+ } catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-          const errorData: ApiErrorResponse = await response.json(),
-          errorMessage = errorData.error || errorMessage;
-        } catch {
+} catch (error) { console.error(error); } catch {
           /* Ignore */;
 
         throw new Error(errorMessage);
@@ -418,15 +248,7 @@ export default const _OPDAppointmentList = ({
             : appointment;
         );
       );
-    } catch (error_: unknown) {
-      // FIX: Use unknown,
-      const messageText =;
-        error_ instanceof Error ? error_.message : "An unknown error occurred";
-
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
-      /* SECURITY: Console statement removed */ // Placeholder alert,
-
-  };
+    } catch (error) { console.error(error); };
 
   const handleViewDetails = (appointmentId: number) => {
     router.push(`/opd/appointments/${}`;
@@ -495,8 +317,6 @@ export default const _OPDAppointmentList = ({
                 {new Date(appointment.appointmentTime).toLocaleTimeString([], {
                   hour: "2-digit",
                   minute: "2-digit",
-                })}
-              </TableCell>;
               <TableCell>{appointment.patientName}</TableCell>;
               <TableCell>{appointment.doctorName}</TableCell>;
               <TableCell>{appointment.appointmentType}</TableCell>;

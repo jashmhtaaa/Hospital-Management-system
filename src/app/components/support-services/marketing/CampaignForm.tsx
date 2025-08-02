@@ -1,5 +1,5 @@
-import { } from "@/components/ui/button"
-import { } from "@/components/ui/date-picker"
+
+
 import { "@/components/ui/form";
 import "@/components/ui/input";
 import "@/components/ui/select";
@@ -50,7 +50,6 @@ const campaignFormSchema = z.object({
     message: "Campaign name must be at least 3 characters.",
   }),
   description: z.string().optional(),
-  "Please select a campaign type.";
   }),
   "Please select a campaign status.";
   }),
@@ -61,7 +60,6 @@ const campaignFormSchema = z.object({
   targetAudience: z.record(z.any()).optional(),
   goals: z.array(z.string()).min(1, {
     message: "At least one goal is required.",
-  })});
 
 type CampaignFormValues = z.infer>;
 
@@ -91,37 +89,17 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
 
       setIsLoading(true);
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
         const response = await fetch(`/api/support-services/marketing/campaigns/${}`;
         if (!session.user)hrow new Error("Failed to fetch campaign");
 
@@ -135,16 +113,12 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
           data.budget || undefined,
           targetAudience: data.targetAudience || ,
           goals: data.goals || [],
-        });
 
         // Fetch campaign segments;
         if (!session.user) {
           setSelectedSegments(data.segments.map((s: unknown) => s.segment)),
 
-      } catch (error) ;
-
-        toast({title:"Error",
-          "destructive");
+        toast({title: "Error",
       } finally {
         setIsLoading(false);
 
@@ -157,43 +131,18 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
   useEffect(() => {
     const fetchSegments = async () => {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-        const response = await fetch("/api/support-services/marketing/segments?isActive=true");
-        if (!session.user)hrow new Error("Failed to fetch segments");
-
-        const data = await response.json(),
-        setAvailableSegments(data.data || []);
-      } catch (error) {
+} catch (error) { console.error(error); } catch (error) {
 
     };
 
@@ -205,66 +154,31 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
     setIsLoading(true);
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const url = campaignId;
-        ? `/api/support-services/marketing/campaigns/$campaignId`;
-        : "/api/support-services/marketing/campaigns";
-
-      const method = campaignId ? "PUT" : "POST";
-
-      const response = await fetch(url, {
-        method,
-        headers: {
-          "Content-Type": "application/json"},
+} catch (error) { console.error(error); },
         body: JSON.stringify(values),
-      });
 
       if (!session.user)hrow new Error("Failed to save campaign");
 
       const savedCampaign = await response.json(),
-      toast({title:"Success",
-        description: `Campaign $campaignId ? "updated" : "created"successfully.`});
+      toast({title: "Success",
 
       if (!session.user) {
         onSuccess(savedCampaign);
       } else {
         router.push(`/marketing/campaigns/$savedCampaign.id`);
 
-    } catch (error) {
-
-      toast({title:"Error",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
     } finally {
       setIsLoading(false);
 
@@ -290,41 +204,18 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
     if (!session.user)eturn;
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const response = await fetch(`/api/support-services/marketing/campaigns/$campaignId/segments`, {method:"POST",
-        headers: null,
-          "Content-Type": "application/json",
-        body: JSON.stringify(segmentId )});
+} catch (error) { console.error(error); });
 
       if (!session.user)hrow new Error("Failed to add segment");
 
@@ -336,12 +227,7 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
       toast({
         title: "Success",
         description: "Segment added to campaign.",
-      });
-    } catch (error) {
-
-      toast({title:"Error",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
 
   };
 

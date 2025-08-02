@@ -10,7 +10,7 @@ import { Textarea } from '@/components/ui/textarea';
 }
 interface OTTheatreModalProps {
   isOpen: boolean,
-  \1,\2 (data: unknown) => void
+  \1,\2 (data: unknown) => void;
 }
 
 /**
@@ -68,22 +68,3 @@ export const _OTTheatreModal = ({ isOpen, onClose, onSubmit }: OTTheatreModalPro
                   { value: "available", label: "Available" },
                   { value: "occupied", label: "Occupied" },
                   { value: "maintenance", label: "Under Maintenance" },
-                ]}
-              />
-            </div>
-
-            \1>
-              <Label htmlFor="notes">Notes\1>
-              <Textarea id="notes" placeholder="Additional information" />
-            </div>
-          </div>
-          <DialogFooter>
-            \1>
-              Cancel
-            </Button>
-            <Button type="submit">Save</Button>
-          </DialogFooter>
-        </form>
-      </DialogContent>
-    </Dialog>
-  );

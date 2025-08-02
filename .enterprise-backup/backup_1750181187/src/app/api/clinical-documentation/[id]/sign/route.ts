@@ -18,6 +18,8 @@ export const POST = async (
     // Get session
     const session = await getServerSession(authOptions);
      {\n  {
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 

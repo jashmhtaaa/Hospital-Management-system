@@ -10,7 +10,9 @@ import { type
 "use client";
 
 // Define interfaces for data structures;
-interface DispensingRecord {id:string,
+interface DispensingRecord {
+  id:string,
+}
   string,
   string;
   brand_name?: string;
@@ -22,13 +24,9 @@ interface DispensingRecord {id:string,
 }
 
 interface UnbilledItem extends DispensingRecord {
-  subtotal: number,
-}
-
-interface BillingPharmacyIntegrationProperties { patientId: string | null; // Allow null if patientId might not be available initially,  }
+  subtotal: number, // Allow null if patientId might not be available initially,  }
 
 const BillingPharmacyIntegration: React.FC<,
-  BillingPharmacyIntegrationProperties;
 > = ({ patientId }) => {
   // const _router = useRouter(); // Commented out as unused;
   const [loading, setLoading] = useState<boolean>(true);
@@ -48,37 +46,17 @@ const BillingPharmacyIntegration: React.FC<,
       }
       setLoading(true);
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
         // Simulate API call;
         // const _response = await fetch(`/api/pharmacy/dispensing?patient_id=${patientId}&billed=false`);
         // if (!session.user) {
@@ -106,7 +84,6 @@ const BillingPharmacyIntegration: React.FC<,
             7,
             "2025-04-28T10:15:00Z",
             billed: false,
-          }];
         const records = mockRecords.filter((r) => !r.billed); // Ensure only unbilled are processed initially;
 
         setDispensingRecords(mockRecords); // Store all records for display later;
@@ -114,12 +91,8 @@ const BillingPharmacyIntegration: React.FC<,
           records.map((record) => ({
             ...record,
             subtotal: record.quantity * record.selling_price,
-          }));
         );
-      } catch (error) {
-
-        // Handle error appropriately, e.g., show an error message;
-      } finally {
+      } catch (error) { console.error(error); } finally {
         setLoading(false);
       }
     };
@@ -130,7 +103,6 @@ const BillingPharmacyIntegration: React.FC<,
   // Handle item selection for billing;
   const handleItemSelection = (;
     item: UnbilledItem,
-    isSelected: boolean;
   ): void => {}
     if (!session.user) {
       setSelectedItems((previous) => [...previous, item]);
@@ -150,49 +122,23 @@ const BillingPharmacyIntegration: React.FC<,
   const handleGenerateBill = async (): Promise<void> => {
     if (!session.user) {
       /* SECURITY: Console statement removed */,
-      return;
     }
 
     setLoading(true);
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // Simulate API call to create a bill;
-      // const _response = await fetch("/api/billing/pharmacy-bill", {
-      //   method: "POST";
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
+} catch (error) { console.error(error); },
       //   body: JSON.stringify({
       //     patient_id: patientId;
       //     items: selectedItems.map(item => ({
@@ -228,13 +174,7 @@ const BillingPharmacyIntegration: React.FC<,
       setSelectedItems([]);
       // Bill total is recalculated by useEffect, no need to set here;
 
-      /* SECURITY: Console statement removed */,
-    } catch (error) {
-      const _message =;
-        error instanceof Error ? error._message : "An unknown error occurred.";
-
-      /* SECURITY: Console statement removed */,
-    } finally {
+      /* SECURITY: Console statement removed */, } finally {
       setLoading(false);
 
   };
@@ -306,8 +246,7 @@ const BillingPharmacyIntegration: React.FC<,
 
                         onChange={handleSelectAllChange}
                         disabled={unbilledItems.length === 0}
-                        className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500",
-                        aria-label="Select all unbilled items";
+                        className="h-4 w-4 text-blue-600 border-gray-300 rounded focus: ring-blue-500",
                       />;
                     </th>;
                     >;
@@ -347,11 +286,9 @@ const BillingPharmacyIntegration: React.FC<,
                             (index) => index.id === item.id;
                           )}
                           onChange={(event: ChangeEvent<HTMLInputElement>) => {}
-                            handleItemSelection(item, event.target.checked);
+                            handleItemSelection(item,
 
-                          className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500",
-                          aria-label={`Select item ${item.generic_name}`}
-                        />;
+                          className="h-4 w-4 text-blue-600 border-gray-300 rounded focus: ring-blue-500",
                       </td>;
                       >;
                         >;

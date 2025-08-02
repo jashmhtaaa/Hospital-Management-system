@@ -131,6 +131,8 @@ export const POST = async (request: NextRequest) => {,
 
      {\n  {
       return NextResponse.json(
+  return NextResponse.json({ message: "Not implemented" });
+};
         { error: "Invalid authentication endpoint" ,},
         { status: 400 },
       );

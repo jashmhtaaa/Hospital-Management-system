@@ -10,18 +10,24 @@ import { ChangeEvent
 "use client";
 
 // Define interfaces for data structures;
-interface Patient {id:string,
+interface Patient {
+  id:string,
+}
   string,
   number,
   phone: string,
 }
 
-interface Medication {id:string,
+interface Medication {
+  id:string,
+}
   string,
   string;
 }
 
-interface PrescriptionItemInput {medication_id:string,
+interface PrescriptionItemInput {
+  medication_id:string,
+}
   string,
   number | string; // Allow string for input, parse later;
   instructions: string,
@@ -33,22 +39,25 @@ interface SelectedMedication extends Medication {dosage:string,
   instructions: string,
 }
 
-interface PrescriptionItemDisplay {medication:string,
+interface PrescriptionItemDisplay {
+  medication:string,
+}
   string,
   duration: string,
 }
 
-interface Prescription {id:string,
+interface Prescription {
+  id:string,
+}
   "pending" | "dispensed" | "cancelled",
   items: PrescriptionItemDisplay[],
 }
 
-interface PrescriptionFormData {patient_id:string,
+interface PrescriptionFormData {
+  patient_id:string,
+}
   string,
   items: PrescriptionItemInput[],
-}
-
-// Component to integrate Pharmacy with OPD module;
 const OPDPharmacyIntegration: React.FC = () => {
   // const _router = useRouter(); // Removed unused variable (and missing import);
   const [loading, setLoading] = useState<boolean>(true);
@@ -60,57 +69,34 @@ const OPDPharmacyIntegration: React.FC = () => {
   >([]);
   const [formData, setFormData] = useState<Omit<PrescriptionFormData, "items">>(;
     {patient_id:"",
-      doctor_id: "", // This should ideally come from auth context;
+      doctor_id: "",
       notes: "",
-    }
-  );
 
   useEffect(() => {
     // Fetch active patient from OPD context;
     const fetchActivePatient = async (): Promise<void> => {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
         // Simulate fetching active patient;
         const "pat_12345",
           "Smith",
           45,
           phone: "555-1234",
-        };
         setActivePatient(simulatedPatient),
         setFormData((previous) => ({
           ...previous,
           patient_id: simulatedPatient.id,
-          doctor_id: "doc_67890", // Simulate logged-in doctor ID;
+          doctor_id: "doc_67890",
         }));
       } catch (error) ;
     }
@@ -118,37 +104,17 @@ const OPDPharmacyIntegration: React.FC = () => {
     // Fetch medications for prescribing;
     const fetchMedications = async (): Promise<void> => {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
         // Simulate fetching medications;
         const simulatedMedications: Medication[] = [;
           {id:"med_001",
@@ -172,10 +138,7 @@ const OPDPharmacyIntegration: React.FC = () => {
             "Capsule";
           }];
         setMedications(simulatedMedications);
-      } catch (error) {
-
-        // Handle error appropriately;
-      }
+      } catch (error) { console.error(error); }
     };
 
     // Fetch existing prescriptions for this patient;
@@ -187,39 +150,18 @@ const OPDPharmacyIntegration: React.FC = () => {
         return;
 
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-        // Simulate fetching prescriptions for the active patient;
-        // const _response = await fetch(`/api/pharmacy/prescriptions?patientId=${}`;
+} catch (error) { console.error(error); }`;
         // if (!session.user)hrow new Error("Failed to fetch prescriptions");
         // const data = await response.json();
         // setPrescriptions(data.prescriptions || []);
@@ -242,12 +184,8 @@ const OPDPharmacyIntegration: React.FC = () => {
               {medication:"Amoxicillin 250mg",
                 "BID",
                 duration: "7 days",
-              }]}];
         setPrescriptions(simulatedPrescriptions);
-      } catch (error) {
-
-        // Handle error appropriately;
-      } finally {
+      } catch (error) { console.error(error); } finally {
         setLoading(false);
 
     };
@@ -267,7 +205,7 @@ const OPDPharmacyIntegration: React.FC = () => {
   const handleAddMedication = (medication: Medication): void => {
     if (!session.user)> med.id === medication.id)) {
       const newMed: SelectedMedication = {
-        ...medication,
+        ...medication;
         dosage: "",
         "",
         "";
@@ -284,7 +222,6 @@ const OPDPharmacyIntegration: React.FC = () => {
 
   const handleMedicationChange = (;
     index: number,
-    string;
   ): void => {
     const updatedMeds = [...selectedMedications];
     // Ensure the field exists on the object before assignment (though TS should catch this);
@@ -299,70 +236,42 @@ const OPDPharmacyIntegration: React.FC = () => {
 
     if (!session.user) {
       /* SECURITY: Console statement removed */,
-      return;
 
     setLoading(true);
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // Prepare prescription items with proper types;
-      const items: PrescriptionItemInput[] = selectedMedications.map((med) => {
-        const quantity = Number.parseInt(med.quantity);
-        if (!session.user)| quantity <= 0) {
-          throw new Error();
-            `Invalid quantity for ${med.generic_name}. Please enter a positive number.`;
+} catch (error) { console.error(error); }. Please enter a positive number.`;
           );
 
         return {medication_id:med.id,
           med.frequency,
           quantity,
           instructions: med.instructions,
-        };
       });
 
       const _prescriptionData: PrescriptionFormData = {
-        ...formData,
+        ...formData;
         items,
-        // source: "opd", // Add if API expects it;
+        // source: "opd",
         // source_id: "opd_visit_12345" // Add actual OPD visit ID if API expects it;
 
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+      // RESOLVED: (Priority: Medium,
 
       // Simulate API call;
       // const _response = await fetch("/api/pharmacy/prescriptions", {
       //   method: "POST";
       //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(prescriptionData);
       // });
       // if (!session.user) {
       //   const _errorData = await response.json().catch(() => ({}));
@@ -373,8 +282,6 @@ const OPDPharmacyIntegration: React.FC = () => {
       await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate network delay;
 
       /* SECURITY: Console statement removed */,
-
-      // Add the new prescription to the local state for display;
       const `presc_${crypto.getRandomValues([0]}`,
         date: new Date().toISOString().split("T")[0],
         selectedMedications.map((med) => ({
@@ -387,14 +294,9 @@ const OPDPharmacyIntegration: React.FC = () => {
       setSelectedMedications([]),
       setFormData((previous) => ({
         ...previous,
-        notes: "", // Reset notes field;
+        notes: "",
       }));
-    } catch (error) {
-
-        const _message =;
-          error instanceof Error ? error._message : "An unknown error occurred.";
-        /* SECURITY: Console statement removed */;
-    } finally {
+    } catch (error) { console.error(error); } finally {
       setLoading(false);
 
   };
@@ -420,7 +322,6 @@ const OPDPharmacyIntegration: React.FC = () => {
             >;
               >;
                 Patient: null,
-              </span>;
               >;
                 {activePatient.first_name} {activePatient.last_name}
               </span>;
@@ -428,7 +329,6 @@ const OPDPharmacyIntegration: React.FC = () => {
             >;
               >;
                 Age/Gender: null,
-              </span>;
               >;
                 {activePatient.age} / {activePatient.gender}
               </span>;
@@ -616,10 +516,8 @@ const OPDPharmacyIntegration: React.FC = () => {
                 setFormData((previous) => ({
                   ...previous,
                   notes: event.target.value,
-                }));
 
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm",
-              placeholder="Add any specific notes for the pharmacist or patient";
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus: ring-indigo-500 focus:border-indigo-500 sm:text-sm",
             />;
           </div>;
 

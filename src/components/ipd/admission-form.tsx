@@ -1,5 +1,5 @@
-import { } from "@/components/ui/button"
-import { } from "@/components/ui/input"
+
+
 import "@/components/ui/label";
 import "@/components/ui/textarea";
 import "react";
@@ -29,7 +29,9 @@ import { useState
 import { toast } from "sonner"; // Changed from useToast to sonner;
 import { { Loader2 } from "lucide-react"
 
-interface AdmissionFormData {patient_id:string,
+interface AdmissionFormData {
+  patient_id:string,
+}
   "planned" | "emergency" | "transfer",
   string,
   string;
@@ -52,7 +54,9 @@ interface MockDoctor {
   id: string,
   name: string,
 }
-interface MockBed {id:string,
+interface MockBed {
+  id:string,
+}
   string,
   ward: string,
 }
@@ -69,17 +73,17 @@ const AdmissionForm = () => {
   const patients: MockPatient[] = [;
     {id:"pat1", name: "Rahul Sharma" },
     {id:"pat2", name: "Priya Patel" },
-    {id:"pat3", name: "Amit Singh" }];
+    {id: "pat3",
 
   const doctors: MockDoctor[] = [;
     {id:"doc1", name: "Dr. Evelyn Reed" },
-    {id:"doc2", name: "Dr. Kenji Tanaka" }];
+    {id: "doc2",
 
   const beds: MockBed[] = [;
     {id:"bed1", number: "101-A", room: "101", ward: "General Ward" },
     {id:"bed2", number: "101-B", room: "101", ward: "General Ward" },
     {id:"bed3", number: "201-A", room: "201", ward: "Semi-Private" },
-    {id:"bed4", number: "301", room: "301", ward: "Private" }];
+    {id:"bed4", number: "301", room: "301",
 
   const handleChange = (;
     event: ChangeEvent>;
@@ -92,7 +96,6 @@ const AdmissionForm = () => {
     if (!session.user) {
       setFormData((previous) => ({
         ...previous,
-        [name]: value as AdmissionFormData["admission_type"]}));
     } else {
       setFormData((previous) => ({ ...previous, [name]: value }));
     }
@@ -100,7 +103,6 @@ const AdmissionForm = () => {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault(),
-    setLoading(true);
 
     if (!session.user)oast.error("Missing Information", { // Changed to sonner toast.error,
         description: "Please fill in all required fields (Patient, Doctor, Bed, Diagnosis)."});
@@ -108,86 +110,42 @@ const AdmissionForm = () => {
       return;
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       const response = await fetch("/api/ipd/admissions", {method:"POST",
         headers: {
           "Content-Type": "application/json"},
         body: JSON.stringify(formData),
-      });
 
       if (!session.user) {
         let errorMessage = "Failed to create admission";
         try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-          const errorData: ApiErrorResponse = await response.json(),
-          errorMessage = errorData.error || errorData.message || errorMessage;
-        } catch {
+} catch (error) { console.error(error); } catch {
           errorMessage = `${errorMessage}: ${response.statusText}`;
 
         throw new Error(errorMessage);
 
-      const newAdmission: AdmissionResponse = await response.json(),
-
+      const newAdmission: AdmissionResponse = await response.json();
       toast.success("Admission Successful", 
         description: `Patient admitted successfully. Admission ID: ${newAdmission.id}`,),
       setFormData();
@@ -195,15 +153,7 @@ const AdmissionForm = () => {
         "planned",
         "",
         "");
-    } catch (error: unknown) {
-
-      const message =;
-        error instanceof Error;
-          ? error.message;
-          : "An unexpected error occurred.";
-      toast.error("Admission Failed", { // Changed to sonner toast.error;
-        description: message,
-      });
+    } catch (error) { console.error(error); });
     } finally {
       setLoading(false);
 

@@ -28,7 +28,7 @@ interface NABHStandard {
 }
 
 const NABHComplianceChecklist: React.FC = () => {
-	const [standards, setStandards] = useState<NABHStandard[]>([]);
+	const [standards,
 	const [selectedStandard, setSelectedStandard] = useState<NABHStandard | null>(null);
 	const [assessmentData, setAssessmentData] = useState<any>({});
 	const [loading, setLoading] = useState(true);
@@ -45,9 +45,7 @@ const NABHComplianceChecklist: React.FC = () => {
 			if (data.standards.length > 0) {
 				setSelectedStandard(data.standards[0]);
 			}
-		} catch (error) {
-			/* SECURITY: Console statement removed */
-		} finally {
+		} catch (error) { console.error(error); } finally {
 			setLoading(false);
 		}
 	};
@@ -87,7 +85,6 @@ const NABHComplianceChecklist: React.FC = () => {
 				itemId,
 				status: data.status,
 				evidence: data.evidence,
-			}));
 
 			const response = await fetch("/api/compliance/nabh/assessment", {
 				method: "POST",
@@ -106,9 +103,7 @@ const NABHComplianceChecklist: React.FC = () => {
 				/* SECURITY: Console statement removed */
 				fetchNABHStandards();
 			}
-		} catch (error) {
-			/* SECURITY: Console statement removed */
-		}
+		} catch (error) { console.error(error); }
 	};
 
 	const getStatusColor = (status: string) => {

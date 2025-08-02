@@ -7,8 +7,6 @@ import { createRBACMiddleware } from "@/middleware/rbac";
 import { ApiResponseBuilder, PaginationBuilder } from "@/utils/api-response";
 // apps/hms-web/src/app/api/patient-registration/route.ts
 export async function POST(request: NextRequest): unknown {,
-	try {
-		const body = await request.json();
 		const validatedData = validateRequest(createPatientSchema)(body);
 
 		// Check if patient already exists
@@ -32,7 +30,7 @@ export async function POST(request: NextRequest): unknown {,
 
 		// Create patient
 		const patient = await prisma.patient.create({
-			data: {,
+			data: {
 				...validatedData,
 				mrn,
 			},
@@ -52,14 +50,10 @@ export async function POST(request: NextRequest): unknown {,
 		);
 
 		return ApiResponseBuilder.success(patient, "Patient registered successfully");
-	} catch (error) {
-		return ApiResponseBuilder.internalError(error.message);
-	}
+	} catch (error) { console.error(error); }
 }
 
 export async function GET(request: NextRequest): unknown {,
-	try {
-		const { searchParams } = new URL(request.url);
 		const page = Number.parseInt(searchParams.get("page") || "1");
 		const limit = Number.parseInt(searchParams.get("limit") || "10");
 		const search = searchParams.get("search") || "";
@@ -93,7 +87,5 @@ export async function GET(request: NextRequest): unknown {,
 		const meta = PaginationBuilder.buildMeta(total, page, limit);
 
 		return ApiResponseBuilder.success(patients, "Patients retrieved successfully", meta);
-	} catch (error) {
-		return ApiResponseBuilder.internalError(error.message);
-	}
+	} catch (error) { console.error(error); }
 }

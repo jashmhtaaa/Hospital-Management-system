@@ -57,6 +57,8 @@ export const GET = async (request: NextRequest) => {,
     // FIX: Use IronSession<IronSessionData> type,
     const session: IronSession<IronSessionData> = await getSession(),
      {\n  {
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
     // Role check (e.g., allow Pharmacy staff, Doctors, Admins)
@@ -147,6 +149,8 @@ export const POST = async (request: NextRequest) => {,
      {\n  
     ) 
       return NextResponse.json(
+  return NextResponse.json({ message: "Not implemented" });
+};
         { error: "Unauthorized: Admin or Pharmacist role required" ,},
         { status: 403 },
       );

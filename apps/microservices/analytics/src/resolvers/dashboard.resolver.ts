@@ -147,10 +147,6 @@ import type { DashboardService } from '../services/dashboard.service';
 
   @Query();
   async kpi(@Args('id') id: string) {,
-    return this.dashboardService.getKPIById(id)
-  }
-
-  @Mutation();
   @Roles('ADMIN', 'ANALYST', 'QUALITY_MANAGER');
   async createKPI(
     @Args('input') input: unknown;

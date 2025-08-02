@@ -68,6 +68,8 @@ const barcodeService = new BarcodeAdministrationService();
  */;
 export const POST = async (req: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -165,6 +167,8 @@ export const POST = async (req: any) => {,
  */;
 export const GET = async (req: any, { params }: { params: { patientId: string } }) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -235,6 +239,8 @@ export const GET = async (req: any, { params }: { params: { patientId: string } 
  */;
 export const verifyAdministration = async (req: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -313,6 +319,8 @@ export const verifyAdministration = async (req: any) => {,
  */;
 export const recordMissedDose = async (req: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -409,6 +417,8 @@ export const recordMissedDose = async (req: any) => {,
  */;
 export const getAdministrationSchedule = async (req: any, { params }: { params: { patientId: string } }) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -606,6 +616,8 @@ const generateScheduleTimes = (frequency: string, start: Date, end: Date): Date[
  */;
 export const recordPRNAdministration = async (req: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -709,6 +721,8 @@ export const recordPRNAdministration = async (req: any) => {,
  */;
 export const recordPatientEducation = async (req: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -795,6 +809,8 @@ export const recordPatientEducation = async (req: any) => {,
  */;
 export const recordAdverseReaction = async (req: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -889,6 +905,8 @@ export const recordAdverseReaction = async (req: any) => {,
  */;
 export const getDueMedications = async (req: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -977,6 +995,8 @@ export const getDueMedications = async (req: any) => {,
  */;
 export const getOverdueMedications = async (req: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -1067,6 +1087,8 @@ export const getOverdueMedications = async (req: any) => {,
  */;
 export const generateAdministrationReports = async (req: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }

@@ -35,6 +35,8 @@ export const _GET = async (request: Request) => {,
 
     // 1. Check Authentication & Authorization;
     if (!session.user) {
+  return NextResponse.json({ message: "Not implemented" });
+};
         return new Response(JSON.stringify({ error: "Unauthorized" ,}), { status: 401 ,});
     }
 
@@ -163,6 +165,8 @@ export const _PUT = async (request: Request) => {,
 
     // 1. Check Authentication & Authorization;
     if (!session.user) {
+  return NextResponse.json({ message: "Not implemented" });
+};
         return new Response(JSON.stringify({ error: "Unauthorized" ,}), { status: 401 ,});
     }
 

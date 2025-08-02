@@ -5,47 +5,15 @@ import {type NextRequest, NextResponse } from "next/server"; // FIX: Import Next
 export const _runtime = "edge",
 
 // GET /api/ot/bookings/[id] - Get a specific OT booking by ID;
-export const _GET = async();
-  _request: any, // FIX: Use NextRequest;
+export const GET = async();
+  _request: any,
   { params }: {params: Promise<{id:string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
     // const { env } = getRequestContext();
     // const DB = env.DB;
     const {id:bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+),
-
-    // Placeholder for database query;
     /*;
     const booking = await DB;
       .prepare("SELECT * FROM OTBookings WHERE id = ?");
@@ -60,66 +28,32 @@ export const _GET = async();
       "scheduled",
       [0] - 7 * 24 * 60 * 60 * 1000).toISOString(),
       updated_at: [0] - 3 * 24 * 60 * 60 * 1000).toISOString(),
-    };
 
     if (!session.user) {
       return NextResponse.json();
         {message: "OT Booking not found" },
-        {status: 404 }
-      );
     }
 
     return NextResponse.json(booking);
-  } catch (error: unknown) {,
-    // FIX: Remove explicit any;
-
-    // FIX: Handle error type,
-    const errorMessage = error instanceof Error ? error.message : String(error),
-    return NextResponse.json();
-      {message: "Error fetching OT booking", details: errorMessage },
-      {status: 500 }
+  try {
+    // TODO: Implement route logic
+    return NextResponse.json({ message: "Success" });
+  } catch (error) {
+    return NextResponse.json({ error: "Internal server error" }, {status: 500 });
+  }
     );
   }
 }
 
 // PUT /api/ot/bookings/[id] - Update a specific OT booking;
-export const _PUT = async();
-  _request: any, // FIX: Use NextRequest;
+export const PUT = async();
+  _request: any,
   { params }: {params: Promise<{id:string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
   console.error(error);
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-    // const { env } = getRequestContext();
     // const DB = env.DB;
     const {id: bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+);
     const updateData = await _request.json();
@@ -128,8 +62,6 @@ export const _PUT = async();
     if (!session.user) {
       return NextResponse.json();
         {message: "No update data provided" },
-        {status: 400 }
-      );
 
     // Placeholder for database update;
     /*;
@@ -154,7 +86,6 @@ export const _PUT = async();
         updateData.status || null,
         updateData.notes || null,
         timestamp: new Date().toISOString(),
-        bookingId;
       );
       .run();
     */;
@@ -162,57 +93,25 @@ export const _PUT = async();
     // Mock update for development;
     const updatedBooking = { id: bookingId, ...updateData,
       updated_at: new Date().toISOString(),
-     };
 
     return NextResponse.json(updatedBooking);
-  } catch (error: unknown) {,
-    // FIX: Remove explicit any;
-
-    // FIX: Handle error type,
-    const errorMessage = error instanceof Error ? error.message : String(error),
-    return NextResponse.json();
-      {message: "Error updating OT booking", details: errorMessage },
-      {status: 500 }
+  try {
+    // TODO: Implement route logic
+    return NextResponse.json({ message: "Success" });
+  } catch (error) {
+    return NextResponse.json({ error: "Internal server error" }, {status: 500 });
+  }
     );
 
 // DELETE /api/ot/bookings/[id] - Cancel a specific OT booking;
-export const _DELETE = async();
-  _request: any, // FIX: Use NextRequest;
+export const DELETE = async();
+  _request: any,
   { params }: {params: Promise<{id:string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
   console.error(error);
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-    // const { env } = getRequestContext();
     // const DB = env.DB;
     const {id: bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+);
     // const _now = new Date().toISOString(); // Unused variable;
@@ -222,18 +121,15 @@ export const _DELETE = async();
 
     // Option 2: Soft delete (update status to \"cancelled\");
     // Mock implementation for development;
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+    // RESOLVED: (Priority: Medium,
 
     // Return success response;
     return NextResponse.json();
-      {message: "OT Booking cancelled successfully" },
-      {status: 200 }
-    )} catch (error: unknown) {
-    // FIX: Remove explicit any;
-
-    // FIX: Handle error type,
-    const errorMessage = error instanceof Error ? error.message : String(error),
-    return NextResponse.json();
-      {message: "Error cancelling OT booking", details: errorMessage },
-      {status: 500 }
+      {message: "OT Booking cancelled successfully" }, },
+  try {
+    // TODO: Implement route logic
+    return NextResponse.json({ message: "Success" });
+  } catch (error) {
+    return NextResponse.json({ error: "Internal server error" }, {status: 500 });
+  }
     );

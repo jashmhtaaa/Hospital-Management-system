@@ -3,7 +3,7 @@ import { useState } from "react"
 
 "use client";
 
-import { } from "@/components/ui/button"
+
 import {
 import { Badge } from "@/components/ui/badge"
 import { Button }
@@ -14,8 +14,8 @@ import { Button }
   CardFooter,
   CardHeader,
   CardTitle} from "@/components/ui/card";
-import { } from "@/components/ui/separator"
-import { } from "next/navigation"
+
+
 import "react";
 import TabsContent
 import TabsList
@@ -53,7 +53,7 @@ import { useRouter }
   Plus,
   AlertCircle;
 } from "lucide-react";
-import { } from "date-fns"
+
 import { format } from "@/components/ui/use-toast"
 import { toast }
 
@@ -69,36 +69,17 @@ export default _EmployeeProfile = ({ params }: {id:string }) {
   useEffect(() => {
     const fetchEmployee = async () => {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
+} catch (error) { console.error(error); } catch (error) {
 
         setLoading(true),
         const response = await fetch(`/api/hr/staff/${}`,
@@ -109,8 +90,7 @@ export default _EmployeeProfile = ({ params }: {id:string }) {
           throw new Error("Failed to fetch employee data")}
 
         const data = await response.json(),
-        setEmployee(data)} catch (err) {
-        setError(err.message)} finally {
+        setEmployee(data)} catch (error) { console.error(error); } finally {
         setLoading(false)}
     };
 
@@ -119,39 +99,18 @@ export default _EmployeeProfile = ({ params }: {id:string }) {
   // Handle employee deletion (soft delete);
   const handleDelete = async () => {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      setDeleting(true);
-      const response = await fetch(`/api/hr/staff/${params.id}`, {
+} catch (error) { console.error(error); }`, {
         method: "DELETE",
       }),
 
@@ -164,10 +123,7 @@ export default _EmployeeProfile = ({ params }: {id:string }) {
       }),
 
       // Navigate back to staff list;
-      router.push("/dashboard/hr/staff")} catch (error) {
-      toast({title:"Error",
-        "destructive";
-      })} finally ;
+      router.push("/dashboard/hr/staff")} catch (error) { console.error(error); })} finally ;
       setDeleting(false),
       setDeleteDialogOpen(false)};
 

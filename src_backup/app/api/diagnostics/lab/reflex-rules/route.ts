@@ -20,6 +20,8 @@ interface ReflexRuleCreateBody {
 // GET /api/diagnostics/lab/reflex-rules - Get reflex testing rules;
 export const _GET = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -145,6 +147,8 @@ export const _GET = async (request: any) => {,
 // POST /api/diagnostics/lab/reflex-rules - Create a new reflex rule;
 export const _POST = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }

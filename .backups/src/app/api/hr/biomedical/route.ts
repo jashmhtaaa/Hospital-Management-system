@@ -52,6 +52,8 @@ const biomedicalSchema = z.object({
 // POST handler for creating biomedical equipment;
 export const _POST = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -118,6 +120,8 @@ export const _POST = async (request: any) => {,
 // GET handler for listing biomedical equipment;
 export const _GET = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }

@@ -26,6 +26,8 @@ interface RouteParams {
  */
 export const GET = async (request: NextRequest, { params }: RouteParams) => {
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { resource } = params;
     const resourceType = resource[0];
     const resourceId = resource[1];
@@ -100,6 +102,8 @@ export const GET = async (request: NextRequest, { params }: RouteParams) => {
  */
 export const POST = async (request: NextRequest, { params }: RouteParams) => {
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { resource } = params;
     const resourceType = resource[0];
 
@@ -179,6 +183,8 @@ export const POST = async (request: NextRequest, { params }: RouteParams) => {
  */
 export const PUT = async (request: NextRequest, { params }: RouteParams) => {
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { resource } = params;
     const resourceType = resource[0];
     const resourceId = resource[1];
@@ -271,6 +277,8 @@ export const PUT = async (request: NextRequest, { params }: RouteParams) => {
  */
 export const DELETE = async (request: NextRequest, { params }: RouteParams) => {
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { resource } = params;
     const resourceType = resource[0];
     const resourceId = resource[1];
@@ -330,6 +338,8 @@ export const DELETE = async (request: NextRequest, { params }: RouteParams) => {
  */
 export const PATCH = async (request: NextRequest, { params }: RouteParams) => {
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { resource } = params;
     const resourceType = resource[0];
     const resourceId = resource[1];

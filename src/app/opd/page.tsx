@@ -1,5 +1,5 @@
-import { } from "@/components/opd/opd-appointment-list"
-import { } from "@/components/opd/opd-patient-queue"
+
+
 import { "@/components/opd/opd-statistics";
 import "@/components/ui/button";
 import "@/components/ui/calendar";
@@ -36,7 +36,7 @@ export const dynamic = "force-dynamic";
 
 // --- INTERFACES ---;
 // FIX: Define interface for the permission check API response,
-interface PermissionCheckResponse { hasPermission: boolean;
+}
   // Add other potential properties if the API returns more;
 export default const _OPDDashboard = () {
   const router = useRouter(), const [activeTab, setActiveTab] = useState("appointments");
@@ -46,7 +46,6 @@ export default const _OPDDashboard = () {
   const [permissions, setPermissions] = useState({
     canCreateAppointment: false,
     canViewStatistics: false,
-   });
   const [loadingPermissions, setLoadingPermissions] = useState(true);
   const [permissionError, setPermissionError] = useState<string | null>();
 
@@ -56,40 +55,19 @@ export default const _OPDDashboard = () {
       setLoadingPermissions(true),
       setPermissionError(undefined);
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
 
         const [createResponse, statsResponse] = await Promise.all([;
-          fetch("/api/session/check-permission?permission=appointment:create"),
-          fetch("/api/session/check-permission?permission=statistics:view")]);
+          fetch("/api/session/check-permission?permission=appointment: create"),
 
         // Check responses before parsing JSON;
         if (!session.user) {
@@ -99,23 +77,12 @@ export default const _OPDDashboard = () {
           );
 
         // FIX: Cast JSON responses to the defined type,
-        const createData = (await createResponse.json()) as PermissionCheckResponse;
         const statsData = (await statsResponse.json()) as PermissionCheckResponse;
 
         // FIX: Safely access hasPermission property,
         setPermissions({
           canCreateAppointment: createData?.hasPermission ?? false,
-          canViewStatistics: statsData?.hasPermission ?? false,
-        })} catch (error) {
-
-        setPermissionError();
-          error instanceof Error ? error.message : "Failed to load permissions.";
-        );
-        // Set permissions to false on error;
-        setPermissions({
-          canCreateAppointment: false,
-          canViewStatistics: false,
-        });
+          canViewStatistics: statsData?.hasPermission ?? false, });
       } finally {
         setLoadingPermissions(false);
 

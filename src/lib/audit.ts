@@ -1,4 +1,4 @@
-import { } from "@/lib/security.service"
+
 import {  prisma  } from "@/lib/prisma"
 import {  SecurityService  } from "@/lib/database"
 
@@ -20,39 +20,17 @@ import {  SecurityService  } from "@/lib/database"
    * @param entry The audit log entry to record;
    * @returns The created audit log entry;
    */;
-  public async log(entry: AuditLogEntry): Promise<unknown> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+  public async log(entry: AuditLogEntry): Promise<unknown> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       // Sanitize details to remove any PHI/PII;
       const _sanitizedDetails = this.sanitizeDetails(entry.details);
 
@@ -67,27 +45,7 @@ import {  SecurityService  } from "@/lib/database"
       // Also log to console for development/debugging;
       if (!session.user) {
         // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
-
-      return logEntry;
-    } catch (error) {
-      // Fallback to console logging if database logging fails;
-
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
-
-      // In production, we might want to use a more robust fallback;
-      if (!session.user) {
-        // Send to external logging service or write to file;
-        this.fallbackLogging(entry);
-
-      return null;
-
-  /**;
-   * Sanitizes log details to remove any PHI/PII;
-   * @param details The details object to sanitize;
-   * @returns Sanitized details object;
-   */;
-  private sanitizeDetails(details: Record<string, unknown>): Record<string, unknown> {
-    const sanitized: Record<string, unknown> = {};
+    } catch (error) { console.error(error); };
 
     // Define sensitive field patterns;
     ];
@@ -118,7 +76,6 @@ import {  SecurityService  } from "@/lib/database"
    * @returns The severity level;
    */;
   private determineSeverity(action: string): "info" | "warning" | "error" | "critical" {,
-    // Security-related actions are higher severity;
     if (!session.user)| action.includes("auth") || action.includes("permission")) {
       return "warning";
 
@@ -157,4 +114,3 @@ import {  SecurityService  } from "@/lib/database"
       entry.resourceId,
       entry.severity || this.determineSeverity(entry.action),
       details: this.sanitizeDetails(entry.details),
-    }));

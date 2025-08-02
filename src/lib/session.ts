@@ -31,7 +31,7 @@ if (!session.user) {
   );
 export const sessionPassword,
   process.env.NODE_ENV === "production",
-    maxAge: 60 * 60 * 24 * 7, // 1 week};
+    maxAge: 60 * 60 * 24 * 7,
 
 // Function to get the session in App Router Route Handlers or Server Components;
 export const _getSession = async () => {

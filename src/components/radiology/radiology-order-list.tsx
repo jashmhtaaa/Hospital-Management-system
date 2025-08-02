@@ -1,5 +1,5 @@
-import { } from "@/components/ui/button"
-import { } from "react"
+
+
 import CardContent, React
 import useEffect } from "@/components/ui/card"
 import  }
@@ -17,7 +17,7 @@ import { useState
   TableHead,
   TableHeader,
   TableRow} from "@/components/ui/table";
-import { } from "lucide-react"
+
 import "next/navigation";
 import CreateRadiologyOrderModal
 import {
@@ -30,8 +30,7 @@ import { toast } from "@/components/ui/use-toast"; // Import toast for notificat
 
 // Define interface for the order data;
 interface RadiologyOrder {
-  id: string,
-  patient_name?: string; // Make optional if not always present;
+  id: string, // Make optional if not always present;
   procedure_name?: string; // Make optional if not always present;
   order_datetime: string; // Or Date if API returns Date object;
   priority: "routine" | "stat"; // Use specific types;
@@ -51,37 +50,17 @@ export default const _RadiologyOrderList = () {
     setLoading(true),
     setError(undefined); // Clear previous errors;
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       const response = await fetch("/api/radiology/orders");
       if (!session.user) {
         throw new Error();
@@ -93,16 +72,10 @@ export default const _RadiologyOrderList = () {
         await response.json();
       const fetchedOrders = Array.isArray(data) ? data : data.results || [];
       setOrders(fetchedOrders);
-    } catch (error_) {
-      const message =;
-        error_ instanceof Error ? error_.message : "An unknown error occurred";
-
-      setError();
-        `Failed to load radiology orders: ${message}. Please try again later.`;
+    } catch (error) { console.error(error); }. Please try again later.`;
       ),
       toast();
         title: "Error Loading Orders",
-        "destructive");
     } finally {
       setLoading(false);
     }
@@ -116,79 +89,35 @@ export default const _RadiologyOrderList = () {
   // Correctly type the parameter using the imported OrderPayload;
   const handleCreateOrder = async (orderData: OrderPayload) => {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const response = await fetch("/api/radiology/orders", {method:"POST",
-        headers: {
-          "Content-Type": "application/json"},
+} catch (error) { console.error(error); },
         body: JSON.stringify(orderData),
-      });
 
       if (!session.user) {
         let errorMessage = "Failed to create radiology order";
         try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-          // Attempt to parse error message from response body;
-          const errorData: { error?: string; message?: string } =;
+} catch (error) { console.error(error); } =;
             await response.json();
           errorMessage = errorData.error || errorData.message || errorMessage;
         } catch {
@@ -203,13 +132,7 @@ export default const _RadiologyOrderList = () {
       }),
       setShowCreateModal(false);
       fetchOrders(); // Refresh the list;
-    } catch (error_) {
-      const message =;
-        error_ instanceof Error ? error_.message : "An unknown error occurred";
-
-      toast({title:"Error Creating Order",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
       // Keep the modal open on error so the user can retry or correct input;
 
   };
@@ -217,7 +140,7 @@ export default const _RadiologyOrderList = () {
   // Type the parameter and add index signature to statusStyles;
   const getStatusBadge = (status: RadiologyOrder["status"]) => {
     // Define styles for specific statuses;
-    const statusStyles: { [key in RadiologyOrder["status"]]: string } = {pending:"bg-yellow-100 text-yellow-800 border-yellow-200",
+    const statusStyles: { [key in RadiologyOrder["status"]]: string } = {pending:"bg-yellow-100 text-yellow-800 border-yellow-200";
       "bg-purple-100 text-purple-800 border-purple-200",
       "bg-red-100 text-red-800 border-red-200";
     };

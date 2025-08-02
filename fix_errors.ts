@@ -8,7 +8,6 @@ const projectRoot = '/root/Hospital-Management-System';
 const project = new Project({
     tsConfigFilePath: path.resolve(projectRoot, 'tsconfig.json'),
     skipAddingFilesFromTsConfig: true,
-});
 
 // Read structured faults from stdin (or a file if preferred)
 const faultsJson = fs.readFileSync('/dev/stdin', 'utf8'); // Assuming input from pipe or file
@@ -49,13 +48,7 @@ structuredFaults.forEach((fault: any) => {
         for (const importDecl of importDeclarations) {
             const importText = importDecl.getText();
             // Heuristic: if the import text contains the missing name and looks malformed
-            // This is a very basic check, will need to be more robust
-            if (importText.includes(missingName) && 
-                (importText.includes('}') && !importText.includes('{')) || // Missing opening brace
-                (!importText.includes('}') && importText.includes('{')) || // Missing closing brace
-                importText.includes('from') && !importText.includes('"') // Missing quotes around module specifier
-            ) {
-                console.log(`Found potentially malformed import: ${importText}`);
+            // This is a very basic check,
                 const moduleSpecifier = importDecl.getModuleSpecifierValue();
 
                 // Attempt to reconstruct the import based on common patterns
@@ -71,7 +64,6 @@ structuredFaults.forEach((fault: any) => {
                     sourceFile.addImportDeclaration({
                         namedImports: newNamedImports,
                         moduleSpecifier: moduleSpecifier,
-                    });
                     console.log(`Reconstructed import for ${moduleSpecifier}`);
                     foundAndFixed = true;
                     break;
@@ -84,7 +76,6 @@ structuredFaults.forEach((fault: any) => {
                      sourceFile.addImportDeclaration({
                          namedImports: newNamedImports,
                          moduleSpecifier: moduleSpecifier,
-                     });
                      console.log(`Reconstructed import for ${moduleSpecifier}`);
                      foundAndFixed = true;
                      break;

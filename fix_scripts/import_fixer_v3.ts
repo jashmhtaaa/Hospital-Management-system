@@ -15,7 +15,6 @@ try {
         tsConfigFilePath: path.join(__dirname, '../tsconfig.json'),
         skipAddingFilesFromTsConfig: false,
         skipFileDependencyResolution: false,
-    });
 
     // Process files with enhanced error handling
     project.getSourceFiles().forEach(file => {
@@ -54,8 +53,7 @@ try {
                 }
             });
             
-        } catch (error) {
-            console.error(`Error processing ${filePath}:`, error);
+        } catch (error) { console.error(error); }:`, error);
             // Skip problematic files to prevent cascading errors
         }
     });
@@ -64,7 +62,4 @@ try {
     project.saveSync();
     console.log('Import/export fixes completed with validation');
     
-} catch (error) {
-    console.error('Fatal error in import/export fixer:', error);
-    process.exit(1);
-}
+} catch (error) { console.error(error); }

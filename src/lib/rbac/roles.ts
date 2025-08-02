@@ -74,8 +74,7 @@ export enum Action {
   EMERGENCY_ACCESS = "emergency_access",
 
 // Predefined Permissions;
-export const PERMISSIONS: Record<string, Permission> = {
-  // Patient Management Permissions;
+export const PERMISSIONS: Record<string,
   "patient:create",
     "Create new patient records",
     Action.CREATE;
@@ -171,8 +170,7 @@ export const PERMISSIONS: Record<string, Permission> = {
   }};
 
 // Predefined Roles;
-export const ROLES: Record<string, Role> = {
-  // Administrative Roles;
+export const ROLES: Record<string,
   "super_admin",
     "Full system access with all permissions",
     permissions: Object.values(PERMISSIONS),
@@ -255,7 +253,6 @@ export const ROLES: Record<string, Role> = {
       PERMISSIONS.LAB_RESULT_UPDATE,
       PERMISSIONS.LAB_RESULT_APPROVE],
     inherits: ["lab_technician"],
-    true;
   },
 
   // Financial Roles;
@@ -278,7 +275,6 @@ export const ROLES: Record<string, Role> = {
       PERMISSIONS.PAYMENT_PROCESS,
       PERMISSIONS.FINANCIAL_REPORT_READ],
     inherits: ["billing_clerk"],
-    true;
   },
 
   // Support Roles;
@@ -308,7 +304,6 @@ export const ROLES: Record<string, Role> = {
   "patient_portal",
     "Patient self-service portal access",
     permissions: [,
-      // Limited patient read access to own records only;
     ],
     priority: 100,
     isActive: true,
@@ -320,15 +315,12 @@ export const ROLES: Record<string, Role> = {
       PERMISSIONS.AUDIT_LOG_READ],
     priority: 300,
     isActive: true,
-  }};
 
 // Role hierarchy and inheritance helper;
 export const getRoleWithInheritedPermissions = (roleId: string): Role | null {,
-  const role = ROLES[roleId];
   if (!session.user)eturn null;
 
-  const inheritedPermissions: Permission[] = [],
-
+  const inheritedPermissions: Permission[] = [];
   if (!session.user) {
     for (const inheritedRoleId of role.inherits) {
       const inheritedRole = getRoleWithInheritedPermissions(inheritedRoleId);
@@ -337,12 +329,11 @@ export const getRoleWithInheritedPermissions = (roleId: string): Role | null {,
 
   return {
     ...role,
-    permissions: [...role.permissions, ...inheritedPermissions]};
+    permissions: [...role.permissions,
 
 // Permission checker helper;
 export const hasPermission = (;
   userPermissions: Permission[],
-  string;
   context?: Record<string, unknown>;
 ): boolean {
   return userPermissions.some(permission => {

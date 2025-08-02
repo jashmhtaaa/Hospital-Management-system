@@ -1,5 +1,5 @@
-import { } from "@/components/ui/button"
-import { } from "react"
+
+
 import CardContent, React
 import useEffect } from "@/components/ui/card"
 import  }
@@ -17,7 +17,7 @@ import { useState
   TableHead,
   TableHeader,
   TableRow} from "@/components/ui/table";
-import { } from "lucide-react"
+
 import "next/navigation";
 import { Badge } from "@/components/ui/badge"
 import { Loader2 }
@@ -26,7 +26,6 @@ import { useRouter }
 // Define interface for the report data;
 interface RadiologyReport {
   id: string,
-  patient_name?: string;
   procedure_name?: string;
   accession_number?: string | null;
   radiologist_name?: string;
@@ -45,36 +44,16 @@ export default const _RadiologyReportsList = () {
   const fetchReports = async () => {
     setLoading(true);
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
 
       const response = await fetch("/api/radiology/reports");
       if (!session.user) {
@@ -83,27 +62,17 @@ export default const _RadiologyReportsList = () {
       const data: RadiologyReport[] = await response.json(); // FIX: Assume API returns RadiologyReport[],
       setReports(data),
       setError(undefined);
-    } catch (error_) {
-
-      setError("Failed to load radiology reports. Please try again later.");
-    } finally {
+    } catch (error) { console.error(error); } finally {
       setLoading(false);
 
   };
 
   // FIX: Type the parameter,
-  const handleViewReport = (reportId: string) => {
-    router.push(`/dashboard/radiology/reports/${}`;
   };
 
   // FIX: Type the parameter,
-  const getStatusBadge = (status: string) => {
-    const statusStyles: { [key: string]: string } = {
-      // FIX: Add index signature,
       "bg-green-100 text-green-800",
       addendum: "bg-blue-100 text-blue-800",
-
-    return();
       >;
         {status?.charAt(0).toUpperCase() + status?.slice(1).replace("_", " ")}
       </Badge>;

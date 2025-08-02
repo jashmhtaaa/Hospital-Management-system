@@ -1,68 +1,19 @@
-import { } from "@/lib/middleware/error-handling.middleware"
-import "@/lib/services/support-services/marketing";
-import "next-auth";
-import "next/server";
-import { NextRequest } from "@/lib/auth"
-import { NextResponse } from "next/server" }
-import {  authOptions  } from "@/lib/database"
-import {  getServerSession  } from "@/lib/database"
-import {  SegmentService  } from "@/lib/database"
-import {   type
-import {  withErrorHandling  } from "@/lib/database"
+import { NextRequest, NextResponse } from "next/server";
 
-const segmentService = new SegmentService();
-
-/**;
- * GET /api/support-services/marketing/segments/:id;
- * Get a specific segment by ID;
- */;
-export const GET = async();
-  request: any;
-  { params }: {id: string }
-) => {
-  return withErrorHandling();
-    request,
-    async (req: any) => {,
-      const session = await getServerSession(authOptions);
-      const { searchParams } = new URL(req.url);
-
-      const includeMembers = searchParams.get("includeMembers") === "true";
-
-      const segment = await segmentService.getSegmentById(params.id, includeMembers);
-
-      return NextResponse.json(segment);
-    },
-    {requiredPermission:"marketing.segments.read",
-      auditAction: "SEGMENT_VIEW",
-    }
-  );
+interface RouteContext {
+  params: { id: string };
 }
 
-/**;
- * PUT /api/support-services/marketing/segments/:id;
- * Update a specific segment;
- */;
-export const PUT = async();
-  request: any;
-  { params }: {id: string }
-) => {
-  return withErrorHandling();
-    request,
-    async (req: any) => {,
-      const session = await getServerSession(authOptions);
-      const data = await req.json();
-
-      const segment = await segmentService.updateSegment();
-        params.id,
-        data,
-        session?.user?.id as string;
-      );
-
-      return NextResponse.json(segment);
-    },
-    {requiredPermission:"marketing.segments.update",
-      auditAction: "SEGMENT_UPDATE",
-    }
-  );
-
-}
+export const GET = async (request: NextRequest, context: RouteContext) => {
+  try {
+    const { id } = context.params;
+    
+    // TODO: Implement Support Services Marketing Segments [Id] logic for ID: {id}
+    return NextResponse.json({ 
+      id,
+      message: "Not implemented" 
+    });
+  } catch (error) {
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  }
+};

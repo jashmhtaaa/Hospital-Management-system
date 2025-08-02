@@ -42,7 +42,6 @@ const prisma = new PrismaClient();
             startDate: policyDetails.startDate || new Date(),
             endDate: policyDetails.endDate || new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
             isActive: policyDetails.isActive !== undefined ? policyDetails.isActive : true,
-        };
         // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
         return mockPolicy
     }
@@ -61,8 +60,6 @@ const prisma = new PrismaClient();
                 id: "pol_mock_1", patientId, policyNumber: "XYZ12345", tpaId: "TPA001",
                 coverageDetails: "80% inpatient, 50% outpatient", startDate: new Date("2023-01-01"),
                 endDate: new Date("2023-12-31"), isActive: true,
-            }
-        ];
     }
 
     /**

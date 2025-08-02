@@ -25,6 +25,8 @@ interface OTBookingBody {
 // GET /api/ot/bookings - List OT bookings;
 export const _GET = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -129,6 +131,8 @@ export const _GET = async (request: any) => {,
 // POST /api/ot/bookings - Create a new OT booking;
 export const _POST = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }

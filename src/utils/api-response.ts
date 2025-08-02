@@ -1,4 +1,4 @@
-import { } from "next/server"
+
 import {  logger  } from "@/lib/logger"
 import { NextResponse } from 'next/server';
 
@@ -6,7 +6,6 @@ import { NextResponse } from 'next/server';
 
 export interface ApiResponse<T = unknown> {
   success: boolean,
-  data?: T | undefined;
   message?: string;
   errors?: string[] | undefined;
   meta?: {
@@ -24,10 +23,6 @@ export class ApiResponseHelper {
     data?: T | undefined,
     message: string = 'Success',
     statusCode: number = 200,
-    meta?: ApiResponse<T>['meta']
-  ): NextResponse {
-    const response: ApiResponse<T> = {
-      success: true,
       data,
       message,
       meta,
@@ -39,13 +34,8 @@ export class ApiResponseHelper {
   static error(
     message: string = 'An error occurred',
     statusCode: number = 400,
-    details?: unknown
-  ): NextResponse {
-    const response: ApiResponse = {
-      success: false,
       message,
       errors: details ? [String(details)] : undefined,
-    };
 
     return NextResponse.json(response, { status: statusCode });
   }
@@ -70,8 +60,7 @@ export class ApiResponseHelper {
     return this.error(message, 500);
   }
 
-  static buildMeta(total: number, page: number, limit: number) {
-    const totalPages = Math.ceil(total / limit);
+  static buildMeta(total: number, page: number,
     const hasNextPage = page < totalPages;
     const hasPrevPage = page > 1;
 

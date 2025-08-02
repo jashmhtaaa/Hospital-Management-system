@@ -41,14 +41,15 @@ import { X, Check, ChevronsUpDown } from "lucide-react"; // Removed Plus;
 import { cn } from "@/lib/utils"; // Assuming you have this utility;
 
 // --- INTERFACES ---;
-interface Patient {id:number,
-  name: string; // Combined first/last or display name;
-  mrn: string,
-  first_name?: string; // Optional if "name" is primary display;
+interface Patient {
+  id: number, // Combined first/last or display name;
+  mrn: string, // Optional if "name" is primary display;
   last_name?: string; // Optional if "name" is primary display;
 }
 
-interface ServiceItem {id:number,
+interface ServiceItem {
+  id:number,
+}
   string,
   number;
 }
@@ -56,13 +57,14 @@ interface ServiceItem {id:number,
 interface InvoiceItem extends ServiceItem {
   quantity: number,
   subtotal: number,
+interface PatientsApiResponse {
+  patients: Patient[];
 }
-
-// --- API Response Interfaces ---;
-interface PatientsApiResponse { patients: Patient[];
   // Add other potential properties if known,  }
 
-interface ServiceItemsApiResponse { serviceItems: ServiceItem[];
+interface ServiceItemsApiResponse {
+  serviceItems: ServiceItem[];
+}
   // Add other potential properties if known,  }
 
 interface ErrorResponse {
@@ -94,106 +96,47 @@ export default const _CreateInvoicePage = () {
 
   // Fetch Patients from real API;
   const fetchPatients = useCallback(async (search: string) => {
-    setLoadingPatients(true),
-    setError(undefined); // Clear previous errors;
+    setLoadingPatients(true), // Clear previous errors;
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       const response = await fetch();
         `/api/patients?search=/* SECURITY: Safe parameter encoding */`;
       );
       if (!session.user)hrow new Error("Failed to fetch patients");
       // FIX: Cast response JSON to defined type,
-      const data = (await response.json()) as PatientsApiResponse;
       // Ensure data.patients is an array before setting state;
       setPatients(Array.isArray(data?.patients) ? data.patients : []);
-    } catch (error_) {
-
-      setError();
-        error_ instanceof Error ? error_.message : "Failed to fetch patients";
-      ),
-      setPatients([]); // Clear patients on error;
-    } finally {
+    } catch (error) { console.error(error); } finally {
       setLoadingPatients(false);
 
   }, []);
 
   // Fetch Service Items;
   const fetchServiceItems = useCallback(async (search: string) => {
-    setLoadingServices(true),
-    setError(undefined); // Clear previous errors;
+    setLoadingServices(true), // Clear previous errors;
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const response = await fetch();
-        `/api/billing/service-items?search=/* SECURITY: Safe parameter encoding */`;
-      );
-      if (!session.user)hrow new Error("Failed to fetch service items");
-      // FIX: Cast response JSON to defined type,
-      const data = (await response.json()) as ServiceItemsApiResponse;
-      // Ensure data.serviceItems is an array before setting state;
-      setServiceItems();
-        Array.isArray(data?.serviceItems) ? data.serviceItems : [];
-      );
-    } catch (error_) {
+} catch (error) { console.error(error); } catch (error_) {
 
       setError();
         error_ instanceof Error;
@@ -244,7 +187,7 @@ export default const _CreateInvoicePage = () {
       // Add new item;
       setInvoiceItems([
         ...invoiceItems,
-        { ...item, quantity: 1, subtotal: item.unit_price }]);
+        { ...item, quantity: 1,
     } else {
       // Increment quantity if item already exists;
       const updatedItems = [...invoiceItems];
@@ -263,12 +206,11 @@ export default const _CreateInvoicePage = () {
   const updateItemQuantity = (itemId: number, quantity: number) => {
     const updatedItems = invoiceItems.map((item) => {
       if (!session.user) {
-        const newQuantity = Math.max(1, quantity); // Ensure quantity is at least 1;
+        const newQuantity = Math.max(1, // Ensure quantity is at least 1;
         return {
           ...item,
           quantity: newQuantity,
           subtotal: newQuantity * item.unit_price,
-        };
 
       return item;
     });
@@ -296,93 +238,41 @@ export default const _CreateInvoicePage = () {
     setError(undefined);
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const invoiceData = {patient_id:selectedPatient.id,
-        item.id,
-          item_name: item.item_name, // Consider if description should be different;
-          description: item.item_name, // Using item_name as description for now;
-          quantity: item.quantity,
-          item.subtotal;
-        })),
+} catch (error) { console.error(error); })),
         total_amount: invoiceTotal,
-        status: "pending", // Assuming a default status;
+        status: "pending",
       };
 
       const response = await fetch("/api/billing/invoices", {method:"POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(invoiceData),
-      });
 
       if (!session.user) {
         let errorMessage = "Failed to create invoice";
         try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-          // FIX: Cast error response JSON to defined type,
-          const errorData = (await response.json()) as ErrorResponse;
-          errorMessage =;
-            errorData?.error ||;
-            errorData?.message ||;
-            `HTTP error! status: ${response.status}`;
+} catch (error) { console.error(error); }`;
         } catch {
           // Handle cases where response is not JSON or empty;
           errorMessage = `HTTP error! status: ${response.status}`;
@@ -390,17 +280,10 @@ export default const _CreateInvoicePage = () {
         throw new Error(errorMessage);
 
       const _result = await response.json(); // Assuming success response has data, define interface if needed;
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+      // RESOLVED: (Priority: Medium,
       // Consider showing a success toast message here;
       router.push("/dashboard/billing/invoices"); // Redirect to invoices list;
-    } catch (error_) {
-
-      setError();
-        error_ instanceof Error;
-          ? error_.message;
-          : "An unknown error occurred during submission.";
-      );
-    } finally {
+    } catch (error) { console.error(error); } finally {
       setIsSubmitting(false);
 
   };
@@ -585,7 +468,7 @@ export default const _CreateInvoicePage = () {
                           {serviceItems.map((service) => (;
                             <CommandItem>;
                               key={service.id}
-                              value={`/* SECURITY: Template literal eliminated */ // Don't set here, add directly;
+                              value={`/* SECURITY: Template literal eliminated */ // Don't set here,
                                 addInvoiceItem(service),
                                 setIsServicePopoverOpen(false),
                                 setServiceSearchTerm(""); // Clear search;

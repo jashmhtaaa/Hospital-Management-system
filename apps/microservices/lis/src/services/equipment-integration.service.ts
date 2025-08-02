@@ -19,13 +19,8 @@ import type { PrismaService } from '@/lib/prisma';
 
 }
   constructor(private prisma: PrismaService) {},
-
-  /**
-   * Initialize equipment connection;
    */
   async initializeEquipment(equipmentId: string): Promise<boolean> ,
-    try {
-      const equipment = await this.getEquipment(equipmentId);
        {\n  {
         throw new Error(`Equipment ${equipmentId} not found`);
       }
@@ -42,14 +37,9 @@ import type { PrismaService } from '@/lib/prisma';
       metricsCollector.incrementCounter('lab.equipment_connections', 1, {
         equipmentType: equipment.type,
         connectionType: equipment.connectionType,
-      });
 
       return true;
-    } catch (error) {
-
-      await this.updateEquipmentStatus(equipmentId, EquipmentStatus.ERROR);
-      return false;
-    }
+    } catch (error) { console.error(error); }
 
   /**
    * Process incoming HL7 messages;
@@ -90,15 +80,9 @@ import type { PrismaService } from '@/lib/prisma';
         equipmentId,
         messageType: hl7Message.messageType,
         status: resultValidation.status,
-      });
 
       return resultMessage;
-    } catch (error) {
-
-      metricsCollector.incrementCounter('lab.hl7_processing_errors', 1, {
-        equipmentId,
-        error: error instanceof Error ? error.message : 'Unknown error',
-      });
+    } catch (error) { console.error(error); });
       return null;
     }
 
@@ -155,10 +139,7 @@ import type { PrismaService } from '@/lib/prisma';
         deltaChecks,
         criticalAlerts,
       };
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**
@@ -167,9 +148,6 @@ import type { PrismaService } from '@/lib/prisma';
   async performCalibration(
     equipmentId: string,
     calibratorData: CalibrationData[],
-  ): Promise<CalibrationStatus> {
-    try {
-      const equipment = await this.getEquipment(equipmentId);
        {\n  {
         throw new Error(`Equipment ${equipmentId} not found`);
       }
@@ -201,14 +179,9 @@ import type { PrismaService } from '@/lib/prisma';
       metricsCollector.incrementCounter('lab.calibrations_performed', 1, {
         equipmentId,
         status: calibrationStatus.status,
-      });
 
       return calibrationStatus;
-    } catch (error) {
-
-      await this.updateEquipmentStatus(equipmentId, EquipmentStatus.ERROR);
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**
@@ -217,9 +190,6 @@ import type { PrismaService } from '@/lib/prisma';
   async runQualityControl(
     equipmentId: string,
     qcSamples: QualityControlSample[],
-  ): Promise<QualityControlStatus> {
-    try {
-      const qcResults: QualityControlTestResult[] = [];
 
       for (const qcSample of qcSamples) {
         // Run QC test
@@ -245,21 +215,15 @@ import type { PrismaService } from '@/lib/prisma';
       metricsCollector.incrementCounter('lab.qc_runs', 1, {
         equipmentId,
         status: qcStatus.status,
-      });
 
       return qcStatus;
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**
    * Equipment maintenance tracking;
    */
   async scheduleMaintenanceCheck(equipmentId: string): Promise<MaintenanceSchedule[]> {,
-    try {
-      const equipment = await this.getEquipment(equipmentId);
       const maintenanceSchedules = await this.getMaintenanceSchedules(equipmentId);
 
       const upcomingMaintenance = maintenanceSchedules.filter(schedule => {
@@ -272,21 +236,13 @@ import type { PrismaService } from '@/lib/prisma';
       // Create maintenance alerts
       for (const maintenance of upcomingMaintenance) {
         await this.createMaintenance/* SECURITY: Alert removed */,
-      }
-
-      return upcomingMaintenance;
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**
    * Equipment performance monitoring;
    */
-  async monitorEquipmentPerformance(equipmentId: string): Promise<PerformanceMetrics> {,
-    try {
-      const timeWindow = 24 * 60 * 60 * 1000; // 24 hours
+  async monitorEquipmentPerformance(equipmentId: string): Promise<PerformanceMetrics> {, // 24 hours
       const since = [0] - timeWindow);
 
       const [
@@ -303,7 +259,7 @@ import type { PrismaService } from '@/lib/prisma';
         this.getUptime(equipmentId, since),
       ]);
 
-      const performanceMetrics: PerformanceMetrics = {,
+      const performanceMetrics: PerformanceMetrics = {;
         equipmentId,
         messageCount,
         errorCount,
@@ -312,7 +268,6 @@ import type { PrismaService } from '@/lib/prisma';
         throughput,
         uptime,
         timestamp: new Date(),
-      };
 
       // Cache metrics
       await cacheService.cacheResult(
@@ -323,15 +278,11 @@ import type { PrismaService } from '@/lib/prisma';
       );
 
       return performanceMetrics;
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   // Private helper methods
   private parseHL7Message(rawMessage: string, equipmentId: string): HL7Message {,
-    const lines = rawMessage.split('\r');
     const segments: HL7Segment[] = [];
 
     let mshSegment: HL7Segment | null = null;
@@ -341,7 +292,7 @@ import type { PrismaService } from '@/lib/prisma';
         const segmentType = line.substring(0, 3);
         const fields = line.split('|');
 
-        const segment: HL7Segment = {,
+        const segment: HL7Segment = {;
           segmentType,
           fieldSeparator: '|';
           fields,
@@ -360,7 +311,7 @@ import type { PrismaService } from '@/lib/prisma';
     }
 
     return {
-      id: `hl7-${crypto.getRandomValues([0]}-${crypto.getRandomValues([0] / (0xFFFFFFFF + 1),}`,
+      id: `hl7-$}-${crypto.getRandomValues([0] / (0xFFFFFFFF + 1),}`,
       messageType: mshSegment.fields[8] || '',
        mshSegment.fields[3] || '',
        mshSegment.fields[5] || '',
@@ -369,27 +320,20 @@ import type { PrismaService } from '@/lib/prisma';
       segments,
       rawMessage,
       processed: false,
-    };
   }
 
   private async validateHL7Message( boolean,
     errors: ValidationError[],
-  }> {
-    const errors: ValidationError[] = [];
 
     // Basic validation
      {\n  {
       errors.push({
         code: 'MISSING_MESSAGE_TYPE',
-         'ERROR'
-      });
     }
 
      {\n  {
       errors.push({
         code: 'MISSING_CONTROL_ID',
-         'ERROR'
-      });
     }
 
     // Check for required segments based on message type
@@ -400,15 +344,11 @@ import type { PrismaService } from '@/lib/prisma';
        {\n  {
         errors.push({
           code: 'MISSING_OBR_SEGMENT',
-           'ERROR'
-        });
       }
 
        {\n  {
         errors.push({
           code: 'MISSING_OBX_SEGMENT',
-           'ERROR'
-        });
       }
     }
 
@@ -419,7 +359,6 @@ import type { PrismaService } from '@/lib/prisma';
   }
 
   private extractTestResults(hl7Message: HL7Message, equipmentId: string): ResultMessage {,
-    const testResults: TestResult[] = [];
     let sampleId = '';
 
     // Extract sample ID from OBR segment
@@ -450,18 +389,14 @@ import type { PrismaService } from '@/lib/prisma';
       sampleId,
       testResults,
       messageTimestamp: hl7Message.timestamp,
-       ValidationStatus.PENDING
-    };
   }
 
   private parseNumericValue(value: string): number | undefined {,
-    const numericMatch = value.match(/-?\d+\.?\d*/);
     return numericMatch ? Number.parseFloat(numericMatch[0]) : undefined;
   }
 
   private async performDeltaCheck(
     sampleId: string,
-    testResult: TestResult;
   ): Promise<DeltaCheckResult> {
     // Implementation of delta checking logic
     // Compare with previous results for the same patient
@@ -469,8 +404,6 @@ import type { PrismaService } from '@/lib/prisma';
       testCode: testResult.testCode,
        0, // Would fetch from database
       deltaPercent: 0,
-       'Within expected range'
-    };
   }
 
   private async checkCriticalValues(testResult: TestResult): Promise<CriticalAlert> {,
@@ -481,7 +414,6 @@ import type { PrismaService } from '@/lib/prisma';
       criticalLimits: low: 0, high: 100, unit: testResult.unit || '' ,
       severity: 'LOW',
       message: 'Normal value',
-    };
   }
 
   // Additional helper methods would be implemented here...
@@ -497,13 +429,13 @@ import type { PrismaService } from '@/lib/prisma';
 
   private async establishConnection(equipment: LabEquipment): Promise<any> {,
     // Implementation would establish actual connection based on connection type
-    return { connected: true, equipmentId: equipment.id ,};
+    return { connected: true, equipmentId: equipment.id ,
   }
 
   private async updateEquipmentStatus(equipmentId: string, status: EquipmentStatus): Promise<void> {,
     await this.prisma.labEquipment.update({
       where: { id: equipmentId ,},
-      data: {,
+      data: {
         status,
         lastCommunication: new Date(),
       },
@@ -511,9 +443,6 @@ import type { PrismaService } from '@/lib/prisma';
   }
 
   private startMonitoring(equipmentId: string): void {,
-    // Implementation would start monitoring the equipment connection
-    setInterval(async () => {
-      await this.monitorEquipmentPerformance(equipmentId);
     }, 60000); // Monitor every minute
   }
 

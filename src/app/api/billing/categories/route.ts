@@ -1,11 +1,14 @@
+import { NextRequest, NextResponse } from "next/server";
+
 /**
  * GET /api/billing/categories
  * Retrieves a list of distinct service item categories.
  */
-export const GET = async () => {
+export const GET = async (request: NextRequest) => {
   try {
-    // Your logic here
+    // TODO: Implement billing categories logic
+    return NextResponse.json({ message: "Not implemented" });
   } catch (error) {
-    // Handle error
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 };

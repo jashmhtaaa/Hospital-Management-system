@@ -39,6 +39,8 @@ const _JCI_STANDARDS = {
 // GET /api/compliance/nabh/standards
 export const _GET = async (request: NextRequest) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { user } = await authService.verifyToken(request);
 
     if (!user || !['Admin', 'Quality Manager'].includes(user.role)) {
@@ -66,6 +68,8 @@ export const _GET = async (request: NextRequest) => {,
 // POST /api/compliance/nabh/assessment
 export const _POST = async (request: NextRequest) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { user } = await authService.verifyToken(request);
     const body = await request.json();
 

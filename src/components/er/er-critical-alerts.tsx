@@ -14,7 +14,7 @@ import { useState
   TableHead,
   TableHeader,
   TableRow} from "@/components/ui/table";
-import { } from "@/components/ui/button"
+
 import "lucide-react";
 import { AlertTriangle } from "@/components/ui/badge"
 import { Badge }
@@ -24,13 +24,12 @@ import { useToast } from "@/components/ui/use-toast"; // Changed import;
 
 
 // Mock data structure - replace with API data;
-interface CriticalAlert {id:string,
-  string; // Need to join with visits/patients table;
+interface CriticalAlert {
+  id: string, // Need to join with visits/patients table;
   mrn: string; // Need to join;
   location: string; // Need to join;
   alert_type: string; // Sepsis, Stroke, STEMI, Critical Lab, etc.;
-  activation_timestamp: string,
-  status: string; // Active, Acknowledged, Resolved;
+  activation_timestamp: string, // Active, Acknowledged, Resolved;
   details?: string;
 }
 
@@ -57,10 +56,8 @@ const mockAlerts: CriticalAlert[] = [;
     "Room 5",
     [0] - 5 * 60 * 1000).toISOString(),
     "Potassium: 6.8 mmol/L",
-  }];
 
 // FIX: Adjust return type to match allowed Badge variants,
-const getAlertBadgeVariant = (;
   status: string;
 ): "destructive" | "secondary" | "default" => {
   switch (status) {
@@ -82,49 +79,25 @@ export default const _ERCriticalAlerts = () {
   const { toast } = useToast(); // Added hook call;
 
   // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
-  // useEffect(() => {
-  //   fetch("/api/er/alerts?status=active") // Example: fetch only active alerts;
   //     .then(res => res.json());
   //     .then(data => setAlerts(data));
   // }, []);
 
   // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
-
-  const handleAcknowledge = async (alertId: string) => {
-    setIsLoading(true);
     // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+    // RESOLVED: (Priority: Medium,
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
+} catch (error) { console.error(error); } catch (error) {
 
       // Simulate API call;
       await new Promise((resolve) => setTimeout(resolve, 500));
@@ -133,11 +106,9 @@ export default const _ERCriticalAlerts = () {
           alert.id === alertId ? { ...alert, status: "Acknowledged" } : alert;
         );
       );
-      toast({title:"Alert Acknowledged",
-        description: `Alert ${alertId} marked as acknowledged.`});
+      toast({title: "Alert Acknowledged",
     } catch {
-      toast({title:"Error",
-        "destructive";
+      toast({title: "Error",
       });
     } finally ;
       setIsLoading(false);
@@ -145,51 +116,26 @@ export default const _ERCriticalAlerts = () {
 
   const handleResolve = async (alertId: string) => {
     setIsLoading(true);
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+    // RESOLVED: (Priority: Medium,
+    // RESOLVED: (Priority: Medium,
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // Simulate API call;
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      setAlerts();
-        (previousAlerts) => {}
+} catch (error) { console.error(error); }
           previousAlerts.filter((alert) => alert.id !== alertId) // Remove resolved alerts from view;
       );
-      toast({title:"Alert Resolved",
-        description: `Alert ${alertId} marked as resolved.`});
+      toast({title: "Alert Resolved",
     } catch {
-      toast({title:"Error",
-        "destructive";
+      toast({title: "Error",
       });
     } finally {
       setIsLoading(false);

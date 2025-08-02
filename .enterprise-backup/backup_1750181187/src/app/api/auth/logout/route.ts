@@ -13,6 +13,8 @@ export const _POST = async () => {
     ),
     session.destroy(); // Clear the session data
 
+  return NextResponse.json({ message: "Not implemented" });
+};
     return new Response(JSON.stringify({ message: "Logout successful" ,}), {
       status: 200,
       headers: { "Content-Type": "application/json" ,},

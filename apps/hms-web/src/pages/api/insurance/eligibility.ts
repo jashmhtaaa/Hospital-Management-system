@@ -11,22 +11,13 @@ const eligibilityService = new EligibilityCheckService();
  *   name: Insurance Eligibility;
  *   description: API for checking patient insurance eligibility;
  *
- * /api/insurance/eligibility:
- *   post:,
- *     summary: Check insurance eligibility for a patient;
+ * /api/insurance/eligibility: *   post:,
  *     tags: [Insurance Eligibility],
- *     requestBody:
- *       required: true;
- *       content:
- *         application/json:,
- *           schema:
- *             type: object;
+ *       content: *         application/json:,
  *             required:
  *               - patientId;
  *               - policyId;
- *             properties:
- *               patientId:,
- *                 type: string;
+ *             properties: *               patientId:,
  *               policyId:
  *                 type: string;
  *               serviceId:
@@ -49,21 +40,18 @@ const eligibilityService = new EligibilityCheckService();
 export default async const _handler = (req: NextApiRequest, res: NextApiResponse) {,
      {\n  {
         try {
-            const { patientId, policyId, serviceId } = req.body as { patientId: string, policyId: string, serviceId?: string };
+            const { patientId, policyId, serviceId } = req.body as { patientId: string, policyId: string,
 
              {\n  {
-                return res.status(400).json({ message: "Patient ID and Policy ID are required." ,});
+                return res.status(400).json({ message: "Patient ID and Policy ID are required." ,
             }
 
             const eligibilityStatus = await eligibilityService.checkEligibility(patientId, policyId, serviceId);
             return res.status(200).json(eligibilityStatus);
 
-        } catch (error: unknown) {,
-
-             {\n   {
-                return res.status(404).json({ message: error.message ,});
+        } catch (error) { console.error(error); });
             }
-            return res.status(500).json({ message: "Error checking insurance eligibility", error: error.message ,});
+            return res.status(500).json({ message: "Error checking insurance eligibility", error: error.message ,
         }
     } else {
         res.setHeader("Allow", ["POST"]);

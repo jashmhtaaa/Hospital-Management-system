@@ -13,6 +13,8 @@ export const _GET = async (
 
      {\n  {
       return NextResponse.json(
+  return NextResponse.json({ message: "Not implemented" });
+};
         { error: "Asset not found" ,},
         { status: 404 },
       );
@@ -67,6 +69,8 @@ export const _PUT = async (
     const validationResult = assetUpdateSchema.safeParse(body);
      {\n  {
       return NextResponse.json(
+  return NextResponse.json({ message: "Not implemented" });
+};
         { error: "Validation error", details: validationResult.error.format() ,},
         { status: 400 },
       );
@@ -102,6 +106,8 @@ export const _DELETE = async (
   try {
     await assetService.deleteAsset(params.id);
 
+  return NextResponse.json({ message: "Not implemented" });
+};
     return NextResponse.json({ success: true ,});
   } catch (error) {
 

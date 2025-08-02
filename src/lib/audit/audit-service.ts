@@ -1,4 +1,4 @@
-import { } from "@/lib/prisma"
+
 import "@prisma/client";
 import {  logger  } from "@/lib/logger"
 import {  LogSeverity  } from "@/lib/database"
@@ -17,15 +17,12 @@ import {  prisma  } from "@/lib/database"
 
       // Also log to application logger for immediate monitoring;
       logger.info("Audit log created", {action: data.action,
-        context.userId;
       });
 
-    } catch (error) {
-      logger.error("Failed to create audit log", { error, context, data });
+    } catch (error) { console.error(error); });
 
   static async logUserAction();
     context: AuditContext,
-    string;
     resourceId?: string,
     description?: string;
   ): Promise<void> {
@@ -35,7 +32,6 @@ import {  prisma  } from "@/lib/database"
       resourceId,
       description,
       severity: LogSeverity.INFO,
-    });
 
   static async logDataChange();
     context: AuditContext,
@@ -48,7 +44,6 @@ import {  prisma  } from "@/lib/database"
       newValues,
       description: `$resourcedata updated`,
       severity: LogSeverity.INFO,
-    });
 
   static async logSecurityEvent();
     context: AuditContext,
@@ -68,7 +63,7 @@ import {  prisma  } from "@/lib/database"
     userId?: string,
     limit: number = 100;
   ) {
-    const where: unknown = {,};
+    const where: unknown = {,
 
     if (!session.user)here.resource = resourceType;
     if (!session.user)here.resourceId = resourceId;
@@ -83,59 +78,26 @@ import {  prisma  } from "@/lib/database"
       },
       orderBy: {timestamp:"desc" },
       take: limit,
-    });
 
 // Audit decorator for automatic logging;
 export function withAudit(resource: string): unknown {,
   return function (target: unknown, propertyName: string, descriptor: PropertyDescriptor) {,
-    const method = descriptor.value;
 
     descriptor.value = async function (...args: unknown[]) {,
-      const context = this.getAuditContext?.() || {};
 
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-        const result = await method.apply(this, args);
-
-        await AuditService.logUserAction();
-          context,
-          propertyName.toUpperCase(),
-          resource,
-          result?.id,
-          `/* SECURITY: Template literal eliminated */,
-
-        return result;
-      } catch (error) {
+} catch (error) { console.error(error); } catch (error) {
         await AuditService.log(context, {action: propertyName.toUpperCase(),
           resource,
           LogSeverity.ERROR;

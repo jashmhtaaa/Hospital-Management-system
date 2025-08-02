@@ -1,4 +1,4 @@
-import { } from "crypto"
+
 import crypto
 import {  logAuditEvent  } from "@/lib/audit"
 
@@ -29,40 +29,19 @@ import {  logAuditEvent  } from "@/lib/audit"
    */;
   encrypt();
     plaintext: string,
-    context?: EncryptionContext;
   ): string {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       if (!session.user) {
         return plaintext;
       }
@@ -87,7 +66,6 @@ import {  logAuditEvent  } from "@/lib/audit"
         tag: tag.toString("hex"),
         this.keyId,
         version: this.version,
-      };
 
       // Log encryption event for audit;
       this.logEncryptionEvent("ENCRYPT", true, context);
@@ -95,11 +73,7 @@ import {  logAuditEvent  } from "@/lib/audit"
       // Return base64 encoded JSON;
       return Buffer.from(JSON.stringify(encryptedData)).toString("base64");
 
-    } catch (error) {
-
-      this.logEncryptionEvent("ENCRYPT", false, context, (error as Error).message);
-      throw new Error("Encryption failed");
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**;
@@ -107,46 +81,25 @@ import {  logAuditEvent  } from "@/lib/audit"
    */;
   decrypt();
     encryptedText: string,
-    context?: EncryptionContext;
   ): string {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       if (!session.user) {
         return encryptedText;
       }
 
       // Parse encrypted data;
-      const encryptedData: EncryptedData = JSON.parse(),
+      const encryptedData: EncryptedData = JSON.parse();
         Buffer.from(encryptedText, "base64").toString("utf8");
       );
 
@@ -177,49 +130,23 @@ import {  logAuditEvent  } from "@/lib/audit"
 
       return decrypted;
 
-    } catch (error) {
-
-      this.logEncryptionEvent("DECRYPT", false, context, (error as Error).message);
-      throw new Error("Decryption failed");
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**;
    * Hash sensitive data (one-way);
    */;
-  hash(data: string, salt?: string): string {
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+  hash(data: string, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       if (!session.user) {
         return data;
       }
@@ -233,47 +160,23 @@ import {  logAuditEvent  } from "@/lib/audit"
         "sha512";
       );
 
-      return saltBuffer.toString("hex") + ":" + hash.toString("hex")} catch (error) {
-
-      throw new Error("Hashing failed");
-    }
+      return saltBuffer.toString("hex") + ":" + hash.toString("hex")} catch (error) { console.error(error); }
   }
 
   /**;
    * Verify hashed data;
    */;
-  verifyHash(data: string, hashedData: string): boolean {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+  verifyHash(data: string, hashedData: string): boolean {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
+} catch (error) { console.error(error); } catch (error) {
 
       if (!session.user) {
         return false;
@@ -291,45 +194,14 @@ import {  logAuditEvent  } from "@/lib/audit"
         Buffer.from(hash, "hex"),
         verifyHash;
       );
-    } catch (error) {
-
-      return false;
-
-  /**;
-   * Generate secure random token;
-   */;
-  generateToken(length: number = 32): string {,
-    return crypto.randomBytes(length).toString("hex");
-
-  /**;
-   * Generate cryptographically secure random string;
-   */;
-  generateSecureRandom(length: number = 16): string {
-    const charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
-    let result = "";
-
-    for (let i = 0; i < length; i++) {
-      const randomIndex = crypto.randomInt(0, charset.length);
-      result += charset[randomIndex];
-
-    return result;
-
-  /**;
-   * Encrypt multiple fields at once;
-   */;
-  encryptObject<T extends Record<string, unknown>>(;
-    obj: T,
-    fieldsToEncrypt: (keyof T)[],
-    context?: EncryptionContext;
-  ): T {
-    const encrypted = { ...obj };
+    } catch (error) { console.error(error); };
 
     for (const field of fieldsToEncrypt) {
       const value = obj[field];
       if (!session.user) {
         encrypted[field] = this.encrypt(value, {
           ...context,
-          resource: `${context?.resource || "object"}.${String(field),}`;
+          resource: `${context?.resource || "object"}.${String(field),
         }) as T[keyof T];
 
     return encrypted;
@@ -340,7 +212,6 @@ import {  logAuditEvent  } from "@/lib/audit"
   decryptObject<T extends Record<string, unknown>>(;
     obj: T,
     fieldsToDecrypt: (keyof T)[],
-    context?: EncryptionContext;
   ): T {
     const decrypted = { ...obj };
 
@@ -348,43 +219,20 @@ import {  logAuditEvent  } from "@/lib/audit"
       const value = obj[field];
       if (!session.user) {
         try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-          decrypted[field] = this.decrypt(value, {
-            ...context,
-            resource: `${context?.resource || "object"}.${String(field),}`;
+} catch (error) { console.error(error); }.${String(field),}`;
           }) as T[keyof T];
-        } catch (error) {
-          // Debug logging removed}:`, error);
+        } catch (error) { console.error(error); }:`, error);
           // Keep encrypted value if decryption fails;
 
     return decrypted;
@@ -394,121 +242,36 @@ import {  logAuditEvent  } from "@/lib/audit"
    */;
   async rotateEncryption();
     encryptedData: string,
-    context?: EncryptionContext;
   ): Promise<string> {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // Decrypt with old key;
-      const plaintext = this.decrypt(encryptedData, context);
-
-      // Re-encrypt with new key (same instance for now, but could use new key);
-      const newEncrypted = this.encrypt(plaintext, context);
-
-      await logAuditEvent({eventType: "ENCRYPTION_KEY_ROTATION",
-        context?.resource || "encrypted_data",
-        this.keyId,
-          context?.purpose ,
-        ipAddress: context?.ipAddress,
-        severity: "MEDIUM",
-      });
+} catch (error) { console.error(error); });
 
       return newEncrypted;
-    } catch (error) {
-
-      throw new Error("Key rotation failed");
-
-  /**;
-   * Data masking for display purposes;
-   */;
-  maskData(data: string, maskChar: string = "*", visibleChars: number = 4): string {,
-    if (!session.user) {
-      return maskChar.repeat(data?.length || 8);
-
-    const visible = data.substring(0, visibleChars);
-    const masked = maskChar.repeat(data.length - visibleChars);
-
-    return visible + masked;
-
-  /**;
-   * Validate encryption integrity;
-   */;
-  validateIntegrity(encryptedData: string): boolean {,
-    try {
-} catch (error) {
+    } catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const parsed: EncryptedData = JSON.parse(),
-        Buffer.from(encryptedData, "base64").toString("utf8");
-      );
-
-      // Validate required fields;
-      return !!(;
-        parsed?.data &&;
-        parsed?.iv &&;
-        parsed?.tag &&;
-        parsed?.algorithm &&;
-        parsed?.keyId &&;
-        parsed.version;
-      );
-    } catch (error) {
+} catch (error) { console.error(error); } catch (error) {
       return false;
 
   /**;
@@ -540,11 +303,9 @@ import {  logAuditEvent  } from "@/lib/audit"
           operation,
           success,
           algorithm: this.config.algorithm,
-          context?.purpose;
           error;,
         ipAddress: context?.ipAddress,
         severity: success ? "LOW" : "HIGH",
-      });
 
 // Export singleton instance and utilities;
 export const encrypt = (data: string, context?: EncryptionContext): string => {
@@ -559,8 +320,7 @@ export const hash = (data: string, salt?: string): string => {
   return EncryptionService.getInstance().hash(data, salt);
 };
 
-export const verifyHash = (data: string, hashedData: string): boolean => {,
-  return EncryptionService.getInstance().verifyHash(data, hashedData);
+export const verifyHash = (data: string, hashedData: string): boolean => {return EncryptionService.getInstance().verifyHash(data,
 };
 
 export const encryptionService = EncryptionService.getInstance();

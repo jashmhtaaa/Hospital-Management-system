@@ -17,9 +17,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface CDSAlert {
   type: string,
-  severity: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
   message: string,
-  recommendation: string
 }
 
 interface CDSRecommendation {
@@ -33,13 +31,11 @@ interface CDSRecommendation {
 
 interface CDSAnalysis {
   alerts: CDSAlert[],
-  recommendations: CDSRecommendation[];
   riskScore: number,
-  confidence: number
 }
 
 const ClinicalDecisionSupport: React.FC<{ patientId: string }> = ({ patientId }) => {
-  const [analysis, setAnalysis] = useState<CDSAnalysis | null>(null);
+  const [analysis,
   const [loading, setLoading] = useState(false);
   const [prescriptionData, setPrescriptionData] = useState({
     medications: []
@@ -57,9 +53,7 @@ const ClinicalDecisionSupport: React.FC<{ patientId: string }> = ({ patientId })
       const response = await fetch(`/api/clinical-decision-support/analyze?patientId=${patientId}`);
       const data = await response.json();
       setAnalysis(data.analysis);
-    } catch (error) {
-      /* SECURITY: Console statement removed */
-    } finally {
+    } catch (error) { console.error(error); } finally {
       setLoading(false);
     }
   };
@@ -70,13 +64,10 @@ const ClinicalDecisionSupport: React.FC<{ patientId: string }> = ({ patientId })
       const response = await fetch('/api/clinical-decision-support/prescription-check', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ patientId, medications })
-      });
+        body: JSON.stringify({ patientId,
       const data = await response.json();
       setAnalysis(data.analysis);
-    } catch (error) {
-      /* SECURITY: Console statement removed */
-    } finally {
+    } catch (error) { console.error(error); } finally {
       setLoading(false);
     }
   };
@@ -229,42 +220,8 @@ const ClinicalDecisionSupport: React.FC<{ patientId: string }> = ({ patientId })
 
                   {rec?.tests && rec.tests.length > 0 && (
                     <div>
-                      <div className="text-sm font-medium mb-1">Suggested Tests:</div>
+                      <div className="text-sm font-medium mb-1">Suggested Tests: </div>
                       <div className="flex flex-wrap gap-1">
-                        {rec.tests.map((test, testIndex) => (
-                          <Badge key={testIndex} variant="secondary" className="text-xs">
-                            {test}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {rec?.suggestion && (
-                    <div className="mt-2 p-2 bg-blue-50 rounded text-sm">
-                      <strong>Suggestion:</strong> {rec.suggestion}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Action Buttons */}
-      <div className="flex space-x-4">
-        <Button onClick={fetchCDSAnalysis} disabled={loading}>
-          <TrendingUp className="h-4 w-4 mr-2" />
-          Refresh Analysis
-        </Button>
-        <Button variant="outline" onClick={() => checkPrescription([])}>
-          <Brain className="h-4 w-4 mr-2" />
-          Check Current Prescriptions
-        </Button>
-      </div>
-    </div>
-  )
-};
+                        {rec.tests.map((test,
 
 export default ClinicalDecisionSupport;

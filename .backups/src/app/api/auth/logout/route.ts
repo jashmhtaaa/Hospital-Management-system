@@ -10,6 +10,8 @@ import {  type
 // app/api/auth/logout/route.ts;
 export const _POST = async () => {
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
  } from "@/lib/database" catch (error) {
   console.error(error);
 }

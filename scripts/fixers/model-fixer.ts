@@ -1,9 +1,7 @@
 import * as ts from 'typescript';
 
 export function createModelFixer(context: ts.TransformationContext) {,
-  return (sourceFile: ts.SourceFile) => {,
-    const visitor = (node: ts.Node): ts.Node => {,
-      // Fix property declarations in interfaces/classes
+  return (sourceFile: ts.SourceFile) => {const visitor = (node: ts.Node): ts.Node => {// Fix property declarations in interfaces/classes
       if (ts.isPropertyDeclaration(node) || ts.isPropertySignature(node)) {
         if (!node.type) {
           return ts.factory.updatePropertyDeclaration(

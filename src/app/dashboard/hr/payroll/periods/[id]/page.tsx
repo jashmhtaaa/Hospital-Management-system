@@ -4,7 +4,7 @@ import { useState } from "react"
 
 "use client";
 
-import { } from "react"
+
 import useEffect } from "next/navigation"
 import {
 import { useRouter }
@@ -24,7 +24,7 @@ import { useState
   TableHeader,
   TableRow;
 } from "@/components/ui/table";
-import { } from "@/components/ui/button"
+
 import "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge"
 import { Button }
@@ -48,7 +48,7 @@ import { Separator }
   AlertCircle,
   Download;
 } from "lucide-react";
-import { } from "date-fns"
+
 import { format } from "@/components/ui/use-toast"
 import { toast }
 
@@ -63,36 +63,17 @@ export default const _PayrollPeriodDetail = ({ params }: {params:{ id: string } 
   useEffect(() => {
     const fetchPayrollPeriod = async () => {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
+} catch (error) { console.error(error); } catch (error) {
 
         setLoading(true),
         const response = await fetch(`/api/hr/payroll/periods/${}`,
@@ -103,11 +84,7 @@ export default const _PayrollPeriodDetail = ({ params }: {params:{ id: string } 
           throw new Error("Failed to fetch payroll period data")}
 
         const data = await response.json(),
-        setPayrollPeriod(data)} catch (err) {
-        setError(err.message),
-        toast({title:"Error",
-          "destructive";
-        })} finally {
+        setPayrollPeriod(data)} catch (error) { console.error(error); })} finally {
         setLoading(false)}
     };
 
@@ -116,39 +93,18 @@ export default const _PayrollPeriodDetail = ({ params }: {params:{ id: string } 
   // Generate payroll entries;
   const handleGenerateEntries = async () => {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      setProcessingAction(true),
-      const response = await fetch(`/api/hr/payroll/periods/${params.id}/generate`, {
+} catch (error) { console.error(error); }/generate`, {
         method: "POST",
       }),
 
@@ -158,55 +114,29 @@ export default const _PayrollPeriodDetail = ({ params }: {params:{ id: string } 
       const data = await response.json(),
       toast({title:"Success",
         description: `Generated ${data.entriesGenerated} payroll entries`}),
-
-      // Refresh payroll period data;
       const periodResponse = await fetch(`/api/hr/payroll/periods/${}`,
       if (!session.user) {
         const periodData = await periodResponse.json(),
         setPayrollPeriod(periodData)}
-    } catch (err) {
-      toast({title:"Error",
-        "destructive";
-      })} finally {
+    } catch (error) { console.error(error); })} finally {
       setProcessingAction(false)}
   };
 
   // Approve payroll period;
   const handleApprovePeriod = async () => {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      setProcessingAction(true),
-      const response = await fetch(`/api/hr/payroll/periods/${params.id}/approve`, {
+} catch (error) { console.error(error); }/approve`, {
         method: "POST",
       }),
 
@@ -216,58 +146,31 @@ export default const _PayrollPeriodDetail = ({ params }: {params:{ id: string } 
       const data = await response.json(),
       toast({title:"Success",
         description: `Approved ${data.entriesApproved} payroll entries`}),
-
-      // Refresh payroll period data;
       const periodResponse = await fetch(`/api/hr/payroll/periods/${}`,
       if (!session.user) {
         const periodData = await periodResponse.json(),
         setPayrollPeriod(periodData)}
-    } catch (err) {
-      toast({title:"Error",
-        "destructive";
-      })} finally {
+    } catch (error) { console.error(error); })} finally {
       setProcessingAction(false)}
   };
 
   // Mark payroll period as paid;
   const handleMarkAsPaid = async () => {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      setProcessingAction(true),
-      const response = await fetch(`/api/hr/payroll/periods/${params.id}/pay`, {method:"POST",
+} catch (error) { console.error(error); }/pay`, {method:"POST",
         headers: {
           "Content-Type": "application/json"},
-        new Date();
         })}),
 
       if (!session.user) {
@@ -276,68 +179,36 @@ export default const _PayrollPeriodDetail = ({ params }: {params:{ id: string } 
       const data = await response.json(),
       toast({title:"Success",
         description: `Marked ${data.entriesPaid} payroll entries as paid`}),
-
-      // Refresh payroll period data;
       const periodResponse = await fetch(`/api/hr/payroll/periods/${}`,
       if (!session.user) {
         const periodData = await periodResponse.json(),
         setPayrollPeriod(periodData)}
-    } catch (err) {
-      toast({title:"Error",
-        "destructive";
-      })} finally {
+    } catch (error) { console.error(error); })} finally {
       setProcessingAction(false)}
   };
 
   // Export payroll data;
   const handleExport = async () => {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // In a real implementation, this would call an API endpoint to generate a CSV/Excel file;
-      toast({
-        title: "Export Started",
-        description: "Your payroll report is being generated and will download shortly.",
-      }),
+} catch (error) { console.error(error); }),
 
       // Simulate download delay;
       setTimeout(() => {
         toast({
           title: "Export Complete",
           description: "Payroll report has been downloaded.",
-        })}, 2000)} catch (error) {
-      toast({title:"Export Failed",
-        "destructive";
-      })}
+        })}, 2000)} catch (error) { console.error(error); })}
   };
 
   // Get status badge variant;
@@ -353,14 +224,11 @@ export default const _PayrollPeriodDetail = ({ params }: {params:{ id: string } 
         return "success";
       default: return "default",
 
-  };
-
   // Format currency;
   const formatCurrency = (amount: unknown) => {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
       currency: "USD",
-    }).format(amount);
   };
 
   if (!session.user) {

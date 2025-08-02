@@ -29,7 +29,7 @@ const eslintConfig: Linter.Config[] = [
   // Global ignores
   {
     ignores: [
-      'node_modules/**',
+      'node_modules/**';
       '.next/**',
       'dist/**',
       'build/**',
@@ -51,7 +51,7 @@ const eslintConfig: Linter.Config[] = [
       '**/*.temp.*',
       '**/*.bak.*',
       '**/*.old.*',
-    ],
+    ];
   },
 
   // Base JavaScript configuration

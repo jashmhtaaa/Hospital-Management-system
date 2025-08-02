@@ -18,7 +18,6 @@ jest.mock("@/lib/prisma", () => ({
     findMany: jest.fn(),
     count: jest.fn(),
     update: jest.fn(),
-    delete: jest.fn();
   },
   jest.fn();
   },
@@ -57,7 +56,6 @@ describe("MarketingCampaignService", () => {
     const mockCreatedCampaign = {id: "campaign-123";
       ...mockCampaignData,
       createdAt: new Date(),
-      updatedAt: new Date();
     };
 
     it("should create a campaign successfully", async () => {
@@ -83,7 +81,7 @@ describe("MarketingCampaignService", () => {
       // Arrange;
       const invalidData = {
         ...mockCampaignData,
-        name: "", // Invalid: empty name;
+        name: "",
 
       // Act & Assert;
       await expect(service.createCampaign(invalidData, mockUserId));
@@ -128,7 +126,7 @@ describe("MarketingCampaignService", () => {
           title: expect.any(String),
           message: expect.stringContaining(mockCampaignData.name),
           recipientRoles: expect.any(Array),
-          metadata: {campaignId:mockCreatedCampaign.id },});
+          metadata: {campaignId:mockCreatedCampaign.id },
       );
     });
   });
@@ -140,7 +138,6 @@ describe("MarketingCampaignService", () => {
       startDate: new Date(),
       goals: ["Increase patient awareness"],
       createdAt: new Date(),
-      updatedAt: new Date();
     };
 
     it("should retrieve a campaign by ID", async () => {
@@ -152,7 +149,6 @@ describe("MarketingCampaignService", () => {
 
       // Assert;
       expect(prisma.marketingCampaign.findUnique).toHaveBeenCalledWith({where: { id: "campaign-123" },
-        include: expect.any(Object);
       });
 
       expect(result).toEqual(mockCampaign);
@@ -186,13 +182,11 @@ describe("MarketingCampaignService", () => {
         "EMAIL",
         new Date(),
         createdAt: new Date(),
-        updatedAt: new Date();
       },
       {id: "campaign-2",
         "SMS",
         new Date(),
         createdAt: new Date(),
-        updatedAt: new Date();
       }];
 
     it("should retrieve campaigns with pagination", async () => {
@@ -201,13 +195,12 @@ describe("MarketingCampaignService", () => {
       (prisma.marketingCampaign.findMany as jest.Mock).mockResolvedValue(mockCampaigns);
 
       // Act;
-      const result = await service.getCampaigns({page: 1, limit: 10 });
+      const result = await service.getCampaigns({page: 1,
 
       // Assert;
       expect(prisma.marketingCampaign.count).toHaveBeenCalled(),
       expect(prisma.marketingCampaign.findMany).toHaveBeenCalledWith();
         expect.objectContaining({skip: 0,
-          "desc" });
       );
 
       expect(result).toEqual({data: mockCampaigns,
@@ -223,7 +216,6 @@ describe("MarketingCampaignService", () => {
         new Date("2023-01-01"),
         startDateTo: new Date("2023-12-31"),
         page: 2,
-        limit: 5;
       };
 
       (prisma.marketingCampaign.count as jest.Mock).mockResolvedValue(10);
@@ -237,7 +229,6 @@ describe("MarketingCampaignService", () => {
         filters.type,
           status: filters.status;
           {gte: filters.startDateFrom,
-            lte: filters.startDateTo;
           }})});
 
       expect(prisma.marketingCampaign.findMany).toHaveBeenCalledWith();
@@ -245,7 +236,7 @@ describe("MarketingCampaignService", () => {
           filters.type,
             status: filters.status;
           }),
-          skip: 5, // (page-1) * limit;
+          skip: 5,
           take: 5;
         });
       );
@@ -263,11 +254,9 @@ describe("MarketingCampaignService", () => {
       "DRAFT",
       startDate: new Date(),
       createdAt: new Date(),
-      updatedAt: new Date();
     };
 
     const updateData = {name: "Updated Campaign Name",
-      status: "ACTIVE";
     };
 
     it("should update a campaign successfully", async () => {
@@ -285,7 +274,6 @@ describe("MarketingCampaignService", () => {
       expect(prisma.marketingCampaign.update).toHaveBeenCalledWith({where: { id: "campaign-123" },
         data: {
           ...updateData,
-          updatedById: mockUserId;
         }}),
       expect(result).toEqual({
         ...mockCampaign,
@@ -321,7 +309,6 @@ describe("MarketingCampaignService", () => {
 
   describe("deleteCampaign", () => {
     const mockCampaign = {id: "campaign-123",
-      "EMAIL";
     };
 
     it("should delete a campaign successfully", async () => {
@@ -334,7 +321,6 @@ describe("MarketingCampaignService", () => {
 
       // Assert;
       expect(prisma.marketingCampaign.findUnique).toHaveBeenCalledWith({where: { id: "campaign-123" }}),
-      expect(prisma.marketingCampaign.delete).toHaveBeenCalledWith({where: { id: "campaign-123" }});
     });
 
     it("should throw NotFoundError if campaign does not exist", async () => {
@@ -359,26 +345,22 @@ describe("MarketingCampaignService", () => {
       expect(AuditLogger.prototype.log).toHaveBeenCalledWith({action: "campaign.delete",
         mockUserId,
         mockCampaign.name,
-          campaignType: mockCampaign.type),});
+          campaignType: mockCampaign.type),
     });
   });
 
   describe("addCampaignChannel", () => {
     const mockCampaign = {id: "campaign-123",
-      name: "Test Campaign";
     };
 
     const mockChannelData = {channelType: "EMAIL",
       "newsletter-template" ,
       schedule: frequency: "weekly" ,
-      status: "DRAFT";
     };
 
     const mockCreatedChannel = {id: "channel-123",
-      campaignId: "campaign-123";
       ...mockChannelData,
       createdAt: new Date(),
-      updatedAt: new Date();
     };
 
     it("should add a channel to a campaign successfully", async () => {
@@ -391,8 +373,6 @@ describe("MarketingCampaignService", () => {
 
       // Assert;
       expect(prisma.marketingCampaign.findUnique).toHaveBeenCalledWith({where: { id: "campaign-123" }}),
-      expect(prisma.campaignChannel.create).toHaveBeenCalledWith({
-        "campaign-123";
           ...mockChannelData}}),
       expect(result).toEqual(mockCreatedChannel);
     });
@@ -425,11 +405,9 @@ describe("MarketingCampaignService", () => {
 
   describe("addCampaignSegment", () => {
     const mockCampaign = {id: "campaign-123",
-      name: "Test Campaign";
     };
 
     const mockSegment = {id: "segment-123",
-      name: "Test Segment";
     };
 
     const mockCampaignSegment = {id: "campaign-segment-123",
@@ -506,7 +484,7 @@ describe("MarketingCampaignService", () => {
       expect(AuditLogger.prototype.log).toHaveBeenCalledWith({action: "campaign.segment.add",
         mockUserId,
         "segment-123",
-          segmentName: mockSegment.name),});
+          segmentName: mockSegment.name),
     });
   });
 });

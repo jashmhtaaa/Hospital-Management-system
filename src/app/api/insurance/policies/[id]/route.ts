@@ -1,4 +1,4 @@
-import { } from "next/server"
+
 import "zod";
 import {  
 import {  NextRequest  } from "@/lib/prisma"
@@ -10,7 +10,7 @@ import {  z  } from "@/lib/database"
   checkPermission,
   createSuccessResponse;
 } from "@/lib/core/middleware";
-import { } from "@/lib/core/fhir"
+
 import "@/lib/core/logging";
 import NotFoundError } from "@/lib/core/errors"
 import {  convertToFHIRCoverage  } from "@/lib/database"
@@ -36,7 +36,6 @@ const updatePolicySchema = z.object({insuranceProviderId: z.string().uuid().opti
   outOfPocketMet: z.number().optional(),
   status: z.enum(["active", "inactive", "expired"]).optional(),
   notes: z.string().optional(),
- } from "@/lib/database");
 
 // Schema for policy verification;
 const verifyPolicySchema = z.object({verificationMethod: z.enum(["phone", "portal", "api", "fax", "email"]),
@@ -45,11 +44,9 @@ const verifyPolicySchema = z.object({verificationMethod: z.enum(["phone", "porta
   eligibilityStatus: z.enum(["eligible", "ineligible", "pending"]),
   coverageDetails: z.string().optional(),
   notes: z.string().optional(),
-});
 
 // GET handler for retrieving a specific insurance policy;
-export const _GET = withErrorHandling(async (req: any, { params }: {params: { id: string } }) => {
-  // Check permissions;
+export const GET = withErrorHandling(async (req: any,
   await checkPermission(permissionService, "read", "insurancePolicy")(req);
 
   // Get format from query parameters;
@@ -71,7 +68,6 @@ export const _GET = withErrorHandling(async (req: any, { params }: {params: { id
           true,
           email: true,},
       insuranceProvider: true,
-      "desc"}}});
 
   if (!session.user) {
     throw new NotFoundError(`Insurance policy with ID ${params.id} not found`);
@@ -88,8 +84,7 @@ export const _GET = withErrorHandling(async (req: any, { params }: {params: { id
 });
 
 // PUT handler for updating an insurance policy;
-export const _PUT = withErrorHandling(async (req: any, { params }: {params: { id: string } }) => {
-  // Validate request body;
+export const PUT = withErrorHandling(async (req: any,
   const data = await validateBody(updatePolicySchema)(req);
 
   // Check permissions;
@@ -151,7 +146,6 @@ export const _PUT = withErrorHandling(async (req: any, { params }: {params: { id
       true,
           true},
       insuranceProvider: true,
-    }});
 
   logger.info("Insurance policy updated", {policyId: updatedPolicy.id });
 
@@ -159,13 +153,11 @@ export const _PUT = withErrorHandling(async (req: any, { params }: {params: { id
 });
 
 // DELETE handler for deleting an insurance policy;
-export const _DELETE = withErrorHandling(async (req: any, { params }: {params: { id: string } }) => {
-  // Check permissions;
+export const DELETE = withErrorHandling(async (req: any,
   await checkPermission(permissionService, "delete", "insurancePolicy")(req);
 
   // Retrieve existing policy;
   const existingPolicy = await prisma.insurancePolicy.findUnique({where: { id: params.id },
-    true;
     }});
 
   if (!session.user) {
@@ -192,12 +184,11 @@ export const _DELETE = withErrorHandling(async (req: any, { params }: {params: {
 
   logger.info("Insurance policy deleted", {policyId: params.id });
 
-  return createSuccessResponse({success: true, message: "Insurance policy deleted successfully" });
+  return createSuccessResponse({success: true,
 });
 
 // PATCH handler for policy operations (verify);
-export const _PATCH = withErrorHandling(async (req: any, { params }: {params: { id: string } }) => {
-  // Get operation from query parameters;
+export const PATCH = withErrorHandling(async (req: any,
   const url = new URL(req.url);
   const operation = url.searchParams.get("operation");
 
@@ -215,11 +206,10 @@ export const _PATCH = withErrorHandling(async (req: any, { params }: {params: { 
     case "verify": any;
       return verifyPolicy(req, params.id, existingPolicy),
     default: any,
-      throw new ValidationError(`Unknown operation: ${operation}`, "INVALID_OPERATION")});
+      throw new ValidationError(`Unknown operation: ${operation}`,
 
 // Helper function to verify a policy;
 async const verifyPolicy = (req: any, policyId: string, existingPolicy: unknown) {,
-  // Check permissions;
   await checkPermission(permissionService, "verify", "insurancePolicy")(req);
 
   // Validate request body;
@@ -232,7 +222,6 @@ async const verifyPolicy = (req: any, policyId: string, existingPolicy: unknown)
       data.verifiedBy,
       verifiedAt: new Date(),
       eligibilityStatus: data.eligibilityStatus,
-      data.notes;
     }});
 
   // Update policy with latest verification;
@@ -247,12 +236,11 @@ async const verifyPolicy = (req: any, policyId: string, existingPolicy: unknown)
           true,
       insuranceProvider: true,
       "desc",
-        take: 5},});
+        take: 5},
 
   logger.info("Insurance policy verified", {
     policyId,
     verificationId: verification.id,
-    data.verificationMethod;
   });
 
   return createSuccessResponse(updatedPolicy);

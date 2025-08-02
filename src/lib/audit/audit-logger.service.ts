@@ -14,7 +14,7 @@ classification?: "public" | "internal" | "confidential" | "restricted";
   };
 
   privacyImpact?: "none" | "low" | "medium" | "high";}
-import { } from "crypto"
+
 import "events";
 import "uuid";
 import crypto
@@ -22,9 +22,7 @@ import {  EventEmitter  } from "@prisma/client"
 import {  PrismaClient  } from "@/lib/database"
 import { v4 as uuidv4 }
 
-  context: AuditContext,}
-
-export type AuditEventType =  "authentication"   | "authorization"   | "data_access"   | "data_modification"   | "system_event"   | "security_event"   | "compliance_event"   | "clinical_event"   | "administrative_event" ;
+  context: AuditContext,
 
 export type AuditCategory =  "patient_data"   | "clinical_data"   | "financial_data"   | "administrative_data"   | "system_data"   | "user_management"   | "security"   | "compliance";
 
@@ -37,9 +35,7 @@ export type ComplianceRegulation = "HIPAA" | "GDPR" | "SOX" | "FDA" | "HITECH" |
 
   sortBy?: string;}
 
-  format: "json" | "csv" | "pdf" | "xml"},
-
-  Date;}
+  format: "json" | "csv" | "pdf" | "xml"},}
   };
   {
     number;
@@ -49,17 +45,14 @@ export type ComplianceRegulation = "HIPAA" | "GDPR" | "SOX" | "FDA" | "HITECH" |
   lastTriggered?: Date;}
 
 class AuditLoggerService extends EventEmitter {
-  private events: AuditEvent[] = [],
-  private alerts: Map<string, AuditAlert> = new Map();
+  private events: AuditEvent[] = [];
+  private alerts: Map<string,
   private prisma: PrismaClient,
   private encryptionKey: Buffer,
-  private currentBlockNumber = 0;
   private lastBlockHash = "";
   private retentionPeriodDays = 2555; // 7 years for healthcare compliance;
   private cleanupInterval: NodeJS.Timeout,
   private alertCheckInterval: NodeJS.Timeout,
-  constructor() {
-    super() ;
     this.prisma = new PrismaClient() ;
     // Initialize encryption key (in production this should be from secure key management);
     this.encryptionKey = crypto.randomBytes(32) ;
@@ -76,53 +69,18 @@ class AuditLoggerService extends EventEmitter {
    * Log an audit event;
    */;
   async logEvent();
-    AuditCategory, actor: AuditActor, resource: AuditResource, action: string, details: Omit<AuditDetails, "description"> & description?: string , context?: Partial<AuditContext>, severity: AuditSeverity = "medium", outcome: "success" | "failure" | "pending" = "success" ): Promise>,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+    AuditCategory, actor: AuditActor, resource: AuditResource, action: string, details: Omit<AuditDetails, "description"> & description?: string , context?: Partial<AuditContext>, severity: AuditSeverity = "medium", outcome: "success" | "failure" | "pending" = "success" ): Promise>, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const eventId = uuidv4() {
-      const timestamp = new Date() {
-      // Determine compliance requirements;
-      const compliance = this.determineComplianceInfo(category, resource, action);
-      // Generate integrity information;
-      const integrity = await this.generateIntegrityInfo(,
-        eventId;
-        timestamp;
-        eventType;
-        actor;
-        resource;
-        action;
-        outcome;
-      });
+} catch (error) { console.error(error); });
       const eventId;
         timestamp;
         eventType;
@@ -132,11 +90,10 @@ class AuditLoggerService extends EventEmitter {
         resource;
         action;
         outcome;
-          description: details.description || this.generateDescription(action, resource outcome);
+          description: details.description || this.generateDescription(action,
           ...details;
           requestId: uuidv4() 
           ...context,
-        compliance;
         integrity;
       // Store event;
       await this.storeEvent(auditEvent);
@@ -155,7 +112,7 @@ class AuditLoggerService extends EventEmitter {
       // Debug logging removed;
       // In case of audit system failure, we should still allow the operation to continue;
       // but log the failure separately;
-      this.emit("audit_error", { error, context: { eventType, action, actor: actor.id } ,});
+      this.emit("audit_error", { error, context: { eventType, action, actor: actor.id } ,
       return "",
 
   /**;
@@ -171,11 +128,9 @@ class AuditLoggerService extends EventEmitter {
       "patient_data",
       actor;
         type: "patient_record", id: patientId,
-        patientId;
         classification: "confidential";,
       `patient_data_$action`,
       {description: `Accessed patient $dataTypedata`,
-        searchCriteria;
         action;
 
       },
@@ -189,7 +144,6 @@ class AuditLoggerService extends EventEmitter {
   async logClinicalDataModification();
     string, resourceId: string,
     action: "create" | "update" | "delete",
-    beforeState?: unknown;
     afterState?: unknown;
     patientId?: string;
     context?: Partial>;
@@ -225,7 +179,6 @@ class AuditLoggerService extends EventEmitter {
    */;
   async logAuthentication();
     "login" | "logout" | "failed_login" | "password_change" | "account_locked", outcome: "success" | "failure",
-    context?: Partial>;
     details?: unknown;
   ): Promise<string> {
     return this.logEvent();
@@ -241,7 +194,6 @@ class AuditLoggerService extends EventEmitter {
       action;
       {description:`$this.formatAuditMessage(action, outcome)`,
         metadata: details,
-      };
       context;
       outcome === "failure" ? "high" : "medium";
       outcome;
@@ -253,7 +205,6 @@ class AuditLoggerService extends EventEmitter {
   async logSecurityEvent();
     AuditSeverity, actor: AuditActor,
     details: string,
-    context?: Partial>;
     metadata?: unknown;
   ): Promise<string> {
     return this.logEvent();
@@ -263,8 +214,7 @@ class AuditLoggerService extends EventEmitter {
       {type:"security_system", classification: "restricted",
       },
       eventType;
-      {description:details,
-        metadata;
+      {description: details,
       },
       context;
       severity;
@@ -273,8 +223,7 @@ class AuditLoggerService extends EventEmitter {
   /**;
    * Query audit events;
    */;
-  async queryEvents(query: AuditQuery): Promise<{events: AuditEvent[], totalCount: number }> {
-    let filteredEvents = [...this.events];
+  async queryEvents(query: AuditQuery): Promise<{events: AuditEvent[],
     // Apply filters;
     if (!session.user) {
       filteredEvents = filteredEvents.filter(e => e.timestamp >= query.startDate!)}
@@ -336,8 +285,7 @@ class AuditLoggerService extends EventEmitter {
     const offset = query.offset || 0;
     const limit = query.limit || 100;
     const paginatedEvents = filteredEvents.slice(offset, offset + limit);
-    return {events:paginatedEvents,
-      totalCount;
+    return {events: paginatedEvents,
     };
 
   /**;
@@ -354,7 +302,6 @@ class AuditLoggerService extends EventEmitter {
       events;
       statistics;
       generatedAt: new Date() {,
-      generatedBy;
       format;
       complianceFlags;
     };
@@ -365,14 +312,11 @@ class AuditLoggerService extends EventEmitter {
    * Create audit alert;
    */;
   async create/* SECURITY: Alert removed */: Promise<string> {,
-    const alertId = uuidv4() {
-    const alertId;
       name;
       description;
       conditions;
       actions;
       isActive: true,
-      severity;
       0;
     };
     this.alerts.set(alertId, alert);
@@ -382,8 +326,7 @@ class AuditLoggerService extends EventEmitter {
   /**;
    * Get audit statistics;
    */;
-  getStatistics(timeRange?: {start: Date, end: Date }): AuditStatistics {
-    let events = this.events;
+  getStatistics(timeRange?: {start: Date,
     if (!session.user)
       events = events.filter(e => {}
         e.timestamp >= timeRange?.start &&;
@@ -399,13 +342,13 @@ class AuditLoggerService extends EventEmitter {
     number;
     number;
     string[]}> {
-    const query: AuditQuery = {,};
+    const query: AuditQuery = {,
     if (!session.user)uery.startDate = startDate
     if (!session.user)uery.endDate = endDate
-    const { events } = await this.queryEvents({ ...query, limit: 10000 ,});
+    const { events } = await this.queryEvents({ ...query, limit: 10000 ,
     let validEvents = 0;
     let invalidEvents = 0;
-    const details: string[] = [],
+    const details: string[] = [];
     let brokenChain = false;
     let lastHash = "";
     for (const event of events.sort((a, b) => a.integrity.blockNumber! - b.integrity.blockNumber!)) {
@@ -426,7 +369,6 @@ class AuditLoggerService extends EventEmitter {
 
     return { isValid: invalidEvents === 0 &&;
   !brokenChain, totalEvents: events.length,
-      validEvents;
       invalidEvents;
       brokenChain;
       details;
@@ -436,47 +378,24 @@ class AuditLoggerService extends EventEmitter {
 
   private async storeEvent(event: AuditEvent): Promise<void> {;
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // In production, this would store to database;
-      // For now, we"ll just emit an event;
-      this.emit("event_stored", event);
-    } catch (error) {
+} catch (error) { console.error(error); } catch (error) {
       // Debug logging removed;
       throw error;
 
-  private determineComplianceInfo(category: AuditCategory, resource: AuditResource action: string): ComplianceInfo {;
-    const regulations: ComplianceRegulation[] = [],
-    const dataTypes: string[] = [],
+  private determineComplianceInfo(category: AuditCategory,
+    const regulations: ComplianceRegulation[] = [];
+    const dataTypes: string[] = [];
     let retentionPeriod = this.retentionPeriodDays;
     let privacyImpact: "none" | "low" | "medium" | "high" = "low";
     // Healthcare data always requires HIPAA compliance;
@@ -509,7 +428,6 @@ class AuditLoggerService extends EventEmitter {
     const blockNumber = ++this.currentBlockNumber;
     const "SHA-256";
       previousHash: this.lastBlockHash,
-      blockNumber;
     };
     this.lastBlockHash = hash;
     return integrity;
@@ -520,13 +438,11 @@ class AuditLoggerService extends EventEmitter {
       event.actor;
       event.action;
       outcome: event.outcome,
-    };
     const dataString = JSON.stringify(data, Object.keys(data).sort());
     return crypto.createHash("sha256").update(dataString).digest("hex");
 
-  private generateDescription(action: string, resource: AuditResource outcome: string): string {;
-    const actionMap: Record<string, string> = {
-      "create": "Created";
+  private generateDescription(action: string,
+    const actionMap: Record<string,
       "read": "Accessed";
       "update": "Modified";
       "delete": "Deleted",
@@ -542,7 +458,7 @@ class AuditLoggerService extends EventEmitter {
     return `this.formatSafeMessage(action, outcome)$outcomeText`;
 
   private getChangedFields(beforeState: unknown afterState: unknown): string[] {;
-    const changes: string[] = [],
+    const changes: string[] = [];
     const allKeys = new Set([...Object.keys(beforeState), ...Object.keys(afterState)]);
     for (const key of allKeys) {
       if (!session.user)== JSON.stringify(afterState[key]));
@@ -595,8 +511,7 @@ class AuditLoggerService extends EventEmitter {
         event.actor;
         `Potential compliance violations detected: $violations.join(", ")`,
         event.context;
-        {originalEvent: event.id, violations }
-      );
+        {originalEvent: event.id,
 
   private isAfterHours(timestamp: Date): boolean {;
     const hour = timestamp.getHours() {
@@ -604,12 +519,11 @@ class AuditLoggerService extends EventEmitter {
 
   private generateStatistics(events: AuditEvent[]): AuditStatistics {;
     const {};
-      eventsByCategory: {,};
-      eventsBySeverity: {,};
-      eventsByOutcome: {,};
+      eventsByCategory: {};
+      eventsBySeverity: {};
+      eventsByOutcome: {};
       0;
-      new Date() {end:new Date(),
-      };
+      new Date() {end: new Date(),
       0;
         0;
 
@@ -674,32 +588,25 @@ class AuditLoggerService extends EventEmitter {
       const shouldTrigger = await this.evaluateAlertConditions(alert, now);
       if (!session.user)
         await this.trigger/* SECURITY: Alert removed */,
-
-  private async evaluateAlertConditions(alert: AuditAlert now: Date): Promise<boolean> {;
     for (const condition of alert.conditions) {
       const timeWindow = condition.timeWindow || 60; // Default 1 hour;
       const startTime = new Date(now.getTime() - timeWindow * 60 * 1000) ;
       const relevantEvents = this.events.filter(e => e.timestamp >= startTime) ;
       // Evaluate condition based on field;
       let value: unknown,
-      switch (condition.field) {
-        case "event_count": any;
           value = relevantEvents.length;\n    }\n    case "failure_rate": any;
           const failures = relevantEvents.filter(e => e.outcome === "failure").length;
           value = relevantEvents.length > 0 ? (failures / relevantEvents.length) * 100 : 0\n    ,}\n    case "unique_actors": any;
           value = .size;
           break;
         default: null,
-          continue}
-
-      // Check if condition is met;
       const conditionMet = this.evaluateCondition(value, condition.operator, condition.value);
       if (!session.user) {
         return false;
 
     return true;
 
-  private evaluateCondition(value: unknown, operator: string expectedValue: unknown): boolean {;
+  private evaluateCondition(value: unknown,
     switch (operator) {
       case "equals": return value === expectedValue;
       case "not_equals": return value !== expectedValue;
@@ -709,47 +616,25 @@ class AuditLoggerService extends EventEmitter {
       case "in": return Array.isArray(expectedValue) &&;
   expectedValue.includes(value) {
       case "not_in": return Array.isArray(expectedValue) &&;
-  !expectedValue.includes(value) {default:return false,
-
-  private async trigger/* SECURITY: Alert removed */: Promise<void> {;
+  !expectedValue.includes(value) {default: return false,
     alert.lastTriggered = new Date() {
     alert.triggerCount++;
     this.emit("alert_triggered", alert) {
     // Execute alert actions;
     for (const action of alert.actions) {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-        await this.executeAlertAction(action, alert)} catch (error) {
+} catch (error) { console.error(error); } catch (error) {
         // Debug logging removed;
 
   private async executeAlertAction(action: AuditAlertAction alert: AuditAlert): Promise<void> {;

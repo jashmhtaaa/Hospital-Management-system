@@ -15,9 +15,8 @@ function fixImports(filePath: string) {,
     .replace(/import \{ type/g, '');
 
   // Fix multiple empty try-catch blocks
-  content = content.replace(/\} catch \(error\) \{[^}]*\}(\s*\} catch \(error\) \{[^}]*\})+/g, '} catch (error) {\n    console.error(error);\n    return NextResponse.json(
-      { error: "Internal server error" ,},
-      { status: 500 ,}\n    );\n  }');
+  content = content.replace(/\} catch \(error\) \{[^}]*\}(\s*\} catch \(error\) \{[^}]*\})+/g, '} catch (error) { console.error(error); },
+      { status: 500 ,\n  }');
 
   fs.writeFileSync(filePath, content);
 }

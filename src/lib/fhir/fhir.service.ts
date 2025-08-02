@@ -1,5 +1,5 @@
-import { } from "./appointment.ts"
-import { } from "./medication.ts"
+
+
 import { "./patient.ts";
 import "./types.ts";
 import "@/lib/database/fhir-adapter";
@@ -54,39 +54,17 @@ import {  type
   /**;
    * Create a FHIR resource;
    */;
-  async createResource<T extends FHIRBase>(resource: T): Promise<FHIROperationResult<T>> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+  async createResource<T extends FHIRBase>(resource: T): Promise<FHIROperationResult<T>> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       // Validate resource;
       const validation = this.validateResource(resource);
       if (!session.user) {
@@ -105,18 +83,13 @@ import {  type
         ...resource.meta,
         lastUpdated: timestamp: new Date().toISOString(),
         versionId: "1",
-      };
 
       // Store resource in database;
       await this.dbAdapter.storeResource(resource);
 
       return {success:true,
         data: resource,
-      };
-    } catch (error) {
-      return {success: false,
-        this.createOperationOutcome("error", ["Internal server error"]);
-      };
+    } catch (error) { console.error(error); };
     }
   }
 
@@ -125,54 +98,29 @@ import {  type
    */;
   async readResource<T extends FHIRBase>(;
     resourceType: string,
-    id: string;
   ): Promise<FHIROperationResult<T>> {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       const resource = await this.dbAdapter.retrieveResource<T>(resourceType, id);
 
       if (!session.user) {
         return {success: false,
-          this.createOperationOutcome("error", [`${resourceType}/${id} not found`])};
+          this.createOperationOutcome("error", [`$}/${id} not found`])};
       }
 
       return {success:true,
         data: resource,
-      };
-    } catch (error) {
-      return {success: false,
-        this.createOperationOutcome("error", ["Internal server error"]);
-      };
+    } catch (error) { console.error(error); };
     }
   }
 
@@ -181,45 +129,24 @@ import {  type
    */;
   async updateResource<T extends FHIRBase>(;
     resourceType: string,
-    T;
   ): Promise<FHIROperationResult<T>> {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       // Check if resource exists;
       const existingResource = await this.dbAdapter.retrieveResource<T>(resourceType, id);
       if (!session.user) {
         return {success: false,
-          this.createOperationOutcome("error", [`${resourceType}/${id} not found`])};
+          this.createOperationOutcome("error", [`$}/${id} not found`])};
       }
 
       // Validate resource;
@@ -237,127 +164,66 @@ import {  type
         ...resource.meta,
         lastUpdated: timestamp: new Date().toISOString(),
         versionId: (currentVersion + 1).toString(),
-      };
 
       // Update resource;
       await this.dbAdapter.updateResource(resourceType, id, resource);
 
       return {success:true,
         data: resource,
-      };
-    } catch (error) {
-      return {success: false,
-        this.createOperationOutcome("error", ["Internal server error"]);
-      };
+    } catch (error) { console.error(error); };
     }
   }
 
   /**;
    * Delete a FHIR resource;
    */;
-  async deleteResource(resourceType: string, id: string): Promise<FHIROperationResult<void>> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+  async deleteResource(resourceType: string, id: string): Promise<FHIROperationResult<void>> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       const deleted = await this.dbAdapter.deleteResource(resourceType, id);
 
       if (!session.user) {
         return {success: false,
-          this.createOperationOutcome("error", [`${resourceType}/${id} not found`])};
+          this.createOperationOutcome("error", [`$}/${id} not found`])};
       }
 
-      return {success:true,
-      };
-    } catch (error) {
-      return {success: false,
-        this.createOperationOutcome("error", ["Internal server error"]);
-      };
+      return {success: true,
+    } catch (error) { console.error(error); };
 
   /**;
    * Search FHIR resources;
    */;
   async searchResources<T extends FHIRBase>(;
     resourceType: string,
-    searchParams: FHIRSearchParams;
   ): Promise<FHIROperationResult<FHIRBundle<T>>> {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const results = await this.dbAdapter.searchResources<T>(resourceType, searchParams);
-
-      const "Bundle",
-        id: uuidv4(),
-        type: "searchset",
-        results.resources.map(resource => ({fullUrl: `${this.baseUrl}/${resourceType}/${resource.id}`,
+} catch (error) { console.error(error); }/${resourceType}/${resource.id}`,
           resource;
         }));
       };
 
       return {success:true,
         data: bundle,
-      };
-    } catch (error) {
-      return {success: false,
-        this.createOperationOutcome("error", ["Search failed"]);
-      };
+    } catch (error) { console.error(error); };
 
   /**;
    * Patient-specific FHIR operations;
@@ -366,7 +232,6 @@ import {  type
     return this.searchResources<FHIRPatient>("Patient", searchParams);
 
   async createPatient(patient: FHIRPatient): Promise<FHIROperationResult<FHIRPatient>> {,
-    return this.createResource(patient);
 
   async getPatient(id: string): Promise<FHIROperationResult<FHIRPatient>> {,
     return this.readResource<FHIRPatient>("Patient", id);
@@ -381,7 +246,6 @@ import {  type
     return this.searchResources<FHIRAppointment>("Appointment", searchParams);
 
   async createAppointment(appointment: FHIRAppointment): Promise<FHIROperationResult<FHIRAppointment>> {,
-    return this.createResource(appointment);
 
   async getAppointment(id: string): Promise<FHIROperationResult<FHIRAppointment>> {,
     return this.readResource<FHIRAppointment>("Appointment", id);
@@ -396,7 +260,6 @@ import {  type
     return this.searchResources<FHIREncounter>("Encounter", searchParams);
 
   async createEncounter(encounter: FHIREncounter): Promise<FHIROperationResult<FHIREncounter>> {,
-    return this.createResource(encounter);
 
   async getEncounter(id: string): Promise<FHIROperationResult<FHIREncounter>> {,
     return this.readResource<FHIREncounter>("Encounter", id);
@@ -408,7 +271,6 @@ import {  type
    * MedicationRequest-specific FHIR operations;
    */;
   async createMedicationRequest(medicationRequest: FHIRMedicationRequest): Promise<FHIROperationResult<FHIRMedicationRequest>> {,
-    return this.createResource(medicationRequest);
 
   async getMedicationRequest(id: string): Promise<FHIROperationResult<FHIRMedicationRequest>> {,
     return this.readResource<FHIRMedicationRequest>("MedicationRequest", id);
@@ -416,43 +278,18 @@ import {  type
   /**;
    * Batch operations;
    */;
-  async processBatch(bundle: FHIRBundle): Promise<FHIROperationResult<FHIRBundle>> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+  async processBatch(bundle: FHIRBundle): Promise<FHIROperationResult<FHIRBundle>> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      if (!session.user) {
-        return {success: false,
-          this.createOperationOutcome("error", ["Invalid bundle type"]);
-        };
+} catch (error) { console.error(error); };
 
       const responseEntries = [];
 
@@ -460,16 +297,13 @@ import {  type
         if (!session.user) {
           responseEntries.push({
             "400 Bad Request",
-              outcome: this.createOperationOutcome("error", ["Missing request in bundle entry"]);
+              outcome: this.createOperationOutcome("error",
 
           });
           continue;
 
         const { method, url } = entry.request;
         let result: FHIROperationResult>,
-
-        switch (method) {
-          case "POST": any;
             result = await this.createResource(entry.resource!),\n    }\n    case "GET": any;
             const [resourceType, id] = url.split("/"),
             result = await this.readResource(resourceType, id);\n    }\n    case "PUT": any;
@@ -486,126 +320,55 @@ import {  type
             ...(result?.data && resource: result.data ),
             ...(result?.issues && outcome: result.issues ),
 
-        });
-
       const "Bundle",
         id: uuidv4(),
         type: bundle.type === "batch" ? "batch-response" : "transaction-response",
         entry: responseEntries,
-      };
 
       return {success:true,
         data: responseBundle,
-      };
-    } catch (error) {
-      return {success: false,
-        this.createOperationOutcome("error", ["Batch processing failed"]);
-      };
+    } catch (error) { console.error(error); };
 
   /**;
    * Integration with existing HMS models;
    */;
-  async convertHMSPatientToFHIR(hmsPatientId: string): Promise<FHIROperationResult<FHIRPatient>> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+  async convertHMSPatientToFHIR(hmsPatientId: string): Promise<FHIROperationResult<FHIRPatient>> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // This would retrieve the HMS patient and convert to FHIR;
-      const hmsPatient = await this.getHMSPatient(hmsPatientId);
-
-      if (!session.user) {
-        return {success: false,
-          this.createOperationOutcome("error", [`Patient ${hmsPatientId} not found`])};
+} catch (error) { console.error(error); } not found`])};
 
       const fhirPatient = FHIRPatientUtils.fromHMSPatient(hmsPatient);
 
       return {success:true,
         data: fhirPatient,
-      };
-    } catch (error) {
-      return {success: false,
-        this.createOperationOutcome("error", ["Conversion failed"]);
-      };
+    } catch (error) { console.error(error); };
 
-  async syncFHIRPatientToHMS(fhirPatient: FHIRPatient): Promise<FHIROperationResult<unknown>> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+  async syncFHIRPatientToHMS(fhirPatient: FHIRPatient): Promise<FHIROperationResult<unknown>> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // This would convert FHIR patient to HMS format and update HMS database;
-      const hmsPatient = this.convertFHIRPatientToHMS(fhirPatient);
-      await this.updateHMSPatient(hmsPatient);
-
-      return {success:true,
-        data: hmsPatient,
-      };
-    } catch (error) {
-      return {success: false,
-        this.createOperationOutcome("error", ["Sync failed"]);
-      };
+} catch (error) { console.error(error); };
+    } catch (error) { console.error(error); };
 
   /**;
    * Validation helpers;
    */;
-  private validateResource(resource: FHIRBase): {valid:boolean, errors: string[] } {
-    const errors: string[] = [],
-
+  private validateResource(resource: FHIRBase): {valid:boolean,
     if (!session.user) {
       errors.push("resourceType is required");
 
@@ -622,105 +385,55 @@ import {  type
         errors.push(...medicationValidation.errors);
         break;
 
-    return {valid:errors.length === 0,
-      errors;
+    return {valid: errors.length === 0,
     };
 
   private createOperationOutcome(severity: "fatal" | "error" | "warning" | "information", diagnostics: string[]): FHIROperationOutcome {
     return {resourceType: "OperationOutcome",
-      issue: diagnostics.map(diagnostic => ({
-        severity,
-        code: "processing",
-        diagnostics: diagnostic,
-      }));
     };
 
   /**;
    * HMS Integration methods;
    */;
   private async getHMSPatient(id: string): Promise<unknown> {,
-    // Get HMS patient from database;
     const prisma = new PrismaClient();
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      return await prisma.patient.findUnique({where: { id }
+} catch (error) { console.error(error); }
       });
     } finally {
       await prisma.$disconnect();
 
   private async updateHMSPatient(patient: unknown): Promise<void> {,
-    // Update HMS patient in database;
     const prisma = new PrismaClient();
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      await prisma.patient.update({where:{ id: patient.id },
+} catch (error) { console.error(error); },
         data: patient,
-      });
     } finally {
       await prisma.$disconnect();
 
   private convertFHIRPatientToHMS(fhirPatient: FHIRPatient): unknown {,
-    const officialName = fhirPatient.name?.find(n => n.use === "official") || fhirPatient.name?.[0];
     const phone = FHIRPatientUtils.getPrimaryPhone(fhirPatient);
     const email = FHIRPatientUtils.getPrimaryEmail(fhirPatient);
 
@@ -730,7 +443,6 @@ import {  type
       fhirPatient.birthDate ? new Date(fhirPatient.birthDate) : new Date(),
       phone || "",
       email: email || "",
-    };
 
 /**;
  * Singleton FHIR Service instance;

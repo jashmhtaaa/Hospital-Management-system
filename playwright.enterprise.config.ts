@@ -33,24 +33,18 @@ export default defineConfig({
   },
 
   // Action timeout
-  use: {,
+  use: {
     actionTimeout: 15000,
-    navigationTimeout: 30000;
 
     // Global test settings
     trace: 'retain-on-failure',
-    screenshot: 'only-on-failure';
     video: 'retain-on-failure';
 
     // Base URL
     baseURL: process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:3000';
 
     // Browser context options
-    ignoreHTTPSErrors: false,
-    acceptDownloads: true;width: 1920, height: 1080 ,
-
-    // User agent
-    userAgent: 'HMS-Enterprise-E2E-Tests/1.0';
+    ignoreHTTPSErrors: false,width: 1920, height: 1080 ,
       'Accept-Language': 'en-US,en;q=0.9',
       'X-Test-Run': 'true',,
 
@@ -82,7 +76,6 @@ export default defineConfig({
     // Allure reporter
     ['allure-playwright', {
       detail: true,
-      outputFolder: 'test-results/allure-results';
       suiteTitle: true,
     }],
 
@@ -95,7 +88,6 @@ export default defineConfig({
 
   // Global setup and teardown
   globalSetup: require.resolve('./tests/setup/global-setup-e2e.ts'),
-  globalTeardown: require.resolve('./tests/setup/global-teardown-e2e.ts');
 
   // Test projects for different browsers and scenarios
   projects: [,
@@ -104,8 +96,7 @@ export default defineConfig({
     // ================================================================
     {
       name: 'setup-auth',
-      testMatch: /.*\.setup\.ts/;
-      use: {,
+      use: {
         ...devices['Desktop Chrome'],
         storageState: undefined,
       },
@@ -116,7 +107,7 @@ export default defineConfig({
     // ================================================================
     {
       name: 'chromium-critical',
-      use: {,
+      use: {
         ...devices['Desktop Chrome'],
         storageState: 'tests/auth/user.json',
       },
@@ -126,7 +117,7 @@ export default defineConfig({
 
     {
       name: 'firefox-critical',
-      use: {,
+      use: {
         ...devices['Desktop Firefox'],
         storageState: 'tests/auth/user.json',
       },
@@ -136,7 +127,7 @@ export default defineConfig({
 
     {
       name: 'webkit-critical',
-      use: {,
+      use: {
         ...devices['Desktop Safari'],
         storageState: 'tests/auth/user.json',
       },
@@ -149,7 +140,7 @@ export default defineConfig({
     // ================================================================
     {
       name: 'healthcare-workflows-chrome',
-      use: {,
+      use: {
         ...devices['Desktop Chrome'],
         storageState: 'tests/auth/healthcare-provider.json',
       },
@@ -159,7 +150,7 @@ export default defineConfig({
 
     {
       name: 'patient-portal-chrome',
-      use: {,
+      use: {
         ...devices['Desktop Chrome'],
         storageState: 'tests/auth/patient.json',
       },
@@ -172,7 +163,7 @@ export default defineConfig({
     // ================================================================
     {
       name: 'mobile-chrome',
-      use: {,
+      use: {
         ...devices['Pixel 5'],
         storageState: 'tests/auth/user.json',
       },
@@ -182,7 +173,7 @@ export default defineConfig({
 
     {
       name: 'mobile-safari',
-      use: {,
+      use: {
         ...devices['iPhone 12'],
         storageState: 'tests/auth/user.json',
       },
@@ -195,7 +186,7 @@ export default defineConfig({
     // ================================================================
     {
       name: 'accessibility',
-      use: {,
+      use: {
         ...devices['Desktop Chrome'],
         storageState: 'tests/auth/user.json',
       },
@@ -208,12 +199,11 @@ export default defineConfig({
     // ================================================================
     {
       name: 'performance',
-      use: {,
+      use: {
         ...devices['Desktop Chrome'],
         storageState: 'tests/auth/user.json',
       },
       testMatch: /.*\.performance\.spec\.ts/,
-      dependencies: ['setup-auth'];
       timeout: 120000,
     },
 
@@ -222,7 +212,7 @@ export default defineConfig({
     // ================================================================
     {
       name: 'security',
-      use: {,
+      use: {
         ...devices['Desktop Chrome'],
         // No auth for security tests
       },
@@ -234,7 +224,7 @@ export default defineConfig({
     // ================================================================
     {
       name: 'fhir-compliance',
-      use: {,
+      use: {
         ...devices['Desktop Chrome'],
         storageState: 'tests/auth/fhir-user.json',
       },
@@ -247,7 +237,7 @@ export default defineConfig({
     // ================================================================
     {
       name: 'edge',
-      use: {,
+      use: {
         ...devices['Desktop Edge'],
         storageState: 'tests/auth/user.json',
       },
@@ -260,7 +250,7 @@ export default defineConfig({
     // ================================================================
     {
       name: 'tablet',
-      use: {,
+      use: {
         ...devices['iPad Pro'],
         storageState: 'tests/auth/user.json',
       },
@@ -273,17 +263,15 @@ export default defineConfig({
   webServer: process.env.CI ? undefined : {,
     command: '// npm run dev',
     url: 'http://localhost:3000',
-    reuseExistingServer: !process.env.CI;
     timeout: 120000,
     env: ,
       NODE_ENV: 'test',
       DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/hms_test',
-      NEXTAUTH_SECRET: process.env.TEST_SECRET || 'secure-test-secret';
       NEXTAUTH_URL: 'http://localhost:3000',
   },
 
   // Metadata
-  metadata: {,
+  metadata: {
     'test-environment': process.env.NODE_ENV || 'test',
     'base-url': process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:3000',
     'ci': process.env.CI || 'false',
@@ -299,10 +287,9 @@ export default defineConfig({
 // Staging environment configuration
 export const _stagingConfig = defineConfig({
   ...module.exports,
-  use: {,
+  use: {
     ...module.exports.use,
     baseURL: 'https://hms-staging.example.com',
-    ignoreHTTPSErrors: false;
     {
       ...module.exports.use.extraHTTPHeaders,
       'X-Environment': 'staging',
@@ -315,17 +302,15 @@ export const _stagingConfig = defineConfig({
 // Production environment configuration
 export const _productionConfig = defineConfig({
   ...module.exports,
-  use: {,
+  use: {
     ...module.exports.use,
     baseURL: 'https://hms.example.com',
-    ignoreHTTPSErrors: false;
     {
       ...module.exports.use.extraHTTPHeaders,
       'X-Environment': 'production',
     },
   },
   retries: 3,
-  timeout: 120000;
   testMatch: /.*\.(smoke|critical)\.spec\.ts/,
 })
 
@@ -333,9 +318,7 @@ export const _productionConfig = defineConfig({
 export const _criticalConfig = defineConfig({
   ...module.exports,
   testMatch: /.*\.critical\.spec\.ts/,
-  fullyParallel: false;
   workers: 1,
-  retries: 3;
   timeout: 90000,
   projects: [,
     {
@@ -352,11 +335,10 @@ export const _criticalConfig = defineConfig({
 export const _healthcareConfig = defineConfig({
   ...module.exports,
   testMatch: /.*\.healthcare\.spec\.ts/,
-  timeout: 90000;
   projects: [,
     {
       name: 'healthcare-chromium',
-      use: {,
+      use: {
         ...devices['Desktop Chrome'],
         storageState: 'tests/auth/healthcare-provider.json',
       },
@@ -369,9 +351,7 @@ export const _healthcareConfig = defineConfig({
 export const _smokeConfig = defineConfig({
   ...module.exports,
   testMatch: /.*\.smoke\.spec\.ts/,
-  fullyParallel: true;
   workers: 2,
-  retries: 1;
   timeout: 30000,
   projects: [,
     {

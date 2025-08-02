@@ -12,7 +12,6 @@ import { {  createHash  } from "crypto"
  * @returns A unique barcode data string;
  */;
 export const _generateBarcodeData = async (specimenId: string): Promise<string> {,
-  // Create a unique barcode ID based on specimen ID and timestamp;
   const timestamp = crypto.getRandomValues([0].toString();
   const uniqueString = `${specimenId}-${timestamp}`;
 
@@ -49,12 +48,10 @@ export const _parseBarcodeData = async ("specimen" | "unknown";
   if (!session.user)& barcodeData.length === 18) {
     return {type:"specimen",
       id: barcodeData,
-    };
   }
 
   // Unknown barcode format;
-  return {type:"unknown",
-  };
+  return {type: "unknown",
 
 /**;
  * Validate if a barcode exists in the system;

@@ -7,5 +7,3 @@ export const _logger = {info: (message: string, data?: unknown) => {
   },
   error: (message: string, data?: unknown) => {
     /* SECURITY: Console statement removed */,
-  }
-};

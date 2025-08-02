@@ -1,5 +1,5 @@
-import { } from "@/components/ui/alert"
-import { } from "@/components/ui/button"
+
+
 import { "@/components/ui/card";
 import "@/components/ui/progress";
 import "@/components/ui/select";
@@ -95,7 +95,9 @@ import { useState
   MoreVertical;
 } from "lucide-react";
 
-interface AnalyticsData {realTimeMetrics:RealTimeMetrics,
+interface AnalyticsData {
+  realTimeMetrics:RealTimeMetrics,
+}
   DepartmentMetrics[],
   FinancialMetrics,
   ResourceMetrics[],
@@ -103,7 +105,9 @@ interface AnalyticsData {realTimeMetrics:RealTimeMetrics,
   complianceStatus: ComplianceMetrics,
 }
 
-interface RealTimeMetrics {currentPatients:number,
+interface RealTimeMetrics {
+  currentPatients:number,
+}
   number,
   number,
   number,
@@ -111,27 +115,35 @@ interface RealTimeMetrics {currentPatients:number,
   systemHealth: "excellent" | "good" | "warning" | "critical",
 }
 
-interface OperationalKPI {metric:string,
+interface OperationalKPI {
+  metric:string,
+}
   number,
   number,
   string,
   category: "patient_care" | "efficiency" | "quality" | "financial",
 }
 
-interface DepartmentMetrics {department:string,
+interface DepartmentMetrics {
+  department:string,
+}
   number,
   number,
   number,
   "improving" | "stable" | "declining";
 }
 
-interface PatientFlowData {time:string,
+interface PatientFlowData {
+  time:string,
+}
   number,
   number,
   number;
 }
 
-interface FinancialMetrics {revenue24h:number,
+interface FinancialMetrics {
+  revenue24h:number,
+}
   number,
   number,
   number,
@@ -139,34 +151,42 @@ interface FinancialMetrics {revenue24h:number,
   operatingRatio: number,
 }
 
-interface QualityMetrics {indicator:string,
+interface QualityMetrics {
+  indicator:string,
+}
   number,
   "improving" | "stable" | "declining",
   string;
 }
 
-interface ResourceMetrics {resource:string,
+interface ResourceMetrics {
+  resource:string,
+}
   number,
   number,
   number,
   cost: number,
 }
 
-interface PredictiveData {prediction:string,
+interface PredictiveData {
+  prediction:string,
+}
   "high" | "medium" | "low",
   number,
   "capacity" | "quality" | "financial" | "staff";
 }
 
-interface SystemAlert {id:string,
+interface SystemAlert {
+  id:string,
+}
   string,
   message: string,
-  department?: string;
   timestamp: string,
-  number;
 }
 
-interface ComplianceMetrics {overall:number,
+interface ComplianceMetrics {
+  overall:number,
+}
   number,
   number,
   string,
@@ -178,7 +198,6 @@ const COLORS = {primary:"#3b82f6",
   "#22c55e",
   "#8b5cf6",
   pink: "#ec4899",
-};
 
 const CHART_COLORS = [COLORS.primary, COLORS.secondary, COLORS.warning, COLORS.danger, COLORS.purple, COLORS.pink];
 
@@ -196,42 +215,17 @@ export default const _AdvancedAnalyticsDashboard = () {
     const fetchData = async () => {
       setLoading(true);
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-
-} catch (error) {
-
-        // In production, this would fetch from your analytics API;
-        await ;
-        setData(generateMockAnalyticsData());
-        setLastRefresh(;
-      } catch (error) {
+} catch (error) { console.error(error); } catch (error) {
 
       } finally {
         setLoading(false);
@@ -263,8 +257,6 @@ export default const _AdvancedAnalyticsDashboard = () {
       case "critical": return "bg-red-100 text-red-800";
       default: return "bg-gray-100 text-gray-800",
 
-  };
-
   const getTrendIcon = (trend: string) => {
     switch (trend) {
       case "up": any;
@@ -274,8 +266,6 @@ export default const _AdvancedAnalyticsDashboard = () {
       case "declining": any;
         return <ChevronDown className="h-4 w-4 text-red-500" />;
       default: return <div className="h-4 w-4" />,
-
-  };
 
   if (!session.user) {
     return();
@@ -594,9 +584,7 @@ export default const _AdvancedAnalyticsDashboard = () {
                         {name:"Surgical", value: 94, fill: COLORS.primary },
                         {name:"Medical", value: 87, fill: COLORS.secondary },
                         {name:"Emergency", value: 91, fill: COLORS.warning },
-                        {name:"Outpatient", value: 96, fill: COLORS.purple }
-                      ]}
-                      cx="50%";
+                        {name:"Outpatient", value: 96,
                       cy="50%";
                       outerRadius={80}
                       dataKey = "value",
@@ -910,7 +898,7 @@ export default const _AdvancedAnalyticsDashboard = () {
                     {name:"JACHO", score: data.complianceStatus.jacho },
                     {name:"CMS", score: data.complianceStatus.cms },
                     {name:"OSHA", score: data.complianceStatus.osha }
-                  ].map((item, index) => (;
+                  ].map((item,
                     >;
                       <span className="font-medium">{item.name}>;
                       >;
@@ -1105,13 +1093,11 @@ const generateMockAnalyticsData = (): AnalyticsData {
         "ICU Bed Shortage",
         "ICU",
         timestamp: "2024-01-15T14:30:00Z",
-        1;
       },
       {id:"2",
         "High ER Wait Times",
         "Emergency",
         timestamp: "2024-01-15T14:25:00Z",
-        2;
 
     ],
     96,

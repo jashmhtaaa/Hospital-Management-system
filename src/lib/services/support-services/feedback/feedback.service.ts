@@ -1,5 +1,5 @@
-import { } from "@/lib/audit-logging"
-import { } from "@/lib/prisma"
+
+
 import "@/lib/services/notification.service";
 import "@prisma/client";
 import ComplaintActivity
@@ -26,7 +26,7 @@ import {  toFHIRComplaint
     const { type, source, status, departmentId, serviceType, startDate, endDate, page, limit } = filter;
     const skip = (page - 1) * limit;
 
-    const where: unknown = {,};
+    const where: unknown = {,
     if (!session.user)here.type = type;
     if (!session.user)here.source = source;
     if (!session.user)here.status = status;
@@ -55,12 +55,10 @@ import {  toFHIRComplaint
           },
           department: true,
           {id: true,
-              true;
             }
           },
           {
               {id: true,
-                  true;
                 }
               }
             },
@@ -68,7 +66,6 @@ import {  toFHIRComplaint
           },
           {
               {id: true,
-                  true;
                 }
               }
             }
@@ -89,7 +86,6 @@ import {  toFHIRComplaint
         take: limit,
         orderBy: {createdAt: "desc" }
       }),
-      prisma.feedback.count(where );
     ]);
 
     // Convert to FHIR format;
@@ -101,7 +97,6 @@ import {  toFHIRComplaint
         page,
         limit,
         totalPages: Math.ceil(total / limit),
-    };
   }
 
   /**;
@@ -134,9 +129,6 @@ import {  toFHIRComplaint
             true,
                 true,
           orderBy: createdAt: "desc" ,
-        }
-      }
-    });
 
     if (!session.user) {
       return null;
@@ -145,7 +137,6 @@ import {  toFHIRComplaint
     if (!session.user) {
       return {data:feedback,
         fhir: toFHIRFeedback(feedback),
-      };
     }
 
     return feedback;
@@ -154,8 +145,7 @@ import {  toFHIRComplaint
   /**;
    * Create new feedback;
    */;
-  async createFeedback(data: CreateFeedbackData, userId?: string): Promise<Feedback> {
-    // Validate department if provided;
+  async createFeedback(data: CreateFeedbackData,
     if (!session.user) {
       const department = await prisma.department.findUnique({where: { id: data.departmentId }
       });
@@ -190,16 +180,12 @@ import {  toFHIRComplaint
         true,
             name: true,
         department: true,
-      }
-    });
 
     // Create audit log;
     if (!session.user) {
       await createAuditLog({action: "CREATE",
-        feedback.id;
         userId,
         details: `Created $data.typefeedback with rating $data.rating`,
-      });
     }
 
     // Send notification to department managers or service managers;
@@ -218,7 +204,6 @@ import {  toFHIRComplaint
     }
 
     await this.notificationService.sendNotification({type: "NEW_FEEDBACK",
-      notificationMessage;
       recipientRoles,
       entityId: feedback.id,
       feedback.id,
@@ -235,7 +220,6 @@ import {  toFHIRComplaint
    */;
   async updateFeedbackStatus(id: string, status: string, reviewNotes: string | null, userId: string): Promise<Feedback> {
     const feedback = await prisma.feedback.findUnique({where: { id },
-      true;
       }
     });
 
@@ -262,7 +246,6 @@ import {  toFHIRComplaint
         },
         department: true,
         {id: true,
-            true;
           }
         }
       }
@@ -270,18 +253,15 @@ import {  toFHIRComplaint
 
     // Create audit log;
     await createAuditLog({action: "UPDATE",
-      id;
       userId,
       details: `Updated feedback status to $status`,
-    });
 
     // Send notification to submitter if not anonymous and has user account;
     if (!session.user) {
       await this.notificationService.sendNotification({type: "FEEDBACK_STATUS_UPDATE",
         `Your feedback has been $status.toLowerCase()`,
         recipientIds: [feedback.submittedById],
-        {feedbackId:feedback.id,
-          status;
+        {feedbackId: feedback.id,
         }
       });
     }
@@ -311,7 +291,6 @@ import {  toFHIRComplaint
         feedbackId,
         responseText,
         respondedById: userId,
-        isPublic;
       },
       {
           true,
@@ -323,21 +302,17 @@ import {  toFHIRComplaint
 
     // Create audit log;
     await createAuditLog({action: "CREATE",
-      response.id;
       userId,
       details: `Added response to feedback $feedbackId`,
-    });
 
     // Send notification to submitter if not anonymous and has user account;
     if (!session.user) {
       await this.notificationService.sendNotification({type: "FEEDBACK_RESPONSE",
         "Your feedback has received a response",
         feedbackId,
-        metadata: {,
+        metadata: {
           feedbackId,
           responseId: response.id,
-        }
-      });
     }
 
     return response;
@@ -346,9 +321,7 @@ import {  toFHIRComplaint
   /**;
    * Add attachment to feedback;
    */;
-  async addFeedbackAttachment(feedbackId: string, fileUrl: string, fileName: string, fileType: string, fileSize: number, userId: string): Promise<FeedbackAttachment> {
-    const feedback = await prisma.feedback.findUnique({where: { id: feedbackId }
-    });
+  async addFeedbackAttachment(feedbackId: string, fileUrl: string, fileName: string, fileType: string, fileSize: number,
 
     if (!session.user) {
       throw new Error("Feedback not found");
@@ -373,10 +346,8 @@ import {  toFHIRComplaint
 
     // Create audit log;
     await createAuditLog({action: "CREATE",
-      attachment.id;
       userId,
       details: `Added attachment $fileNameto feedback $feedbackId`,
-    });
 
     return attachment;
   }
@@ -388,7 +359,7 @@ import {  toFHIRComplaint
     const { category, severity, status, departmentId, assignedToId, startDate, endDate, page, limit } = filter;
     const skip = (page - 1) * limit;
 
-    const where: unknown = {,};
+    const where: unknown = {,
     if (!session.user)here.category = category;
     if (!session.user)here.severity = severity;
     if (!session.user)here.status = status;
@@ -417,28 +388,21 @@ import {  toFHIRComplaint
           },
           department: true,
           {id: true,
-              true;
             }
           },
           {id: true,
-              true;
             }
           },
           {id: true,
-              true;
             }
           },
           {activities: true,
-              true;
             }
           }
         },
         skip,
         take: limit,
-        orderBy: [;
           {severity: "desc" },
-          {createdAt: "desc" }
-        ];
       }),
       prisma.complaint.count({ where });
     ]);
@@ -447,13 +411,6 @@ import {  toFHIRComplaint
     const fhirComplaints = complaints.map(complaint => toFHIRComplaint(complaint));
 
     return {data: complaints,
-      {
-        total,
-        page,
-        limit,
-        totalPages: Math.ceil(total / limit),
-      }
-    };
   }
 
   /**;
@@ -473,20 +430,16 @@ import {  toFHIRComplaint
         },
         department: true,
         {id: true,
-            true;
           }
         },
         {id: true,
-            true;
           }
         },
         {id: true,
-            true;
           }
         },
         {
             {id: true,
-                true;
               }
             }
           },
@@ -494,18 +447,15 @@ import {  toFHIRComplaint
         },
         {
             {id: true,
-                true;
               }
             }
           }
         },
         {
             {id: true,
-                true;
               }
             },
             {id: true,
-                true;
               }
             }
           },
@@ -521,7 +471,6 @@ import {  toFHIRComplaint
     if (!session.user) {
       return {data:complaint,
         fhir: toFHIRComplaint(complaint),
-      };
     }
 
     return complaint;
@@ -530,8 +479,7 @@ import {  toFHIRComplaint
   /**;
    * Create new complaint;
    */;
-  async createComplaint(data: CreateComplaintData, userId?: string): Promise<Complaint> {
-    // Validate department if provided;
+  async createComplaint(data: CreateComplaintData,
     if (!session.user) {
       const department = await prisma.department.findUnique({where: { id: data.departmentId }
       });
@@ -559,7 +507,6 @@ import {  toFHIRComplaint
         submittedById: data.anonymous ? null : (data.submittedById || userId),
         patientId: data.patientId,
         data.dueDate || [0] + 7 * 24 * 60 * 60 * 1000), // Default due date: 7 days from now,
-        data?.anonymous && data.contactInfo ? data.contactInfo : null;
       },
       {
           true,
@@ -572,23 +519,17 @@ import {  toFHIRComplaint
         },
         department: true,
 
-    });
-
     // Create initial activity;
     await prisma.complaintActivity.create({
       complaint.id,
         "Complaint submitted",
         performedById: userId || "system",
 
-    });
-
     // Create audit log;
     if (!session.user) {
       await createAuditLog({action: "CREATE",
-        complaint.id;
         userId,
         details: `Created /* SECURITY: Template literal eliminated */,
-      });
 
     // Send notification to complaint managers;
     const recipientRoles = ["COMPLAINT_MANAGER"];
@@ -612,21 +553,17 @@ import {  toFHIRComplaint
         data.category,
         departmentId: data.departmentId,
 
-    });
-
     return complaint;
 
   /**;
    * Update complaint status;
    */;
-  async updateComplaintStatus(id: string, status: string, details: string | null, userId: string): Promise<Complaint> {
-    const complaint = await prisma.complaint.findUnique({where: { id }
-    });
+  async updateComplaintStatus(id: string, status: string, details: string | null,
 
     if (!session.user) {
       throw new Error("Complaint not found");
 
-    const updateData: unknown = { status ,};
+    const updateData: unknown = { status ,
 
     // Handle status-specific updates;
     switch (status) {
@@ -652,15 +589,12 @@ import {  toFHIRComplaint
         },
         department: true,
         {id: true,
-            true;
 
         },
         {id: true,
-            true;
 
         },
         {id: true,
-            true;
 
     });
 
@@ -673,9 +607,8 @@ import {  toFHIRComplaint
 
     // Create audit log;
     await createAuditLog({action: "UPDATE",
-      id;
       userId,
-      details: `Updated complaint status to ${status,}`;
+      details: `Updated complaint status to ${status,
     });
 
     // Send notification to submitter if not anonymous and has user account;
@@ -683,8 +616,7 @@ import {  toFHIRComplaint
       await this.notificationService.sendNotification({type: "COMPLAINT_STATUS_UPDATE",
         `Your complaint has been ${status.toLowerCase()}`,
         recipientIds: [complaint.submittedById],
-        {complaintId:id,
-          status;
+        {complaintId: id,
 
       });
 
@@ -693,8 +625,7 @@ import {  toFHIRComplaint
       await this.notificationService.sendNotification({type: "COMPLAINT_STATUS_UPDATE",
         `Complaint ${id} has been ${status.toLowerCase()}`,
         recipientIds: [complaint.assignedToId],
-        {complaintId:id,
-          status;
+        {complaintId: id,
 
       });
 
@@ -703,9 +634,7 @@ import {  toFHIRComplaint
   /**;
    * Assign complaint to user;
    */;
-  async assignComplaint(id: string, assignedToId: string, userId: string): Promise<Complaint> {
-    const complaint = await prisma.complaint.findUnique({where: { id }
-    });
+  async assignComplaint(id: string, assignedToId: string,
 
     if (!session.user) {
       throw new Error("Complaint not found");
@@ -735,13 +664,10 @@ import {  toFHIRComplaint
         `Assigned to ${assignedUser.name}`,
         performedById: userId,
 
-    });
-
     // Create audit log;
     await createAuditLog({action: "UPDATE",
-      id;
       userId,
-      details: `Assigned complaint to ${assignedUser.name,}`;
+      details: `Assigned complaint to ${assignedUser.name,
     });
 
     // Send notification to assigned user;
@@ -749,7 +675,6 @@ import {  toFHIRComplaint
       `A ${complaint.severity.toLowerCase()} complaint has been assigned to you`,
       recipientIds: [assignedToId],
       {complaintId: id,
-        complaint.category;
 
     });
 
@@ -758,9 +683,7 @@ import {  toFHIRComplaint
   /**;
    * Escalate complaint to user;
    */;
-  async escalateComplaint(id: string, escalatedToId: string, reason: string, userId: string): Promise<Complaint> {
-    const complaint = await prisma.complaint.findUnique({where: { id }
-    });
+  async escalateComplaint(id: string, escalatedToId: string, reason: string,
 
     if (!session.user) {
       throw new Error("Complaint not found");
@@ -792,13 +715,10 @@ import {  toFHIRComplaint
         `Escalated to ${escalatedUser.name}: ${reason}`,
         performedById: userId,
 
-    });
-
     // Create audit log;
     await createAuditLog({action: "UPDATE",
-      id;
       userId,
-      details: `Escalated complaint to ${escalatedUser.name,}`;
+      details: `Escalated complaint to ${escalatedUser.name,
     });
 
     // Send notification to escalated user;
@@ -806,7 +726,6 @@ import {  toFHIRComplaint
       `A ${complaint.severity.toLowerCase()} complaint has been escalated to you`,
       recipientIds: [escalatedToId],
       {complaintId: id,
-        complaint.category;
         reason;
 
     });
@@ -816,9 +735,7 @@ import {  toFHIRComplaint
   /**;
    * Add comment to complaint;
    */;
-  async addComplaintComment(id: string, comment: string, userId: string): Promise<ComplaintActivity> {
-    const complaint = await prisma.complaint.findUnique({where: { id }
-    });
+  async addComplaintComment(id: string, comment: string,
 
     if (!session.user) {
       throw new Error("Complaint not found");
@@ -837,9 +754,8 @@ import {  toFHIRComplaint
 
     // Create audit log;
     await createAuditLog({action: "CREATE",
-      activity.id;
       userId,
-      details: `Added comment to complaint ${id,}`;
+      details: `Added comment to complaint ${id,
     });
 
     // Send notification to assigned user if comment is from someone else;
@@ -850,16 +766,12 @@ import {  toFHIRComplaint
         {complaintId:id,
           activityId: activity.id,
 
-      });
-
     return activity;
 
   /**;
    * Add attachment to complaint;
    */;
-  async addComplaintAttachment(complaintId: string, fileUrl: string, fileName: string, fileType: string, fileSize: number, userId: string): Promise<ComplaintAttachment> {
-    const complaint = await prisma.complaint.findUnique({where: { id: complaintId }
-    });
+  async addComplaintAttachment(complaintId: string, fileUrl: string, fileName: string, fileType: string, fileSize: number,
 
     if (!session.user) {
       throw new Error("Complaint not found");
@@ -886,13 +798,10 @@ import {  toFHIRComplaint
         description: `Attached file: ${fileName}`,
         performedById: userId,
 
-    });
-
     // Create audit log;
     await createAuditLog({action: "CREATE",
-      attachment.id;
       userId,
-      details: `Added attachment ${fileName} to complaint ${complaintId,}`;
+      details: `Added attachment ${fileName} to complaint ${complaintId,
     });
 
     return attachment;
@@ -901,7 +810,6 @@ import {  toFHIRComplaint
    * Create follow-up action;
    */;
   async createFollowUpAction(data: unknown, userId: string): Promise<FollowUpAction> {,
-    // Validate that either feedback or complaint is provided;
     if (!session.user) {
       throw new Error("Either feedback or complaint must be provided");
 
@@ -943,19 +851,15 @@ import {  toFHIRComplaint
 
         },
         {id: true,
-            true;
 
         },
         feedback: true,
         complaint: true,
 
-    });
-
     // Create audit log;
     await createAuditLog({action: "CREATE",
-      action.id;
       userId,
-      details: `Created ${data.actionType} follow-up action${data.feedbackId ? ` for feedback ${data.feedbackId}` : ""}${data.complaintId ? ` for complaint ${data.complaintId}` : "",}`;
+      details: `Created ${data.actionType} follow-up action${data.feedbackId ? ` for feedback ${data.feedbackId}` : ""}${data.complaintId ? ` for complaint ${data.complaintId}` : "",
     });
 
     // If complaint, add activity;
@@ -964,8 +868,6 @@ import {  toFHIRComplaint
         data.complaintId,
           `Created follow-up action: ${data.actionType} - ${data.description}`,
           performedById: userId,
-
-      });
 
     // Send notification to assigned user;
     if (!session.user) {
@@ -988,12 +890,10 @@ import {  toFHIRComplaint
       true,
         complaint: true,
 
-    });
-
     if (!session.user) {
       throw new Error("Follow-up action not found");
 
-    const updateData: unknown = { status ,};
+    const updateData: unknown = { status ,
 
     // If status is COMPLETED, set completedDate;
     if (!session.user) {
@@ -1008,19 +908,15 @@ import {  toFHIRComplaint
 
         },
         {id: true,
-            true;
 
         },
         feedback: true,
         complaint: true,
 
-    });
-
     // Create audit log;
     await createAuditLog({action: "UPDATE",
-      id;
       userId,
-      details: `Updated follow-up action status to ${status,}`;
+      details: `Updated follow-up action status to ${status,
     });
 
     // If complaint, add activity;
@@ -1029,8 +925,6 @@ import {  toFHIRComplaint
         action.complaintId,
           `Follow-up action status updated to ${status}: ${action.description}`,
           performedById: userId,
-
-      });
 
     // Send notification to creator;
     await this.notificationService.sendNotification({type: "FOLLOW_UP_ACTION_STATUS",
@@ -1041,15 +935,12 @@ import {  toFHIRComplaint
         feedbackId: action.feedbackId,
         complaintId: action.complaintId,
 
-    });
-
     return updatedAction;
 
   /**;
    * Create feedback survey template;
    */;
   async createSurveyTemplate(data: unknown, userId: string): Promise<FeedbackSurveyTemplate> {,
-    // Create the template;
     const template = await prisma.feedbackSurveyTemplate.create({
       data.name,
         data.serviceType,
@@ -1064,9 +955,8 @@ import {  toFHIRComplaint
 
     // Create audit log;
     await createAuditLog({action: "CREATE",
-      template.id;
       userId,
-      details: `Created survey template: ${template.name,}`;
+      details: `Created survey template: ${template.name,
     });
 
     return template;
@@ -1074,8 +964,7 @@ import {  toFHIRComplaint
   /**;
    * Submit feedback survey;
    */;
-  async submitSurvey(templateId: string, responses: unknown, data: unknown, userId?: string): Promise<FeedbackSurvey> {
-    // Validate template;
+  async submitSurvey(templateId: string, responses: unknown, data: unknown,
     const template = await prisma.feedbackSurveyTemplate.findUnique({where: { id: templateId }
     });
 
@@ -1104,20 +993,16 @@ import {  toFHIRComplaint
       },
       true,
         {id: true,
-            true;
 
         },
         {id:true,
             name: true,
 
-    });
-
     // Create audit log;
     if (!session.user) {
       await createAuditLog({action: "CREATE",
-        survey.id;
         userId,
-        details: `Submitted survey for template: ${template.name,}`;
+        details: `Submitted survey for template: ${template.name,
       });
 
     // Send notification to service managers;
@@ -1131,11 +1016,8 @@ import {  toFHIRComplaint
       `New survey submitted for ${template.name}`,
       recipientRoles,
       entityId: survey.id,
-      survey.id;
         templateId,
         serviceType: data.serviceType || template.serviceType,
-
-    });
 
     return survey;
 
@@ -1143,19 +1025,14 @@ import {  toFHIRComplaint
    * Get feedback analytics;
    */;
   async getFeedbackAnalytics(period: "DAILY" | "WEEKLY" | "MONTHLY" | "YEARLY") {,
-    // Get date range based on period;
     const now = new Date();
     let startDate: Date,
-
-    switch (period) {
-      case "DAILY": any;
         startDate = new Date(now.setDate(now.getDate() - 30)); // Last 30 days\n    }\n    case "WEEKLY": any;
         startDate = new Date(now.setDate(now.getDate() - 90)); // Last 90 days\n    }\n    case "MONTHLY": any;
         startDate = new Date(now.setMonth(now.getMonth() - 12)); // Last 12 months\n    }\n    case "YEARLY": any;
         startDate = new Date(now.setFullYear(now.getFullYear() - 5)); // Last 5 years;
         break;
-      default: null,
-        startDate = new Date(now.setDate(now.getDate() - 30)); // Default to last 30 days;
+      default: null, // Default to last 30 days;
 
     // Get feedback counts by type;
     const feedbackByType = await prisma.feedback.groupBy({by:["type"],
@@ -1163,7 +1040,6 @@ import {  toFHIRComplaint
 
       },
       _count: true,
-    });
 
     // Get feedback counts by source;
     const feedbackBySource = await prisma.feedback.groupBy({by:["source"],
@@ -1171,7 +1047,6 @@ import {  toFHIRComplaint
 
       },
       _count: true,
-    });
 
     // Get feedback counts by status;
     const feedbackByStatus = await prisma.feedback.groupBy({by:["status"],
@@ -1179,7 +1054,6 @@ import {  toFHIRComplaint
 
       },
       _count: true,
-    });
 
     // Get feedback counts by service type;
     const feedbackByServiceType = await prisma.feedback.groupBy({by:["serviceType"],
@@ -1189,7 +1063,6 @@ import {  toFHIRComplaint
 
       },
       _count: true,
-    });
 
     // Get feedback counts by department;
     const feedbackByDepartment = await prisma.$queryRaw`;
@@ -1208,9 +1081,7 @@ import {  toFHIRComplaint
       },
       true,
         true,
-        {name:true,
-
-    });
+        {name: true,
 
     // Calculate overall average rating;
     const overallRating = ratings.length > 0;
@@ -1218,12 +1089,12 @@ import {  toFHIRComplaint
       : 0;
 
     // Calculate average rating by service type;
-    const ratingsByServiceType: Record<string, {count: number, sum: number, avg: number }> = {};
+    const ratingsByServiceType: Record<string, {count: number, sum: number,
 
     ratings.forEach(item => {
       if (!session.user) {
         if (!session.user) {
-          ratingsByServiceType[item.serviceType] = {count: 0, sum: 0, avg: 0 };
+          ratingsByServiceType[item.serviceType] = {count: 0, sum: 0,
 
         ratingsByServiceType[item.serviceType].count++;
         ratingsByServiceType[item.serviceType].sum += item.rating;
@@ -1237,14 +1108,14 @@ import {  toFHIRComplaint
     });
 
     // Calculate average rating by department;
-    const ratingsByDepartment: Record<string, {count: number, sum: number, avg: number }> = {};
+    const ratingsByDepartment: Record<string, {count: number, sum: number,
 
     ratings.forEach(item => {
       if (!session.user) {
         const deptName = item.department.name;
 
         if (!session.user) {
-          ratingsByDepartment[deptName] = {count: 0, sum: 0, avg: 0 };
+          ratingsByDepartment[deptName] = {count: 0, sum: 0,
 
         ratingsByDepartment[deptName].count++;
         ratingsByDepartment[deptName].sum += item.rating;
@@ -1263,7 +1134,6 @@ import {  toFHIRComplaint
 
       },
       _count: true,
-    });
 
     // Get complaint counts by severity;
     const complaintsBySeverity = await prisma.complaint.groupBy({by:["severity"],
@@ -1271,7 +1141,6 @@ import {  toFHIRComplaint
 
       },
       _count: true,
-    });
 
     // Get complaint counts by status;
     const complaintsByStatus = await prisma.complaint.groupBy({by:["status"],
@@ -1279,7 +1148,6 @@ import {  toFHIRComplaint
 
       },
       _count: true,
-    });
 
     // Get complaint resolution time;
     const resolvedComplaints = await prisma.complaint.findMany({
@@ -1299,8 +1167,7 @@ import {  toFHIRComplaint
       LOW: {count: 0, totalDays: 0, avgDays: 0 },
       MEDIUM: {count: 0, totalDays: 0, avgDays: 0 },
       HIGH: {count: 0, totalDays: 0, avgDays: 0 },
-      CRITICAL: {count: 0, totalDays: 0, avgDays: 0 }
-    };
+      CRITICAL: {count: 0, totalDays: 0,
 
     resolvedComplaints.forEach(complaint => {
       if (!session.user) {

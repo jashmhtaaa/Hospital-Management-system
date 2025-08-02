@@ -22,6 +22,8 @@ const LoginSchema = z.object({
   password: z.string().min(1, "Password is required")});
 export const _POST = async (request: Request) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }

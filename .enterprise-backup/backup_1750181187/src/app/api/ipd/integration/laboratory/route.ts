@@ -15,6 +15,8 @@ export const POST = async (req: NextRequest) => {,
   const authResult = await ipdMiddleware(req, 'ORDER_LABS');
    {\n  {
     return authResult; // This is an error response
+  return NextResponse.json({ message: "Not implemented" });
+};
   }
 
   try {
@@ -81,6 +83,8 @@ export const GET = async (req: NextRequest) => {,
   const authResult = await ipdMiddleware(req, 'VIEW');
    {\n  {
     return authResult; // This is an error response
+  return NextResponse.json({ message: "Not implemented" });
+};
   }
 
   try {
@@ -117,6 +121,8 @@ export const getLabResults = async (req: NextRequest) => {,
   const authResult = await ipdMiddleware(req, 'VIEW');
    {\n  {
     return authResult; // This is an error response
+  return NextResponse.json({ message: "Not implemented" });
+};
   }
 
   try {
@@ -162,6 +168,8 @@ export const getLabResultDetails = async (req: NextRequest) => {,
   const authResult = await ipdMiddleware(req, 'VIEW');
    {\n  {
     return authResult; // This is an error response
+  return NextResponse.json({ message: "Not implemented" });
+};
   }
 
   try {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 
 import { Badge } from '@/components/ui/badge';
@@ -14,7 +14,7 @@ interface Patient {
 }
 
 interface ERPatientTrackingBoardProps {
-  patients: Patient[]
+  patients: Patient[];
 }
 
 /**
@@ -27,9 +27,7 @@ export const _ERPatientTrackingBoard = ({ patients }: ERPatientTrackingBoardProp
       case 2: return <Badge variant="danger">Level 2\1>
       case 3: return <Badge variant="warning">Level 3\1>
       case 4: return <Badge variant="secondary">Level 4\1>
-      case \1,\2 return <Badge>Unknown</Badge>
-    }
-  };
+      case \1,
 
   const getStatusBadge = (status: string) => {
     switch(status) {

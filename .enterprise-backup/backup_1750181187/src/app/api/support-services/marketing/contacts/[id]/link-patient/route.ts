@@ -19,6 +19,8 @@ export const POST = async (
     request,
     async (req: NextRequest) => {,
       const session = await getServerSession(authOptions);
+  return NextResponse.json({ message: "Not implemented" });
+};
       const { patientId } = await req.json();
 
        {\n  {

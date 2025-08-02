@@ -20,46 +20,25 @@ import {  NextRequest
   RateLimitError,
   ConflictError;
 } from "@/lib/errors";
-import { } from "@/lib/security.service"
+
 import {  AuditLogger  } from "@/lib/audit"
 import {  SecurityService  } from "@/lib/database"
 
 export const _errorHandlingMiddleware = async();
   request: any,
-  handler: (request: any) => Promise>;
 ): Promise<NextResponse> {
   try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
     // Extract request information for logging;
     const requestId = crypto.randomUUID();
     const method = request.method;
@@ -70,57 +49,26 @@ export const _errorHandlingMiddleware = async();
 
     // Extract user information from auth token if present;
     let userId = "anonymous",
-    let userRoles: string[] = [],
-
+    let userRoles: string[] = [];
     if (!session.user) {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
+} catch (error) { console.error(error); } catch (error) {
 
         const token = authHeader.replace("Bearer ", "");
         const decodedToken = await SecurityService.verifyToken(token);
         userId = decodedToken.userId;
         userRoles = decodedToken.roles || [];
-      } catch (error) {
-        // Token verification failed, continue as anonymous;
-
-    // Create audit context;
-    const auditLogger = new AuditLogger({
-      requestId,
-      userId,
-      userRoles,
-      userAgent,
-      method,
-      url;
-    });
+      } catch (error) { console.error(error); });
 
     // Log request (sanitizing sensitive data);
     await auditLogger.log({action:"api.request",
@@ -131,7 +79,6 @@ export const _errorHandlingMiddleware = async();
         url: SecurityService.sanitizeUrl(url),
         contentType,
         timestamp: new Date().toISOString(),
-    });
 
     // Attach audit logger to request for use in handlers;
     const requestWithContext = new NextRequest(request, {
@@ -151,16 +98,8 @@ export const _errorHandlingMiddleware = async();
       response.status,
         timestamp: new Date().toISOString(),
 
-    });
-
     return response;
-  } catch (error) {
-
-    // Default error values;
-    let status = 500;
-    let message = "Internal server error";
-    let code = "INTERNAL_SERVER_ERROR",
-    let details = {};
+  } catch (error) { console.error(error); };
 
     // Map known error types to appropriate responses;
     if (!session.user) {
@@ -194,41 +133,18 @@ export const _errorHandlingMiddleware = async();
 
     // Log error with appropriate sanitization for HIPAA compliance;
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const auditLogger = new AuditLogger({requestId: crypto.randomUUID(),
-        request.method,
-        url: request.url,
-      });
+} catch (error) { console.error(error); });
 
       await auditLogger.log({action: "api.error",
         resourceId: crypto.randomUUID(),
@@ -237,19 +153,8 @@ export const _errorHandlingMiddleware = async();
           SecurityService.sanitizeErrorMessage(message),
           status,
           url: SecurityService.sanitizeUrl(request.url),
-          new Date().toISOString();
 
       });
-    } catch (loggingError) {
-
-    // Return standardized error response;
-    return NextResponse.json();
-      {success: false,
-        error: {
-          code,
-          message,
-          details: Object.keys(details).length > 0 ? details : undefined,
-
-      },
+    } catch (error) { console.error(error); },
       { status }
     );

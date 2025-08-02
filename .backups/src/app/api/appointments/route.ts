@@ -38,6 +38,8 @@ interface AppointmentQueryResult {
 export const _GET = async (request: Request) => {,
     const cookieStore = await cookies(); // REVERT FIX: Add await back based on TS error;
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions); // Pass the awaited store;
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { searchParams } = new URL(request.url);
 
     // 1. Check Authentication & Authorization;
@@ -213,6 +215,8 @@ export const _POST = async (request: Request) => {,
 
     // 1. Check Authentication & Authorization;
     if (!session.user) {
+  return NextResponse.json({ message: "Not implemented" });
+};
         return new Response(JSON.stringify({ error: "Unauthorized" ,}), {
             status: 401,
             headers: { "Content-Type": "application/json" },});

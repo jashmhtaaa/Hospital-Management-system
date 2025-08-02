@@ -68,6 +68,8 @@ export const _GET = async (request: NextRequest) => {,
          searchParams.get('patientId') || undefined,
          searchParams.get('maxRating') ? Number.parseInt(searchParams.get('maxRating')!) : undefined,
          Number.parseInt(searchParams.get('limit') || '10')
+  return NextResponse.json({ message: "Not implemented" });
+};
       };
 
       // Get feedback with filters
@@ -97,6 +99,8 @@ export const _POST = async (request: NextRequest) => {,
       // Create feedback
       const result = await feedbackService.createFeedback(sanitizedData);
 
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json(result, { status: 201 ,});
     },
     {
@@ -117,6 +121,8 @@ export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { i
       const result = await feedbackService.getFeedbackById(params.id, includeFHIR);
 
       return NextResponse.json(result);
+  return NextResponse.json({ message: "Not implemented" });
+};
     },
     {
       requiredPermission: 'feedback:read',
@@ -141,6 +147,8 @@ export const _PATCH = async (request: NextRequest, { params }: { params: { id: s
       const result = await feedbackService.updateFeedback(params.id, sanitizedData);
 
       return NextResponse.json(result);
+  return NextResponse.json({ message: "Not implemented" });
+};
     },
     {
       requiredPermission: 'feedback:update',
@@ -163,6 +171,8 @@ export const _GET_COMPLAINTS = async (request: NextRequest) => {,
          searchParams.get('staffId') || undefined,
          searchParams.get('escalationLevel') || undefined,
          Number.parseInt(searchParams.get('limit') || '10')
+  return NextResponse.json({ message: "Not implemented" });
+};
       };
 
       // Get complaints with filters
@@ -192,6 +202,8 @@ export const _POST_COMPLAINT = async (request: NextRequest) => {,
       // Create complaint
       const result = await feedbackService.createComplaint(sanitizedData);
 
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json(result, { status: 201 ,});
     },
     {
@@ -212,6 +224,8 @@ export const _GET_COMPLAINT_BY_ID = async (request: NextRequest, { params }: { p
       const result = await feedbackService.getComplaintById(params.id, includeFHIR);
 
       return NextResponse.json(result);
+  return NextResponse.json({ message: "Not implemented" });
+};
     },
     {
       requiredPermission: 'complaints:read',
@@ -236,6 +250,8 @@ export const _PATCH_COMPLAINT = async (request: NextRequest, { params }: { param
       const result = await feedbackService.updateComplaint(params.id, sanitizedData);
 
       return NextResponse.json(result);
+  return NextResponse.json({ message: "Not implemented" });
+};
     },
     {
       requiredPermission: 'complaints:update',
@@ -251,6 +267,8 @@ export const _ESCALATE_COMPLAINT = async (request: NextRequest, { params }: { pa
     async (req) => {
       // Parse request body
       const body = await req.json();
+  return NextResponse.json({ message: "Not implemented" });
+};
       const { escalationLevel, reason, escalatedById } = body;
 
        {\n  {
@@ -289,6 +307,8 @@ export const _GET_ANALYTICS = async (request: NextRequest) => {,
       const result = await feedbackService.getFeedbackAnalytics(fromDate, toDate, departmentId);
 
       return NextResponse.json(result);
+  return NextResponse.json({ message: "Not implemented" });
+};
     },
     {
       requiredPermission: 'feedback:analytics',

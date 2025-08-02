@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 
 import { cn } from '@/lib/utils';
@@ -71,7 +71,7 @@ const CommandEmpty = React.forwardRef<HTMLDivElement, CommandEmptyProps>(
 CommandEmpty.displayName = "CommandEmpty";
 
 interface CommandGroupProps extends React.HTMLAttributes<HTMLDivElement> {
-  heading: React.ReactNode
+  heading: React.ReactNode;
 }
 
 const CommandGroup = React.forwardRef<HTMLDivElement, CommandGroupProps>(
@@ -100,8 +100,7 @@ const CommandItem = React.forwardRef<HTMLDivElement, CommandItemProps>(
 <div
       ref={ref}
       className={cn(
-        "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none aria-selected:bg-gray-100 data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
-        className;
+        "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none aria-selected: bg-gray-100 data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
       )}
       onClick={onSelect}
       data-disabled={disabled ? "" : undefined}

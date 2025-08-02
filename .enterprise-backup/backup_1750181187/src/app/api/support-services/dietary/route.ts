@@ -46,6 +46,8 @@ export const _GET = async (request: NextRequest) => {,
          searchParams.get('fromDate') ? new Date(searchParams.get('fromDate')!) : undefined,
          searchParams.get('locationId') || undefined,
          Number.parseInt(searchParams.get('limit') || '10')
+  return NextResponse.json({ message: "Not implemented" });
+};
       };
 
       // Get dietary requests with filters
@@ -75,6 +77,8 @@ export const _POST = async (request: NextRequest) => {,
       // Create dietary request
       const result = await dietaryService.createDietaryRequest(sanitizedData);
 
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json(result, { status: 201 ,});
     },
     {
@@ -94,6 +98,8 @@ export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { i
       const result = await dietaryService.getDietaryRequestById(params.id, includeFHIR);
 
       return NextResponse.json(result);
+  return NextResponse.json({ message: "Not implemented" });
+};
     },
     {
       requiredPermission: 'dietary:read',
@@ -118,6 +124,8 @@ export const _PATCH = async (request: NextRequest, { params }: { params: { id: s
       const result = await dietaryService.updateDietaryRequest(params.id, sanitizedData);
 
       return NextResponse.json(result);
+  return NextResponse.json({ message: "Not implemented" });
+};
     },
     {
       requiredPermission: 'dietary:update',
@@ -134,6 +142,8 @@ export const _DELETE = async (request: NextRequest, { params }: { params: { id: 
       // Delete dietary request
       await dietaryService.deleteDietaryRequest(params.id);
 
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ success: true ,});
     },
     {
@@ -150,6 +160,8 @@ export const _PREPARE = async (request: NextRequest, { params }: { params: { id:
     async (req) => {
       // Parse request body
       const body = await req.json();
+  return NextResponse.json({ message: "Not implemented" });
+};
       const { staffId, notes } = body;
 
        {\n  {
@@ -179,6 +191,8 @@ export const _DELIVER = async (request: NextRequest, { params }: { params: { id:
     async (req) => {
       // Parse request body
       const body = await req.json();
+  return NextResponse.json({ message: "Not implemented" });
+};
       const { staffId, notes } = body;
 
        {\n  {
@@ -212,6 +226,8 @@ export const _GET_MENUS = async (request: NextRequest) => {,
         dietType: searchParams.get('dietType') || undefined,
          searchParams.get('isActive') === 'true',
          Number.parseInt(searchParams.get('limit') || '10')
+  return NextResponse.json({ message: "Not implemented" });
+};
       };
 
       // Get dietary menus with filters
@@ -240,6 +256,8 @@ export const _GET_ANALYTICS = async (request: NextRequest) => {,
       const result = await dietaryService.getDietaryAnalytics(fromDate, toDate);
 
       return NextResponse.json(result);
+  return NextResponse.json({ message: "Not implemented" });
+};
     },
     {
       requiredPermission: 'dietary:analytics',

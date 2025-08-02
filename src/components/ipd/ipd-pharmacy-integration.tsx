@@ -29,7 +29,7 @@ import { useCallback
 } from "@ant-design/icons";
 import { AdminRecordsApiResponse, ApiErrorResponse  } from "@/types/api"; // Import API response types;
 // import { useSession } from "next-auth/react"; // Removed unused import;
-import { } from "@/types/pharmacy"
+
 import "dayjs";
 import dayjs
 import IPDPrescriptionItem } from "@/types/ipd"
@@ -43,23 +43,21 @@ interface IPDPharmacyIntegrationProperties {
   prescriptions: IPDPrescription[],
 }
 
-interface MedicationScheduleItem { id: string, // Unique ID for the schedule item (e.g., prescriptionItemId + time);
+interface MedicationScheduleItem {
+  id: string, // Unique ID for the schedule item (e.g., prescriptionItemId + time);
+}
   prescriptionItemId: string,
   string,
   string,
   scheduledTime: string; // ISO 8601 format;
   status: "Pending" | "Administered" | "Missed" | "Refused",
-  administrationRecordId?: string;
  }
 
 // FIX: Prefix unused variables with underscore,
-const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
-  admissionId,
   prescriptions}) => {
   // const { data: session } = useSession(); // Removed unused variable;
   const [_loading, _setLoading] = useState<boolean>(false); // FIX: Unused variable,
   const [_medicationSchedule, _setMedicationSchedule] = useState< // FIX: Unused variable,
-    MedicationScheduleItem[];
   >([]),
 
   const [_administrationRecords, _setAdministrationRecords] = useState<;
@@ -74,7 +72,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
 
   // Generate medication schedule based on prescriptions;
   const generateSchedule = useCallback(() => {
-    const schedule: MedicationScheduleItem[] = [],
+    const schedule: MedicationScheduleItem[] = [];
     const now = dayjs(); // Use dayjs for date manipulation;
 
     prescriptions.forEach((prescription) => {
@@ -107,7 +105,6 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
               item.frequency,
               scheduledTime: administrationTime.toISOString(),
               status: "Pending",
-            });
           }
           administrationTime = administrationTime.add(intervalHours, "hour");
         }
@@ -126,44 +123,24 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
     _setLoading(true),
     _setError(null);
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       const response = await fetch();
         `/api/pharmacy/administration-records?admissionId=${admissionId}`;
       );
       if (!session.user) {
         throw new Error("Failed to fetch administration records");
 
-      const data: AdminRecordsApiResponse = await response.json(),
+      const data: AdminRecordsApiResponse = await response.json();
       _setAdministrationRecords(data.records || []);
 
       // Update schedule status based on fetched records;
@@ -179,16 +156,11 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
               ...item,
               status: record.status,
               administrationRecordId: record.id,
-            };
 
           return item;
         });
       );
-    } catch (err) {
-      const message_ =;
-        err instanceof Error ? err.message : "An unknown error occurred";
-      _setError(message_);
-      message.error(`Error fetching records: ${}`;
+    } catch (error) { console.error(error); }`;
     } finally {
       _setLoading(false);
 
@@ -200,10 +172,8 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
   }, [generateSchedule, fetchAdministrationRecords]);
 
   // FIX: Prefix unused function with underscore,
-  const _handleAdministerMedication = async();
     scheduleItemId: string,
     status: "Administered" | "Missed" | "Refused",
-    notes?: string;
   ) => {
     const itemToAdminister = _medicationSchedule.find();
       (item) => item.id === scheduleItemId;
@@ -214,60 +184,35 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
 
     _setLoading(true);
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const response = await fetch("/api/pharmacy/administration-records", {method:"POST",
-        headers: {
-          "Content-Type": "application/json"},
+} catch (error) { console.error(error); },
         admissionId,
           itemToAdminister.medicationName,
           itemToAdminister.route,
           dayjs().toISOString(), // Record actual time;
           status,
-          administered_by_id: "user_placeholder", // Replace with actual user ID from session;
+          administered_by_id: "user_placeholder",
           notes})});
 
       if (!session.user) {
-        const errorData: ApiErrorResponse = await response.json(),
+        const errorData: ApiErrorResponse = await response.json();
         throw new Error(errorData.error || "Failed to record administration");
 
       message.success(`Medication marked as ${}`,
       fetchAdministrationRecords(); // Refresh records and schedule status;
       setIsModalVisible(false);
       form.resetFields();
-    } catch (err) {
-      const message_ =;
-        err instanceof Error ? err.message : "An unknown error occurred";
-      message.error(`Error recording administration: ${}`;
+    } catch (error) { console.error(error); }`;
     } finally {
       _setLoading(false);
 
@@ -317,15 +262,12 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
         dayjs(a.scheduledTime).diff(dayjs(b.scheduledTime)),
       defaultSortOrder: "ascend" as const,
     },
-    {title:"Medication",
-      "medicationName";
+    {title: "Medication",
     },
-    {title:"Dosage",
-      "dosage";
-      // render: (_: unknown, record: MedicationScheduleItem) => getDosageForScheduleItem(record.prescriptionItemId), // Reference removed;
+    {title: "Dosage",
+      // render: (_: unknown, record: MedicationScheduleItem) => getDosageForScheduleItem(record.prescriptionItemId),
     },
-    {title:"Route",
-      "route";
+    {title: "Route",
     },
     {title:"Status",
       "status",
@@ -338,9 +280,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
         return <Tag color={color}>{status}>;
       }},
     {title:"Action",
-      (_: unknown, record: MedicationScheduleItem) => {
-        if (!session.user) {
-          return();
+      (_: unknown,
             <Button type="primary" onClick={() => showAdministrationModal(record)}>;
               Administer;
             </Button>;
@@ -387,8 +327,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
           <Button>;
             key = "refused",
             onClick={() => {
-              form.setFieldsValue({refused:true, administered: false }),
-              handleModalOk(); // Trigger submission with "Refused" state;
+              form.setFieldsValue({refused:true, administered: false }), // Trigger submission with "Refused" state;
             }}
           >;
             Mark as Refused;
@@ -396,7 +335,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
           <Button>;
             key = "missed",
             onClick={() => {
-              form.setFieldsValue({missed:true, administered: false }); // Assuming a "missed" field or logic
+              form.setFieldsValue({missed: true, // Assuming a "missed" field or logic
               handleModalOk(); // Trigger submission with "Missed" state;
             }}
           >;
@@ -406,8 +345,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
             key = "administered",
             type = "primary",
             onClick={() => {
-              form.setFieldsValue({administered:true, refused: false }),
-              handleModalOk(); // Trigger submission with "Administered" state;
+              form.setFieldsValue({administered:true, refused: false }), // Trigger submission with "Administered" state;
             }}
           >;
             Mark as Administered;

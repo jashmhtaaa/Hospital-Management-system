@@ -1,4 +1,4 @@
-import { } from "@opennextjs/cloudflare"
+
 import "next/server";
 import "zod";
 import {  getCloudflareContext  } from "@/lib/ipd-service.production"
@@ -12,7 +12,6 @@ import {  z  } from "@/lib/database"
 // Schema for IPD Admission;
 const AdmissionSchema = z.object({patient_id: z.number(),
   doctor_id: z.number(),
-  admission_date: z;
     .string();
     .regex(/^\d{4}-\d{2}-\d{2}$/, "Date must be in YYYY-MM-DD format"),
   expected_discharge_date: z;
@@ -26,45 +25,21 @@ const AdmissionSchema = z.object({patient_id: z.number(),
   admission_type: z.enum(["Emergency", "Planned", "Transfer"]),
   package_id: z.number().optional(),
   insurance_id: z.number().optional(),
-  insurance_approval_status: z;
     .enum(["Pending", "Approved", "Rejected"]);
     .optional(),
   insurance_approval_number: z.string().optional(),
-});
 
-export async function GET(request: any): unknown {,
-  try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+export async function GET(request: any): unknown {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
     // Use production IPD service instead of mock;
 
     // Get DB instance from Cloudflare context;
@@ -82,9 +57,8 @@ export async function GET(request: any): unknown {,
     const offset = Number.parseInt(searchParams.get("offset") || "0");
 
     // Build query conditions;
-    const conditions: string[] = [],
-    const parameters: (string | number)[] = [],
-
+    const conditions: string[] = [];
+    const parameters: (string | number)[] = [];
     if (!session.user) {
       conditions.push("a.patient_id = ?");
       parameters.push(patientId);
@@ -153,50 +127,19 @@ export async function GET(request: any): unknown {,
     const admissionsResult = await database.prepare(query).bind(...parameters).all();
 
     return new Response(JSON.stringify(admissionsResult.results || []), {status: 200,
-      headers: { "Content-Type": "application/json" }});
-  } catch (error: unknown) {
-
-    const errorMessage = error instanceof Error ? error.message : String(error),
-    return new Response();
-      JSON.stringify({error:"Failed to fetch IPD admissions",
-        details: errorMessage,
-      }),
+  } catch (error) { console.error(error); }),
       {status: 500,
-        headers: { "Content-Type": "application/json" }}
-    );
   }
-export async function POST(request: any): unknown {,
-  try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-
-} catch (error) {
+export async function POST(request: any): unknown {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
 
     // Use production IPD service instead of mock;
     const ipdService = new IPDProductionService();
@@ -215,8 +158,6 @@ export async function POST(request: any): unknown {,
           details: validationResult.error.format(),
         }),
         {status: 400,
-          headers: { "Content-Type": "application/json" }}
-      );
 
     const admissionData = validationResult.data;
 
@@ -231,8 +172,7 @@ export async function POST(request: any): unknown {,
     if (!session.user) {
       return new Response();
         JSON.stringify({error: "Patient not found or inactive" }),
-        {status: 404, headers: { "Content-Type": "application/json" } }
-      );
+        {status: 404,
 
     const doctorCheckResult = await database.prepare();
       "SELECT d.doctor_id FROM Doctors d JOIN Users u ON d.user_id = u.user_id WHERE d.doctor_id = ? AND u.is_active = TRUE";
@@ -243,8 +183,7 @@ export async function POST(request: any): unknown {,
     if (!session.user) {
       return new Response();
         JSON.stringify({error: "Doctor not found or inactive" }),
-        {status: 404, headers: { "Content-Type": "application/json" } }
-      );
+        {status: 404,
 
     const bedCheckResult = await database.prepare();
       "SELECT bed_id FROM Beds WHERE bed_id = ? AND status = "Available"";
@@ -253,85 +192,30 @@ export async function POST(request: any): unknown {,
 
     if (!session.user) {
       return new Response(JSON.stringify({error: "Bed not available" }), {status: 409,
-        headers: { "Content-Type": "application/json" }});
 
     // Use production IPD service for admission creation;
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // Create admission using production service;
-      const admissionData = {patientId: data.patient_id,
-        new Date(data.admission_date),
-        data.ward_id,
-        data.admission_type || "elective",
-        data.admission_notes,
-        admittedBy: "1" // TODO: Get from authenticated user context,
-
-      const admissionId = await ipdService.createAdmission(admissionData);
-
-      // Assign bed using production service;
-      await ipdService.assignBed({
-        admissionId,
-        ward: data.ward_id,
-        data.bed_id,
-        assignedBy: "1" // TODO: Get from authenticated user context,
-      });
+} catch (error) { console.error(error); });
 
       return new Response();
         JSON.stringify({message:"IPD Admission created successfully",
           admission_id: admissionId,
         }),
         {status: 201,
-          headers: { "Content-Type": "application/json" }}
-      );
-    } catch (txError) {
+    } catch (error) { console.error(error); }),
+        {status: 500,
 
-      // No rollback needed for mock DB;
-      const errorMessage =;
-        txError instanceof Error ? txError.message : String(txError),
-      return new Response();
-        JSON.stringify({error:"Failed during admission creation database operations",
-          details: errorMessage,
-        }),
-        {status: 500, headers: { "Content-Type": "application/json" } }
-      );
-
-  } catch (error: unknown) {,
-
-    const errorMessage = error instanceof Error ? error.message : String(error),
-    return new Response();
-      JSON.stringify({error:"Failed to create IPD admission",
-        details: errorMessage,
-      }),
+  } catch (error) { console.error(error); }),
       {status: 500,
-        headers: { "Content-Type": "application/json" }}
-    );
+};

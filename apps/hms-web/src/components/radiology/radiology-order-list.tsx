@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 
 import { Badge } from '@/components/ui/badge';
@@ -11,12 +11,11 @@ interface RadiologyOrder {
   \1,\2 string,
   \1,\2 string,
   \1,\2 'ordered' | 'scheduled' | 'in-progress' | 'completed' | 'reported',
-  requestedBy: string
+  requestedBy: string;
 }
 
 interface RadiologyOrderListProps {
   orders: RadiologyOrder[],
-  onViewOrder: (orderId: string) => void
 }
 
 /**

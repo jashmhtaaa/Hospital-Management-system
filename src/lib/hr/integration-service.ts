@@ -1,4 +1,4 @@
-import { } from "@prisma/client"
+
 import "next-auth";
 import {  authOptions  } from "@/lib/hr/auth-integration"
 import {  getServerSession  } from "@/lib/database"
@@ -17,7 +17,7 @@ import {  PrismaClient  } from "@/lib/database"
   async getEmployeesForClinical() {
     return this.prisma.employee.findMany({
       true,
-        {endDate: null, // Current positions;
+        {endDate: null,
             "CLINICAL";
             }
           }
@@ -35,8 +35,6 @@ import {  PrismaClient  } from "@/lib/database"
             true,
             true,
             expiryDate: true,
-      }
-    });
   }
 
   /**;
@@ -57,8 +55,6 @@ import {  PrismaClient  } from "@/lib/database"
             true,
             true,
                 name: true,
-      }
-    });
 
   /**;
    * Get asset data for finance module integration;
@@ -77,8 +73,6 @@ import {  PrismaClient  } from "@/lib/database"
         true,
             name: true,
         status: true,
-
-    });
 
   /**;
    * Get payroll data for finance module integration;
@@ -125,7 +119,6 @@ import {  PrismaClient  } from "@/lib/database"
   async getEmployeeLeavesForScheduling(employeeId: string, startDate: Date, endDate: Date) {
     return this.prisma.leave.findMany({where: {
         employeeId,
-        endDate;
         },
         startDate;
         },
@@ -139,8 +132,7 @@ import {  PrismaClient  } from "@/lib/database"
    * Update asset status from clinical module;
    * This allows clinical modules to update equipment status;
    */;
-  async updateAssetStatusFromClinical(assetId: string, status: "AVAILABLE" | "IN_USE" | "UNDER_MAINTENANCE", notes?: string) {
-    // Get current session for audit;
+  async updateAssetStatusFromClinical(assetId: string, status: "AVAILABLE" | "IN_USE" | "UNDER_MAINTENANCE",
     const session = await getServerSession(authOptions);
     if (!session.user) {
       throw new Error("Unauthorized");
@@ -164,7 +156,6 @@ import {  PrismaClient  } from "@/lib/database"
               newStatus: status,
               notes,
               updatedBy: session.user.email,
-              "CLINICAL_MODULE";
 
     });
 
@@ -174,7 +165,6 @@ import {  PrismaClient  } from "@/lib/database"
    */;
   async recordMaintenanceFromClinical(assetId: string, "PREVENTIVE" | "CORRECTIVE" | "CALIBRATION" | "INSPECTION",
     date: Date,
-    performedBy?: string;
     cost?: number;
     description: string,
     nextMaintenanceDate?: Date, }) {
@@ -197,7 +187,6 @@ import {  PrismaClient  } from "@/lib/database"
         maintenanceType: data.maintenanceType,
         data.performedBy || `${session.user.name} (${session.user.email})`,
         cost: data.cost,
-        data.nextMaintenanceDate;
       }});
 
     // Create history record;
@@ -211,7 +200,6 @@ import {  PrismaClient  } from "@/lib/database"
           updatedByName: session.user.name,
         },
         employeeId: session.user.employeeId || null,
-      }});
 
     // Update asset status;
     await this.prisma.asset.update({where: { id: assetId },
@@ -232,7 +220,5 @@ import {  PrismaClient  } from "@/lib/database"
         true,
         true,
             name: true,
-
-    });
 
 export const = new IntegrationService() {;}

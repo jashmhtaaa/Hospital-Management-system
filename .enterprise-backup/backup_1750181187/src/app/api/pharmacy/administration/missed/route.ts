@@ -56,6 +56,8 @@ export const POST = async (req: NextRequest) => {,
     const data = await req.json();
      {\n  {
       return NextResponse.json(
+  return NextResponse.json({ message: "Not implemented" });
+};
         { error: 'Missing required fields' ,},
         { status: 400 },
       );

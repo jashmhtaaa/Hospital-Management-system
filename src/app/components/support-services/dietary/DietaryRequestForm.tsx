@@ -3,7 +3,7 @@ import { useState } from "react"
 
 "use client";
 
-import { } from "@/components/ui/calendar"
+
 import {
 import { Button } from "@/components/ui/button"
 import { Calendar }
@@ -15,7 +15,7 @@ import { Calendar }
   FormItem,
   FormLabel,
   FormMessage} from "@/components/ui/form";
-import { } from "react"
+
 import "react-hook-form";
 import "zod";
 import * as z
@@ -29,8 +29,8 @@ import { zodResolver }
   SelectItem,
   SelectTrigger,
   SelectValue} from "@/components/ui/select";
-import { } from "@/components/ui/badge"
-import { } from "@/components/ui/input"
+
+
 import "@/components/ui/popover";
 import "@/components/ui/textarea";
 import "@/components/ui/use-toast";
@@ -64,17 +64,13 @@ const formSchema = z.object({
   mealPreferences: z.array(z.string()).default([]),
   dietaryRestrictions: z.array(z.string()).default([]),
   allergies: z.array(z.string()).default([]),
-  specialInstructions: z.string().max(1000, {message:"Special instructions must not exceed 1000 characters" }).optional()});
+  specialInstructions: z.string().max(1000,
 
 type FormValues = z.infer>;
 
 interface Patient {
   id: string,
   name: string,
-}
-
-interface DietaryRequestFormProps {
-    onSuccess?: () => void;
   initialData?: unknown;
   isEditing?: boolean;
 }
@@ -135,52 +131,27 @@ export const _DietaryRequestForm = ({ onSuccess,
     [],
       [],
       specialInstructions: "",
-    }});
 
   // Fetch patients when component mounts;
   useEffect(() => {
     const fetchPatients = async () => {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
         const response = await fetch("/api/patients");
         if (!session.user)hrow new Error("Failed to fetch patients");
         const data = await response.json(),
         setPatients(data);
-      } catch (error) {
-
-        toast({title:"Error",
-          "destructive";
-        });
+      } catch (error) { console.error(error); });
       }
     };
 
@@ -191,58 +162,27 @@ export const _DietaryRequestForm = ({ onSuccess,
   const onSubmit = async (values: FormValues) => {
     setIsLoading(true);
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const url = isEditing;
-        ? `/api/support-services/dietary/$initialData.id`;
-        : "/api/support-services/dietary";
-
-      const method = isEditing ? "PUT" : "POST";
-
-      const response = await fetch(url, {
-        method,
-        headers: {
-          "Content-Type": "application/json"},
+} catch (error) { console.error(error); },
         body: JSON.stringify({
           ...values,
           startDate: values.startDate.toISOString(),
           endDate: values.endDate ? values.endDate.toISOString() : undefined,
-        })});
 
       if (!session.user) {
         throw new Error("Failed to submit request");
 
-      toast({title:isEditing ? "Request Updated" : "Request Created",
-        description: isEditing;
+      toast({title: isEditing ? "Request Updated" : "Request Created",
           ? "The dietary request has been updated successfully.";
           : "Your dietary request has been submitted successfully."});
 
@@ -252,11 +192,7 @@ export const _DietaryRequestForm = ({ onSuccess,
         router.push("/support-services/dietary");
         router.refresh();
 
-    } catch (error) {
-
-      toast({title:"Error",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
     } finally {
       setIsLoading(false);
 

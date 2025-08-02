@@ -4,9 +4,6 @@ import { type
 
 interface DashboardLayoutProps {
   children: ReactNode,
-}
-
-/**;
  * Dashboard layout component that provides consistent structure for dashboard pages;
  * @param children Content to be rendered within the dashboard layout;
  */;

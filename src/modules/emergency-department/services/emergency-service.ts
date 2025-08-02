@@ -1,4 +1,4 @@
-import { } from "@/lib/prisma"
+
 import {  AuditService  } from "@/lib/audit/audit-service"
 import {  prisma  } from "@/lib/database"
 
@@ -19,17 +19,14 @@ import {  prisma  } from "@/lib/database"
         "TRIAGE",
         "EMERGENCY_VISIT",
         emergencyVisit.id,
-        `Triage completed - Level: ${,}`;
+        `Triage completed - Level: ${,
     }
 
     // Auto-alert for critical cases;
     if (!session.user) {
       await this.triggerCritical/* SECURITY: Alert removed */,
 
-    return emergencyVisit;
-
   static async triggerCritical/* SECURITY: Alert removed */{,
-    // Implementation for critical patient alerts;
     // Could integrate with notification system;
     /* SECURITY: Console statement removed */,
 
@@ -43,14 +40,11 @@ import {  prisma  } from "@/lib/database"
       },
       orderBy: [;
         {triageLevel: "asc" },
-        {createdAt: "asc" }
-      ];
     });
 
   static async updateEmergencyStatus();
     emergencyVisitId: string,
     status: "ACTIVE" | "IN_TREATMENT" | "DISCHARGED" | "ADMITTED",
-    updatedBy?: string;
   ) {
     const oldVisit = await prisma.emergencyVisit.findUnique({where: { id: emergencyVisitId }
     });
@@ -59,8 +53,6 @@ import {  prisma  } from "@/lib/database"
       throw new Error("Emergency visit not found");
 
     const emergencyVisit = await prisma.emergencyVisit.update({where: { id: emergencyVisitId },
-      data: { status }
-    });
 
     if (!session.user) {
       await AuditService.logDataChange();

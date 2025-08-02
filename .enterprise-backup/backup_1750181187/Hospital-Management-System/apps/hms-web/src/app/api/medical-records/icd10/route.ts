@@ -166,6 +166,8 @@ class ICD10CodingAssistant {
 // GET /api/medical-records/icd10/search
 export const _GET = async (request: NextRequest) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { searchParams } = new URL(request.url);
     const query = searchParams.get('q');
     const type = searchParams.get('type') || 'search';
@@ -205,6 +207,8 @@ export const _GET = async (request: NextRequest) => {,
 // POST /api/medical-records/auto-code
 export const _POST = async (request: NextRequest) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { patientId, visitId, clinicalNotes, diagnoses } = await request.json();
 
     const { user } = await authService.verifyToken(request);

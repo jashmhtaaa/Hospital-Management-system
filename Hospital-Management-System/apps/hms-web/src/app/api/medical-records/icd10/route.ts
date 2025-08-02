@@ -10,42 +10,42 @@ class ICD10CodingAssistant {
     // Common ICD-10 codes with descriptions and suggestions
     'A00-B99': {
       category: 'Certain infectious and parasitic diseases',
-      subcategories: {,
+      subcategories: {
         'A09': 'Infectious gastroenteritis and colitis, unspecified',
         'B34.9': 'Viral infection, unspecified'
       }
     },
     'C00-D49': {
       category: 'Neoplasms',
-      subcategories: {,
+      subcategories: {
         'C78.0': 'Secondary malignant neoplasm of lung',
         'D12.6': 'Benign neoplasm of colon, unspecified'
       }
     },
     'E00-E89': {
       category: 'Endocrine, nutritional and metabolic diseases',
-      subcategories: {,
+      subcategories: {
         'E11.9': 'Type 2 diabetes mellitus without complications',
         'E78.5': 'Hyperlipidemia, unspecified'
       }
     },
     'I00-I99': {
       category: 'Diseases of the circulatory system',
-      subcategories: {,
+      subcategories: {
         'I10': 'Essential hypertension',
         'I25.9': 'Chronic ischemic heart disease, unspecified'
       }
     },
     'J00-J99': {
       category: 'Diseases of the respiratory system',
-      subcategories: {,
+      subcategories: {
         'J44.1': 'Chronic obstructive pulmonary disease with acute exacerbation',
         'J06.9': 'Acute upper respiratory infection, unspecified'
       }
     },
     'K00-K95': {
       category: 'Diseases of the digestive system',
-      subcategories: {,
+      subcategories: {
         'K21.9': 'Gastro-esophageal reflux disease without esophagitis',
         'K59.00': 'Constipation, unspecified'
       }
@@ -53,7 +53,6 @@ class ICD10CodingAssistant {
   };
 
   static searchICD10Codes(query: string) {,
-    const results = [];
     const searchTerm = query.toLowerCase();
 
     for (const [range, category] of Object.entries(this.icd10Database)) {
@@ -61,9 +60,7 @@ class ICD10CodingAssistant {
       if (category.category.toLowerCase().includes(searchTerm)) {
         results.push({
           code: range,
-          description: category.category;
           type: 'category',
-        });
       }
 
       // Search in subcategories
@@ -74,7 +71,6 @@ class ICD10CodingAssistant {
             description,
             type: 'specific',
             category: category.category,
-          });
         }
       }
     }
@@ -83,7 +79,6 @@ class ICD10CodingAssistant {
   }
 
   static suggestCodesFromDiagnosis(diagnosis: string) {,
-    const suggestions = [];
     const diagnosisLower = diagnosis.toLowerCase();
 
     // AI-powered diagnosis mapping
@@ -109,9 +104,7 @@ class ICD10CodingAssistant {
             suggestions.push({
               code,
               description: codeInfo.description,
-              confidence: 0.85;
               category: codeInfo.category,
-            });
           }
         }
       }
@@ -127,24 +120,18 @@ class ICD10CodingAssistant {
           code,
           description: category.subcategories[code],
           category: category.category,
-        };
       }
     }
     return null;
   }
 
   static validateCode(code: string) {,
-    const details = this.getCodeDetails(code);
     return {
       isValid: !!details,
-      details: details || null;
       suggestions: details ? [] : this.suggestSimilarCodes(code),
-    };
   }
 
   static suggestSimilarCodes(code: string) {,
-    // Simple similarity check based on code structure
-    const suggestions = [];
     const codePrefix = code.substring(0, 3);
 
     for (const [range, category] of Object.entries(this.icd10Database)) {
@@ -154,7 +141,6 @@ class ICD10CodingAssistant {
             code: subCode;
             description,
             similarity: 0.7,
-          });
         }
       }
     }
@@ -164,15 +150,16 @@ class ICD10CodingAssistant {
 }
 
 // GET /api/medical-records/icd10/search
-export const _GET = async (request: NextRequest) => {,
-  try {
+export const GET = async (request: NextRequest) => {try {
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { searchParams } = new URL(request.url);
     const query = searchParams.get('q');
     const type = searchParams.get('type') || 'search';
 
     const { user } = await authService.verifyToken(request);
     if (!user || !['Doctor', 'Nurse', 'Medical Coder'].includes(user.role)) {
-      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 403 ,});
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 403 ,
     }
 
     let results = [];
@@ -196,20 +183,19 @@ export const _GET = async (request: NextRequest) => {,
     }
 
     return NextResponse.json({ results, query, type });
-  } catch (error) {
-    /* SECURITY: Console statement removed */,
-    return NextResponse.json({ error: 'Search failed' ,}, { status: 500 ,}),
+  } catch (error) { console.error(error); }, { status: 500 ,}),
   }
 };
 
 // POST /api/medical-records/auto-code
-export const _POST = async (request: NextRequest) => {,
-  try {
+export const POST = async (request: NextRequest) => {try {
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { patientId, visitId, clinicalNotes, diagnoses } = await request.json();
 
     const { user } = await authService.verifyToken(request);
     if (!user || !['Doctor', 'Medical Coder'].includes(user.role)) {
-      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 403 ,});
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 403 ,
     }
 
     // AI-powered auto-coding based on clinical notes
@@ -225,7 +211,7 @@ export const _POST = async (request: NextRequest) => {,
 
     // Store coding suggestions for review
     const codingSession = await prisma.medicalCodingSession.create({
-      data: {,
+      data: {
         patientId,
         visitId,
         clinicalNotes,
@@ -233,16 +219,11 @@ export const _POST = async (request: NextRequest) => {,
         suggestedCodes: JSON.stringify(suggestedCodes),
         status: 'PENDING_REVIEW',
         createdBy: user.id,
-      }
-    });
 
     return NextResponse.json({
       sessionId: codingSession.id;
       suggestedCodes,
       requiresReview: true,
-    });
-  } catch (error) {
-    /* SECURITY: Console statement removed */,
-    return NextResponse.json({ error: 'Auto-coding failed' ,}, { status: 500 ,}),
+  } catch (error) { console.error(error); }, { status: 500 ,}),
   }
 };

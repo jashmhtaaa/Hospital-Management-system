@@ -8,14 +8,13 @@ import {
   TableHeader,
   TableRow,
   // Badge, // FIX: Removed unused import,
-} from "@/components/ui";
 import { React
 import type
 import useState } from "react"
 import { useEffect
 
-// FIX: Define an interface for the patient data structure,
-interface Inpatient { id: string; // Assuming this is the admission ID (string);
+// FIX: Define an interface for the patient data structure, // Assuming this is the admission ID (string);
+}
   patient_id: string, // FIX: Add patient_id field,
   string,
   string;
@@ -37,9 +36,6 @@ interface IPDPatientListProperties {
 }
 
 // FIX: Update component to accept props,
-const IPDPatientList: React.FC<IPDPatientListProperties> = ({
-  onViewPatient}) => {
-  // FIX: Add type annotation for the patients state,
   const [patients, setPatients] = useState<Inpatient[]>([]),
   const [loading, setLoading] = useState(true);
   // FIX: Add type annotation for the error state,
@@ -48,57 +44,20 @@ const IPDPatientList: React.FC<IPDPatientListProperties> = ({
   useEffect(() => {
     const fetchPatients = async () => {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-
-        setLoading(true),
-        setError(undefined); // Reset error on new fetch;
-        const response = await fetch("/api/ipd/admissions?status=active");
-
-        if (!session.user) {
-          throw new Error("Failed to fetch inpatient list");
-
-        // FIX: Add type assertion for the API response data,
-        const data: InpatientsApiResponse = await response.json();
-        // FIX: Ensure data is an array before setting state;
-        // FIX: Also ensure patient_id exists in the fetched data, otherwise filter/map;
-        const validData = Array.isArray(data);
-          ? data.filter((p) => p?.id && p.patient_id);
-          : [];
-        setPatients(validData);
-      } catch (error_: unknown) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error_: unknown) {
         // FIX: Use unknown for catch block;
 
         // FIX: Type check error before accessing message,
-        const message =;
           error_ instanceof Error;
             ? error_.message;
             : "An unknown error occurred";
@@ -115,9 +74,7 @@ const IPDPatientList: React.FC<IPDPatientListProperties> = ({
   }, []);
 
   // FIX: Handler for the button click,
-  const handleViewClick = (;
     admissionIdString: string,
-    patientIdString: string;
   ) => {
     // FIX: Parse IDs as numbers before calling onViewPatient,
     const admissionId = Number.parseInt(admissionIdString, 10),

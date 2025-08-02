@@ -13,6 +13,8 @@ export const _GET = async (request: NextRequest) => {,
     return NextResponse.json({
       success: true,
       data: employees,
+  return NextResponse.json({ message: "Not implemented" });
+};
     });
   } catch (error) {
 

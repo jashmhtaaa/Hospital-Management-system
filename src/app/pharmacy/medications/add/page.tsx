@@ -1,4 +1,4 @@
-import { } from "react"
+
 import ChangeEvent
 import FormEvent
 import React
@@ -24,7 +24,9 @@ interface Manufacturer {
   name: string,
 }
 
-interface MedicationFormData {item_code:string,
+interface MedicationFormData {
+  item_code:string,
+}
   string,
   string,
   string,
@@ -47,7 +49,6 @@ const AddMedicationPage: React.FC = () => {
     "",
     false,
     description: "",
-  });
   const [errors, setErrors] = useState<FormErrors>({});
   const [submitError, setSubmitError] = useState<string>("");
   const [submitSuccess, setSubmitSuccess] = useState<boolean>(false);
@@ -56,37 +57,17 @@ const AddMedicationPage: React.FC = () => {
     // Fetch categories and manufacturers for dropdowns;
     const fetchData = async (): Promise<void> => {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
         // Simulate fetching data;
         const simulatedCategories: Category[] = [;
           {id:"cat_001", name: "Antibiotics" },
@@ -96,19 +77,16 @@ const AddMedicationPage: React.FC = () => {
           {id:"cat_005", name: "Antidiabetics" },
           {id:"cat_006", name: "Antihistamines" },
           {id:"cat_007", name: "Antacids" },
-          {id:"cat_008", name: "Vitamins & Supplements" }];
+          {id: "cat_008",
         const simulatedManufacturers: Manufacturer[] = [;
           {id:"mfr_001", name: "Cipla Ltd." },
           {id:"mfr_002", name: "Sun Pharmaceutical Industries Ltd." },
           {id:"mfr_003", name: "Lupin Limited" },
           {id:"mfr_004", name: "Dr. Reddy"s Laboratories" },
-          {id:"mfr_005", name: "Zydus Cadila" }];
+          {id: "mfr_005",
         setCategories(simulatedCategories),
         setManufacturers(simulatedManufacturers);
-      } catch (error) {
-
-        // Handle error appropriately, e.g., set an error state;
-      }
+      } catch (error) { console.error(error); }
     };
 
     fetchData();
@@ -161,43 +139,18 @@ const AddMedicationPage: React.FC = () => {
     setSubmitSuccess(false);
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // Simulate API call;
-      // const _response = await fetch("/api/pharmacy/medications", {
-      //   method: "POST";
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
+} catch (error) { console.error(error); },
       //   body: JSON.stringify(formData);
       // });
 
@@ -226,11 +179,7 @@ const AddMedicationPage: React.FC = () => {
       setTimeout(() => {
         router.push("/pharmacy/medications"); // Assuming this is the correct path;
       }, 2000);
-    } catch (error) {
-      const message =;
-        error instanceof Error ? error.message : "An unknown error occurred.";
-      setSubmitError(message);
-    } finally {
+    } catch (error) { console.error(error); } finally {
       setLoading(false);
 
   };
@@ -240,8 +189,7 @@ const AddMedicationPage: React.FC = () => {
       >;
         <h1 className="text-2xl font-bold text-gray-800">Add New Medication>;
         <button>;
-          className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md",
-          onClick={() => router.push("/pharmacy/medications")} // Assuming this path;
+          className="bg-gray-500 hover: bg-gray-600 text-white px-4 py-2 rounded-md",
         >;
           Back to Medications;
         </button>;
@@ -507,9 +455,7 @@ const AddMedicationPage: React.FC = () => {
                   type = "checkbox",
                   checked={formData.prescription_required}
                   onChange={handleChange}
-                  className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500",
-                  disabled={loading}
-                />;
+                  className="h-4 w-4 text-blue-600 border-gray-300 rounded focus: ring-blue-500",
                 <label>;
                   htmlFor = "prescription_required",
                   className="ml-2 block text-sm text-gray-900";
@@ -524,9 +470,7 @@ const AddMedicationPage: React.FC = () => {
                   type = "checkbox",
                   checked={formData.narcotic}
                   onChange={handleChange}
-                  className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500",
-                  disabled={loading}
-                />;
+                  className="h-4 w-4 text-blue-600 border-gray-300 rounded focus: ring-blue-500",
                 <label>;
                   htmlFor = "narcotic",
                   className="ml-2 block text-sm text-gray-900";
@@ -560,16 +504,12 @@ const AddMedicationPage: React.FC = () => {
             <button>;
               type = "button",
               onClick={() => router.push("/pharmacy/medications")} // Assuming this path;
-              className="mr-4 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50",
-              disabled={loading}
-            >;
+              className="mr-4 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover: bg-gray-50",
               Cancel;
             </button>;
             <button>;
               type = "submit",
-              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:opacity-50",
-              disabled={loading}
-            >;
+              className="px-4 py-2 bg-blue-500 text-white rounded-md hover: bg-blue-600 disabled:opacity-50",
               {loading ? "Saving..." : "Save Medication"}
             </button>;
           </div>;

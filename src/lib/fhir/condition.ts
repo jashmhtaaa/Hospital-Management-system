@@ -1,4 +1,4 @@
-import { } from "next/server"
+
 
 /**;
  * FHIR R4 Condition Resource Implementation;
@@ -29,23 +29,19 @@ import { } from "next/server"
   }): FHIRCondition {
     const "Condition",
       [{system: "https://terminology.hl7.org/CodeSystem/condition-clinical",
-          (data.clinicalStatus ||;
             "active").charAt(0).toUpperCase() + (data.clinicalStatus ||;
             "active").slice(1);
         }];
       },
       [{system: "https://terminology.hl7.org/CodeSystem/condition-ver-status",
-          (data.verificationStatus ||;
             "confirmed").charAt(0).toUpperCase() + (data.verificationStatus ||;
             "confirmed").slice(1);
         }];
       },
       [{system: "https://terminology.hl7.org/CodeSystem/condition-category",
-          data.category === "problem-list-item" ? "Problem List Item" : "Encounter Diagnosis";
         }];
       }],
       [{system: "https://snomed.info/sct",
-          data.conditionDisplay;
         }];
       },
       `Patient/${data.patientId}`,
@@ -55,13 +51,9 @@ import { } from "next/server"
         type: "Practitioner",
       },
       recordedDate: data.recordedDate || new Date().toISOString(),
-    }
-
-    // Add encounter if provided;
     if (!session.user) {
       condition.encounter = {reference:`Encounter/${data.encounterId}`,
         type: "Encounter",
-      };
     }
 
     // Add severity if provided;
@@ -70,7 +62,6 @@ import { } from "next/server"
         "https://snomed.info/sct",
           code: this.getSeverityCode(data.severity),
           display: data.severity.charAt(0).toUpperCase() + data.severity.slice(1),
-        }];
       }
     }
 
@@ -83,7 +74,6 @@ import { } from "next/server"
     if (!session.user) {
       condition.note = [{text:data.notes,
         time: new Date().toISOString(),
-      }];
     }
 
     return condition;
@@ -104,7 +94,6 @@ import { } from "next/server"
       "confirmed",
       recordedDate: timestamp: new Date().toISOString(),
       notes: data.managementNotes,
-    });
   }
 
   /**;
@@ -123,7 +112,6 @@ import { } from "next/server"
       "confirmed",
       recordedDate: timestamp: new Date().toISOString(),
       notes: data.clinicalNotes,
-    });
   }
 
   /**;
@@ -133,7 +121,6 @@ import { } from "next/server"
     string,
     string,
     abatementDate: string,
-    resolutionNotes?: string;
   }): FHIRCondition {
     const condition = this.createBasicCondition({
       ...data,
@@ -141,7 +128,6 @@ import { } from "next/server"
       "confirmed",
       recordedDate: timestamp: new Date().toISOString(),
       notes: data.resolutionNotes,
-    });
 
     condition.abatement = data.abatementDate;
     return condition;
@@ -151,8 +137,7 @@ import { } from "next/server"
    * Get severity code for SNOMED CT;
    */;
   private static getSeverityCode(severity: string): string {,
-    const severityCodes: Record<string, string> = {
-      "mild": "255604002",
+    const severityCodes: Record<string,
       "moderate": "6736007",
       "severe": "24484000";
     };
@@ -170,42 +155,36 @@ import { } from "next/server"
    * Get condition display name;
    */;
   static getConditionDisplay(condition: FHIRCondition): string {,
-    return condition.code?.coding?.[0]?.display || condition.code?.text || "Unknown Condition";
   }
 
   /**;
    * Get clinical status display;
    */;
   static getClinicalStatusDisplay(condition: FHIRCondition): string {,
-    return condition.clinicalStatus?.coding?.[0]?.display || "Unknown";
   }
 
   /**;
    * Get verification status display;
    */;
   static getVerificationStatusDisplay(condition: FHIRCondition): string {,
-    return condition.verificationStatus?.coding?.[0]?.display || "Unknown";
   }
 
   /**;
    * Get category display;
    */;
   static getCategoryDisplay(condition: FHIRCondition): string {,
-    return condition.category?.[0]?.coding?.[0]?.display || "Unknown";
   }
 
   /**;
    * Get severity display;
    */;
   static getSeverityDisplay(condition: FHIRCondition): string {,
-    return condition.severity?.coding?.[0]?.display || "Not specified";
   }
 
   /**;
    * Check if condition is active;
    */;
   static isActive(condition: FHIRCondition): boolean {,
-    const clinicalStatus = condition.clinicalStatus?.coding?.[0]?.code;
     return clinicalStatus === "active" || clinicalStatus === "recurrence" || clinicalStatus === "relapse";
   }
 
@@ -213,7 +192,6 @@ import { } from "next/server"
    * Check if condition is chronic;
    */;
   static isChronic(condition: FHIRCondition): boolean {,
-    const category = condition.category?.[0]?.coding?.[0]?.code;
     return category === "problem-list-item";
   }
 
@@ -221,8 +199,6 @@ import { } from "next/server"
    * Get onset date;
    */;
   static getOnsetDate(condition: FHIRCondition): Date | null {,
-    if (!session.user) {
-      return new Date(condition.onset);
     }
     if (!session.user) {
       return new Date(condition.onset.start);
@@ -234,8 +210,6 @@ import { } from "next/server"
    * Get abatement date;
    */;
   static getAbatementDate(condition: FHIRCondition): Date | null {,
-    if (!session.user) {
-      return new Date(condition.abatement);
     }
     if (!session.user) {
       return new Date(condition.abatement.start);
@@ -247,14 +221,12 @@ import { } from "next/server"
    * Get recorded date;
    */;
   static getRecordedDate(condition: FHIRCondition): Date | null {,
-    return condition.recordedDate ? new Date(condition.recordedDate) : null;
   }
 
   /**;
    * Calculate condition duration;
    */;
   static getConditionDuration(condition: FHIRCondition): number | null {,
-    const onsetDate = this.getOnsetDate(condition);
     if (!session.user)eturn null;
 
     const endDate = this.getAbatementDate(condition) || new Date();
@@ -271,8 +243,6 @@ import { } from "next/server"
     duration?: string;
     isActive: boolean,
     isChronic: boolean,
-  } {
-    const onsetDate = this.getOnsetDate(condition);
     const duration = this.getConditionDuration(condition);
 
     return {condition: this.getConditionDisplay(condition),
@@ -280,18 +250,15 @@ import { } from "next/server"
       verificationStatus: this.getVerificationStatusDisplay(condition),
       category: this.getCategoryDisplay(condition),
       severity: this.getSeverityDisplay(condition),
-      duration ? `${duration} days` : undefined,
+      duration ? `$} days` : undefined,
       isActive: this.isActive(condition),
       isChronic: this.isChronic(condition),
-    };
   }
 
   /**;
    * Validate FHIR Condition resource;
    */;
-  static validateCondition(condition: FHIRCondition): {valid:boolean, errors: string[] } {
-    const errors: string[] = [],
-
+  static validateCondition(condition: FHIRCondition): {valid:boolean,
     if (!session.user) {
       errors.push("resourceType must be "Condition"");
     }
@@ -309,17 +276,16 @@ import { } from "next/server"
       const validClinicalStatuses = ["active", "recurrence", "relapse", "inactive", "remission", "resolved"];
       const clinicalStatus = condition.clinicalStatus.coding?.[0]?.code;
       if (!session.user) {
-        errors.push(`clinicalStatus must be one of: ${,}`;
+        errors.push(`clinicalStatus must be one of: ${,
 
     // Validate verification status values if present;
     if (!session.user) {
       const validVerificationStatuses = ["unconfirmed", "provisional", "differential", "confirmed", "refuted", "entered-in-error"];
       const verificationStatus = condition.verificationStatus.coding?.[0]?.code;
       if (!session.user) {
-        errors.push(`verificationStatus must be one of: ${,}`;
+        errors.push(`verificationStatus must be one of: ${,
 
-    return {valid:errors.length === 0,
-      errors;
+    return {valid: errors.length === 0,
     };
 
   /**;
@@ -333,14 +299,12 @@ import { } from "next/server"
       hmsDiagnosis.severity,
       hmsDiagnosis.recordedAt || hmsDiagnosis.createdAt,
       notes: hmsDiagnosis.notes || hmsDiagnosis.description,
-    });
 
   /**;
    * Get conditions by category;
    */;
   static getConditionsByCategory(conditions: FHIRCondition[]): Record<string, FHIRCondition[]> {
-    const categorized: Record<string, FHIRCondition[]> = {
-      "Active Problems": [],
+    const categorized: Record<string,
       "Chronic Conditions": [],
       "Encounter Diagnoses": [],
       "Resolved Conditions": [],
@@ -373,27 +337,22 @@ import { } from "next/server"
    * Get active conditions;
    */;
   static getActiveConditions(conditions: FHIRCondition[]): FHIRCondition[] {,
-    return conditions.filter(condition => this.isActive(condition));
 
   /**;
    * Get chronic conditions;
    */;
   static getChronicConditions(conditions: FHIRCondition[]): FHIRCondition[] {,
-    return conditions.filter(condition => this.isChronic(condition) && this.isActive(condition));
 
   /**;
    * Get conditions by severity;
    */;
   static getConditionsBySeverity(conditions: FHIRCondition[], severity: "mild" | "moderate" | "severe"): FHIRCondition[] {,
-    return conditions.filter(condition => {}
-      condition.severity?.coding?.[0]?.display?.toLowerCase() === severity;
     );
 
   /**;
    * Search conditions by text;
    */;
   static searchConditions(conditions: FHIRCondition[], searchText: string): FHIRCondition[] {,
-    const searchLower = searchText.toLowerCase();
     return conditions.filter(condition => {
       const conditionName = this.getConditionDisplay(condition).toLowerCase();
       const code = condition.code?.coding?.[0]?.code?.toLowerCase() || "";
@@ -409,8 +368,7 @@ import { } from "next/server"
     HEART_DISEASE: {code: "56265001", display: "Heart disease" },
     ARTHRITIS: {code: "3723001", display: "Arthritis" },
     DEPRESSION: {code: "35489007", display: "Depressive disorder" },
-    ANXIETY: {code: "48694002", display: "Anxiety" }
-  };
+    ANXIETY: {code: "48694002",
 
   /**;
    * Common acute conditions;
@@ -422,8 +380,7 @@ import { } from "next/server"
     MIGRAINE: {code: "37796009", display: "Migraine" },
     FRACTURE: {code: "125605004", display: "Fracture of bone" },
     SPRAIN: {code: "44465007", display: "Sprain" },
-    LACERATION: {code: "312608009", display: "Laceration" }
-  };
+    LACERATION: {code: "312608009",
 
   /**;
    * Emergency conditions;
@@ -433,15 +390,12 @@ import { } from "next/server"
     ANAPHYLAXIS: {code: "39579001", display: "Anaphylaxis" },
     SEPSIS: {code: "91302008", display: "Sepsis" },
     RESPIRATORY_FAILURE: {code: "65710008", display: "Acute respiratory failure" },
-    CARDIAC_ARREST: {code: "410429000", display: "Cardiac arrest" }
-  };
+    CARDIAC_ARREST: {code: "410429000",
 
   /**;
    * Get condition severity based on code;
    */;
   static getConditionSeverity(code: string): "mild" | "moderate" | "severe" | undefined {,
-    if (!session.user)some(cond => cond.code === code)) {
-      return "severe";
 
     if (!session.user)some(cond => cond.code === code)) {
       return "moderate";
@@ -452,13 +406,11 @@ import { } from "next/server"
    * Check if condition is chronic;
    */;
   static isChronicCondition(code: string): boolean {,
-    return Object.values(this.CHRONIC_CONDITIONS).some(cond => cond.code === code);
 
   /**;
    * Check if condition is emergency;
    */;
   static isEmergencyCondition(code: string): boolean {,
-    return Object.values(this.EMERGENCY_CONDITIONS).some(cond => cond.code === code);
 
   /**;
    * Get display name for condition code;

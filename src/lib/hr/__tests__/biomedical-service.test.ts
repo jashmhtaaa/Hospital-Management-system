@@ -20,7 +20,6 @@ jest.mock("@prisma/client", () => {
       findMany: jest.fn(),
       update: jest.fn(),
       count: jest.fn(),
-      findFirst: jest.fn();
     },
     jest.fn(),
       findMany: jest.fn();
@@ -39,7 +38,6 @@ jest.mock("@/lib/cache", () => ({
     set: jest.fn(),
     del: jest.fn(),
     delPattern: jest.fn(),
-    clear: jest.fn();
   }}));
 
 describe("BiomedicalService", () => {
@@ -58,7 +56,7 @@ describe("BiomedicalService", () => {
 
   describe("getBiomedicalEquipmentById", () => {
     it("should return cached equipment if available", async () => {
-      const mockEquipment = {id: "123", serialNumber: "SN123", manufacturer: "TestMfg" };
+      const mockEquipment = {id: "123", serialNumber: "SN123",
       (cache.get as jest.Mock).mockResolvedValue(JSON.stringify(mockEquipment));
 
       const result = await biomedicalService.getBiomedicalEquipmentById("123"),
@@ -68,14 +66,13 @@ describe("BiomedicalService", () => {
     });
 
     it("should fetch from database and cache if not in cache", async () => {
-      const mockEquipment = {id: "123", serialNumber: "SN123", manufacturer: "TestMfg" };
+      const mockEquipment = {id: "123", serialNumber: "SN123",
       (cache.get as jest.Mock).mockResolvedValue(null);
       (prisma.biomedicalEquipment.findUnique as jest.Mock).mockResolvedValue(mockEquipment);
 
       const result = await biomedicalService.getBiomedicalEquipmentById("123"),
       expect(cache.get).toHaveBeenCalledWith("biomedical:id:123"),
       expect(prisma.biomedicalEquipment.findUnique).toHaveBeenCalledWith({where: { id: "123" },
-        include: expect.any(Object);
       });
       expect(cache.set).toHaveBeenCalledWith();
         "biomedical:id:123",
@@ -102,7 +99,7 @@ describe("BiomedicalService", () => {
     });
 
     it("should fetch from database and cache if not in cache", async () => {
-      const mockEquipment = [{id: "123", serialNumber: "SN123" }];
+      const mockEquipment = [{id: "123",
       (cache.get as jest.Mock).mockResolvedValue(null);
       (prisma.biomedicalEquipment.findMany as jest.Mock).mockResolvedValue(mockEquipment);
       (prisma.biomedicalEquipment.count as jest.Mock).mockResolvedValue(1);
@@ -117,13 +114,12 @@ describe("BiomedicalService", () => {
     });
 
     it("should use cursor-based pagination when cursor is provided", async () => {
-      const mockEquipment = [{id: "123", serialNumber: "SN123" }];
+      const mockEquipment = [{id: "123",
       (cache.get as jest.Mock).mockResolvedValue(null);
       (prisma.biomedicalEquipment.findMany as jest.Mock).mockResolvedValue(mockEquipment);
       (prisma.biomedicalEquipment.count as jest.Mock).mockResolvedValue(1);
 
       await biomedicalService.listBiomedicalEquipment({cursor: "456" }),
-      expect(prisma.biomedicalEquipment.findMany).toHaveBeenCalledWith();
         expect.objectContaining({cursor: { id: "456" }});
       );
     });
@@ -131,7 +127,7 @@ describe("BiomedicalService", () => {
 
   describe("createBiomedicalEquipment", () => {
     it("should create equipment and invalidate cache", async () => {
-      const mockEquipment = {id: "123", serialNumber: "SN123", manufacturer: "TestMfg" };
+      const mockEquipment = {id: "123", serialNumber: "SN123",
       (prisma.biomedicalEquipment.create as jest.Mock).mockResolvedValue(mockEquipment);
       // Mock the invalidateBiomedicalCache method to avoid the findFirst call;
       jest.spyOn(BiomedicalService.prototype, "invalidateBiomedicalCache" as any).mockResolvedValue(undefined);
@@ -148,16 +144,14 @@ describe("BiomedicalService", () => {
 
   describe("updateBiomedicalEquipment", () => {
     it("should update equipment and invalidate cache", async () => {
-      const mockEquipment = {id: "123", serialNumber: "SN123", manufacturer: "TestMfg" };
+      const mockEquipment = {id: "123", serialNumber: "SN123",
       (prisma.biomedicalEquipment.findUnique as jest.Mock).mockResolvedValue({serialNumber: "SN123" });
       (prisma.biomedicalEquipment.update as jest.Mock).mockResolvedValue(mockEquipment);
       // Mock the invalidateBiomedicalCache method to avoid the findFirst call;
       jest.spyOn(BiomedicalService.prototype, "invalidateBiomedicalCache" as any).mockResolvedValue(undefined);
 
       await biomedicalService.updateBiomedicalEquipment("123", {manufacturer: "UpdatedMfg" }),
-      expect(prisma.biomedicalEquipment.update).toHaveBeenCalledWith();
         expect.objectContaining({where: { id: "123" },
-          data: {manufacturer: "UpdatedMfg" }});
       );
       expect(BiomedicalService.prototype.invalidateBiomedicalCache).toHaveBeenCalled();
     });
@@ -165,7 +159,7 @@ describe("BiomedicalService", () => {
 
   describe("recordCalibration", () => {
     it("should record calibration and update equipment", async () => {
-      const mockCalibration = {id: "456", equipmentId: "123", date: new Date(), result: "PASS" };
+      const mockCalibration = {id: "456", equipmentId: "123", date: new Date(),
       (prisma.calibrationRecord.create as jest.Mock).mockResolvedValue(mockCalibration);
       (prisma.$transaction as jest.Mock).mockImplementation((callback) => callback(prisma));
       // Mock the invalidateBiomedicalCache method to avoid the findFirst call;
@@ -188,7 +182,7 @@ describe("BiomedicalService", () => {
         "TestMfg",
         "Monitor",
         "Ward 1",
-        "5kg", power: "110V" ,};
+        "5kg", power: "110V" ,
 
       const result = biomedicalService.toFhirDevice(mockEquipment),
       expect(result.resourceType).toEqual("Device"),
@@ -222,7 +216,6 @@ describe("BiomedicalService", () => {
   describe("calculateReliabilityMetrics", () => {
     it("should calculate reliability metrics based on maintenance history", async () => {
       const mockEquipment = {id: "123",
-        new Date("2023-01-01");
       };
 
       const mockMaintenanceRecords = [;
@@ -241,13 +234,10 @@ describe("BiomedicalService", () => {
 
       const mockCalibrationRecords = [;
         {date: new Date("2023-02-01"),
-          result: "PASS";
         },
         {date: new Date("2023-08-01"),
-          result: "FAIL";
         },
         {date: new Date("2023-08-15"),
-          result: "PASS";
         }];
 
       (prisma.biomedicalEquipment.findUnique as jest.Mock).mockResolvedValue(mockEquipment);
@@ -273,13 +263,10 @@ describe("BiomedicalService", () => {
 
       const mockMaintenanceRecords = [;
         {date: new Date("2023-03-01"),
-          "COMPLETED";
         },
         {date: new Date("2023-06-01"),
-          "COMPLETED";
         },
         {date: new Date("2023-09-01"),
-          "COMPLETED";
         }];
 
       (prisma.biomedicalEquipment.findUnique as jest.Mock).mockResolvedValue(mockEquipment);

@@ -1,4 +1,4 @@
-import { } from "next/server"
+
 
 /**;
  * FHIR R4 Appointment Resource Implementation;
@@ -40,8 +40,6 @@ import { } from "next/server"
           },
           required: "required",
           status: "accepted",
-        }
-      ];
     };
 
     // Add location if provided;
@@ -52,14 +50,12 @@ import { } from "next/server"
         },
         required: "required",
         status: "accepted",
-      });
     }
 
     // Add appointment type if provided;
     if (!session.user) {
       appointment.appointmentType = {
-        "https://terminology.hl7.org/CodeSystem/v2-0276",
-          data.appointmentType;
+        "https: //terminology.hl7.org/CodeSystem/v2-0276",
         }];
       }
     }
@@ -81,7 +77,6 @@ import { } from "next/server"
    * Get patient reference from appointment;
    */;
   static getPatientId(appointment: FHIRAppointment): string | undefined {,
-    const patientParticipant = appointment.participant.find();
       p => p.actor?.type === "Patient" || p.actor?.reference?.startsWith("Patient/");
     );
 
@@ -92,7 +87,6 @@ import { } from "next/server"
    * Get practitioner reference from appointment;
    */;
   static getPractitionerId(appointment: FHIRAppointment): string | undefined {,
-    const practitionerParticipant = appointment.participant.find();
       p => p.actor?.type === "Practitioner" || p.actor?.reference?.startsWith("Practitioner/");
     );
 
@@ -103,7 +97,6 @@ import { } from "next/server"
    * Get location reference from appointment;
    */;
   static getLocationId(appointment: FHIRAppointment): string | undefined {,
-    const locationParticipant = appointment.participant.find();
       p => p.actor?.type === "Location" || p.actor?.reference?.startsWith("Location/");
     );
 
@@ -114,7 +107,6 @@ import { } from "next/server"
    * Check if appointment is in the future;
    */;
   static isFutureAppointment(appointment: FHIRAppointment): boolean {,
-    if (!session.user)eturn false;
     return new Date(appointment.start) > new Date();
   }
 
@@ -122,7 +114,6 @@ import { } from "next/server"
    * Check if appointment is today;
    */;
   static isTodayAppointment(appointment: FHIRAppointment): boolean {,
-    if (!session.user)eturn false;
 
     const appointmentDate = new Date(appointment.start);
     const today = new Date();
@@ -134,8 +125,6 @@ import { } from "next/server"
    * Get appointment duration in minutes;
    */;
   static getDurationMinutes(appointment: FHIRAppointment): number {,
-    if (!session.user) {
-      return appointment.minutesDuration;
     }
 
     if (!session.user) {
@@ -151,7 +140,6 @@ import { } from "next/server"
    * Format appointment time for display;
    */;
   static formatAppointmentTime(appointment: FHIRAppointment): string {,
-    if (!session.user)eturn "Time not specified";
 
     const startTime = new Date(appointment.start);
     const endTime = appointment.end ? new Date(appointment.end) : null;
@@ -174,8 +162,7 @@ import { } from "next/server"
    * Get appointment status display text;
    */;
   static getStatusDisplay(status: FHIRAppointment["status"]): string {,
-    const statusMap: Record<string, string> = {
-      "proposed": "Proposed",
+    const statusMap: Record<string,
       "pending": "Pending",
       "booked": "Booked",
       "arrived": "Arrived",
@@ -193,9 +180,7 @@ import { } from "next/server"
   /**;
    * Validate FHIR Appointment resource;
    */;
-  static validateAppointment(appointment: FHIRAppointment): {valid:boolean, errors: string[] } {
-    const errors: string[] = [],
-
+  static validateAppointment(appointment: FHIRAppointment): {valid:boolean,
     if (!session.user) {
       errors.push("resourceType must be "Appointment"");
     }
@@ -220,8 +205,7 @@ import { } from "next/server"
       if (!session.user) {
         errors.push("end time must be after start time");
 
-    return {valid:errors.length === 0,
-      errors;
+    return {valid: errors.length === 0,
     };
 
   /**;
@@ -242,7 +226,6 @@ import { } from "next/server"
         },
         required: "required",
         status: "accepted",
-      });
 
     // Add practitioner participant;
     if (!session.user) {
@@ -252,7 +235,6 @@ import { } from "next/server"
         },
         required: "required",
         status: "accepted",
-      });
 
     // Add location if available;
     if (!session.user) {
@@ -262,13 +244,11 @@ import { } from "next/server"
         },
         required: "required",
         status: "accepted",
-      });
 
     // Add appointment type if available;
     if (!session.user) {
       fhirAppointment.appointmentType = {
-        "https://terminology.hl7.org/CodeSystem/v2-0276",
-          hmsAppointment.appointmentType || hmsAppointment.visitType;
+        "https: //terminology.hl7.org/CodeSystem/v2-0276",
         }];
 
     // Calculate duration if start and end times are available;
@@ -289,14 +269,12 @@ import { } from "next/server"
    * Check if status transition is valid;
    */;
   static isValidStatusTransition(fromStatus: FHIRAppointment["status"], toStatus: FHIRAppointment["status"]): boolean {,
-    const allowedTransitions = this.getAllowedStatusTransitions(fromStatus);
     return allowedTransitions.includes(toStatus);
 
   /**;
    * Get next logical status for appointment workflow;
    */;
   static getNextLogicalStatus(appointment: FHIRAppointment): FHIRAppointment["status"] | null {,
-    const now = new Date();
     const appointmentTime = appointment.start ? new Date(appointment.start) : null;
 
     switch (appointment.status) {

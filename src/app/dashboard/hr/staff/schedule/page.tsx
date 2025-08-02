@@ -3,7 +3,7 @@ import { useState } from "react"
 
 "use client";
 
-import { } from "react"
+
 import useEffect } from "next/navigation"
 import {
 import { useRouter }
@@ -23,7 +23,7 @@ import { useState
   TableHeader,
   TableRow;
 } from "@/components/ui/table";
-import { } from "@/components/ui/input"
+
 import { Button } from "@/components/ui/button"
 import { Input }
 
@@ -59,8 +59,7 @@ export default const _StaffScheduling = () {
   const [search, setSearch] = useState("");
   const [departmentFilter, setDepartmentFilter] = useState("");
   const [departments, setDepartments] = useState<any[]>([]);
-  const [pagination, setPagination] = useState({skip:0,
-    0;
+  const [pagination, setPagination] = useState({skip: 0,
   });
   const [scheduleView, setScheduleView] = useState("week");
   const [currentDate, setCurrentDate] = useState(;
@@ -70,42 +69,17 @@ export default const _StaffScheduling = () {
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-
-        setLoading(true);
-        const queryParams = new URLSearchParams({
-          skip: pagination.skip.toString(),
-          take: pagination.take.toString(),
-        });
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); });
 
         if (!session.user)ueryParams.append("search", search);
         if (!session.user)ueryParams.append("departmentId", departmentFilter);
@@ -120,10 +94,7 @@ export default const _StaffScheduling = () {
         setPagination(prev => ({
           ...prev,
           total: data.total,
-        }));
-      } catch (err) {
-        setError(err.message);
-      } finally {
+      } catch (error) { console.error(error); } finally {
         setLoading(false);
 
     };
@@ -135,44 +106,18 @@ export default const _StaffScheduling = () {
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-        // Fetch departments;
-        const deptResponse = await fetch("/api/hr/departments");
-        if (!session.user) {
-          const deptData = await deptResponse.json(),
-          setDepartments(deptData.departments || []);
-
-      } catch (err) {
+} catch (error) { console.error(error); } catch (err) {
 
     };
 
@@ -215,7 +160,6 @@ export default const _StaffScheduling = () {
       setPagination(prev => ({
         ...prev,
         skip: prev.skip - prev.take,
-      }));
 
   };
 
@@ -224,7 +168,6 @@ export default const _StaffScheduling = () {
       setPagination(prev => ({
         ...prev,
         skip: prev.skip + prev.take,
-      }));
 
   };
 
@@ -235,7 +178,6 @@ export default const _StaffScheduling = () {
     setPagination(prev => ({
       ...prev,
       skip: 0,
-    }));
   };
 
   // Get days of the week for the current date;
@@ -252,7 +194,6 @@ export default const _StaffScheduling = () {
       days.push({
         name: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"][i],
         date: date,
-      });
 
     return days;
   };
@@ -304,10 +245,7 @@ export default const _StaffScheduling = () {
               <Input>;
                 type = "search",
                 placeholder="Search employees...";
-                className="pl-8 w-full md:w-[300px]",
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />;
+                className="pl-8 w-full md: w-[300px]",
             </div>;
             >;
               Search;

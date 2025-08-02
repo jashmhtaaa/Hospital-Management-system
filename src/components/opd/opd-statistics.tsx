@@ -1,4 +1,4 @@
-import { } from "react"
+
 import Image
 import React
 import useEffect } from "next/image"
@@ -12,7 +12,9 @@ interface OPDStatisticsProperties {
   date: Date,
 }
 
-interface StatisticsData {totalAppointments:number,
+interface StatisticsData {
+  totalAppointments:number,
+}
   number,
   number; // in minutes;
   string,
@@ -37,37 +39,17 @@ export default const _OPDStatistics = ({ date }: OPDStatisticsProperties) {
       setError(undefined);
 
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
         const formattedDate = date.toISOString().split("T")[0];
         const response = await fetch();
           `/api/opd/statistics?date=${formattedDate}`;
@@ -76,46 +58,23 @@ export default const _OPDStatistics = ({ date }: OPDStatisticsProperties) {
         if (!session.user) {
           const errorMessage = "Failed to fetch statistics";
           try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-            const errorData: ApiErrorResponse = await response.json(),
-            errorMessage = errorData.error || errorMessage;
-          } catch {
+} catch (error) { console.error(error); } catch {
             /* Ignore */;
 
           throw new Error(errorMessage);
 
         // FIX: Type the response data,
-        const data: StatisticsApiResponse = await response.json();
         // Validate the structure if necessary before setting state;
         if (!session.user) {
           setStatistics(data);
@@ -123,15 +82,7 @@ export default const _OPDStatistics = ({ date }: OPDStatisticsProperties) {
 
           setStatistics(undefined); // Set to null or handle appropriately;
 
-      } catch (error_: unknown) {
-        // FIX: Use unknown,
-        const messageText =;
-          error_ instanceof Error;
-            ? error_.message;
-            : "An unknown error occurred";
-        setError(messageText);
-
-      } finally {
+      } catch (error) { console.error(error); } finally {
         setLoading(false);
 
     };
@@ -211,8 +162,7 @@ export default const _OPDStatistics = ({ date }: OPDStatisticsProperties) {
                     ? "bg-yellow-500";
                     : "bg-red-500";
               }`}
-              style={{width:`${Math.min(100, (statistics.averageWaitTime / 60) * 100)}%`}}
-            ></div>;
+              style={{width: `${Math.min(100,
           </div>;
           >;
             {Math.floor(statistics.averageWaitTime / 60)}h{" "}

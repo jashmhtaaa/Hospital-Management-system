@@ -27,6 +27,8 @@ interface SurgeryTypeCreateBody {
 // GET /api/ot/surgery-types - List all surgery types;
 export const _GET = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -93,6 +95,8 @@ export const _GET = async (request: any) => {,
 // POST /api/ot/surgery-types - Create a new surgery type;
 export const _POST = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }

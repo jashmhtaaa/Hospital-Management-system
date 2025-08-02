@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 
 import { Button } from '@/components/ui/button';
@@ -8,7 +8,7 @@ interface NursingNote {
   id: string,
   \1,\2 string,
   \1,\2 string,
-  category: 'assessment' | 'medication' | 'intervention' | 'observation'
+  category: 'assessment' | 'medication' | 'intervention' | 'observation';
 }
 
 interface NursingNotesProps {

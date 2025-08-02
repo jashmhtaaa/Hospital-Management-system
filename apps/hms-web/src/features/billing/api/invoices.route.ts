@@ -8,29 +8,16 @@ const invoiceService = new InvoiceService();
 
 /**
  * @swagger;
- * /api/billing/invoices:
- *   post:,
- *     summary: Generate a new invoice for a patient;
+ * /api/billing/invoices: *   post:,
  *     description: Creates an invoice based on billable charges for a patient.,
- *     requestBody:
- *       required: true;
- *       content:
- *         application/json:,
- *           schema:
- *             type: object;
+ *       content: *         application/json:,
  *             required:
  *               - patientId;
- *             properties:
- *               patientId:,
- *                 type: string;
+ *             properties: *               patientId:,
  *                 description: The ID of the patient for whom to generate the invoice.,
- *               chargeIds:
- *                 type: array;
  *                 items:
  *                   type: string;
  *                 description: Optional array of specific charge IDs to include in this invoice.,
- *               invoiceType:
- *                 type: string;
  *                 description: Type of invoice (e.g., 'INTERIM', 'FINAL'). Defaults to 'FINAL'.
  *                 default: 'FINAL',
  *     responses:
@@ -42,15 +29,8 @@ const invoiceService = new InvoiceService();
  *               $ref: "#/components/schemas/Invoice",
  *       400:
  *         description: Invalid input, patient not found, or no billable charges.
- *       500:
- *         description: Server error.,
- *
- * /api/billing/invoices/{invoiceId}:
- *   get:
- *     summary: Retrieve a specific invoice by ID;
+ *       500: *         description: Server error.,
  *     description: Fetches the details of a single invoice.,
- *     parameters:
- *       - in: path;
  *         name: invoiceId;
  *         required: true;
  *         schema:
@@ -69,34 +49,28 @@ const invoiceService = new InvoiceService();
  *         description: Server error.,
  */
 export default async const _handler = (req: NextApiRequest, res: NextApiResponse) {,
-    const { invoiceId } = req.query;
 
      {\n  {
         try {
             const { patientId, chargeIds, invoiceType } = req.body as { patientId: string, chargeIds?: string[], invoiceType?: string };
              {\n  {
-                return res.status(400).json({ message: "Patient ID is required." ,});
+                return res.status(400).json({ message: "Patient ID is required." ,
             }
             const newInvoice = await invoiceService.generateInvoice(patientId, chargeIds, invoiceType);
             return res.status(201).json(newInvoice);
-        } catch (error: unknown) {,
-
-             {\n  | error.message.includes("No billable charges")) {
-                return res.status(400).json({ message: error.message ,});
+        } catch (error) { console.error(error); });
             }
-            return res.status(500).json({ message: "Error generating invoice", error: error.message ,});
+            return res.status(500).json({ message: "Error generating invoice", error: error.message ,
         }
     } else  {\n  {
          {\n  {
             try {
                 const invoice = await invoiceService.getInvoiceById(invoiceId);
                  {\n  {
-                    return res.status(404).json({ message: `Invoice with ID ${invoiceId} not found.` ,});
+                    return res.status(404).json({ message: `Invoice with ID ${invoiceId} not found.` ,
                 }
                 return res.status(200).json(invoice);
-            } catch (error: unknown) {,
-
-                return res.status(500).json({ message: `Error fetching invoice ${invoiceId,}`, error: error.message ,});
+            } catch (error) { console.error(error); }`, error: error.message ,
             }
         }
         // Potentially add a GET /api/billing/invoices to list all invoices or invoices for a patient (with query params)

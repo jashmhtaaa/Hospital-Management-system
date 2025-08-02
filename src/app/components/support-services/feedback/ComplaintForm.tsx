@@ -3,8 +3,8 @@ import { useState } from "react"
 
 "use client";
 
-import { } from "@/components/shared/FileUploader"
-import { } from "@/components/ui/card"
+
+
 import { "@/components/ui/checkbox";
 import "@/components/ui/dialog";
 import "@/components/ui/input";
@@ -68,14 +68,12 @@ const complaintFormSchema = z.object({
   z.string().optional(),
     email: z.string().email().optional(),
     phone: z.string().optional(),
-  }).optional()});
 
 type ComplaintFormValues = z.infer>;
 
 interface ComplaintFormProps {
-  departments?: { id: string, name: string }[];
+  departments?: { id: string,
   onSuccess?: (data: unknown) => void,
-  defaultValues?: Partial>;
 export default const _ComplaintForm = ({ departments = [], onSuccess, defaultValues }: ComplaintFormProps) {
   const {data:session } = useSession();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -89,8 +87,7 @@ export default const _ComplaintForm = ({ departments = [], onSuccess, defaultVal
     defaultValues?.title || "",
       defaultValues?.category || "",
       defaultValues?.departmentId || "",
-      defaultValues?.contactInfo || {name:"",
-        "";
+      defaultValues?.contactInfo || {name: "",
       }}});
 
   // Watch for anonymous field changes;
@@ -102,7 +99,7 @@ export default const _ComplaintForm = ({ departments = [], onSuccess, defaultVal
 
   // Handle form submission;
   const onSubmit = async (values: ComplaintFormValues) => {
-    // For critical complaints, show confirmation dialog;
+    // For critical complaints,
     if (!session.user) {
       setFormValues(values),
       setShowConfirmDialog(true);
@@ -115,43 +112,18 @@ export default const _ComplaintForm = ({ departments = [], onSuccess, defaultVal
   const submitComplaint = async (values: ComplaintFormValues) => {
     setIsSubmitting(true);
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-
-      // Submit complaint;
-      const response = await fetch("/api/support-services/feedback/complaint", {method:"POST",
-        headers: {
-          "Content-Type": "application/json"},
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); },
         body: JSON.stringify(values),
-      });
 
       if (!session.user) {
         const error = await response.json();
@@ -166,7 +138,6 @@ export default const _ComplaintForm = ({ departments = [], onSuccess, defaultVal
       toast({
         title: "Complaint Submitted",
         description: "Your complaint has been submitted successfully.",
-      });
 
       // Reset form;
       form.reset(),
@@ -176,10 +147,7 @@ export default const _ComplaintForm = ({ departments = [], onSuccess, defaultVal
       if (!session.user) {
         onSuccess(data);
 
-    } catch (error: unknown) {
-      toast({title:"Error",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
     } finally {
       setIsSubmitting(false),
       setShowConfirmDialog(false);
@@ -192,44 +160,21 @@ export default const _ComplaintForm = ({ departments = [], onSuccess, defaultVal
       formData.append("file", file);
 
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-        await fetch(`/api/support-services/feedback/complaint/${complaintId}/attachment`, {
+} catch (error) { console.error(error); }/attachment`, {
           method: "POST",
           body: formData,
-        });
-      } catch (error) {
-
-  };
+      } catch (error) { console.error(error); };
 
   const handleFileChange = (newFiles: File[]) => {
     setFiles(newFiles);
@@ -471,7 +416,6 @@ export default const _ComplaintForm = ({ departments = [], onSuccess, defaultVal
             <p className="text-sm font-medium">Are you sure this complaint requires critical priority?>;
             >;
               Critical complaints should be reserved for serious issues that require immediate attention, such as: null,
-            </p>;
             >;
               <li>Patient safety concerns</li>;
               <li>Serious breaches of protocol</li>;

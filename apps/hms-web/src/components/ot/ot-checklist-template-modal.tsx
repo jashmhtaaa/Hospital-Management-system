@@ -10,7 +10,7 @@ import { Textarea } from '@/components/ui/textarea';
 }
 interface OTChecklistTemplateModalProps {
   isOpen: boolean,
-  \1,\2 (data: unknown) => void
+  \1,\2 (data: unknown) => void;
 }
 
 /**
@@ -59,22 +59,3 @@ export const _OTChecklistTemplateModal = ({ isOpen, onClose, onSubmit }: OTCheck
                   { value: "active", label: "Active" },
                   { value: "draft", label: "Draft" },
                   { value: "archived", label: "Archived" },
-                ]}
-              />
-            </div>
-
-            \1>
-              <Label htmlFor="notes">Notes\1>
-              <Textarea id="notes" placeholder="Additional information" />
-            </div>
-          </div>
-          <DialogFooter>
-            \1>
-              Cancel
-            </Button>
-            <Button type="submit">Save</Button>
-          </DialogFooter>
-        </form>
-      </DialogContent>
-    </Dialog>
-  );

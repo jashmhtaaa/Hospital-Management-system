@@ -1,4 +1,4 @@
-import { } from "@prisma/client"
+
 import "zod";
 import {  AuditService  } from "../audit.service"
 import {  PrismaClient  } from "@/lib/database"
@@ -8,7 +8,6 @@ import {  z  } from "@/lib/database"
  * Advanced ICD Coding Service;
  *;
  * Provides comprehensive ICD-10 and ICD-11 coding support with: null,
- * - Code lookup and validation;
  * - Hierarchical browsing;
  * - Clinical decision support;
  * - Integration with EHR workflows;
@@ -51,7 +50,6 @@ export const CodingRequestSchema = z.object({patientId: z.string().min(1, "Patie
   dueDate: z.date().optional(),
   status: z.enum(["pending", "in_progress", "completed", "rejected"]).default("pending"),
   specialInstructions: z.string().optional(),
-});
 
 export const CodingResultSchema = z.object({requestId: z.string(),
   z.array(z.string()).default([]),
@@ -64,7 +62,6 @@ export const CodingResultSchema = z.object({requestId: z.string(),
   validationStatus: z.enum(["pending", "validated", "rejected"]).default("pending"),
   validatedBy: z.string().optional(),
   validationDate: z.date().optional(),
-});
 
 export type ICDCode = z.infer>;
 export type CodingRequest = z.infer>;
@@ -76,39 +73,17 @@ export type CodingResult = z.infer>;
   /**;
    * Search ICD codes with advanced filtering;
    */;
-  async searchCodes(options: ICDSearchOptions): Promise<ICDCode[]> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+  async searchCodes(options: ICDSearchOptions): Promise<ICDCode[]> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       const { query, version = "ICD-10", category, billableOnly, validOnly, limit = 50, offset = 0 } = options;
 
       // In production, this would query the actual ICD database;
@@ -120,7 +95,7 @@ export type CodingResult = z.infer>;
           "I25.1",
           true,
           "both",
-          synonyms: ["Coronary atherosclerosis", "CAD"],
+          synonyms: ["Coronary atherosclerosis",
           excludes: ["I25.11"],
           ["I25.11", "I25.700"];
         },
@@ -133,8 +108,6 @@ export type CodingResult = z.infer>;
           ["DM Type 2", "NIDDM"],
           excludes: ["E11.0", "E11.1"],
           includes: ["Adult-onset diabetes"],
-        }
-      ];
 
       // Filter results based on search criteria;
       let filteredResults = mockResults.filter(code => {
@@ -157,13 +130,9 @@ export type CodingResult = z.infer>;
       await this.auditService.logAuditEvent({action: "icd_code_search",
         query,
         userId: "system",query, version, resultsCount: filteredResults.length ,
-      });
 
       return filteredResults;
-    } catch (error) {
-      /* SECURITY: Console statement removed */,
-      throw new Error("Failed to search ICD codes");
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**;
@@ -172,36 +141,16 @@ export type CodingResult = z.infer>;
   async getCodeHierarchy(code: string, ICDCode[],
     ICDCode[], }> {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
 
       // Mock hierarchy data;
       const mockHierarchy = {
@@ -217,7 +166,6 @@ export type CodingResult = z.infer>;
           true,
           true,
           sex: "both" as const,
-        }];
 
       await this.auditService.logAuditEvent({action: "icd_hierarchy_lookup",
         code,
@@ -225,56 +173,25 @@ export type CodingResult = z.infer>;
       });
 
       return mockHierarchy;
-    } catch (error) {
-      /* SECURITY: Console statement removed */,
-      throw new Error("Failed to get code hierarchy");
-
-  /**;
-   * Validate ICD code;
-   */;
-  async validateCode(code: string, boolean,
-    string[],
-    suggestions: string[],
-  }> {
+    } catch (error) { console.error(error); }> {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const searchResults = await this.searchCodes({query: code, version, limit: 1 });
+} catch (error) { console.error(error); });
       const foundCode = searchResults.find(c => c.code === code);
 
       const result = {isValid: !!foundCode && foundCode.isValid,
         [] as string[],
         suggestions: [] as string[],
-      };
 
       if (!session.user) {
         result.validationErrors.push("Code not found in database");
@@ -289,51 +206,22 @@ export type CodingResult = z.infer>;
       await this.auditService.logAuditEvent({action: "icd_code_validation",
         code,
         userId: "system",code, version, isValid: result.isValid ,
-      });
 
       return result;
-    } catch (error) {
-      /* SECURITY: Console statement removed */,
-      throw new Error("Failed to validate ICD code");
-
-  /**;
-   * Submit coding request;
-   */;
-  async submitCodingRequest(request: CodingRequest): Promise<string> {,
-    try {
-} catch (error) {
+    } catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const validatedRequest = CodingRequestSchema.parse(request);
-      const requestId = `cr_${crypto.getRandomValues([0]}_${crypto.getRandomValues([0] / (0xFFFFFFFF + 1).toString(36).substr(2, 9)}`;
+} catch (error) { console.error(error); }_${crypto.getRandomValues([0] / (0xFFFFFFFF + 1).toString(36).substr(2, 9)}`;
 
       // In production, store in database;
       /* "coding_request_submitted",
@@ -343,100 +231,40 @@ export type CodingResult = z.infer>;
       }),
 
       return requestId;
-    } catch (error) {
-      /* SECURITY: Console statement removed */,
-      throw new Error("Failed to submit coding request");
-
-  /**;
-   * Complete coding request with results;
-   */;
-  async completeCodingRequest(requestId: string, result: Omit<CodingResult, "requestId">): Promise<void> {
-    try {
-} catch (error) {
+    } catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const validatedResult = CodingResultSchema.parse({ ...result, requestId });
+} catch (error) { console.error(error); });
 
       // In production, update database record;
       /* "coding_request_completed",
         requestId,
         validatedResult.primaryCodes,
           validatedResult.methodology,
-          confidence: validatedResult.confidence,
-      })} catch (error) {
-      /* SECURITY: Console statement removed */,
-      throw new Error("Failed to complete coding request");
-
-  /**;
-   * Get coding assistance suggestions;
-   */;
-  async getCodingSuggestions();
-    clinicalText: string,
-    CodingAssistanceOptions = {}
+          confidence: validatedResult.confidence, }
   ): Promise>;
-    confidence: number,
-  }> {
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+    confidence: number, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const { suggestionLimit = 5, confidenceThreshold = 0.7 } = options;
+} catch (error) { console.error(error); } = options;
 
       // Mock AI-powered coding suggestions;
       const mockSuggestions = [;
@@ -464,90 +292,30 @@ export type CodingResult = z.infer>;
         userId: "system",
           codeType,
           textLength: clinicalText.length,
-          overallConfidence;
       });
 
       return {suggestions:filteredSuggestions,
         confidence: overallConfidence,
-      };
-    } catch (error) {
-      /* SECURITY: Console statement removed */,
-      throw new Error("Failed to get coding suggestions");
-
-  /**;
-   * Get coding statistics and metrics;
-   */;
-  async getCodingMetrics(dateRange: {from: Date, to: Date }): Promise>;
+    } catch (error) { console.error(error); }): Promise>;
     number,
       number;
   }> {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // Mock metrics data;
-      const mockMetrics = {totalRequests: 245,
-        2.5, // hours;
-        topCodes: [code: "I25.10", count: 15, description: "Atherosclerotic heart disease of native coronary artery without angina pectoris" ,code: "E11.9", count: 12, description: "Type 2 diabetes mellitus without complications" ,code: "J44.1", count: 10, description: "Chronic obstructive pulmonary disease with acute exacerbation" ;
-        ],
-        coderPerformance: [coderId: "coder001", requestsCompleted: 45, averageConfidence: 0.87 ,coderId: "coder002", requestsCompleted: 38, averageConfidence: 0.82 ,coderId: "coder003", requestsCompleted: 35, averageConfidence: 0.89 ;
-        ],
-        0.94,
-          0.85;
-
-      await this.auditService.logAuditEvent({action:"coding_metrics_accessed",
-        "metrics",
-        userId: "system",dateRange ;
-      });
+} catch (error) { console.error(error); });
 
       return mockMetrics;
-    } catch (error) {
-      /* SECURITY: Console statement removed */,
-      throw new Error("Failed to get coding metrics");
-
-  /**;
-   * Cleanup and close connections;
-   */;
-  async destroy(): Promise<void> {
-    await this.prisma.$disconnect();
-
-// Singleton instance for application use;
-let icdCodingServiceInstance: ICDCodingService | null = null,
-
-export const _getICDCodingService = (): ICDCodingService => {
-  if (!session.user) {
-    icdCodingServiceInstance = new ICDCodingService();
-
-  return icdCodingServiceInstance;
-};
+    } catch (error) { console.error(error); };
 
 export { ICDCodingService };
 ))

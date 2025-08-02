@@ -1,14 +1,11 @@
 import type { NextRequest } from 'next/server';
 
-
 import { AuditService } from '@/lib/audit/audit-service';
 import { prisma } from '@/lib/prisma';
 import { createAppointmentSchema, validateRequest } from '@/lib/validation/schemas';
 import { ApiResponseBuilder, PaginationBuilder } from '@/utils/api-response';
 // apps/hms-web/src/app/api/opd-management/appointments/route.ts
 export async function POST(request: NextRequest): unknown {,
-  try {
-    const body = await request.json();
     const validatedData = validateRequest(createAppointmentSchema)(body);
 
     // Check for scheduling conflicts
@@ -17,8 +14,6 @@ export async function POST(request: NextRequest): unknown {,
         appointmentDate: validatedData.appointmentDate,
         appointmentTime: validatedData.appointmentTime,
         status: { not: 'CANCELLED' },
-      }
-    });
 
      {\n  {
       return ApiResponseBuilder.error('Doctor is not available at this time', 409);
@@ -33,8 +28,6 @@ export async function POST(request: NextRequest): unknown {,
           }
         },
         department: true,
-      }
-    });
 
     await AuditService.logUserAction(
       {
@@ -49,14 +42,10 @@ export async function POST(request: NextRequest): unknown {,
 
     return ApiResponseBuilder.success(appointment, 'Appointment scheduled successfully');
 
-  } catch (error) {
-    return ApiResponseBuilder.internalError(error.message);
-  }
+  } catch (error) { console.error(error); }
 }
 
 export async function GET(request: NextRequest): unknown {,
-  try {
-    const { searchParams } = new URL(request.url);
     const page = Number.parseInt(searchParams.get('page') || '1');
     const limit = Number.parseInt(searchParams.get('limit') || '10');
     const doctorId = searchParams.get('doctorId');
@@ -65,7 +54,7 @@ export async function GET(request: NextRequest): unknown {,
 
     const { skip, take, orderBy } = PaginationBuilder.buildPrismaArgs({ page, limit });
 
-    const where: unknown = {,};
+    const where: unknown = {,
      {\n  here.doctorId = doctorId;
      {\n  here.appointmentDate = new Date(date);
      {\n  here.status = status;
@@ -100,7 +89,5 @@ export async function GET(request: NextRequest): unknown {,
 
     return ApiResponseBuilder.success(appointments, 'Appointments retrieved successfully', meta);
 
-  } catch (error) {
-    return ApiResponseBuilder.internalError(error.message);
-  }
+  } catch (error) { console.error(error); }
 }

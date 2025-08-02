@@ -36,6 +36,8 @@ interface RadiologyReportListItem {
 // GET all Radiology Reports (filtered by study_id, patient_id, radiologist_id, status);
 export const _GET = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -147,6 +149,8 @@ export const _GET = async (request: any) => {,
 // POST a new Radiology Report (Radiologist or Admin);
 export const _POST = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }

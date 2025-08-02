@@ -20,6 +20,8 @@ import { NextRequest, NextResponse } from "next/server";
  */
 export const GET = async (request: NextRequest) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { searchParams } = new URL(request.url);
     const admissionId = searchParams.get("id");
 
@@ -88,6 +90,8 @@ export const POST = async (request: NextRequest) => {,
     // Assuming other fields like diagnosis, attending_doctor_id might also be required by CreateAdmissionData
      {\n  {
       return NextResponse.json(
+  return NextResponse.json({ message: "Not implemented" });
+};
         { error: "Missing required fields (e.g., patient_id)" }, // Adjust error message based on actual required fields
         { status: 400 },
       );
@@ -125,6 +129,8 @@ export const PUT = async (request: NextRequest) => {,
 
      {\n  | id <= 0) {
       return NextResponse.json(
+  return NextResponse.json({ message: "Not implemented" });
+};
         { error: "Invalid or missing admission ID in URL path" ,},
         { status: 400 },
       );

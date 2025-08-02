@@ -26,6 +26,8 @@ export const POST = async (
       );
 
       return NextResponse.json(result);
+  return NextResponse.json({ message: "Not implemented" });
+};
     },
     {
       requiredPermission: 'marketing.segments.update',

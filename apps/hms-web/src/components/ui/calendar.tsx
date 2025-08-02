@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 
 import { Button } from '@/components/ui/button';
@@ -10,7 +10,7 @@ interface CalendarProps {
   disabled?: (date: Date) => boolean;
   className?: string;
   month?: Date;
-  onMonthChange?: (month: Date) => void
+  onMonthChange?: (month: Date) => void;
 }
 
 /**
@@ -92,8 +92,7 @@ export const Calendar = ({
             "h-9 w-9 rounded-md p-0 font-normal",
             isSelected && "bg-blue-600 text-white",
             !isSelected && isToday && "border border-blue-600",
-            !isSelected && !isToday && "hover:bg-gray-100",
-            isDisabled && "opacity-50 cursor-not-allowed";
+            !isSelected && !isToday && "hover: bg-gray-100",
           )}
           disabled={isDisabled}
           onClick={() => handleSelectDate(day)}

@@ -3,7 +3,7 @@ import { useState } from "react"
 
 "use client";
 
-import { } from "react"
+
 import useEffect } from "next/navigation"
 import {
 import { useRouter }
@@ -28,7 +28,7 @@ import { Tabs
   TableHeader,
   TableRow;
 } from "@/components/ui/table";
-import { } from "@/components/ui/input"
+
 import { Button } from "@/components/ui/button"
 import { Input }
 
@@ -45,7 +45,7 @@ import { Input }
   PaginationNext,
   PaginationPrevious;
 } from "@/components/ui/pagination";
-import { } from "@/components/ui/calendar"
+
 import { Badge } from "@/components/ui/badge"
 import { Calendar }
 
@@ -61,7 +61,7 @@ import { Calendar }
   Building,
   Tag;
 } from "lucide-react";
-import { } from "date-fns"
+
 import { format } from "@/components/ui/use-toast"
 import { toast }
 
@@ -80,9 +80,7 @@ export default const _AssetManagement = () {
   const [dateRange, setDateRange] = useState({
     from: null,
     to: null,
-  });
-  const [pagination, setPagination] = useState({skip:0,
-    0;
+  const [pagination, setPagination] = useState({skip: 0,
   });
   const [activeTab, setActiveTab] = useState("all");
   const [statistics, setStatistics] = useState<any | null>(null);
@@ -91,42 +89,21 @@ export default const _AssetManagement = () {
   useEffect(() => {
     const fetchAssets = async () => {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
         setLoading(true);
         const queryParams = new URLSearchParams({
           skip: pagination.skip.toString(),
           take: pagination.take.toString(),
-        });
 
         if (!session.user)ueryParams.append("search", search);
         if (!session.user)ueryParams.append("assetType", assetTypeFilter);
@@ -153,12 +130,7 @@ export default const _AssetManagement = () {
         setPagination(prev => ({
           ...prev,
           total: data.total || 0,
-        }));
-      } catch (err) {
-        setError(err.message),
-        toast({title:"Error",
-          "destructive";
-        });
+      } catch (error) { console.error(error); });
       } finally ;
         setLoading(false);
     };
@@ -172,45 +144,23 @@ export default const _AssetManagement = () {
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
 
         const response = await fetch("/api/hr/departments");
         if (!session.user) {
           const data = await response.json(),
           setDepartments(data.departments || []);
 
-      } catch (err) {
-
-    };
+      } catch (error) { console.error(error); };
 
     fetchDepartments();
   }, []);
@@ -219,43 +169,18 @@ export default const _AssetManagement = () {
   useEffect(() => {
     const fetchStatistics = async () => {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-        const response = await fetch("/api/hr/assets/statistics");
-        if (!session.user) {
-          const data = await response.json(),
-          setStatistics(data);
-
-      } catch (err) {
+} catch (error) { console.error(error); } catch (err) {
 
     };
 
@@ -276,7 +201,6 @@ export default const _AssetManagement = () {
       setPagination(prev => ({
         ...prev,
         skip: prev.skip - prev.take,
-      }));
 
   };
 
@@ -285,7 +209,6 @@ export default const _AssetManagement = () {
       setPagination(prev => ({
         ...prev,
         skip: prev.skip + prev.take,
-      }));
 
   };
 
@@ -296,7 +219,6 @@ export default const _AssetManagement = () {
     setPagination(prev => ({
       ...prev,
       skip: 0,
-    }));
   };
 
   // Handle tab change;
@@ -306,7 +228,6 @@ export default const _AssetManagement = () {
     setPagination(prev => ({
       ...prev,
       skip: 0,
-    }));
 
     // Set appropriate filters based on tab;
     if (!session.user) {
@@ -324,54 +245,26 @@ export default const _AssetManagement = () {
   // Export asset data;
   const handleExport = async () => {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // In a real implementation, this would call an API endpoint to generate a CSV/Excel file;
-      toast({
-        title: "Export Started",
-        description: "Your asset report is being generated and will download shortly.",
-      });
+} catch (error) { console.error(error); });
 
       // Simulate download delay;
       setTimeout(() => {
         toast({
           title: "Export Complete",
           description: "Asset report has been downloaded.",
-        });
       }, 2000);
-    } catch (error) {
-      toast({title:"Export Failed",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
 
   };
 
@@ -390,8 +283,6 @@ export default const _AssetManagement = () {
         return "outline";
       default: return "default",
 
-  };
-
   // Get asset type icon;
   const getAssetTypeIcon = (type: unknown) => {
     switch (type) {
@@ -407,15 +298,12 @@ export default const _AssetManagement = () {
         return <Building className="h-4 w-4" />;
       default: return <Package className="h-4 w-4" />,
 
-  };
-
   // Format currency;
   const formatCurrency = (amount: unknown) => {
     if (!session.user)eturn "—";
     return new Intl.NumberFormat("en-US", {
       style: "currency",
       currency: "USD",
-    }).format(amount);
   };
 
   return();
@@ -465,10 +353,7 @@ export default const _AssetManagement = () {
                       <Input>;
                         type = "search",
                         placeholder="Search assets...";
-                        className="pl-8 w-full md:w-[300px]",
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                      />;
+                        className="pl-8 w-full md: w-[300px]",
                     </div>;
                     >;
                       Search;

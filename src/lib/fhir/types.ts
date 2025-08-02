@@ -9,13 +9,11 @@
   };
   request?: {method:"GET" | "HEAD" | "POST" | "PUT" | "DELETE" | "PATCH",
     url: string,
-    ifNoneMatch?: string;
     ifModifiedSince?: string;
     ifMatch?: string;
     ifNoneExist?: string
   };
-  response?: {status:string,
-    location?: string;
+  response?: {status: string,
     etag?: string;
     lastModified?: string;
     outcome?: unknown;

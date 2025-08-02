@@ -1,4 +1,4 @@
-import { } from "../../../../../../lib/error-handler"
+
 import "../../../../../../lib/services/pharmacy/pharmacy.service";
 import "../../../../models/domain-models";
 import "next/server";
@@ -37,7 +37,6 @@ const getPrescriptionById,
   save: () => Promise.resolve(""),
   update: () => Promise.resolve(true),
   delete: () => Promise.resolve(true),
-};
 
 const () => Promise.resolve(null),
   findByPatientId: () => Promise.resolve([]),
@@ -47,7 +46,6 @@ const () => Promise.resolve(null),
   save: (administration) => Promise.resolve(administration.id || "new-id"),
   update: () => Promise.resolve(true),
   delete: () => Promise.resolve(true),
-};
 
 /**;
  * GET /api/pharmacy/administration/schedule/[patientId];
@@ -58,41 +56,11 @@ export const GET = async();
   { params }: {patientId: string }
 ) => {
   try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({error: "Unauthorized" }, {status: 401 });
+      return NextResponse.json({error: "Unauthorized" },
     }
 
     // Get user from auth token (simplified for example);
@@ -101,7 +69,7 @@ export const GET = async();
     // Get patient ID from params;
     const { patientId } = params;
     if (!session.user) {
-      return NextResponse.json({error: "Patient ID is required" }, {status: 400 });
+      return NextResponse.json({error: "Patient ID is required" },
     }
 
     // Get query parameters;
@@ -165,7 +133,6 @@ export const GET = async();
           administrationId: matchingAdministration?.id,
           matchingAdministration?.administeredBy,
           notes: matchingAdministration?.notes,
-        });
       }
     }
 
@@ -178,20 +145,15 @@ export const GET = async();
       schedule.length,
         startDate: startDate.toISOString(),
         endDate: endDate.toISOString(),
-    });
 
     // Return response;
     return NextResponse.json({ schedule }, {status: 200 });
-  } catch (error) {
-    return errorHandler(error, "Error retrieving medication administration schedule");
-  }
 }
 
 /**;
  * Helper function to generate schedule times based on frequency;
  */;
 const generateScheduleTimes = (frequency: string, start: Date, end: Date): Date[] {,
-  const times: Date[] = [];
 
   // Parse frequency;
   if (!session.user) {

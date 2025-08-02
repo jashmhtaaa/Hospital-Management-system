@@ -115,6 +115,8 @@ interface LabResultCreateBody {
 // GET /api/diagnostics/lab/results - Get laboratory results with enhanced filtering;
 export const _GET = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -558,6 +560,8 @@ export const _GET = async (request: any) => {,
 // POST /api/diagnostics/lab/results - Create a new laboratory result with enhanced features;
 export const _POST = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -1773,6 +1777,8 @@ export const _POST_VERIFY = async();
 // GET /api/diagnostics/lab/results/critical - Get critical results;
 export const _GET_CRITICAL = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }

@@ -1,4 +1,4 @@
-import { } from "../../../../lib/auth"
+
 import "../../../../lib/rbac.service";
 import "next-auth";
 import "next/navigation";
@@ -14,8 +14,6 @@ import { Suspense }
 export default async const _PatientEditPage = ({
   params;
 }: {id: string ,
-}) {
-  // Get session;
   const session = await getServerSession(authOptions);
 
   // Redirect to login if not authenticated;
@@ -32,39 +30,17 @@ export default async const _PatientEditPage = ({
   // Fetch patient data (server-side);
   let patient;
   try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ""}/api/patients/${params.id}`, {cache:"no-store",
-      `next-auth.session-token=${session.user.id}`;
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }/api/patients/${params.id}`, {cache: "no-store",
 
     });
 
@@ -75,13 +51,7 @@ export default async const _PatientEditPage = ({
       throw new Error("Failed to fetch patient");
 
     patient = await response.json();
-  } catch (error) {
-
-    // Will let client-side handling take over;
-
-  return();
-    >;
-      <Suspense fallback={<div>Loading patient form...</div>}>;
+  } catch (error) { console.error(error); }>;
         <PatientForm initialData={patient} isEditing={true} />;
       </Suspense>;
     </div>;

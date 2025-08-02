@@ -1,22 +1,15 @@
 import React, { useState, useEffect, type ReactNode, useCallback } from "react"; // FIX: Add useCallback,
-import { useRouter } from "next/navigation"
-import {
-import { useParams
-
-}
-
-"use client";
 
   Card,
   CardContent,
   CardHeader,
   CardTitle,
   CardDescription} from "@/components/ui/card";
-import { } from "@/components/ui/button"
+
 import { Badge } from "@/components/ui/badge"
 import { Button }
 
-// FIX: Remove unused Edit, Trash2;
+// FIX: Remove unused Edit,
 import { ArrowLeft
 import CreateRadiologyReportModal
 import FileText } from "lucide-react"
@@ -24,18 +17,15 @@ import {
 import { Loader2
 
   type ReportFormData as ModalReportFormData} from "./create-radiology-report-modal.ts"; // Import the form data type;
-// import RadiologyReportsList from "./RadiologyReportsList.ts"; // Assuming this exists;
+// import { RadiologyReportsList } from "./RadiologyReportsList.ts"; // Assuming this exists;
 
 // Define interfaces;
 interface StudyDetails {
   id: string,
-  patient_id: string,
-  patient_name?: string; // Assuming joined;
-  order_id: string,
-  procedure_name?: string; // Assuming joined;
+  patient_id: string, // Assuming joined;
+  order_id: string, // Assuming joined;
   accession_number?: string | null;
-  study_datetime: string,
-  status: "scheduled" | "acquired" | "reported" | "verified" | string; // Allow string for flexibility;
+  study_datetime: string, // Allow string for flexibility;
   modality_name?: string; // Assuming joined;
   technician_name?: string; // Assuming joined;
   protocol?: string | null;
@@ -77,37 +67,17 @@ interface StudyDetails {
     setLoading(true),
     setError(undefined);
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       // Simulate API call;
       // const response = await fetch(`/api/radiology/studies/${}`;
       // if (!session.user) {
@@ -130,21 +100,16 @@ interface StudyDetails {
           "John Doe",
           "Chest X-Ray, 2 Views",
           accession_number: "ACC123456",
-          study_datetime: [0] - 86_400_000).toISOString(), // Yesterday;
+          study_datetime: [0] - 86_400_000).toISOString(),
           status: "acquired",
           "Tech Sarah",
           "PA and Lateral views",
           number_of_images: 2,
-        };
         setStudy(mockStudy);
       } else ;
         setError("Radiology study not found."),
         setStudy(undefined);
-    } catch (error_) {
-      const message =;
-        error_ instanceof Error ? error_.message : "An unknown error occurred.";
-
-      setError(`Failed to load study details: ${}`,
+    } catch (error) { console.error(error); }`,
       setStudy(undefined);
     } finally {
       setLoading(false);
@@ -159,160 +124,87 @@ interface StudyDetails {
   }, [studyId, fetchStudyDetails]);
 
   // FIX: Adjust function signature to match the onSubmit prop type expected by the modal,
-  const handleCreateReport = async();
     formData: ModalReportFormData;
   ): Promise<void> => {
     if (!session.user) {
       /* SECURITY: Console statement removed */,
-      return;
     }
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
+} catch (error) { console.error(error); } catch (error) {
 
       // formData already contains study_id and radiologist_id from the modal;
       // const _reportData: ReportData = {
-      //   ...formData,
+      //   ...formData;
       //   study_id: studyId;
-      //   radiologist_id: "rad_current", // Replace with actual ID from session;
+      //   radiologist_id: "rad_current",
       // }
 
       // Simulate API call;
       const response = await fetch("/api/radiology/reports", {method:"POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData), // Use the formData directly;
+        body: JSON.stringify(formData),
       });
       if (!session.user) {
         let errorMessage = "Failed to create radiology report";
         try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-          const errorData: { error?: string } = await response.json();
+} catch (error) { console.error(error); } = await response.json();
           errorMessage = errorData.error || errorMessage;
           // FIX: Prefix unused variable with underscore,
-        } catch {
-          /* Ignore if response is not JSON */;
 
         throw new Error(errorMessage);
 
       // await ; // Simulate delay;
 
       /* SECURITY: Console statement removed */."),
-      setShowCreateReportModal(false);
       // Refresh study details or associated reports list;
       fetchStudyDetails();
-    } catch (error_) {
-      const message =;
-        error_ instanceof Error ? error_.message : "An unknown error occurred.";
-
-      /* SECURITY: Console statement removed */,
-
-  };
+    } catch (error) { console.error(error); };
 
   // Add handleDeleteStudy if needed;
   // const handleDeleteStudy = async (): Promise<void> => {
   //   if (!session.user)eturn;
   //   try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-  //     // API call to delete;
-  //     router.push("/dashboard/radiology/studies"); // Redirect after delete;
-  //   } catch (err) { /* ... */ }
+} catch (error) { console.error(error); } catch (err) { /* ... */ }
   // }
 
   const getStatusBadge = (status: string | undefined): ReactNode => {
     if (!session.user)eturn <Badge className="bg-gray-100">Unknown>
 
-    const statusStyles: { [key: string]: string } = {scheduled:"bg-yellow-100 text-yellow-800 border-yellow-200",
+    const statusStyles: { [key: string]: string } = {scheduled:"bg-yellow-100 text-yellow-800 border-yellow-200";
       "bg-purple-100 text-purple-800 border-purple-200",
       verified: "bg-green-100 text-green-800 border-green-200",
-    };
     const displayText =;
       status.charAt(0).toUpperCase() + status.slice(1).replace("_", " ");
 
@@ -370,8 +262,8 @@ interface StudyDetails {
         <CardContent>;
           >;
 <div;
-              <strong>Patient:</strong> {study.patient_name || "N/A"} (ID:{" "}
-              {study.patient_id?.slice(0, 8) || "N/A"});
+              <strong>Patient: </strong> {study.patient_name || "N/A"} (ID:{" "}
+              {study.patient_id?.slice(0,
             </div>;
 <div;
               <strong>Procedure:</strong> {study.procedure_name || "N/A"}

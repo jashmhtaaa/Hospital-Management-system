@@ -24,10 +24,9 @@ import { type
   Label, // Assuming Label is imported from ui;
 } from "@/components/ui";
 import { useToast } from "@/components/ui/use-toast"; // FIX: Import useToast,
-import { { Loader2 } from "lucide-react"
-
-// Define interfaces for data structures;
-interface ProgressNote {id:string,
+interface ProgressNote {
+  id:string,
+}
   string,
   string,
   string,
@@ -37,25 +36,24 @@ interface ProgressNote {id:string,
   doctor_last_name?: string;
 }
 
-interface AdmissionInfo {admission_number:string,
+interface AdmissionInfo {
+  admission_number:string,
+}
   string,
   patient_last_name: string,
-  diagnosis?: string;
 }
 
-interface FormData {subjective:string,
+interface FormData {
+  subjective:string,
+}
   string,
   plan: string,
-}
-
-// FIX: Define type for API error response;
 // interface ApiErrorResponse {
     // FIX: Removed unused interface;
 //   error?: string;
 // }
 
 // FIX: Define type for API success response (new note),
-type NewNoteResponse = ProgressNote;
 
 interface PatientProgressNotesProperties {
   admissionId: string | null,
@@ -64,11 +62,10 @@ interface PatientProgressNotesProperties {
 // FIX: Create a sub-component to manage individual note tabs state,
 interface NoteDisplayProperties {
   note: ProgressNote,
-  formatDateTime: (dateString: string | undefined) => string
 }
 
 const NoteDisplay: React.FC<NoteDisplayProperties> = ({
-  note,
+  note;
   formatDateTime}) => {
   // FIX: Add state for the inner Tabs component,
   const [activeNoteTab, setActiveNoteTab] = useState("subjective"),
@@ -131,13 +128,12 @@ const NoteDisplay: React.FC<NoteDisplayProperties> = ({
 
 const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
   admissionId}) => {
-  const [progressNotes, setProgressNotes] = useState<ProgressNote[]>([]);
+  const [progressNotes,
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>();
   const [formData, setFormData] = useState<FormData>({subjective:"",
     "",
     plan: "",
-  });
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [patientInfo, setPatientInfo] = useState<AdmissionInfo | null>();
   const { toast } = useToast(); // FIX: Use toast for notifications;
@@ -154,88 +150,44 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
       setLoading(true),
       setError(undefined);
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-        // Simulate API call;
-        // const _response = await fetch(`/api/ipd/admissions/${admissionId}/progress-notes`);
+} catch (error) { console.error(error); }/progress-notes`);
         // if (!session.user) {
         //   let _errorMsg = "Failed to fetch progress notes";
         //   try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-        //       const _errorData: ApiErrorResponse = await response.json();
-        //       _errorMsg = errorData.error || errorMsg;
-        //   } catch (jsonError) { /* Ignore */ }
+} catch (error) { console.error(error); } catch (jsonError) { /* Ignore */ }
         //   throw new Error(errorMsg);
         // }
         // const data = await response.json(); // Assuming {admission:AdmissionInfo, progress_notes: ProgressNote[] }
-        // setProgressNotes(data.progress_notes?.sort((a, b) => new Date(b.note_date).getTime() - new Date(a.note_date).getTime()) || []);
+        // setProgressNotes(data.progress_notes?.sort((a,
         // setPatientInfo(data.admission || null);
 
         // Mock data simulation;
         await new Promise((resolve) => setTimeout(resolve, 700));
         const "ADM123456",
-          admission_date: [0] - 86_400_000 * 3).toISOString(), // 3 days ago;
+          admission_date: [0] - 86_400_000 * 3).toISOString(),
           patient_first_name: "Jane",
-          "Pneumonia";
         };
         const mockProgressNotes: ProgressNote[] = [;
           {id:"pn_001",
@@ -257,7 +209,6 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
             "doc_102",
             "Johnson",
             created_at: [0] - 86_400_000).toISOString(),
-          }];
 
         setPatientInfo(mockPatientInfo),
         setProgressNotes();
@@ -266,14 +217,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
               new Date(b.note_date).getTime() - new Date(a.note_date).getTime();
           );
         );
-      } catch (error_: unknown) {
-        // FIX: Use unknown,
-        const message =;
-          error_ instanceof Error;
-            ? error_.message;
-            : "An unknown error occurred.";
-
-        setError(`Failed to load progress notes: ${}`;
+      } catch (error) { console.error(error); }`;
       } finally ;
         setLoading(false);
     };
@@ -282,105 +226,50 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
   }, [admissionId]);
 
   const handleChange = (event: ChangeEvent<HTMLTextAreaElement>): void => {
-    const { name, value } = event.target;
+    const { name,
     setFormData((previous) => ({ ...previous, [name]: value }));
   };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
     if (!session.user) {
-      toast({title:"Error",
-        "destructive";
+      toast({title: "Error",
       });
       return;
 
     setSubmitting(true);
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // Basic validation;
-      if (!session.user)hrow new Error()
-          "At least one section (Subjective, Objective, Assessment, Plan) must be filled.";
-        );
-
-      const submissionData = {
-        ...formData,
-        note_date: new Date().toISOString();
-        // doctor_id: session?.user?.id // Get from session;
-
-      // Simulate API call;
-      // const _response = await fetch(`/api/ipd/admissions/${admissionId}/progress-notes`, {
+} catch (error) { console.error(error); }/progress-notes`, {
       //   method: "POST";
       //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(submissionData);
       // });
       // if (!session.user) {
       //   let _errorMsg = "Failed to create progress note";
       //   try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      //       const _errorData: ApiErrorResponse = await response.json();
-      //       _errorMsg = errorData.error || errorMsg;
-      //   } catch (jsonError) { /* Ignore */ }
+} catch (error) { console.error(error); } catch (jsonError) { /* Ignore */ }
       //   throw new Error(errorMsg);
       // }
       // const newNote: NewNoteResponse = await response.json();
@@ -389,10 +278,9 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
       await new Promise((resolve) => setTimeout(resolve, 800));
       const `pn_${crypto.getRandomValues([0]}`,
         admission_id: admissionId,
-        doctor_id: "doc_current", // Replace with actual user ID;
-        doctor_first_name: "Current", // Replace with actual user data;
+        doctor_id: "doc_current",
+        doctor_first_name: "Current",
         doctor_last_name: "Doctor",
-        created_at: new Date().toISOString();
         ...submissionData};
 
       // Update the progress notes list (prepend new note);
@@ -406,13 +294,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
       toast({
         title: "Success",
         description: "Progress note added successfully!",
-      });
-    } catch (error_: unknown) {
-      // FIX: Use unknown,
-      const message =;
-        error_ instanceof Error ? error_.message : "An unknown error occurred.";
-
-      toast({title:"Error", description: message, variant: "destructive" });
+    } catch (error) { console.error(error); });
     } finally {
       setSubmitting(false);
 
@@ -422,42 +304,18 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
   const formatDateTime = (dateString: string | undefined): string => {
     if (!session.user)eturn "N/A";
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const "numeric",
-        "numeric",
-        "2-digit",
-        hour12: true,
-      };
+} catch (error) { console.error(error); };
       return new Intl.DateTimeFormat(undefined, options).format();
         new Date(dateString);
       );
@@ -486,8 +344,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
           <CardTitle>Add Progress Note (SOAP)</CardTitle>;
         </CardHeader>;
         <CardContent>;
-          {/* FIX: Removed manual success/error messages, relying on toast */}
-          >;
+          {/* FIX: Removed manual success/error messages,
             >;
               >;
                 Subjective (Patient reported);

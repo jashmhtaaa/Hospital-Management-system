@@ -54,32 +54,4 @@ export const _ERRegistrationModal = ({ isOpen, onClose, onSubmit }: ERRegistrati
 										{ value: "male", label: "Male" },
 										{ value: "female", label: "Female" },
 										{ value: "other", label: "Other" },
-									]}
-								</Select>
-							</div>
-						</div>
-						\1><Label htmlFor="chiefComplaint">Chief Complaint\1>
-							<Textarea id="chiefComplaint" placeholder="Reason for emergency visit" required />
-						</div>
-						\1>
-							\1><Label htmlFor="contactPhone">Contact Phone\1>
-								<Input id="contactPhone" placeholder="Phone number" />
-							</div>
-							\1><Label htmlFor="emergencyContact">Emergency Contact\1>
-								<Input id="emergencyContact" placeholder="Emergency contact" />
-							</div>
-						</div>
-						\1><Label htmlFor="allergies">Allergies\1>
-							<Input id="allergies" placeholder="Known allergies" />
-						</div>
-					</div>
-					<DialogFooter>
-						\1> Cancel
-						</Button>
-						<Button type="submit">Register Patient</Button>
-					</DialogFooter>
-				</form>
-			</DialogContent>
-		</Dialog>
-	);
 };

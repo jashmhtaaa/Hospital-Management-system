@@ -1,5 +1,5 @@
-import { } from "@/components/ui/badge"
-import { } from "lucide-react"
+
+
 import { "react";
 import AlertTriangle
 import Calendar
@@ -25,67 +25,18 @@ export default const _OTDashboardStats = () {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-        setLoading(true);
-
-        // In a real implementation, these would be actual API calls;
-        // For now, we"ll simulate with mock data;
-
-        // Fetch today"s bookings count;
-        // const _todayBookingsRes = await fetch("/api/ot/bookings?startDate=today&endDate=today");
-        // const _todayBookingsData = await todayBookingsRes.json();
-
-        // Fetch upcoming bookings (next 7 days);
-        // const _upcomingBookingsRes = await fetch("/api/ot/bookings?startDate=tomorrow&endDate=7days");
-        // const _upcomingBookingsData = await upcomingBookingsRes.json();
-
-        // Fetch available theatres;
-        // const _theatresRes = await fetch("/api/ot/theatres?status=available");
-        // const _theatresData = await theatresRes.json();
-
-        // Fetch in-progress surgeries;
-        // const _inProgressRes = await fetch("/api/ot/bookings?status=in_progress");
-        // const _inProgressData = await inProgressRes.json();
-
-        // Fetch pending checklists;
-        // const _checklistsRes = await fetch("/api/ot/checklist-responses?status=pending");
-        // const _checklistsData = await checklistsRes.json();
-
-        // Mock data for demonstration;
-        setStats({todayBookings:5,
-          3,
-          4;
-        }),
+} catch (error) { console.error(error); }),
         setLoading(false);
       } catch (error) ;
 

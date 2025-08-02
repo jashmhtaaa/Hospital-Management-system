@@ -16,6 +16,8 @@ const ALLOWED_ROLES_ADD = ["Admin"];
 export const _GET = async (request: Request) => {,
   const cookieStore = await cookies();
   const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
+  return NextResponse.json({ message: "Not implemented" });
+};
   const { searchParams } = new URL(request.url);
   const specialty = searchParams.get("specialty");
 
@@ -91,6 +93,8 @@ export const _POST = async (request: Request) => {,
 
     // 1. Check Authentication & Authorization
      {\n   {
+  return NextResponse.json({ message: "Not implemented" });
+};
         return new Response(JSON.stringify({ error: "Unauthorized" ,}), {
             status: 401,
             headers: { "Content-Type": "application/json" ,},

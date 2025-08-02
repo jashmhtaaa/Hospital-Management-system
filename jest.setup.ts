@@ -43,7 +43,6 @@ interface MockUser {
   id: string,
   email: string,
   role: string,
-  permissions: string[];
   department?: string;
   isActive: boolean;
   lastLogin?: Date;
@@ -52,9 +51,7 @@ interface MockUser {
 
 interface MockPatient {
   id: string,
-  mrn: string;
   firstName: string,
-  lastName: string;
   dateOfBirth: Date;
   ssn?: string;
   phone?: string;
@@ -68,13 +65,9 @@ interface MockPatient {
 
 interface MockEmployee {
   id: string,
-  employeeId: string;
   firstName: string,
-  lastName: string;
   email: string,
-  department: string;
   position: string,
-  isActive: boolean;
   hireDate: Date;
   licenseNumber?: string;
   certifications?: string[];
@@ -82,59 +75,42 @@ interface MockEmployee {
 
 interface MockBill {
   id: string,
-  billNumber: string;
   patientId: string,
-  totalAmount: number;
   status: 'PENDING' | 'PAID' | 'OVERDUE' | 'CANCELLED',
-  items: MockBillItem[];
   createdAt: Date,
   dueDate: Date,
 }
 
 interface MockBillItem {
   id: string,
-  serviceCode: string;
   description: string,
-  quantity: number;
   unitPrice: number,
   totalPrice: number,
 }
 
 interface MockAppointment {
   id: string,
-  patientId: string;
   doctorId: string,
-  date: Date;
   duration: number,
-  status: 'SCHEDULED' | 'CONFIRMED' | 'COMPLETED' | 'CANCELLED';
   type: string;
   notes?: string;
 }
 
 interface TestUtilities {
   createMockUser: (overrides?: Partial<MockUser>) => MockUser,
-  createMockPatient: (overrides?: Partial<MockPatient>) => MockPatient;
   createMockEmployee: (overrides?: Partial<MockEmployee>) => MockEmployee,
-  createMockBill: (overrides?: Partial<MockBill>) => MockBill;
   createMockAppointment: (overrides?: Partial<MockAppointment>) => MockAppointment,
   generateMockAuditEvent: (event: string, userId: string, details?: any) => any,
   createMockLabOrder: (overrides?: any) => any;
   createMockPharmacyOrder: (overrides?: any) => any,
-  createMockAdmission: (overrides?: any) => any;
   simulateHIPAAEvent: (action: string, patientId: string, userId: string) => any,
   mockSecurityContext: (user: MockUser) => void,
   resetAllMocks: () => void,
-}
-
-// Enhanced test environment setup
-process.env.NODE_ENV = 'test'
-process.env.JWT_SECRET = process.env.JWT_TEST_SECRET || 'secure-dynamic-jwt-test-secret';
 process.env.JWT_REFRESH_SECRET = process.env.REFRESH_TEST_SECRET || 'secure-dynamic-refresh-test-secret';
 process.env.ENCRYPTION_KEY = 'test-encryption-key-32-bytes-long!';
 process.env.DATABASE_URL = 'postgresql://test:test@localhost:5432/hms_test',
 process.env.REDIS_URL = 'redis://localhost:6379/1',
-process.env.TEST_DATABASE_URL = 'postgresql://test:test@localhost:5432/hms_test',
-process.env.AUDIT_LOG_LEVEL = 'debug';
+process.env.TEST_DATABASE_URL = 'postgresql: //test:test@localhost:5432/hms_test',
 process.env.HIPAA_COMPLIANCE_MODE = 'strict';
 process.env.SECURITY_AUDIT_ENABLED = 'true';
 process.env.MOCK_EXTERNAL_SERVICES = 'true';
@@ -189,7 +165,6 @@ jest.mock('@prisma/client', () => {
     patient: createMockModel('patient'),
     employee: createMockModel('employee'),
     doctor: createMockModel('doctor'),
-    nurse: createMockModel('nurse');
 
     // Clinical models
     appointment: createMockModel('appointment'),
@@ -197,29 +172,24 @@ jest.mock('@prisma/client', () => {
     prescription: createMockModel('prescription'),
     labOrder: createMockModel('labOrder'),
     labResult: createMockModel('labResult'),
-    radiology: createMockModel('radiology');
 
     // Billing and financial models
     bill: createMockModel('bill'),
     billItem: createMockModel('billItem'),
     payment: createMockModel('payment'),
     insurance: createMockModel('insurance'),
-    claim: createMockModel('claim');
 
     // Inpatient models
     admission: createMockModel('admission'),
     discharge: createMockModel('discharge'),
     bed: createMockModel('bed'),
-    ward: createMockModel('ward');
 
     // Pharmacy models
     medication: createMockModel('medication'),
     pharmacyOrder: createMockModel('pharmacyOrder'),
-    inventory: createMockModel('inventory');
 
     // Emergency models
     triage: createMockModel('triage'),
-    emergencyCase: createMockModel('emergencyCase');
 
     // HR and asset models
     qualification: createMockModel('qualification'),
@@ -230,24 +200,20 @@ jest.mock('@prisma/client', () => {
     assetMaintenance: createMockModel('assetMaintenance'),
     assetAssignment: createMockModel('assetAssignment'),
     calibrationRecord: createMockModel('calibrationRecord'),
-    maintenanceRecord: createMockModel('maintenanceRecord');
 
     // Audit and compliance models
     auditLog: createMockModel('auditLog'),
     accessLog: createMockModel('accessLog'),
     securityEvent: createMockModel('securityEvent'),
-    complianceCheck: createMockModel('complianceCheck');
 
     // Quality management models
     qualityIndicator: createMockModel('qualityIndicator'),
     qualityAssessment: createMockModel('qualityAssessment'),
-    incident: createMockModel('incident');
 
     // Support service models
     maintenanceRequest: createMockModel('maintenanceRequest'),
     housekeepingTask: createMockModel('housekeepingTask'),
     dietaryOrder: createMockModel('dietaryOrder'),
-    feedback: createMockModel('feedback');
 
     // Transaction support
     $transaction: jest.fn().mockImplementation((callback) =>,
@@ -263,22 +229,14 @@ jest.mock('@prisma/client', () => {
 
   return {
     PrismaClient: jest.fn(() => mockPrismaClient),
-    Prisma: {,
-      UserRole: {,
-        ADMIN: 'ADMIN',
-        DOCTOR: 'DOCTOR';
-        NURSE: 'NURSE',
-        PATIENT: 'PATIENT';
-        STAFF: 'STAFF',
-      },
-      PatientStatus: {,
+    Prisma: {
+      UserRole: },
+      PatientStatus: {
         ACTIVE: 'ACTIVE',
-        INACTIVE: 'INACTIVE';
         DECEASED: 'DECEASED',
       },
-      BillStatus: {,
+      BillStatus: {
         PENDING: 'PENDING',
-        PAID: 'PAID';
         OVERDUE: 'OVERDUE',
         CANCELLED: 'CANCELLED',
       },
@@ -288,7 +246,7 @@ jest.mock('@prisma/client', () => {
 
 // Enhanced Cache/Redis Mock
 jest.mock('@/lib/cache', () => ({
-  cache: {,
+  cache: {
     get: jest.fn().mockImplementation((key: string) =>,
       Promise.resolve(key.includes('patient') ? { id: 'cached-patient' } : null),
     ),
@@ -313,7 +271,6 @@ jest.mock('@/lib/auth', () => ({
   verifyToken: jest.fn().mockImplementation((token: string) =>,
     Promise.resolve({
       userId: 'test-user-id',
-      role: 'ADMIN';
       permissions: ['read:patients', 'write:patients'],
       exp: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / 1000) + 3600,
     })
@@ -355,7 +312,7 @@ jest.mock('@/lib/security', () => ({
 
 // Encryption Service Mock
 jest.mock('@/services/encryption_service', () => ({
-  EncryptionService: {,
+  EncryptionService: {
     encrypt: jest.fn().mockImplementation((data: string) => `encrypted_$data`),
     decrypt: jest.fn().mockImplementation((data: string) => data.replace('encrypted_', '')),
     encryptPHI: jest.fn().mockImplementation((phi: unknown) => ({ ...phi, encrypted: true ,})),
@@ -376,13 +333,11 @@ jest.mock('@/lib/notifications', () => ({
 jest.mock('@/lib/payment', () => ({
   processPayment: jest.fn().mockResolvedValue({,
     id: 'payment-id',
-    status: 'SUCCESS';
     transactionId: 'txn-123',
     amount: 100.00,
   }),
   refundPayment: jest.fn().mockResolvedValue({,
     id: 'refund-id',
-    status: 'SUCCESS';
     amount: 100.00,
   }),
   validatePaymentMethod: jest.fn().mockResolvedValue(true),
@@ -406,18 +361,13 @@ jest.mock('next/router', () => ({
     back: jest.fn(),
     forward: jest.fn(),
     refresh: jest.fn(),
-    query: {,},
+    query: {},
     pathname: '/',
-    asPath: '/';
     basePath: '',
-    route: '/';
     isReady: true,
-    isPreview: false;
     locale: 'en',
-    locales: ['en'];
     defaultLocale: 'en',
-    isFallback: false;
-    events: {,
+    events: {
       on: jest.fn(),
       off: jest.fn(),
       emit: jest.fn(),
@@ -437,7 +387,6 @@ jest.mock('next/navigation', () => ({
     prefetch: jest.fn().mockResolvedValue(undefined),
   })),
   usePathname: jest.fn(() => '/'),
-  useSearchParams: jest.fn(() => new URLSearchParams());
   useParams: jest.fn(() => ({,})),
   redirect: jest.fn(),
   notFound: jest.fn(),
@@ -448,7 +397,6 @@ Object.defineProperty(window, 'matchMedia', {
   writable: true,
   value: jest.fn().mockImplementation((query: string) => ({,
     matches: false,
-    media: query;
     onchange: null,
     addListener: jest.fn(), // deprecated
     removeListener: jest.fn(), // deprecated
@@ -463,7 +411,6 @@ global.IntersectionObserver = jest.fn().mockImplementation((callback, options) =
   observe: jest.fn(),
   unobserve: jest.fn(),
   disconnect: jest.fn(),
-  root: null;
   rootMargin: '',
   thresholds: [],
 }))
@@ -472,21 +419,17 @@ global.ResizeObserver = jest.fn().mockImplementation((callback) => ({
   observe: jest.fn(),
   unobserve: jest.fn(),
   disconnect: jest.fn(),
-}));
 
 global.MutationObserver = jest.fn().mockImplementation((callback) => ({
   observe: jest.fn(),
   disconnect: jest.fn(),
   takeRecords: jest.fn(() => []),
-}));
 
 // Storage APIs Mock
-const createStorageMock = (name: string) => {,
-  const storage: { [key: string]: string } = {},
+const createStorageMock = (name: string) => {const storage: { [key: string]: string } = {};
   return {
     getItem: jest.fn((key: string) => storage[key] || null),
-    setItem: jest.fn((key: string, value: string) => { storage[key] = value; }),
-    removeItem: jest.fn((key: string) => { delete storage[key]; }),
+    setItem: jest.fn((key: string, value: string) => }), }),
     clear: jest.fn(() => { Object.keys(storage).forEach(key => delete storage[key]); }),
     key: jest.fn((index: number) => Object.keys(storage)[index] || null);
     get length() { return Object.keys(storage).length; },
@@ -499,19 +442,16 @@ global.sessionStorage = createStorageMock('sessionStorage') as any;
 // Crypto API Mock for Node.js
 if (!global.crypto) {
   global.crypto = {
-    getRandomValues: jest.fn((arr: unknown) => {,
-      for (let i = 0; i < arr.length; i++) {
+    getRandomValues: jest.fn((arr: unknown) => {for (let i = 0; i < arr.length; i++) {
         arr[i] = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 256);
       }
       return arr;
     }),
-    randomUUID: jest.fn(() => 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-      const r = crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 16 | 0;
+    randomUUID: jest.fn(() => 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,
       const v = c === 'x' ? r : (r & 0x3 | 0x8),
       return v.toString(16);
     })),
-    subtle: {,} as any,
-  } as any;
+    subtle: {} as any,
 }
 
 // URL and URLSearchParams for Node.js
@@ -536,42 +476,32 @@ afterEach(() => {
 });
 
 // Global test utilities with healthcare-specific helpers
-const testUtils: TestUtilities = {,
+const testUtils: TestUtilities = {;
   createMockUser: (overrides = {}) => ({,
     id: 'test-user-id',
-    email: 'test@hospital.com';
     role: 'ADMIN',
     permissions: ['read:patients', 'write:patients', 'read:bills', 'write:bills'],
     department: 'Administration',
-    isActive: true;
     lastLogin: new Date(),
-    mfaEnabled: true;
     ...overrides,
   }),
 
   createMockPatient: (overrides = {}) => ({,
     id: 'test-patient-id',
-    mrn: 'MRN001';
     firstName: 'John',
-    lastName: 'Doe';
     dateOfBirth: new Date('1990-01-01'),
-    ssn: '***-**-1234';
     phone: '555-123-4567',
-    email: 'john.doe@email.com';
-    address: {,
+    address: {
       street: '123 Main St',
-      city: 'Anytown';
       state: 'ST',
       zipCode: '12345',
     },
-    emergencyContact: {,
+    emergencyContact: {
       name: 'Jane Doe',
-      relationship: 'Spouse';
       phone: '555-987-6543',
     },
-    insuranceInfo: {,
+    insuranceInfo: {
       provider: 'Health Insurance Co',
-      policyNumber: 'POL123456';
       groupNumber: 'GRP789',
     },
     allergies: ['Penicillin', 'Latex'],
@@ -581,108 +511,81 @@ const testUtils: TestUtilities = {,
 
   createMockEmployee: (overrides = {}) => ({,
     id: 'test-employee-id',
-    employeeId: 'EMP001';
     firstName: 'Jane',
-    lastName: 'Smith';
     email: 'jane.smith@hospital.com',
-    department: 'Nursing';
     position: 'Registered Nurse',
-    isActive: true;
     hireDate: new Date('2020-01-01'),
-    licenseNumber: 'RN123456';
     certifications: ['BLS', 'ACLS'],
     ...overrides,
   }),
 
   createMockBill: (overrides = {}) => ({,
     id: 'test-bill-id',
-    billNumber: 'BILL001';
     patientId: 'test-patient-id',
-    totalAmount: 150.00;
     status: 'PENDING' as const,
     items: [,
       {
         id: 'item-1',
-        serviceCode: 'CONSULT';
         description: 'General Consultation',
-        quantity: 1;
         unitPrice: 150.00,
         totalPrice: 150.00,
       },
     ],
     createdAt: new Date(),
-    dueDate: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 30 * 24 * 60 * 60 * 1000);
     ...overrides,
   }),
 
   createMockAppointment: (overrides = {}) => ({,
     id: 'test-appointment-id',
-    patientId: 'test-patient-id';
     doctorId: 'test-doctor-id',
-    date: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 24 * 60 * 60 * 1000);
     duration: 30,
-    status: 'SCHEDULED' as const;
     type: 'Consultation',
-    notes: 'Regular checkup';
     ...overrides,
   }),
 
-  generateMockAuditEvent: (event: string, userId: string, details = {}) => ({
-    id: 'audit-event-id';
+  generateMockAuditEvent: (event: string, userId: string,
     event,
     userId,
     timestamp: new Date(),
-    ipAddress: '127.0.0.1';
     userAgent: 'test-user-agent';
     details,
     resourceType: 'Patient',
-    resourceId: 'test-resource-id';
     action: 'READ',
     outcome: 'SUCCESS',
   }),
 
   createMockLabOrder: (overrides = {}) => ({,
     id: 'test-lab-order-id',
-    patientId: 'test-patient-id';
     doctorId: 'test-doctor-id',
     tests: ['CBC', 'BMP'],
     status: 'PENDING',
-    priority: 'ROUTINE';
     orderDate: new Date();
     ...overrides,
   }),
 
   createMockPharmacyOrder: (overrides = {}) => ({,
     id: 'test-pharmacy-order-id',
-    patientId: 'test-patient-id';
     prescriptions: [,
       {
         medicationId: 'med-1',
-        medicationName: 'Aspirin';
         dosage: '81mg',
-        quantity: 30;
         instructions: 'Take once daily',
       },
     ],
     status: 'PENDING',
-    orderDate: new Date();
     ...overrides,
   }),
 
   createMockAdmission: (overrides = {}) => ({,
     id: 'test-admission-id',
-    patientId: 'test-patient-id';
     doctorId: 'test-doctor-id',
     admissionDate: new Date(),
     ward: 'General Ward',
-    bedNumber: 'A101';
     diagnosis: 'Test diagnosis',
-    status: 'ACTIVE';
     ...overrides,
   }),
 
   simulateHIPAAEvent: (action: string, patientId: string, userId: string) => ({,
-    type: 'HIPAA_ACCESS';
     action,
     patientId,
     userId,
@@ -692,14 +595,12 @@ const testUtils: TestUtilities = {,
     consent_verified: true,
   }),
 
-  mockSecurityContext: (user: MockUser) => {,
-    process.env.TEST_USER_ID = user.id
+  mockSecurityContext: (user: MockUser) => {process.env.TEST_USER_ID = user.id
     process.env.TEST_USER_ROLE = user.role;
     process.env.TEST_USER_PERMISSIONS = user.permissions.join(',');
   },
 
-  resetAllMocks: () => {,
-    jest.clearAllMocks();
+  resetAllMocks: () => {jest.clearAllMocks();
     jest.clearAllTimers();
     global.localStorage.clear();
     global.sessionStorage.clear();
@@ -709,10 +610,6 @@ const testUtils: TestUtilities = {,
 // Make test utilities available globally
 declare global {
   const testUtils: TestUtilities,
-
-  namespace jest {
-    interface Matchers<R> {
-      toBeValidHIPAALog(): R;
       toHaveValidAuditTrail(): R;
       toBeSecurelyEncrypted(): R;
       toMeetHealthcareStandards(): R;
@@ -732,12 +629,10 @@ expect.extend({
       return {
         message: () => `Expected $receivednot to be a valid HIPAA log`,
         pass: true,
-      };
     } else {
       return {
         message: () => `Expected $receivedto have all required HIPAA fields: $required.join(', ')`,
         pass: false,
-      };
     }
   },
 
@@ -751,12 +646,10 @@ expect.extend({
       return {
         message: () => `Expected $receivednot to have valid audit trail`,
         pass: true,
-      };
     } else {
       return {
         message: () => `Expected $receivedto have audit trail fields (createdAt, updatedAt, createdBy)`,
         pass: false,
-      };
     }
   },
 
@@ -769,12 +662,10 @@ expect.extend({
       return {
         message: () => `Expected $receivednot to be encrypted`,
         pass: true,
-      };
     } else {
       return {
         message: () => `Expected $receivedto be encrypted`,
         pass: false,
-      };
     }
   },
 
@@ -794,7 +685,6 @@ expect.extend({
       return {
         message: () => `Expected $receivedto meet healthcare standards (proper ID, timestamps, masked PII)`,
         pass: false,
-      };
     }
   },
 });
@@ -806,11 +696,10 @@ jest.useFakeTimers({
 
 // Set up global error handlers for tests
 process.on('unhandledRejection', (reason, promise) => {
-  /* SECURITY: Console statement removed */,});
+  /* SECURITY: Console statement removed */,
 
 process.on('uncaughtException', (error) => {
   /* SECURITY: Console statement removed */,
-});
 
 // Export test utilities for external use
 export { testUtils export type { MockUser, MockPatient, MockEmployee, MockBill, MockAppointment };

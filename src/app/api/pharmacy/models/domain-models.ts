@@ -37,7 +37,6 @@ export const MedicationSchema = z.object({id: z.string(),
   storageRequirements: z.string().optional(),
   requiresRefrigeration: z.boolean().optional(),
   requiresControlledStorage: z.boolean().optional(),
-});
 
 export const MedicationInventorySchema = z.object({id: z.string(),
   medicationId: z.string(),
@@ -54,13 +53,11 @@ export const MedicationInventorySchema = z.object({id: z.string(),
   supplier: z.string(),
   receivedDate: z.date(),
   notes: z.string().optional(),
-});
 
 export const MedicationOrderSchema = z.object({id: z.string(),
   patientId: z.string(),
   providerId: z.string(),
   medicationId: z.string(),
-  status: z.enum([;
     "draft", "active", "on-hold", "cancelled", "completed",
     "entered-in-error", "stopped", "unknown";
   ]),
@@ -76,12 +73,8 @@ export const MedicationOrderSchema = z.object({id: z.string(),
   prn: z.boolean().optional(),
   prnReason: z.string().optional(),
   reconciliationId: z.string().optional(),
-});
 
 // Factory functions to create domain objects with validation;
 export const _createMedication = (data: Medication): Medication {,
-  return MedicationSchema.parse(data);
 export const _createMedicationInventory = (data: MedicationInventory): MedicationInventory {,
-  return MedicationInventorySchema.parse(data);
 export const _createMedicationOrder = (data: MedicationOrder): MedicationOrder {,
-  return MedicationOrderSchema.parse(data);

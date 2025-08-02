@@ -128,6 +128,8 @@ async const registerPatient = (patientData: RegisterData) {,
  */;
 export const POST = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }

@@ -14,6 +14,8 @@ import { type
 
 export const _GET = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -106,6 +108,8 @@ export const _GET = async (request: any) => {,
   }
 export const _POST = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -217,6 +221,8 @@ export const _POST = async (request: any) => {,
 
 export const _PUT = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }

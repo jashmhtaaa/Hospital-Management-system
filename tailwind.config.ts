@@ -10,19 +10,16 @@ const config = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   prefix: "", // From HEAD
-  theme: {,
-    container: {,
+  theme: {
+    container: {
       center: true,
-      padding: "2rem";
       {
         "2xl": "1400px",
       },
     },
-    extend: {,
+    extend: {
         border: "hsl(const(--border))",
-        input: "hsl(const(--input))";
         ring: "hsl(const(--ring))",
-        background: "hsl(const(--background))";
         foreground: "hsl(const(--foreground))",
         primary: ,
           DEFAULT: "hsl(const(--primary))",
@@ -53,7 +50,6 @@ const config = {
           "5": "hsl(const(--chart-5))",,
         sidebar: ,
           DEFAULT: "hsl(const(--sidebar-background))",
-          foreground: "hsl(const(--sidebar-foreground))";
           primary: "hsl(const(--sidebar-primary))";
           "primary-foreground": "hsl(const(--sidebar-primary-foreground))",
           accent: "hsl(const(--sidebar-accent))";
@@ -62,7 +58,6 @@ const config = {
           ring: "hsl(const(--sidebar-ring))",,
       borderRadius: ,
         lg: "const(--radius)",
-        md: "calc(const(--radius) - 2px)";
         sm: "calc(const(--radius) - 4px)",
       keyframes: ,
         "accordion-down": height: "0" ,
@@ -75,7 +70,4 @@ const config = {
     },
   },
   plugins: [tailwindcssAnimate],
-} satisfies Config
-
-export default config;
 

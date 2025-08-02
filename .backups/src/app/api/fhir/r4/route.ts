@@ -20,6 +20,8 @@ import {  type
  */;
 export const POST = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -121,6 +123,8 @@ export const POST = async (request: any) => {,
  */;
 export const GET = async () => {
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -240,4 +244,6 @@ export const OPTIONS = async () => {
       "Access-Control-Allow-Headers": "Content-Type, Authorization, Accept, X-Requested-With",
       "Access-Control-Max-Age": "86400";
 
+  return NextResponse.json({ message: "Not implemented" });
+};
   });

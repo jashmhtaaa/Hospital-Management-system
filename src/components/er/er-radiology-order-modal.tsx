@@ -1,4 +1,4 @@
-import { } from "@hookform/resolvers/zod"
+
 import "react";
 import "react-hook-form";
 import "zod";
@@ -39,14 +39,12 @@ import { useToast } from "@/components/ui/use-toast"; // FIX: Import useToast ho
 
 // Define the schema for the radiology order form using Zod;
 const radiologyOrderFormSchema = z.object({visitId:z.string().min(1, {message:"Visit ID is required." }),
-  patientName: z.string().min(1, {message:"Patient name is required." }),
-  orderingDoctorId: z;
+  patientName: z.string().min(1, {message: "Patient name is required." }),
     .string();
     .min(1, {message:"Ordering doctor is required." }),
   procedureTypeId: z.string().min(1, {message:"Select a procedure type." }),
-  priority: z.literal("STAT"), // Default to STAT for ER;
+  priority: z.literal("STAT"),
   clinicalNotes: z.string().optional(),
-});
 
 type RadiologyOrderFormValues = z.infer>;
 
@@ -55,8 +53,7 @@ interface ERRadiologyOrderModalProperties {
   onClose: () => void,
   visitData?: {
     id: string,
-    patientName: string,
-    assignedDoctorId?: string; // Pass assigned doctor if available;
+    patientName: string, // Pass assigned doctor if available;
   };
   onSuccess?: () => void;
 }
@@ -68,7 +65,7 @@ const availableProcedureTypes = [;
   {id:"proc_us_abd", name: "Ultrasound Abdomen Complete" },
   {id:"proc_xray_kub", name: "X-Ray KUB" },
   {id:"proc_ct_abd_pel_w", name: "CT Abdomen/Pelvis w/ Contrast" },
-  {id:"proc_mri_brain_wo", name: "MRI Brain w/o Contrast" }];
+  {id: "proc_mri_brain_wo",
 
 export default const _ERRadiologyOrderModal = ({
   isOpen,
@@ -82,7 +79,6 @@ export default const _ERRadiologyOrderModal = ({
     visitData?.id || "",
       visitData?.assignedDoctorId || "", // Pre-fill if available;
       procedureTypeId: "",
-      "";
     }});
 
   // Update form when visitData changes;
@@ -96,39 +92,17 @@ export default const _ERRadiologyOrderModal = ({
 
   async const onSubmit = (data: RadiologyOrderFormValues) {
     setIsLoading(true);
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
-
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
+} catch (error) { console.error(error); } catch (error) {
 
       // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
       const response = await fetch("/api/radiology/orders", {
@@ -138,45 +112,24 @@ export default const _ERRadiologyOrderModal = ({
           visit_id: data.visitId,
           data.procedureTypeId,
           data.clinicalNotes || undefined,
-          order_source: "ER", // Indicate order source;
+          order_source: "ER",
         })});
 
       if (!session.user) {
         let errorMessage = "Failed to create radiology order";
         try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-          const errorData: { error?: string } = await response.json(); // FIX: Add type for errorData,
-          errorMessage = errorData.error || errorMessage;
+} catch (error) { console.error(error); } = await response.json(); // FIX: Add type for errorData,
         } catch {
           // Ignore if response is not JSON;
 
@@ -184,30 +137,18 @@ export default const _ERRadiologyOrderModal = ({
 
       const newOrder: {id:string } = await response.json(); // FIX: Add basic type for newOrder;
 
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+      // RESOLVED: (Priority: Medium,
       // This might require another API call or be handled by backend logic;
 
       toast({title:"Radiology Order Submitted",
-        description: `STAT order ${newOrder.id} placed successfully.`}),
-
-      if (!session.user) {
-        onSuccess(); // Trigger potential refresh of tracking board;
+        description: `STAT order ${newOrder.id} placed successfully.`}), // Trigger potential refresh of tracking board;
 
       form.reset({
         ...form.getValues(), // Keep visit/patient info;
-        procedureTypeId: "", // Clear selected procedure;
+        procedureTypeId: "",
         clinicalNotes: "",
-      });
       onClose();
-    } catch (error: unknown) {
-
-      toast({title:"Order Failed",
-        description: null,
-          error instanceof Error;
-            ? error.message;
-            : "An unexpected error occurred.",
-        variant: "destructive",
-      });
+    } catch (error) { console.error(error); });
     } finally {
       setIsLoading(false);
 
@@ -234,8 +175,7 @@ export default const _ERRadiologyOrderModal = ({
               name = "patientName",
               render={({ field }) => <Input type="hidden" {...field} />}
             />;
-            {/* TODO: Need a way to select the ordering doctor, ideally from logged-in user or list */}
-            <FormField>;
+            {/* TODO: Need a way to select the ordering doctor,
               control={form.control}
               name = "orderingDoctorId",
               render={({ field }) => (;

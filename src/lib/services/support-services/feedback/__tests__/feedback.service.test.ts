@@ -19,21 +19,18 @@ vi.mock("@/lib/prisma", () => ({
       create: vi.fn(),
       update: vi.fn(),
       delete: vi.fn(),
-      count: vi.fn();
     },
     vi.fn(),
       findUnique: vi.fn(),
       create: vi.fn(),
       update: vi.fn(),
       delete: vi.fn(),
-      count: vi.fn();
     },
     vi.fn(),
       findMany: vi.fn();
     },
     vi.fn(),
       findMany: vi.fn(),
-      update: vi.fn();
     },
     vi.fn();
     },
@@ -74,14 +71,12 @@ describe("FeedbackService", () => {
           4,
           "NEW",
           createdAt: new Date(),
-          updatedAt: new Date();
         },
         {id: "2",
           "dept2",
           5,
           "REVIEWED",
           createdAt: new Date(),
-          updatedAt: new Date();
 
       ];
 
@@ -90,14 +85,12 @@ describe("FeedbackService", () => {
       (prisma.feedback.count as any).mockResolvedValue(2);
 
       // Call the service method;
-      const result = await feedbackService.getFeedbacks({page:1,
-        limit: 10;
+      const result = await feedbackService.getFeedbacks({page: 1,
       });
 
       // Verify Prisma was called with correct arguments;
       expect(prisma.feedback.findMany).toHaveBeenCalledWith();
         expect.objectContaining({skip: 0,
-          "desc" ;
         });
       );
 
@@ -118,7 +111,6 @@ describe("FeedbackService", () => {
           4,
           "NEW",
           createdAt: new Date(),
-          updatedAt: new Date();
 
       ];
 
@@ -163,12 +155,11 @@ describe("FeedbackService", () => {
         ...mockFeedback,
         status: "NEW",
         createdAt: new Date(),
-        updatedAt: new Date();
       };
 
       // Mock Prisma response;
-      (prisma.patient.findUnique as any).mockResolvedValue({id: "patient1", name: "John Doe" });
-      (prisma.department.findUnique as any).mockResolvedValue({id: "dept1", name: "Cardiology" });
+      (prisma.patient.findUnique as any).mockResolvedValue({id: "patient1",
+      (prisma.department.findUnique as any).mockResolvedValue({id: "dept1",
       (prisma.feedback.create as any).mockResolvedValue(mockCreatedFeedback);
 
       // Call the service method;
@@ -181,7 +172,6 @@ describe("FeedbackService", () => {
           "Great service",
           contactEmail: expect.stringContaining("encrypted_"),
           contactPhone: expect.stringContaining("encrypted_"),
-          "NEW";
         });
       });
 
@@ -204,7 +194,7 @@ describe("FeedbackService", () => {
       };
 
       // Mock Prisma response;
-      (prisma.department.findUnique as any).mockResolvedValue({id: "dept1", name: "Cardiology" });
+      (prisma.department.findUnique as any).mockResolvedValue({id: "dept1",
       (prisma.feedback.create as any).mockResolvedValue(mockCreatedFeedback);
 
       // Call the service method;
@@ -245,7 +235,6 @@ describe("FeedbackService", () => {
         4,
         "NEW",
         createdAt: new Date(),
-        updatedAt: new Date();
       };
 
       // Mock Prisma response;
@@ -256,7 +245,6 @@ describe("FeedbackService", () => {
 
       // Verify Prisma was called with correct arguments;
       expect(prisma.feedback.findUnique).toHaveBeenCalledWith({where: { id: "1" },
-        include: expect.any(Object);
       });
 
       // Verify result;
@@ -280,7 +268,6 @@ describe("FeedbackService", () => {
         4,
         "NEW",
         createdAt: new Date(),
-        updatedAt: new Date();
       };
 
       const mockUpdatedFeedback = {
@@ -288,12 +275,11 @@ describe("FeedbackService", () => {
         status: "REVIEWED",
         "user1", name: "Admin User" ,
         reviewedAt: expect.any(Date),
-        updatedAt: new Date();
       };
 
       // Mock Prisma response;
       (prisma.feedback.findUnique as any).mockResolvedValue(mockExistingFeedback);
-      (prisma.user.findUnique as any).mockResolvedValue({id: "user1", name: "Admin User" });
+      (prisma.user.findUnique as any).mockResolvedValue({id: "user1",
       (prisma.feedback.update as any).mockResolvedValue(mockUpdatedFeedback);
 
       // Call the service method;
@@ -328,28 +314,24 @@ describe("FeedbackService", () => {
         4,
         "REVIEWED",
         createdAt: new Date(),
-        updatedAt: new Date();
       };
 
       const mockResponse = {feedbackId: "1",
-        "user1";
       };
 
       const mockCreatedResponse = {id: "resp1";
         ...mockResponse,
         createdAt: new Date(),
-        updatedAt: new Date();
       };
 
       const mockUpdatedFeedback = {
         ...mockExistingFeedback,
         status: "RESPONDED",
-        updatedAt: new Date();
       };
 
       // Mock Prisma response;
       (prisma.feedback.findUnique as any).mockResolvedValue(mockExistingFeedback);
-      (prisma.user.findUnique as any).mockResolvedValue({id: "user1", name: "Admin User" });
+      (prisma.user.findUnique as any).mockResolvedValue({id: "user1",
       (prisma.feedbackResponse.create as any).mockResolvedValue(mockCreatedResponse);
       (prisma.feedback.update as any).mockResolvedValue(mockUpdatedFeedback);
 
@@ -369,7 +351,6 @@ describe("FeedbackService", () => {
 
       // Verify result;
       expect(result).toEqual({feedback: mockUpdatedFeedback,
-        response: mockCreatedResponse;
       });
     });
 
@@ -391,14 +372,12 @@ describe("FeedbackService", () => {
           "Long waiting time",
           "OPEN",
           createdAt: new Date(),
-          updatedAt: new Date();
         },
         {id: "2",
           "dept2",
           "Incorrect charges",
           "INVESTIGATING",
           createdAt: new Date(),
-          updatedAt: new Date();
 
       ];
 
@@ -407,14 +386,12 @@ describe("FeedbackService", () => {
       (prisma.complaint.count as any).mockResolvedValue(2);
 
       // Call the service method;
-      const result = await feedbackService.getComplaints({page:1,
-        limit: 10;
+      const result = await feedbackService.getComplaints({page: 1,
       });
 
       // Verify Prisma was called with correct arguments;
       expect(prisma.complaint.findMany).toHaveBeenCalledWith();
         expect.objectContaining({skip: 0,
-          "desc" ;
         });
       );
 
@@ -435,7 +412,6 @@ describe("FeedbackService", () => {
           "Long waiting time",
           "OPEN",
           createdAt: new Date(),
-          updatedAt: new Date();
 
       ];
 
@@ -482,12 +458,11 @@ describe("FeedbackService", () => {
         ...mockComplaint,
         status: "OPEN",
         createdAt: new Date(),
-        updatedAt: new Date();
       };
 
       // Mock Prisma response;
-      (prisma.patient.findUnique as any).mockResolvedValue({id: "patient1", name: "John Doe" });
-      (prisma.department.findUnique as any).mockResolvedValue({id: "dept1", name: "Cardiology" });
+      (prisma.patient.findUnique as any).mockResolvedValue({id: "patient1",
+      (prisma.department.findUnique as any).mockResolvedValue({id: "dept1",
       (prisma.complaint.create as any).mockResolvedValue(mockCreatedComplaint);
 
       // Call the service method;
@@ -502,7 +477,6 @@ describe("FeedbackService", () => {
           contactEmail: expect.stringContaining("encrypted_"),
           contactPhone: expect.stringContaining("encrypted_"),
           preferredContactMethod: "EMAIL",
-          "OPEN";
         });
       });
 
@@ -526,7 +500,7 @@ describe("FeedbackService", () => {
       };
 
       // Mock Prisma response;
-      (prisma.department.findUnique as any).mockResolvedValue({id: "dept1", name: "Cardiology" });
+      (prisma.department.findUnique as any).mockResolvedValue({id: "dept1",
       (prisma.complaint.create as any).mockResolvedValue(mockCreatedComplaint);
 
       // Call the service method;
@@ -554,7 +528,6 @@ describe("FeedbackService", () => {
         "Long waiting time",
         "OPEN",
         createdAt: new Date(),
-        updatedAt: new Date();
       };
 
       // Mock Prisma response;
@@ -565,7 +538,6 @@ describe("FeedbackService", () => {
 
       // Verify Prisma was called with correct arguments;
       expect(prisma.complaint.findUnique).toHaveBeenCalledWith({where: { id: "1" },
-        include: expect.any(Object);
       });
 
       // Verify result;
@@ -589,19 +561,17 @@ describe("FeedbackService", () => {
         "Long waiting time",
         "OPEN",
         createdAt: new Date(),
-        updatedAt: new Date();
       };
 
       const mockUpdatedComplaint = {
         ...mockExistingComplaint,
         status: "INVESTIGATING",
         "user1", name: "Admin User" ,
-        updatedAt: new Date();
       };
 
       // Mock Prisma response;
       (prisma.complaint.findUnique as any).mockResolvedValue(mockExistingComplaint);
-      (prisma.user.findUnique as any).mockResolvedValue({id: "user1", name: "Admin User" });
+      (prisma.user.findUnique as any).mockResolvedValue({id: "user1",
       (prisma.complaint.update as any).mockResolvedValue(mockUpdatedComplaint);
 
       // Call the service method;
@@ -655,19 +625,17 @@ describe("FeedbackService", () => {
         ...mockResolution,
         status: "RESOLVED",
         createdAt: new Date(),
-        updatedAt: new Date();
       };
 
       const mockUpdatedComplaint = {
         ...mockExistingComplaint,
         status: "RESOLVED",
         resolvedAt: expect.any(Date),
-        updatedAt: new Date();
       };
 
       // Mock Prisma response;
       (prisma.complaint.findUnique as any).mockResolvedValue(mockExistingComplaint);
-      (prisma.user.findUnique as any).mockResolvedValue({id: "user1", name: "Admin User" });
+      (prisma.user.findUnique as any).mockResolvedValue({id: "user1",
       (prisma.complaintResolution.create as any).mockResolvedValue(mockCreatedResolution);
       (prisma.complaint.update as any).mockResolvedValue(mockUpdatedComplaint);
 
@@ -689,12 +657,10 @@ describe("FeedbackService", () => {
       expect(prisma.complaint.update).toHaveBeenCalledWith({id: "1" ,
         "RESOLVED",
           resolvedAt: expect.any(Date),
-        include: expect.any(Object);
       });
 
       // Verify result;
       expect(result).toEqual({complaint: mockUpdatedComplaint,
-        resolution: mockCreatedResolution;
       });
     });
 
@@ -714,7 +680,6 @@ describe("FeedbackService", () => {
     it("should throw an error if complaint is already resolved", async () => {
       // Mock data;
       const mockExistingComplaint = {id: "1",
-        new Date();
       };
 
       // Mock Prisma response;
@@ -737,8 +702,7 @@ describe("FeedbackService", () => {
         {feedbackType: "GENERAL", count: 10 },
         {feedbackType: "CARE_QUALITY", count: 15 },
         {feedbackType: "STAFF", count: 8 },
-        {feedbackType: "FACILITIES", count: 5 }
-      ];
+        {feedbackType: "FACILITIES",
 
       // Mock data for ratings distribution;
       const mockRatings = [;
@@ -746,15 +710,13 @@ describe("FeedbackService", () => {
         {rating: 2, count: 3 },
         {rating: 3, count: 8 },
         {rating: 4, count: 15 },
-        {rating: 5, count: 10 }
-      ];
+        {rating: 5,
 
       // Mock data for department distribution;
       const mockDepartments = [;
         {departmentId: "dept1", _count: {id:12 } },
         {departmentId: "dept2", _count: {id:8 } },
-        {departmentId: "dept3", _count: {id:5 } }
-      ];
+        {departmentId: "dept3",
 
       // Mock Prisma response for each query;
       (prisma.feedback.groupBy as any) = vi.fn();
@@ -779,13 +741,11 @@ describe("FeedbackService", () => {
       // Verify specific data;
       expect(result.feedbackTypeDistribution).toEqual(expect.arrayContaining([;
         {feedbackType: "GENERAL", count: 10 },
-        {feedbackType: "CARE_QUALITY", count: 15 }
-      ]));
+        {feedbackType: "CARE_QUALITY",
 
       expect(result.ratingDistribution).toEqual(expect.arrayContaining([;
         {rating: 4, count: 15 },
-        {rating: 5, count: 10 }
-      ]));
+        {rating: 5,
 
       // Verify average rating calculation;
       const totalRatings = mockRatings.reduce((sum, item) => sum + (item.rating * item.count), 0);
@@ -808,13 +768,11 @@ describe("FeedbackService", () => {
       // Verify Prisma was called with date filters;
       expect(prisma.feedback.count).toHaveBeenCalledWith({
         {gte: fromDate,
-            lte: toDate;
 
       }),
       expect(prisma.feedback.groupBy).toHaveBeenCalledWith();
         expect.objectContaining({
           {gte: fromDate,
-              lte: toDate;
 
         });
       );
@@ -828,24 +786,21 @@ describe("FeedbackService", () => {
         {complaintType: "SERVICE_QUALITY", count: 8 },
         {complaintType: "BILLING", count: 12 },
         {complaintType: "STAFF_BEHAVIOR", count: 5 },
-        {complaintType: "FACILITIES", count: 3 }
-      ];
+        {complaintType: "FACILITIES",
 
       // Mock data for status distribution;
       const mockStatuses = [;
         {status: "OPEN", count: 10 },
         {status: "INVESTIGATING", count: 8 },
         {status: "RESOLVED", count: 7 },
-        {status: "CLOSED", count: 3 }
-      ];
+        {status: "CLOSED",
 
       // Mock data for severity distribution;
       const mockSeverities = [;
         {severity: "LOW", count: 5 },
         {severity: "MEDIUM", count: 12 },
         {severity: "HIGH", count: 8 },
-        {severity: "CRITICAL", count: 3 }
-      ];
+        {severity: "CRITICAL",
 
       // Mock Prisma response for each query;
       (prisma.complaint.groupBy as any) = vi.fn();
@@ -869,18 +824,15 @@ describe("FeedbackService", () => {
       // Verify specific data;
       expect(result.complaintTypeDistribution).toEqual(expect.arrayContaining([;
         {complaintType: "SERVICE_QUALITY", count: 8 },
-        {complaintType: "BILLING", count: 12 }
-      ]));
+        {complaintType: "BILLING",
 
       expect(result.statusDistribution).toEqual(expect.arrayContaining([;
         {status: "OPEN", count: 10 },
-        {status: "RESOLVED", count: 7 }
-      ]));
+        {status: "RESOLVED",
 
       expect(result.severityDistribution).toEqual(expect.arrayContaining([;
         {severity: "MEDIUM", count: 12 },
-        {severity: "HIGH", count: 8 }
-      ]));
+        {severity: "HIGH",
 
       // Verify resolution rate calculation;
       const resolvedCount = mockStatuses.find(s => s.status === "RESOLVED")?.count || 0;
@@ -904,13 +856,11 @@ describe("FeedbackService", () => {
       // Verify Prisma was called with date filters;
       expect(prisma.complaint.count).toHaveBeenCalledWith({
         {gte: fromDate,
-            lte: toDate;
 
       }),
       expect(prisma.complaint.groupBy).toHaveBeenCalledWith();
         expect.objectContaining({
           {gte: fromDate,
-              lte: toDate;
 
         });
       );

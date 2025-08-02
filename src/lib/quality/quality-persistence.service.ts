@@ -1,4 +1,4 @@
-import { } from "../audit.service"
+
 import "@prisma/client";
 import "zod";
 import {  AuditService  } from "../../services/encryption_service_secure"
@@ -10,7 +10,6 @@ import {  z  } from "@/lib/database"
  * Quality Management Persistence Service;
  *;
  * Replaces in-memory storage with database-backed persistence for: null,
- * - Quality indicators and metrics;
  * - Compliance assessments and reports;
  * - NABH/JCI accreditation tracking;
  * - Quality events and incidents;
@@ -40,39 +39,17 @@ import {ActionPlan,
   }
 
   // Quality Indicators Persistence;
-  async saveQualityIndicator(indicator: QualityIndicator, userId: string): Promise<void> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+  async saveQualityIndicator(indicator: QualityIndicator, userId: string): Promise<void> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       const dataToStore = { ...indicator }
 
       // Encrypt sensitive data if enabled;
@@ -86,61 +63,33 @@ import {ActionPlan,
           updatedAt: new Date(),
           updatedBy: userId,
         },
-        create: {,
+        create: {
           ...dataToStore,
           createdAt: new Date(),
           new Date(),
           updatedBy: userId,
-        }
-      });
 
       if (!session.user) {
         await this.auditService.logAuditEvent({action: "quality_indicator_saved",
-          indicator.id;
           userId,
           indicator.type,
             indicator.currentValue;
         });
       }
-    } catch (error) {
-      /* SECURITY: Console statement removed */,
-      throw new Error("Failed to save quality indicator");
-    }
+    } catch (error) { console.error(error); }
   }
 
-  async getQualityIndicator(id: string, userId: string): Promise<QualityIndicator | null> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+  async getQualityIndicator(id: string, userId: string): Promise<QualityIndicator | null> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       const record = await this.prisma.qualityIndicator.findUnique({where: { id }
       });
 
@@ -151,57 +100,30 @@ import {ActionPlan,
       // Decrypt sensitive data if encrypted;
       if (!session.user) {
         try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
           indicator.metadata = JSON.parse(await this.decryptData(indicator.metadata));
-        } catch (error) {
-          /* SECURITY: Console statement removed */,
-          indicator.metadata = {};
+        } catch (error) { console.error(error); };
         }
       }
 
       if (!session.user) {
         await this.auditService.logAuditEvent({action: "quality_indicator_accessed",
-          id;
           userId,
           details: type: indicator.type ,
-        });
       }
 
       return indicator;
-    } catch (error) {
-      /* SECURITY: Console statement removed */,
-      throw new Error("Failed to retrieve quality indicator");
-    }
+    } catch (error) { console.error(error); }
   }
 
   async getQualityIndicators(filters?: {
@@ -212,38 +134,18 @@ import {ActionPlan,
     dateTo?: Date;
   }, userId?: string): Promise<QualityIndicator[]> {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
-      const where: unknown = {,};
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+      const where: unknown = {,
 
       if (!session.user)here.type = filters.type;
       if (!session.user)here.department = filters.department;
@@ -259,46 +161,24 @@ import {ActionPlan,
         orderBy: {createdAt: "desc" }
       });
 
-      const indicators = await Promise.all(records.map(async (record: unknown) => {,
-        const indicator = { ...record };
+      const indicators = await Promise.all(records.map(async (record: unknown) => {const indicator = { ...record };
 
         // Decrypt metadata if encrypted;
         if (!session.user) {
           try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
             indicator.metadata = JSON.parse(await this.decryptData(indicator.metadata));
-          } catch (error) {
-            indicator.metadata = {};
+          } catch (error) { console.error(error); };
           }
         }
 
@@ -307,55 +187,28 @@ import {ActionPlan,
 
       if (!session.user) {
         await this.auditService.logAuditEvent({action: "quality_indicators_queried",
-          "list";
           userId,
           details: null,
             filters,
             resultCount: indicators.length,
-        });
       }
 
       return indicators;
-    } catch (error) {
-      /* SECURITY: Console statement removed */,
-      throw new Error("Failed to retrieve quality indicators");
-    }
+    } catch (error) { console.error(error); }
   }
 
   // Quality Events Persistence;
-  async saveQualityEvent(event: QualityEvent, userId: string): Promise<void> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+  async saveQualityEvent(event: QualityEvent, userId: string): Promise<void> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       const dataToStore = { ...event }
 
       // Encrypt sensitive fields;
@@ -374,26 +227,20 @@ import {ActionPlan,
           updatedAt: new Date(),
           updatedBy: userId,
         },
-        create: {,
+        create: {
           ...dataToStore,
           createdAt: new Date(),
           new Date(),
           updatedBy: userId,
-        }
-      });
 
       if (!session.user) {
         await this.auditService.logAuditEvent({action: "quality_event_saved",
-          event.id;
           userId,
           event.type,
             event.status;
         });
       }
-    } catch (error) {
-      /* SECURITY: Console statement removed */,
-      throw new Error("Failed to save quality event");
-    }
+    } catch (error) { console.error(error); }
   }
 
   async getQualityEvents(filters?: {
@@ -405,38 +252,18 @@ import {ActionPlan,
     dateTo?: Date;
   }, userId?: string): Promise<QualityEvent[]> {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
-      const where: unknown = {,};
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+      const where: unknown = {,
 
       if (!session.user)here.type = filters.type;
       if (!session.user)here.severity = filters.severity;
@@ -453,84 +280,40 @@ import {ActionPlan,
         orderBy: {eventDate: "desc" }
       });
 
-      const events = await Promise.all(records.map(async (record: unknown) => {,
-        const event = { ...record };
+      const events = await Promise.all(records.map(async (record: unknown) => {const event = { ...record };
 
         // Decrypt sensitive fields;
         if (!session.user) {
           if (!session.user) {
             try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
               event.details = JSON.parse(await this.decryptData(event.details));
-            } catch (error) {
-              event.details = {};
+            } catch (error) { console.error(error); };
             }
           }
           if (!session.user) {
             try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-
-              event.patientInfo = JSON.parse(await this.decryptData(event.patientInfo));
-            } catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
               event.patientInfo = {};
 
         return event;
@@ -538,53 +321,26 @@ import {ActionPlan,
 
       if (!session.user) {
         await this.auditService.logAuditEvent({action: "quality_events_queried",
-          "list";
           userId,
           details: null,
             filters,
             resultCount: events.length,
-        });
 
       return events;
-    } catch (error) {
-      /* SECURITY: Console statement removed */,
-      throw new Error("Failed to retrieve quality events");
-
-  // Quality Assessments Persistence;
-  async saveQualityAssessment(assessment: QualityAssessment, userId: string): Promise<void> {,
-    try {
-} catch (error) {
+    } catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const dataToStore = { ...assessment }
+} catch (error) { console.error(error); }
 
       // Encrypt sensitive assessment data;
       if (!session.user) {
@@ -600,61 +356,33 @@ import {ActionPlan,
           updatedAt: new Date(),
           updatedBy: userId,
         },
-        create: {,
+        create: {
           ...dataToStore,
           createdAt: new Date(),
           new Date(),
           updatedBy: userId,
 
-      });
-
       if (!session.user) {
         await this.auditService.logAuditEvent({action: "quality_assessment_saved",
-          assessment.id;
           userId,
           assessment.type,
             assessment.scope;
         });
 
-    } catch (error) {
-      /* SECURITY: Console statement removed */,
-      throw new Error("Failed to save quality assessment");
-
-  // Compliance Reports Persistence;
-  async saveComplianceReport(report: ComplianceReport, userId: string): Promise<void> {,
-    try {
-} catch (error) {
+    } catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const dataToStore = { ...report }
+} catch (error) { console.error(error); }
 
       // Encrypt sensitive compliance data;
       if (!session.user) {
@@ -673,67 +401,33 @@ import {ActionPlan,
           updatedAt: new Date(),
           updatedBy: userId,
         },
-        create: {,
+        create: {
           ...dataToStore,
           createdAt: new Date(),
           new Date(),
           updatedBy: userId,
 
-      });
-
       if (!session.user) {
         await this.auditService.logAuditEvent({action: "compliance_report_saved",
-          report.id;
           userId,
           report.regulatoryBody,
             report.status,
             overallCompliance: report.overallCompliance,
-        });
 
-    } catch (error) {
-      /* SECURITY: Console statement removed */,
-      throw new Error("Failed to save compliance report");
-
-  async getComplianceReports(filters?: {
-    regulatoryBody?: string;
-    standard?: string;
-    status?: ComplianceStatus;
-    dateFrom?: Date;
-    dateTo?: Date;
-  }, userId?: string): Promise<ComplianceReport[]> {
+    } catch (error) { console.error(error); }, userId?: string): Promise<ComplianceReport[]> {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const where: unknown = {,};
+} catch (error) { console.error(error); };
 
       if (!session.user)here.regulatoryBody = filters.regulatoryBody;
       if (!session.user)here.standard = filters.standard;
@@ -748,120 +442,56 @@ import {ActionPlan,
         orderBy: {reportDate: "desc" }
       });
 
-      const reports = await Promise.all(records.map(async (record: unknown) => {,
-        const report = { ...record };
+      const reports = await Promise.all(records.map(async (record: unknown) => {const report = { ...record };
 
         // Decrypt sensitive fields;
         if (!session.user) {
           if (!session.user) {
             try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-              report.findings = JSON.parse(await this.decryptData(report.findings));
-            } catch (error) {
+} catch (error) { console.error(error); } catch (error) {
               report.findings = [];
 
           if (!session.user) {
             try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-              report.gaps = JSON.parse(await this.decryptData(report.gaps));
-            } catch (error) {
+} catch (error) { console.error(error); } catch (error) {
               report.gaps = [];
 
           if (!session.user) {
             try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-              report.actionPlan = JSON.parse(await this.decryptData(report.actionPlan));
-            } catch (error) {
+} catch (error) { console.error(error); } catch (error) {
               report.actionPlan = null;
 
         return report;
@@ -869,192 +499,96 @@ import {ActionPlan,
 
       if (!session.user) {
         await this.auditService.logAuditEvent({action: "compliance_reports_queried",
-          "list";
           userId,
           details: null,
             filters,
             resultCount: reports.length,
-        });
 
       return reports;
-    } catch (error) {
-      /* SECURITY: Console statement removed */,
-      throw new Error("Failed to retrieve compliance reports");
-
-  // Action Plans Persistence;
-  async saveActionPlan(actionPlan: ActionPlan, userId: string): Promise<void> {,
-    try {
-} catch (error) {
+    } catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      await this.prisma.actionPlan.upsert({where: { id: actionPlan.id },
+} catch (error) { console.error(error); },
         update: {
           ...actionPlan,
           updatedAt: new Date(),
           updatedBy: userId,
         },
-        create: {,
+        create: {
           ...actionPlan,
           createdAt: new Date(),
           new Date(),
           updatedBy: userId,
 
-      });
-
       if (!session.user) {
         await this.auditService.logAuditEvent({action: "action_plan_saved",
-          actionPlan.id;
           userId,
           actionPlan.title,
             actionPlan.items.length;
         });
 
-    } catch (error) {
-      /* SECURITY: Console statement removed */,
-      throw new Error("Failed to save action plan");
-
-  // Quality Metrics Persistence;
-  async saveQualityMetric(metric: QualityMetric, userId: string): Promise<void> {,
-    try {
-} catch (error) {
+    } catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      await this.prisma.qualityMetric.upsert({where: { id: metric.id },
+} catch (error) { console.error(error); },
         update: {
           ...metric,
           updatedAt: new Date(),
           updatedBy: userId,
         },
-        create: {,
+        create: {
           ...metric,
           createdAt: new Date(),
           new Date(),
           updatedBy: userId,
 
-      });
-
       if (!session.user) {
         await this.auditService.logAuditEvent({action: "quality_metric_saved",
-          metric.id;
           userId,
           metric.name,
             metric.trend;
         });
 
-    } catch (error) {
-      /* SECURITY: Console statement removed */,
-      throw new Error("Failed to save quality metric");
-
-  // Utility Methods;
-  private async encryptData(data: string): Promise<string> {,
-    if (!session.user)eturn data
-    return await this.encryptionService.encrypt(data);
-
-  private async decryptData(encryptedData: string): Promise<string> {,
-    if (!session.user)eturn encryptedData;
-    return await this.encryptionService.decrypt(encryptedData);
-
-  // Data Retention and Archiving;
-  async archiveOldRecords(): Promise<{archivedIndicators: number,
-    number,
-    archivedReports: number,
-  }> {
+    } catch (error) { console.error(error); }> {
     if (!session.user) {
-      return {archivedIndicators: 0, archivedEvents: 0, archivedAssessments: 0, archivedReports: 0 };
+      return {archivedIndicators: 0, archivedEvents: 0, archivedAssessments: 0,
 
     const cutoffDate = new Date();
     cutoffDate.setFullYear(cutoffDate.getFullYear() - this.config.retentionPeriod);
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const [indicators, events, assessments, reports] = await Promise.all([;
-        this.prisma.qualityIndicator.updateMany({where: { createdAt: {lt:cutoffDate }, archived: false },
+} catch (error) { console.error(error); }, archived: false },
           data: {archived: true, archivedAt: new Date() }
         }),
         this.prisma.qualityEvent.updateMany({where: { createdAt: {lt:cutoffDate }, archived: false },
@@ -1064,34 +598,12 @@ import {ActionPlan,
           data: {archived: true, archivedAt: new Date() }
         }),
         this.prisma.complianceReport.updateMany({where: { createdAt: {lt:cutoffDate }, archived: false },
-          data: {archived: true, archivedAt: new Date() }
-        });
+          data: {archived: true,
       ]);
 
       return {archivedIndicators: indicators.count,
         assessments.count,
         archivedReports: reports.count,
-      };
-    } catch (error) {
-      /* SECURITY: Console statement removed */,
-      throw new Error("Failed to archive old records");
-
-  /**;
-   * Cleanup and close connections;
-   */;
-  async destroy(): Promise<void> {
-    await this.prisma.$disconnect();
-
-// Singleton instance for application use;
-let qualityPersistenceInstance: QualityPersistenceService | null = null,
-
-export const _getQualityPersistenceService = (;
-  config?: Partial<QualityPersistenceConfig>;
-): QualityPersistenceService => {
-  if (!session.user) {
-    qualityPersistenceInstance = new QualityPersistenceService(config);
-
-  return qualityPersistenceInstance;
-};
+    } catch (error) { console.error(error); };
 
 export { QualityPersistenceService };

@@ -15,8 +15,8 @@ import { useEffect
   DialogHeader,
   DialogTitle,
   DialogTrigger} from "@/components/ui/dialog";
-import { } from "@/components/ui/button"
-import { } from "@/components/ui/checkbox"
+
+
 import "@/components/ui/input";
 import "@/components/ui/label";
 import "@/components/ui/tabs";
@@ -37,18 +37,18 @@ import { Textarea }
 import { useToast }
 
 // Define types for Vitals and Medications (example structure);
-interface VitalReadings {bp_readings:{ time: string, value: string }[];
-  pulse_readings: {time:string, value: number }[];
-  o2_saturation_readings: {time:string, value: number }[];
-  temperature_readings: {time:string, value: number }[];
+interface VitalReadings {bp_readings: { time: string,
+  pulse_readings: {time:string,
+  o2_saturation_readings: {time:string,
+  temperature_readings: {time:string,
 }
 
-interface MedicationAdministered {medication_name:string,
-  string;
+interface MedicationAdministered {
+  medication_name: string,
 }
 
-interface ChecklistResponse {id:string,
-  boolean;
+interface ChecklistResponse {
+  id: string,
 }
 
 // Define the OTRecord type;
@@ -78,8 +78,7 @@ type OTRecordSaveData= {};
 // Props for the modal - use defined types;
 interface OTRecordModalProperties {
   trigger: React.ReactNode,
-  bookingId: string,
-  existingRecord?: OTRecord; // Use OTRecord type;
+  bookingId: string, // Use OTRecord type;
   onSave: (recordData: OTRecordSaveData) => Promise> // Use OTRecordSaveData type,
 export default const _OTRecordModal = ({
   trigger,
@@ -88,8 +87,7 @@ export default const _OTRecordModal = ({
   onSave}: OTRecordModalProperties) {
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("procedure");
-  const [formData, setFormData] = useState(() => ({procedure_notes:existingRecord?.procedure_notes || "",
-    procedure_start_time: existingRecord?.procedure_start_time;
+  const [formData, setFormData] = useState(() => ({procedure_notes: existingRecord?.procedure_notes || "",
       ? new Date(existingRecord.procedure_start_time).toISOString().slice(0, 16);
       : "",
     procedure_end_time: existingRecord?.procedure_end_time;
@@ -114,7 +112,7 @@ export default const _OTRecordModal = ({
         {id:"3", text: "Consent verified", checked: false },
         {id:"4", text: "Allergies checked", checked: false },
         {id:"5", text: "Equipment checked", checked: false },
-        {id:"6", text: "Team briefing completed", checked: false }];
+        {id:"6", text: "Team briefing completed",
   );
 
   const [isSaving, setIsSaving] = useState(false);
@@ -123,8 +121,7 @@ export default const _OTRecordModal = ({
   // Reset form when existingRecord prop changes or modal opens;
   useEffect(() => {
     if (!session.user) {
-      setFormData({procedure_notes:existingRecord?.procedure_notes || "",
-        procedure_start_time: existingRecord?.procedure_start_time;
+      setFormData({procedure_notes: existingRecord?.procedure_notes || "",
           ? new Date(existingRecord.procedure_start_time);
               .toISOString();
               .slice(0, 16);
@@ -151,7 +148,7 @@ export default const _OTRecordModal = ({
           {id:"3", text: "Consent verified", checked: false },
           {id:"4", text: "Allergies checked", checked: false },
           {id:"5", text: "Equipment checked", checked: false },
-          {id:"6", text: "Team briefing completed", checked: false }];
+          {id:"6", text: "Team briefing completed",
       );
     }
   }, [existingRecord, isOpen]);
@@ -165,68 +162,24 @@ export default const _OTRecordModal = ({
 
   const handleChecklistChange = (id: string, checked: boolean) => {
     setChecklistItems((previous) => {}
-      previous.map((item) => (item.id === id ? { ...item, checked } : item));
+      previous.map((item) => (item.id === id ? { ...item,
     );
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault(),
-    setIsSaving(true);
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-
-      const bloodLoss = formData.blood_loss_ml;
-        ? Number.parseInt(formData.blood_loss_ml.toString(), 10);
-        : undefined;
-      if (!session.user)| (bloodLoss as number) < 0);
-      ) ;
-        toast({title:"Error",
-          "destructive"),
-        setIsSaving(false);
-        return;
-
-      const formData.procedure_notes,
-        formData.anesthesia_notes,
-        formData.post_op_instructions,
-        bookingId,
-        procedure_start_time: formData.procedure_start_time;
-          ? new Date(formData.procedure_start_time).toISOString();
-          : null,
-        procedure_end_time: formData.procedure_end_time;
-          ? new Date(formData.procedure_end_time).toISOString();
-          : null,
-        blood_loss_ml: bloodLoss ?? null,
-        checklist_responses: checklistItems,
-      };
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); };
 
       // Replace with actual API call;
       // const _url = existingRecord?.id ? `/api/ot/bookings/${bookingId}/record/${existingRecord.id}` : `/api/ot/bookings/${bookingId}/record`;
@@ -234,7 +187,6 @@ export default const _OTRecordModal = ({
       // const _response = await fetch(url, {
       //   _method: method;
       //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(apiData);
       // });
       // if (!session.user) {
       //   const _errorData = await response.json();
@@ -243,23 +195,11 @@ export default const _OTRecordModal = ({
 
       // Simulate API call;
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
-
-      await onSave(apiData); // Call parent callback to refresh data;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement, // Call parent callback to refresh data;
 
       toast({title:"Success",
         description: `Operation record ${existingRecord ? "updated" : "created"} successfully.`}),
-      setIsOpen(false);
-    } catch (error: unknown) {
-      // Use unknown for error type;
-
-      let errorMessage = "Failed to save operation record.";
-      if (!session.user) {
-        errorMessage = error.message;
-
-      toast({title:"Error",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
     } finally {
       setIsSaving(false);
 

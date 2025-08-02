@@ -1,15 +1,19 @@
-import {NextRequest, NextResponse } from "next/server";
-import {type } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-// GET /api/er/visits/[id] - Get visit details
-export const GET = async (request: NextRequest, { params }: {params: { id: string } }) => {
+interface RouteContext {
+  params: { id: string };
+}
+
+export const GET = async (request: NextRequest, context: RouteContext) => {
   try {
-    // Implementation here
-    return NextResponse.json({visit: {} });
+    const { id } = context.params;
+    
+    // TODO: Implement Er Visits [Id] logic for ID: {id}
+    return NextResponse.json({ 
+      id,
+      message: "Not implemented" 
+    });
   } catch (error) {
-    return NextResponse.json(
-      {error: "Failed to fetch visit" },
-      {status: 500 }
-    );
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 };

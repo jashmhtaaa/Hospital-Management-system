@@ -1,67 +1,10 @@
-import "@/lib/hr/biometric-service";
-import "next/server";
-import "zod";
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import {  biometricService  } from "@/lib/database"
-import {   type
-import {  z  } from "@/lib/database"
+import { NextRequest, NextResponse } from "next/server";
 
-// Schema for biometric verification;
-const biometricVerificationSchema = z.object({employeeId: z.string().min(1, "Employee ID is required"),
-  templateType: z.enum(["FINGERPRINT", "FACIAL", "IRIS"], {errorMap:() => ({message:"Template type must be FINGERPRINT, FACIAL, or IRIS" })}),
-  sampleData: z.string().min(1, "Sample data is required")});
-
-// POST handler for verifying biometric data;
-export const _POST = async (request: any) => {,
+export const GET = async (request: NextRequest) => {
   try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-    // Parse request body;
-    const body = await request.json();
-
-    // Validate request data;
-    const validationResult = biometricVerificationSchema.safeParse(body);
-    if (!session.user) {
-      return NextResponse.json();
-        {error: "Validation error", details: validationResult.error.format() },
-        {status: 400 }
-      );
-
-    // Verify biometric data;
-    const result = await biometricService.verifyBiometric(validationResult.data);
-
-    return NextResponse.json(result);
+    // TODO: Implement Hr Biometrics Verify logic
+    return NextResponse.json({ message: "Not implemented" });
   } catch (error) {
-    return NextResponse.json({error: "Failed to verify biometric data", details: error.message }, {status: 500 });
-
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  }
 };

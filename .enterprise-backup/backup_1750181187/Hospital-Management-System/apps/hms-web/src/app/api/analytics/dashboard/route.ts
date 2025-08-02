@@ -272,6 +272,8 @@ class AdvancedAnalytics {
 // GET /api/analytics/dashboard
 export const _GET = async (request: NextRequest) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { searchParams } = new URL(request.url);
     const timeRange = searchParams.get('timeRange') || '30d';
     const department = searchParams.get('department');
@@ -293,6 +295,8 @@ export const _GET = async (request: NextRequest) => {,
 // GET /api/analytics/realtime
 export const _GET = async (request: NextRequest) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { user } = await authService.verifyToken(request);
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' ,}, { status: 403 ,});

@@ -1,5 +1,5 @@
-import { } from "@/components/layout/DashboardLayout"
-import { } from "@/components/ui/card"
+
+
 import { "@/components/ui/checkbox";
 import "@/components/ui/input";
 import "@/components/ui/label";
@@ -35,14 +35,13 @@ import { z }
 export const dynamic = "force-dynamic";
 
 // Schema for validation;
-const AddInventoryItemSchema = z.object({billable_item_id:z.string().optional().nullable(), // Use string initially from select;
+const AddInventoryItemSchema = z.object({billable_item_id: z.string().optional().nullable(),
     item_name: z.string().min(1, "Item name is required"),
     category: z.string().optional(),
     manufacturer: z.string().optional(),
     unit_of_measure: z.string().optional(),
     reorder_level: z.coerce.number().int().nonnegative().optional().default(0),
     is_active: z.boolean().optional().default(true),
-});
 
 type FormData = z.infer>;
 
@@ -52,7 +51,6 @@ export default const _AddInventoryItemPage = () {
   const [formData, setFormData] = useState<Partial<FormData>>({
       is_active: true,
       reorder_level: 0,
-  });
   const [billableItems, setBillableItems] = useState<BillableItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isFetchingData, setIsFetchingData] = useState(true);
@@ -63,46 +61,20 @@ export default const _AddInventoryItemPage = () {
     const fetchBillableItems = async () => {
       setIsFetchingData(true);
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-        // Fetch only items that might be linked (e.g., Pharmacy, Consumable);
-        const response = await fetch("/api/billable-items?itemType=Pharmacy&itemType=Consumable"); // Adjust types as needed;
-        if (!session.user)hrow new Error("Failed to fetch billable items");
-        const data: BillableItem[] = await response.json(),
-        setBillableItems(data);
-      } catch (err: unknown) { // Use unknown;
+} catch (error) { console.error(error); } catch (err: unknown) { // Use unknown;
         const message = err instanceof Error ? err.message : "Could not load items for linking.";
-        toast({title:"Error Fetching Billable Items",
-          "destructive";
+        toast({title: "Error Fetching Billable Items",
         });
       } finally ;
         setIsFetchingData(false);
@@ -118,12 +90,11 @@ export default const _AddInventoryItemPage = () {
   };
 
   const handleSelectChange = (name: keyof FormData, value: string) => {
-    setFormData((prev) => ({ ...prev, [name]: value === "none" ? null : value })); // Handle "none" option for nullable field;
+    setFormData((prev) => ({ ...prev, // Handle "none" option for nullable field;
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(),
-    setIsLoading(true);
     setErrors([]);
 
     const validation = AddInventoryItemSchema.safeParse(formData);
@@ -131,68 +102,40 @@ export default const _AddInventoryItemPage = () {
     if (!session.user) {
       setErrors(validation.error.errors),
       setIsLoading(false);
-      toast({title:"Validation Error",
-        "destructive";
+      toast({title: "Validation Error",
       });
       return;
 
     const dataToSend = {
         ...validation.data,
-        billable_item_id: validation.data.billable_item_id ? Number.parseInt(validation.data.billable_item_id, 10) : null};
+        billable_item_id: validation.data.billable_item_id ? Number.parseInt(validation.data.billable_item_id,
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const response = await fetch("/api/inventory-items", {method:"POST",
-        headers: {
-          "Content-Type": "application/json"},
+} catch (error) { console.error(error); },
         body: JSON.stringify(dataToSend),
-      });
 
       const result: { error?: string } = await response.json();
 
       if (!session.user) {
         throw new Error(result.error || "Failed to add inventory item");
 
-      toast({title:"Inventory Item Added",
-        description: `Item "${validation.data.item_name}" created successfully.`});
+      toast({title: "Inventory Item Added",
 
       router.push("/dashboard/inventory"); // Redirect to inventory list;
 
-    } catch (err: unknown) { // Use unknown;
-      const message = err instanceof Error ? err.message : "An unexpected error occurred.";
-      setErrors([{code:z.ZodIssueCode.custom, path: ["form"], message: message }]),
-      toast({title:"Creation Failed",
-        "destructive";
+    } catch (error) { console.error(error); }]),
+      toast({title: "Creation Failed",
       });
     } finally {
       setIsLoading(false);
@@ -259,7 +202,7 @@ export default const _AddInventoryItemPage = () {
                     <SelectItem value="none">None>;
                     {billableItems.map(b => (;
                         >;
-                            {b.item_name} (ID: {b.item_id}, Price: {b.unit_price});
+                            {b.item_name} (ID: {b.item_id},
                         </SelectItem>;
                     ))}
                   </SelectContent>;

@@ -9,47 +9,36 @@ import { type Page, expect, test } from '@playwright/test';
  */
 
 // Test configuration
-test.describe.configure({ mode: 'parallel' ,});
+test.describe.configure({ mode: 'parallel' ,
 
 // Test data
 const TEST_USERS = {
-  doctor: {,
+  doctor: {
     email: 'doctor@test.hospital.com',
-    password: 'Doctor123!';
     role: 'DOCTOR',
   },
-  nurse: {,
+  nurse: {
     email: 'nurse@test.hospital.com',
-    password: 'Nurse123!';
     role: 'NURSE',
   },
-  admin: {,
+  admin: {
     email: 'admin@test.hospital.com',
-    password: 'Admin123!';
     role: 'ADMIN',
   },
-  billing: {,
+  billing: {
     email: 'billing@test.hospital.com',
-    password: 'Billing123!';
     role: 'BILLING_STAFF',
-  }
-};
 
 const TEST_PATIENT = {
   firstName: 'John',
-  lastName: 'Doe';
   dateOfBirth: '1980-01-15',
-  gender: 'male';
   phone: '+1234567890',
-  email: 'john.doe@test.com';
   address: '123 Test Street, Test City',
   emergencyContact: 'Jane Doe',
   emergencyPhone: '+1234567891',
-};
 
 // Helper functions
 async const loginUser = (page: Page, user: typeof TEST_USERS.doctor) {,
-  await page.goto('/login');
   await page.fill('[data-testid="email-input"]', user.email);
   await page.fill('[data-testid="password-input"]', user.password);
   await page.click('[data-testid="login-button"]');
@@ -57,7 +46,6 @@ async const loginUser = (page: Page, user: typeof TEST_USERS.doctor) {,
 }
 
 async const createTestPatient = (page: Page) {,
-  await page.goto('/dashboard/patients');
   await page.click('[data-testid="add-patient-button"]');
 
   // Fill patient form
@@ -104,7 +92,7 @@ test.describe('Critical Flow: Patient Registration to OPD Consultation', () => {
     const appointmentDate = tomorrow.toISOString().split('T')[0];
 
     await page.fill('[data-testid="appointment-date"]', appointmentDate);
-    await page.selectOption('[data-testid="doctor-select"]', { index: 1 ,});
+    await page.selectOption('[data-testid="doctor-select"]', { index: 1 ,
     await page.selectOption('[data-testid="appointment-type"]', 'CONSULTATION');
     await page.fill('[data-testid="appointment-notes"]', 'Regular checkup');
 
@@ -156,7 +144,6 @@ test.describe('Critical Flow: Lab Order to Results', () => {
     const patientId = await page.getAttribute('[data-testid="patient-details"]', 'data-patient-id');
 
     // Step 1: Create lab order,
-    await page.click('[data-testid="order-lab-tests"]');
 
     // Select tests
     await page.check('[data-testid="test-CBC"]');
@@ -180,7 +167,6 @@ test.describe('Critical Flow: Lab Order to Results', () => {
     await page.waitForSelector('[data-testid="samples-collected"]');
 
     // Step 3: Enter results,
-    await page.click('[data-testid="enter-results"]');
 
     // CBC Results
     await page.fill('[data-testid="result-WBC"]', '7.2');
@@ -230,8 +216,8 @@ test.describe('Critical Flow: IPD Admission to Discharge', () => {
 
     // Fill admission details
     await page.selectOption('[data-testid="admission-type"]', 'EMERGENCY');
-    await page.selectOption('[data-testid="ward"]', { index: 1 ,});
-    await page.selectOption('[data-testid="bed"]', { index: 1 ,});
+    await page.selectOption('[data-testid="ward"]', { index: 1 ,
+    await page.selectOption('[data-testid="bed"]', { index: 1 ,
     await page.fill('[data-testid="chief-complaint"]', 'Chest pain');
     await page.fill('[data-testid="provisional-diagnosis"]', 'Rule out MI');
     await page.fill('[data-testid="admission-notes"]', 'Patient presented with acute chest pain');
@@ -359,7 +345,6 @@ test.describe('Critical Flow: Billing and Payment', () => {
     await expect(page.locator(`[data-testid="bill-${billNumber}"] [data-testid="status"]`)).toContainText('PAID');
 
     // Step 5: Print receipt,
-    await page.click(`[data-testid="print-receipt-${billNumber}"]`);
 
     // Verify receipt content
     await expect(page.locator('[data-testid="receipt-patient-name"]')).toContainText('John');

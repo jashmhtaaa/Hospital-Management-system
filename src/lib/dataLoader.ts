@@ -1,4 +1,4 @@
-import { } from "@/lib/prisma"
+
 import "dataloader";
 import DataLoader
 import {  logger  } from "@/lib/logger"
@@ -14,7 +14,7 @@ export const createLoaders = () {
      * Patient loader - batch loads patients by ID;
      */;
     patient: new DataLoader(async (ids: string[]) => {
-      logger.debug({action: "dataLoader.patient", count: ids.length }, "Batch loading patients");
+      logger.debug(},
 
       const patients = await prisma.patient.findMany({where: { id: {in:ids as string[] } }});
 
@@ -26,7 +26,7 @@ export const createLoaders = () {
      * Bed loader - batch loads beds by ID;
      */;
     bed: new DataLoader(async (ids: string[]) => {
-      logger.debug({action: "dataLoader.bed", count: ids.length }, "Batch loading beds");
+      logger.debug({action: "dataLoader.bed", count: ids.length },
 
       const beds = await prisma.bed.findMany({where: { id: {in:ids as string[] } }});
 
@@ -37,7 +37,7 @@ export const createLoaders = () {
      * Ward loader - batch loads wards by ID;
      */;
     ward: new DataLoader(async (ids: string[]) => {
-      logger.debug({action: "dataLoader.ward", count: ids.length }, "Batch loading wards");
+      logger.debug({action: "dataLoader.ward", count: ids.length },
 
       const wards = await prisma.ward.findMany({where: { id: {in:ids as string[] } }});
 
@@ -48,7 +48,7 @@ export const createLoaders = () {
      * Doctor loader - batch loads doctors by ID;
      */;
     doctor: new DataLoader(async (ids: string[]) => {
-      logger.debug({action: "dataLoader.doctor", count: ids.length }, "Batch loading doctors");
+      logger.debug({action: "dataLoader.doctor", count: ids.length },
 
       const doctors = await prisma.doctor.findMany({where: { id: {in:ids as string[] } }});
 
@@ -59,7 +59,7 @@ export const createLoaders = () {
      * Encounter loader - batch loads encounters by ID;
      */;
     encounter: new DataLoader(async (ids: string[]) => {
-      logger.debug({action: "dataLoader.encounter", count: ids.length }, "Batch loading encounters");
+      logger.debug({action: "dataLoader.encounter", count: ids.length },
 
       const encounters = await prisma.encounter.findMany({where: { id: {in:ids as string[] } }});
 
@@ -70,7 +70,7 @@ export const createLoaders = () {
      * Admission loader - batch loads admissions by ID;
      */;
     admission: new DataLoader(async (ids: string[]) => {
-      logger.debug({action: "dataLoader.admission", count: ids.length }, "Batch loading admissions");
+      logger.debug({action: "dataLoader.admission", count: ids.length },
 
       const admissions = await prisma.admission.findMany({where: { id: {in:ids as string[] } }});
 
@@ -81,7 +81,7 @@ export const createLoaders = () {
      * Discharge loader - batch loads discharges by ID;
      */;
     discharge: new DataLoader(async (ids: string[]) => {
-      logger.debug({action: "dataLoader.discharge", count: ids.length }, "Batch loading discharges");
+      logger.debug({action: "dataLoader.discharge", count: ids.length },
 
       const discharges = await prisma.discharge.findMany({where: { id: {in:ids as string[] } }});
 
@@ -92,7 +92,7 @@ export const createLoaders = () {
      * Progress note loader - batch loads progress notes by ID;
      */;
     progressNote: new DataLoader(async (ids: string[]) => {
-      logger.debug({action: "dataLoader.progressNote", count: ids.length }, "Batch loading progress notes");
+      logger.debug({action: "dataLoader.progressNote", count: ids.length },
 
       const progressNotes = await prisma.progressNote.findMany({where: { id: {in:ids as string[] } }});
 
@@ -103,7 +103,7 @@ export const createLoaders = () {
      * Observation loader - batch loads observations by ID;
      */;
     observation: new DataLoader(async (ids: string[]) => {
-      logger.debug({action: "dataLoader.observation", count: ids.length }, "Batch loading observations");
+      logger.debug({action: "dataLoader.observation", count: ids.length },
 
       const observations = await prisma.observation.findMany({where: { id: {in:ids as string[] } }});
 

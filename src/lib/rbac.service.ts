@@ -1,4 +1,4 @@
-import { } from "@/lib/errors"
+
 import {  AuditLogger  } from "@/lib/audit"
 import {  AuthorizationError  } from "@/lib/database"
 
@@ -53,14 +53,15 @@ export enum Action {
   REPORT = "report"}
 
 // Permission definition type;
-interface Permission {resource:Resource,
+interface Permission {
+  resource:Resource,
+}
   action: Action,
-  constraints?: Record>;
 }
 
 // Role definition with permissions;
-interface RoleDefinition {name:Role,
-  inherits?: Role[];
+interface RoleDefinition {
+  name: Role,
   permissions: Permission[],
 }
     },
@@ -71,31 +72,26 @@ interface RoleDefinition {name:Role,
       permissions: [resource: Resource.HOUSEKEEPING, action: Action.READ ,resource: Resource.MAINTENANCE, action: Action.READ ,resource: Resource.DIETARY, action: Action.READ ,resource: Resource.AMBULANCE, action: Action.READ ,resource: Resource.FEEDBACK, action: Action.READ ,resource: Resource.HOUSEKEEPING, action: Action.CREATE ,resource: Resource.MAINTENANCE, action: Action.CREATE ,resource: Resource.DIETARY, action: Action.CREATE ,resource: Resource.AMBULANCE, action: Action.CREATE ,resource: Resource.FEEDBACK, action: Action.CREATE ],
     },
     {name: Role.HOUSEKEEPING,
-      [;
         // Housekeeping staff can manage housekeeping requests;
         {resource:Resource.HOUSEKEEPING, action: Action.UPDATE },
-        {resource: Resource.HOUSEKEEPING, action: Action.ASSIGN }];
+        {resource: Resource.HOUSEKEEPING,
     },
     {name: Role.MAINTENANCE,
-      [;
         // Maintenance staff can manage maintenance requests;
         {resource:Resource.MAINTENANCE, action: Action.UPDATE },
-        {resource: Resource.MAINTENANCE, action: Action.ASSIGN }];
+        {resource: Resource.MAINTENANCE,
     },
     {name: Role.DIETARY,
-      [;
         // Dietary staff can manage dietary requests;
         {resource:Resource.DIETARY, action: Action.UPDATE },
-        {resource: Resource.DIETARY, action: Action.ASSIGN }];
+        {resource: Resource.DIETARY,
     },
     {name: Role.AMBULANCE,
-      [;
         // Ambulance staff can manage ambulance requests;
         {resource:Resource.AMBULANCE, action: Action.UPDATE },
-        {resource: Resource.AMBULANCE, action: Action.ASSIGN }];
+        {resource: Resource.AMBULANCE,
     },
     {name: Role.MARKETING,
-      [;
         // Marketing staff can manage marketing campaigns;
         {resource:Resource.MARKETING, action: Action.READ },
         {resource: Resource.MARKETING, action: Action.CREATE },
@@ -117,22 +113,19 @@ interface RoleDefinition {name:Role,
         {resource: Resource.TEMPLATE, action: Action.CREATE },
         {resource: Resource.TEMPLATE, action: Action.UPDATE },
         {resource: Resource.TEMPLATE, action: Action.DELETE },
-        {resource: Resource.ANALYTICS, action: Action.READ }];
+        {resource: Resource.ANALYTICS,
     },
     {name: Role.FEEDBACK,
-      [;
         // Feedback staff can manage feedback;
         {resource:Resource.FEEDBACK, action: Action.READ },
         {resource: Resource.FEEDBACK, action: Action.UPDATE },
-        {resource: Resource.FEEDBACK, action: Action.ASSIGN }];
+        {resource: Resource.FEEDBACK,
     },
     {name:Role.PATIENT,
       permissions: [resource: Resource.HOUSEKEEPING, action: Action.CREATE ,resource: Resource.HOUSEKEEPING, action: Action.READ, constraints: ownedByUser: true ,resource: Resource.MAINTENANCE, action: Action.CREATE ,resource: Resource.MAINTENANCE, action: Action.READ, constraints: ownedByUser: true ,resource: Resource.DIETARY, action: Action.CREATE ,resource: Resource.DIETARY, action: Action.READ, constraints: ownedByUser: true ,resource: Resource.AMBULANCE, action: Action.CREATE ,resource: Resource.AMBULANCE, action: Action.READ, constraints: ownedByUser: true ,resource: Resource.FEEDBACK, action: Action.CREATE ,resource: Resource.FEEDBACK, action: Action.READ, constraints: ownedByUser: true ],
     },
     {name:Role.GUEST,
       permissions: [resource: Resource.FEEDBACK, action: Action.CREATE ],
-    }
-  ];
 
   /**;
    * Checks if a user has permission to perform an action on a resource;
@@ -144,7 +137,6 @@ interface RoleDefinition {name:Role,
    */;
   public static hasPermission();
     userRoles: string[],
-    Action;
     constraints?: Record<string, unknown>;
   ): boolean {
     // Admin role has access to everything;
@@ -203,7 +195,6 @@ interface RoleDefinition {name:Role,
    */;
   private static checkDirectPermission();
     roleDef: RoleDefinition,
-    Action;
     constraints?: Record<string, unknown>;
   ): boolean {
     // Check for system-level permission (full access);
@@ -248,7 +239,6 @@ interface RoleDefinition {name:Role,
    */;
   public static enforcePermission();
     userRoles: string[],
-    Action;
     constraints?: Record<string, unknown>,
     userId?: string,
     resourceId?: string;
@@ -271,7 +261,6 @@ interface RoleDefinition {name:Role,
             action,
             constraints;,
           severity: "warning",
-        }).catch(err => );
       }
 
       throw new AuthorizationError();
@@ -286,7 +275,6 @@ interface RoleDefinition {name:Role,
    * @returns Array of permissions;
    */;
   public static getPermissionsForRoles(userRoles: string[]): Permission[] {,
-    const permissions: Permission[] = [];
 
     // Process each role;
     for (const userRole of userRoles) {
@@ -302,7 +290,6 @@ interface RoleDefinition {name:Role,
    * @param permissions The permissions array to add to;
    */;
   private static addPermissionsForRole(roleName: string, permissions: Permission[]): void {,
-    const roleDef = this.roleDefinitions.find(r => r.name === roleName);
     if (!session.user)eturn;
 
     // Add direct permissions;

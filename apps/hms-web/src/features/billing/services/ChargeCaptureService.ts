@@ -46,21 +46,18 @@ const prisma = new PrismaClient();
             id: `charge_${crypto.getRandomValues([0],}`,
             patientId,
             serviceId: chargeInput.serviceId,
-            serviceName: chargeInput.serviceName || 'Unknown Service', // Placeholder
-            quantity: chargeInput.quantity;
+            serviceName: chargeInput.serviceName || 'Unknown Service',
             unitPrice,
             totalAmount,
             chargeDate: new Date(),
              chargeInput.notes,
-            status: 'PENDING_BILLING', // Initial status
-        } as PatientCharge;
+            status: 'PENDING_BILLING',
 
         // In a real scenario, this would be saved to the database:
         // const _savedCharge = await prisma.patientCharge.create({ data: newCharge }),
         // return savedCharge
 
-        // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
-        return newCharge; // Return the mock charge for now
+        // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement, // Return the mock charge for now
     }
 
     /**
@@ -71,6 +68,5 @@ const prisma = new PrismaClient();
     async getChargesForPatient(patientId: string): Promise<PatientCharge[]> {,
         // In a real scenario, this would fetch from the database:
         // return prisma.patientCharge.findMany({ where: { patientId } }),
-        // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
-        return []; // Return empty array for now
+        // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement, // Return empty array for now
     }

@@ -25,20 +25,13 @@ class AdvancedAnalytics {
     const predictions = await this.getPredictiveAnalytics(startDate);
 
     return {
-      summary: {,
-        totalPatients: patientMetrics.totalPatients,
-        totalRevenue: financialMetrics.totalRevenue,
-        averageStayDuration: clinicalMetrics.averageStayDuration,
-        bedOccupancyRate: operationalMetrics.bedOccupancyRate,
-        patientSatisfactionScore: clinicalMetrics.patientSatisfactionScore,
-      },
+      summary: },
       patientMetrics,
       financialMetrics,
       clinicalMetrics,
       operationalMetrics,
       predictions,
       generatedAt: new Date().toISOString(),
-    };
   }
 
   static async getPatientMetrics(startDate: Date) {,
@@ -48,9 +41,10 @@ class AdvancedAnalytics {
         where: { createdAt: { gte: startDate } },
       }),
       prisma.admission.count({
-        where: {,
-          admissionDate: { gte: startDate ,},
-          patientId: { in: await this.getReturningPatientIds(startDate) },
+        where: {
+    admissionDate: { gte: startDate ,},,
+    patientId: { in: await this.getReturningPatientIds(startDate) },,
+        }
         }
       }),
       this.getPatientDemographics(startDate)
@@ -62,33 +56,29 @@ class AdvancedAnalytics {
       returningPatients,
       demographics,
       trends: await this.getPatientTrends(startDate),
-    };
   }
 
   static async getFinancialMetrics(startDate: Date) {,
     const billingData = await prisma.bill.aggregate({
-      where: {,
-        createdAt: { gte: startDate ,},
+      where: {
+    createdAt: { gte: startDate ,},,
         status: 'PAID',
       },
       _sum: { totalAmount: true ,},
       _avg: { totalAmount: true ,},
       _count: true,
-    });
 
     const departmentRevenue = await prisma.bill.groupBy({
       by: ['departmentId'],
-      where: {,
-        createdAt: { gte: startDate ,},
+      where: {
+    createdAt: { gte: startDate ,},,
         status: 'PAID',
       },
       _sum: { totalAmount: true },
-    });
 
     const insurance = await prisma.insuranceClaim.aggregate({
       where: { createdAt: { gte: startDate } ,},
       _sum: { claimAmount: true },
-    });
 
     return {
       totalRevenue: billingData._sum.totalAmount || 0,
@@ -98,7 +88,6 @@ class AdvancedAnalytics {
       insuranceClaimsTotal: insurance._sum.claimAmount || 0,
       revenueGrowth: await this.calculateRevenueGrowth(startDate),
       profitMargins: await this.calculateProfitMargins(startDate),
-    };
   }
 
   static async getClinicalMetrics(startDate: Date) {,
@@ -107,22 +96,20 @@ class AdvancedAnalytics {
         where: { admissionDate: { gte: startDate } },
       }),
       prisma.admission.count({
-        where: {,
-          dischargeDate: { gte: startDate ,},
+        where: {
+    dischargeDate: { gte: startDate ,},,
           status: 'DISCHARGED',
         }
       }),
       prisma.admission.aggregate({
-        where: {,
-          admissionDate: { gte: startDate ,},
-          dischargeDate: { not: null },
+        where: {
+    admissionDate: { gte: startDate ,},,
+    dischargeDate: { not: null },,
         },
-        _avg: {,
+        _avg: {
           // Calculate stay duration in the aggregation
         }
       }),
-      this.getReadmissionRate(startDate)
-    ]);
 
     return {
       totalAdmissions: admissions,
@@ -132,14 +119,11 @@ class AdvancedAnalytics {
       mortalityRate: await this.getMortalityRate(startDate),
       patientSatisfactionScore: await this.getPatientSatisfactionScore(startDate),
       clinicalOutcomes: await this.getClinicalOutcomes(startDate),
-    };
   }
 
   static async getOperationalMetrics(startDate: Date) {,
-    const totalBeds = await prisma.bed.count();
     const occupiedBeds = await prisma.bed.count({
       where: { status: 'OCCUPIED' },
-    });
 
     const staffMetrics = await this.getStaffMetrics(startDate);
     const equipmentUtilization = await this.getEquipmentUtilization(startDate);
@@ -153,7 +137,6 @@ class AdvancedAnalytics {
       equipmentUtilization,
       turnoverRate: await this.getBedTurnoverRate(startDate),
       emergencyResponseTime: await this.getEmergencyResponseTime(startDate),
-    };
   }
 
   static async getPredictiveAnalytics(startDate: Date) {,
@@ -164,12 +147,10 @@ class AdvancedAnalytics {
       revenueProjection: await this.projectRevenue(),
       riskPatients: await this.identifyRiskPatients(),
       resourceOptimization: await this.optimizeResources(),
-    };
   }
 
   // Helper methods
   static getStartDate(timeRange: string): Date {,
-    const now = new Date();
     switch (timeRange) {
       case '7d': return new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
       case '30d': return new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
@@ -181,15 +162,13 @@ class AdvancedAnalytics {
 
   static async calculateAverageStayDuration(startDate: Date): Promise<number> {,
     const admissions = await prisma.admission.findMany({
-      where: {,
-        admissionDate: { gte: startDate ,},
-        dischargeDate: { not: null },
+      where: {
+    admissionDate: { gte: startDate ,},,
+    dischargeDate: { not: null },,
       },
-      select: {,
+      select: {
         admissionDate: true,
         dischargeDate: true,
-      }
-    });
 
     if (admissions.length === 0) return 0;
 
@@ -205,31 +184,23 @@ class AdvancedAnalytics {
     // Simple prediction based on historical trends
     // In production, this would use ML models
     const lastMonth = await prisma.admission.count({
-      where: {,
-        admissionDate: {,
+      where: {
+        admissionDate: {
           gte: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 30 * 24 * 60 * 60 * 1000),
-        }
-      }
-    });
 
     return {
       nextWeek: Math.round(lastMonth * 0.25 * 1.1), // 10% growth assumption
       nextMonth: Math.round(lastMonth * 1.1),
       confidence: 0.75,
-    };
   }
 
   static async getReturningPatientIds(startDate: Date): Promise<string[]> {,
     const patients = await prisma.admission.groupBy({
       by: ['patientId'],
-      having: {,
-        patientId: {,
-          _count: {,
+      having: {
+        patientId: {
+          _count: {
             gt: 1,
-          }
-        }
-      }
-    });
 
     return patients.map(p => p.patientId);
   }
@@ -237,29 +208,21 @@ class AdvancedAnalytics {
   static async getPatientDemographics(startDate: Date) {,
     // Get age distribution, gender distribution, etc.
     return {
-      ageGroups: {,
-        '0-18': 120,
-        '19-35': 245,
-        '36-50': 189,
-        '51-65': 156,
-        '65+': 203
-      },
-      gender: {,
+      ageGroups: },
+      gender: {
         male: 48.2,
         female: 51.8,
-      }
-    };
   }
 
   // Additional helper methods would be implemented here
-  static async getPatientTrends(startDate: Date) { return {,}; }
+  static async getPatientTrends(startDate: Date) { return {, }
   static async calculateRevenueGrowth(startDate: Date) { return 12.5; }
   static async calculateProfitMargins(startDate: Date) { return 18.3; }
   static async getReadmissionRate(startDate: Date) { return 8.2; }
   static async getMortalityRate(startDate: Date) { return 2.1; }
   static async getPatientSatisfactionScore(startDate: Date) { return 4.2; }
-  static async getClinicalOutcomes(startDate: Date) { return {,}; }
-  static async getStaffMetrics(startDate: Date) { return {,}; }
+  static async getClinicalOutcomes(startDate: Date) { return {, }
+  static async getStaffMetrics(startDate: Date) { return {, }
   static async getEquipmentUtilization(startDate: Date) { return 78.5; }
   static async getBedTurnoverRate(startDate: Date) { return 2.3; }
   static async getEmergencyResponseTime(startDate: Date) { return 4.2; }
@@ -270,32 +233,32 @@ class AdvancedAnalytics {
 }
 
 // GET /api/analytics/dashboard
-export const _GET = async (request: NextRequest) => {,
-  try {
+export const GET = async (request: NextRequest) => {try {
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { searchParams } = new URL(request.url);
     const timeRange = searchParams.get('timeRange') || '30d';
     const department = searchParams.get('department');
 
     const { user } = await authService.verifyToken(request);
     if (!user || !['Admin', 'Doctor', 'Manager'].includes(user.role)) {
-      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 403 ,});
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 403 ,
     }
 
     const analytics = await AdvancedAnalytics.getHospitalMetrics(timeRange);
 
     return NextResponse.json({ analytics });
-  } catch (error) {
-    /* SECURITY: Console statement removed */,
-    return NextResponse.json({ error: 'Analytics generation failed' ,}, { status: 500 ,}),
+  } catch (error) { console.error(error); }, { status: 500 ,}),
   }
 };
 
 // GET /api/analytics/realtime
-export const _GET = async (request: NextRequest) => {,
-  try {
+export const GET = async (request: NextRequest) => {try {
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { user } = await authService.verifyToken(request);
     if (!user) {
-      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 403 ,});
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 403 ,
     }
 
     // Real-time metrics
@@ -304,17 +267,14 @@ export const _GET = async (request: NextRequest) => {,
       emergencyWaiting: await prisma.emergencyVisit.count({ where: { status: 'WAITING' } ,}),
       activeOperations: await prisma.surgery.count({ where: { status: 'IN_PROGRESS' } ,}),
       criticalPatients: await prisma.admission.count({,
-        where: {,
+        where: {
           status: 'ADMITTED',
           patientCondition: 'CRITICAL',
         }
       }),
       timestamp: new Date().toISOString(),
-    };
 
     return NextResponse.json({ realTimeData });
-  } catch (error) {
-    /* SECURITY: Console statement removed */,
-    return NextResponse.json({ error: 'Real-time data fetch failed' ,}, { status: 500 ,}),
+  } catch (error) { console.error(error); }, { status: 500 ,}),
   }
 };

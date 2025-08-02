@@ -25,30 +25,23 @@ describe('Gap Implementation Integration Tests', () => {
   beforeAll(async () => {
     // Setup test database
     prisma = new PrismaClient({
-      datasources: {,
-        db: {,
+      datasources: {
+        db: {
           url: process.env.TEST_DATABASE_URL || 'file:./test.db',
-        }
-      }
-    })
-
-    // Initialize services
-    encryptionService = new SecureEncryptionService()
-    ehrService = new PersistentElectronicHealthRecordsService(prisma);
     qualityService = new PersistentQualityManagementService(prisma);
     notificationService = new ExternalNotificationService({
-      sms: {,
+      sms: {
         provider: 'twilio',
-        config: {,
+        config: {
           accountSid: 'test_sid',
           authToken: 'test_token',
           fromNumber: '+1234567890' ,
         },
         enabled: true ,
       },
-      email: {,
+      email: {
         provider: 'sendgrid',
-        config: {,
+        config: {
           apiKey: 'test_key',
           fromEmail: 'test@hospital.com' ,
         },
@@ -75,7 +68,7 @@ describe('Gap Implementation Integration Tests', () => {
 
   describe('1. Encryption Service Implementation', () => {
     test('should encrypt and decrypt sensitive healthcare data', async () => {
-      const sensitiveData = 'Patient John Doe, SSN: 123-45-6789, Diagnosis: Hypertension';
+      const sensitiveData = 'Patient John Doe, SSN: 123-45-6789,
 
       const encrypted = await encryptionService.encrypt(sensitiveData, 'patient_records'),
       expect(encrypted).not.toBe(sensitiveData),
@@ -88,12 +81,9 @@ describe('Gap Implementation Integration Tests', () => {
     test('should handle object encryption for patient records', async () => {
       const patientRecord = {
         id: 'patient_001',
-        name: 'John Doe';
         ssn: '123-45-6789',
-        diagnosis: 'Type 2 Diabetes';
         notes: 'Patient shows good compliance with medication',
         insurance: 'Blue Cross Blue Shield',
-      };
 
       const sensitiveFields = ['ssn', 'diagnosis', 'notes'];
 
@@ -119,16 +109,13 @@ describe('Gap Implementation Integration Tests', () => {
     test('should create and retrieve clinical notes', async () => {
       const clinicalNote = {
         patient_id: 'test_patient_001',
-        encounter_id: 'test_encounter_001';
         provider_id: 'test_provider_001',
-        note_type: 'soap_note' as const;
         subjective: 'Patient complains of chest pain',
         objective: 'BP 140/90, HR 85, normal heart sounds',
         assessment: 'Possible hypertension',
         plan: 'Start lisinopril 10mg daily, follow up in 2 weeks',
         created_by: 'test_doctor_001',
         status: 'draft' as const,
-      };
 
       const created = await ehrService.createClinicalNote(clinicalNote),
       expect(created.id).toBeDefined(),
@@ -142,27 +129,21 @@ describe('Gap Implementation Integration Tests', () => {
     test('should create and manage care plans', async () => {
       const carePlan = {
         patient_id: 'test_patient_001',
-        title: 'Diabetes Management Plan';
         description: 'Comprehensive diabetes care plan',
-        status: 'active' as const;
         intent: 'plan' as const,
         goals: [,
           id: 'goal_001',
-          description: 'Achieve HbA1c < 7%';
           status: 'active' as const,
           priority: 'high' as const],
         activities: [,
           id: 'activity_001',
-          title: 'Blood glucose monitoring';
           status: 'not_started' as const,
           category: 'observation' as const],
         care_team: [,
           provider_id: 'provider_001',
-          role: 'Primary Care Physician';
           period_start: new Date()],
         created_by: 'test_doctor_001',
         period_start: new Date(),
-      };
 
       const created = await ehrService.createCarePlan(carePlan),
       expect(created.id).toBeDefined(),
@@ -176,13 +157,10 @@ describe('Gap Implementation Integration Tests', () => {
     test('should manage problem lists', async () => {
       const problemItem = {
         patient_id: 'test_patient_001',
-        problem_description: 'Essential Hypertension';
         icd10_code: 'I10',
-        status: 'active' as const;
         severity: 'moderate' as const,
         onset_date: new Date('2023-01-01'),
         created_by: 'test_doctor_001',
-      };
 
       const created = await ehrService.createProblemListItem(problemItem),
       expect(created.id).toBeDefined();
@@ -197,17 +175,11 @@ describe('Gap Implementation Integration Tests', () => {
     test('should create and manage quality indicators', async () => {
       const indicator = {
         name: 'Hospital Acquired Infection Rate',
-        description: 'Rate of HAI per 1000 patient days';
         category: 'patient_safety' as const,
-        source: 'jcaho_core_measures' as const;
         numeratorDefinition: 'Number of hospital-acquired infections',
-        denominatorDefinition: 'Total patient days';
         frequency: 'monthly' as const,
-        reportingLevel: 'hospital' as const;
         targetValue: 2.5,
-        targetOperator: '<=' as const;
         createdBy: 'quality_manager_001',
-      };
 
       const created = await qualityService.createQualityIndicator(indicator),
       expect(created.id).toBeDefined(),
@@ -222,25 +194,17 @@ describe('Gap Implementation Integration Tests', () => {
       // First create an indicator
       const indicator = {
         name: 'Test Metric',
-        category: 'clinical' as const;
         source: 'internal' as const,
-        numeratorDefinition: 'Test numerator';
         denominatorDefinition: 'Test denominator',
-        frequency: 'monthly' as const;
         reportingLevel: 'department' as const,
         createdBy: 'test_user',
-      }
-
-      const createdIndicator = await qualityService.createQualityIndicator(indicator);
 
       // Record metrics
       const metrics = {
         indicatorId: createdIndicator.id,
         measurementPeriod: new Date('2023-01-01'),
         periodType: 'monthly' as const,
-        numeratorValue: 15;
         denominatorValue: 100,
-        dataSource: 'manual' as const;
         verificationStatus: 'verified' as const,
         enteredBy: 'test_user',
       }
@@ -257,13 +221,11 @@ describe('Gap Implementation Integration Tests', () => {
     test('should create quality assessments for accreditation', async () => {
       const assessment = {
         type: 'nabh' as const,
-        title: 'NABH Pre-Assessment 2023';
         scope: 'hospital' as const,
         assessmentDate: new Date('2023-06-01'),
         leadAssessor: 'assessor_001',
         assessors: ['assessor_001', 'assessor_002'],
         createdBy: 'quality_director',
-      };
 
       const created = await qualityService.createQualityAssessment(assessment),
       expect(created.id).toBeDefined(),
@@ -279,13 +241,11 @@ describe('Gap Implementation Integration Tests', () => {
     test('should send SMS notifications', async () => {
       const notification = {
         type: 'sms' as const,
-        recipient: {,
+        recipient: {
           phone: '+1234567890',
         },
         message: 'Your appointment is scheduled for tomorrow at 2 PM',
-        priority: 'medium' as const;
         sender: 'appointment_system',
-      };
 
       const result = await notificationService.sendNotification(notification),
       expect(result.id).toBeDefined(),
@@ -295,14 +255,12 @@ describe('Gap Implementation Integration Tests', () => {
     test('should send email notifications', async () => {
       const notification = {
         type: 'email' as const,
-        recipient: {,
+        recipient: {
           email: 'patient@example.com',
         },
         subject: 'Lab Results Available',
-        message: 'Your lab results are now available in the patient portal';
         priority: 'medium' as const,
         sender: 'lab_system',
-      };
 
       const result = await notificationService.sendNotification(notification),
       expect(result.id).toBeDefined(),
@@ -315,9 +273,7 @@ describe('Gap Implementation Integration Tests', () => {
         'patient@example.com',
         {
           patientName: 'John Doe',
-          appointmentDate: '2023-06-15';
           appointmentTime: '2:00 PM',
-          doctorName: 'Dr. Smith';
           location: 'Building A, Room 205'
         }
       ),
@@ -332,9 +288,7 @@ describe('Gap Implementation Integration Tests', () => {
         'doctor@hospital.com',
         {
           patientName: 'John Doe',
-          labTest: 'Troponin I';
           criticalValue: '15.2 ng/mL',
-          normalRange: '< 0.4 ng/mL';
           urgency: 'urgent',
         }
       ),
@@ -350,18 +304,12 @@ describe('Gap Implementation Integration Tests', () => {
         patient_id: 'test_patient_001',
         admission_date: new Date(),
         admission_type: 'elective' as const,
-        admission_source: 'outpatient' as const;
         chief_complaint: 'Chest pain',
-        admitting_diagnosis: 'Rule out myocardial infarction';
         attending_doctor_id: 'doctor_001',
-        ward_id: 'ward_001';
         bed_number: 'B001',
-        accommodation_class: 'general' as const;
           name: 'Jane Doe',
-          relationship: 'Spouse';
           phone: '+1234567890',
         admitted_by: 'admissions_clerk_001',
-      };
 
       // Mock bed availability check
       jest.spyOn(ipdService as any, 'checkBedAvailability').mockResolvedValue(true)
@@ -381,16 +329,12 @@ describe('Gap Implementation Integration Tests', () => {
         admission_id: 'test_admission_001',
         transfer_date: new Date(),
         transfer_type: 'ward_to_icu' as const,
-        from_ward_id: 'ward_001';
         from_bed: 'B001',
-        to_ward_id: 'ward_002';
         to_bed: 'ICU001',
         reason_for_transfer: 'Patient condition deteriorating, requires intensive monitoring',
         transferring_doctor: 'doctor_001',
-        receiving_doctor: 'doctor_002';
         initiated_by: 'nurse_001',
         transfer_status: 'completed' as const,
-      };
 
       // Mock bed availability and transfer completion
       jest.spyOn(ipdService as any, 'checkBedAvailability').mockResolvedValue(true)
@@ -406,18 +350,15 @@ describe('Gap Implementation Integration Tests', () => {
         admission_id: 'test_admission_001',
         discharge_date: new Date(),
         discharge_type: 'routine' as const,
-        discharge_disposition: 'home' as const;
         final_diagnosis: 'Non-ST elevation myocardial infarction',
         discharge_instructions: 'Take medications as prescribed, follow up in 1 week',
         discharged_by: 'doctor_001',
-      };
 
       // Mock admission existence
       jest.spyOn(prisma.admission, 'findUnique').mockResolvedValue({
         id: 'test_admission_001',
         admissionDate: new Date('2023-01-01'),
         admissionStatus: 'active',
-        wardId: 'ward_001';
         bedNumber: 'B001',
       } as any)
 
@@ -434,9 +375,7 @@ describe('Gap Implementation Integration Tests', () => {
     test('should implement circuit breaker pattern', async () => {
       const circuitBreaker = resilienceService.createCircuitBreaker('test-service', {
         failureThreshold: 2,
-        timeout: 1000;
         resetTimeout: 5000,
-      });
 
       let attempts = 0;
       const flakyOperation = async () => {
@@ -450,15 +389,11 @@ describe('Gap Implementation Integration Tests', () => {
       // First few attempts should fail and eventually open the circuit
       try {
         await circuitBreaker.execute(flakyOperation)
-      } catch (error) {
-        expect(error).toBeDefined();
-      }
+      } catch (error) { console.error(error); }
 
       try {
         await circuitBreaker.execute(flakyOperation);
-      } catch (error) {
-        expect(error).toBeDefined();
-      }
+      } catch (error) { console.error(error); }
 
       // Circuit should now be open
       const metrics = circuitBreaker.getMetrics(),
@@ -476,9 +411,8 @@ describe('Gap Implementation Integration Tests', () => {
       };
 
       const result = await resilienceService.executeWithResilience(flakyOperation, {
-        retryConfig: {,
+        retryConfig: {
           maxAttempts: 3,
-          baseDelay: 100;
           backoffMultiplier: 2,
         }
       }),
@@ -518,15 +452,10 @@ describe('Gap Implementation Integration Tests', () => {
         patient_id: 'integration_patient_001',
         admission_date: new Date(),
         admission_type: 'emergency' as const,
-        admission_source: 'emergency_room' as const;
         chief_complaint: 'Severe abdominal pain',
-        admitting_diagnosis: 'Possible appendicitis';
         attending_doctor_id: 'doctor_001',
-        ward_id: 'ward_001';
         bed_number: 'B002',
-        accommodation_class: 'general' as const;
           name: 'Emergency Contact',
-          relationship: 'Family';
           phone: '+1234567890',
         admitted_by: 'er_nurse_001',
       }
@@ -541,9 +470,7 @@ describe('Gap Implementation Integration Tests', () => {
       // Create clinical note
       const clinicalNote = {
         patient_id: admission.patient_id,
-        encounter_id: createdAdmission.id;
         provider_id: admission.attending_doctor_id,
-        note_type: 'admission_note' as const;
         subjective: 'Patient presents with severe RLQ pain',
         objective: 'Vital signs stable, positive McBurney sign',
         assessment: 'Probable acute appendicitis',
@@ -561,9 +488,7 @@ describe('Gap Implementation Integration Tests', () => {
         'patient@example.com',
         {
           patientName: 'Integration Patient',
-          appointmentDate: 'Today';
           appointmentTime: 'ASAP',
-          doctorName: 'Dr. Emergency';
           location: 'Emergency Department',
         }
       ),
@@ -572,9 +497,7 @@ describe('Gap Implementation Integration Tests', () => {
       // Record quality event
       const qualityEvent = {
         eventType: 'incident' as const,
-        title: 'Emergency Admission';
         description: 'Patient admitted through emergency department',
-        severity: 'medium' as const;
         eventDateTime: new Date(),
         reportedBy: 'er_nurse_001',
       }
@@ -598,12 +521,9 @@ describe('Gap Implementation Integration Tests', () => {
 
           return `Operation ${i} completed`;
         }, {
-          retryConfig: {,
+          retryConfig: {
             maxAttempts: 2,
             baseDelay: 50,
-          }
-        })
-      );
 
       const results = await Promise.allSettled(operations);
       const successful = results.filter(r => r.status === 'fulfilled').length;

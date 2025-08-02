@@ -251,6 +251,8 @@ async const updateRadiologyOrderInDB = (
  */
 export const GET = async (request: NextRequest) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { searchParams } = new URL(request.url);
     const status = searchParams.get("status");
     const modality = searchParams.get("modality");
@@ -320,6 +322,8 @@ export const POST = async (request: NextRequest) => {,
       return NextResponse.json(
         {
           error: "Missing required fields (patient_id, ordering_doctor_id, modality, body_part)",
+  return NextResponse.json({ message: "Not implemented" });
+};
         },
         { status: 400 },
       );
@@ -359,6 +363,8 @@ export const PUT = async (request: NextRequest) => {,
      {\n   {
       // Check for NaN
       return NextResponse.json(
+  return NextResponse.json({ message: "Not implemented" });
+};
         { error: "Invalid or missing radiology order ID in URL path" ,},
         { status: 400 },
       );

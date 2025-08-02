@@ -62,6 +62,8 @@ const _updateEmployeeSchema = z.object({
 // GET /api/hr/staff;
 export const _GET = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -121,6 +123,8 @@ export const _GET = async (request: any) => {,
 // POST /api/hr/staff;
 export const _POST = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }

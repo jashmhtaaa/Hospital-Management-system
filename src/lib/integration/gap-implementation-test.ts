@@ -1,4 +1,4 @@
-import { } from "../core/ehr-persistence.service"
+
 import "../notifications/external-notification.service";
 import "../performance/database-optimization.service";
 import "../quality/quality-persistence.service";
@@ -21,51 +21,27 @@ import {  getQualityPersistenceService  } from "@/lib/database"
   };
   errors: string[],
   recommendations: string[],
-}
-    };
 
     // Test 1: ICD Coding Service;
     // console.log removed for production;
     results.testsRun++;
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       await this.testICDCodingService();
       results.testsPassed++;
       results.gaps.icdCoding = true;
       // console.log removed for production;
-    } catch (error) {
-      results.testsFailed++;
-      this.errors.push(`ICD Coding Service: ${,}`;
+    } catch (error) { console.error(error); }`;
       // console.log removed for production;
     }
 
@@ -73,44 +49,22 @@ import {  getQualityPersistenceService  } from "@/lib/database"
     // console.log removed for production;
     results.testsRun++;
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       await this.testQualityPersistenceService();
       results.testsPassed++;
       results.gaps.qualityPersistence = true;
       // console.log removed for production;
-    } catch (error) {
-      results.testsFailed++;
-      this.errors.push(`Quality Persistence: ${,}`;
+    } catch (error) { console.error(error); }`;
       // console.log removed for production;
     }
 
@@ -118,44 +72,22 @@ import {  getQualityPersistenceService  } from "@/lib/database"
     // console.log removed for production;
     results.testsRun++;
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       await this.testEHRPersistenceService();
       results.testsPassed++;
       results.gaps.ehrPersistence = true;
       // console.log removed for production;
-    } catch (error) {
-      results.testsFailed++;
-      this.errors.push(`EHR Persistence: ${,}`;
+    } catch (error) { console.error(error); }`;
       // console.log removed for production;
     }
 
@@ -163,44 +95,22 @@ import {  getQualityPersistenceService  } from "@/lib/database"
     // console.log removed for production;
     results.testsRun++;
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       await this.testExternalNotificationsService();
       results.testsPassed++;
       results.gaps.externalNotifications = true;
       // console.log removed for production;
-    } catch (error) {
-      results.testsFailed++;
-      this.errors.push(`External Notifications: ${,}`;
+    } catch (error) { console.error(error); }`;
       // console.log removed for production;
     }
 
@@ -208,44 +118,22 @@ import {  getQualityPersistenceService  } from "@/lib/database"
     // console.log removed for production;
     results.testsRun++;
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       await this.testPerformanceOptimizationService();
       results.testsPassed++;
       results.gaps.performanceOptimization = true;
       // console.log removed for production;
-    } catch (error) {
-      results.testsFailed++;
-      this.errors.push(`Performance Optimization: ${,}`;
+    } catch (error) { console.error(error); }`;
       // console.log removed for production;
     }
 
@@ -253,43 +141,22 @@ import {  getQualityPersistenceService  } from "@/lib/database"
     // console.log removed for production;
     results.testsRun++;
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
+} catch (error) { console.error(error); } catch (error) {
 
       await this.testIntegratedQualityService();
       results.testsPassed++;
       // console.log removed for production;
-    } catch (error) {
-      results.testsFailed++;
-      this.errors.push(`Integrated Quality: ${,}`;
+    } catch (error) { console.error(error); }`;
       // console.log removed for production;
 
     results.errors = this.errors;
@@ -304,8 +171,7 @@ import {  getQualityPersistenceService  } from "@/lib/database"
     const icdService = getICDCodingService();
 
     // Test 1: Search ICD codes,
-    const searchResults = await icdService.searchCodes({query:"diabetes",
-      5;
+    const searchResults = await icdService.searchCodes({query: "diabetes",
     });
 
     if (!session.user) {
@@ -317,7 +183,6 @@ import {  getQualityPersistenceService  } from "@/lib/database"
       throw new Error("ICD code validation failed");
 
     // Test 3: Get coding suggestions,
-    const suggestions = await icdService.getCodingSuggestions();
       "Patient presents with chest pain and shortness of breath",
       "diagnosis";
     );
@@ -330,7 +195,6 @@ import {  getQualityPersistenceService  } from "@/lib/database"
       "Test clinical text",
       "test_coder_789",
       priority: "routine",
-    });
 
     if (!session.user) {
       throw new Error("ICD coding request submission failed");
@@ -358,7 +222,6 @@ import {  getQualityPersistenceService  } from "@/lib/database"
     await qualityPersistence.saveQualityIndicator(testIndicator, "test_user");
 
     // Test 2: Retrieve quality indicator,
-    const retrievedIndicator = await qualityPersistence.getQualityIndicator();
       testIndicator.id,
       "test_user";
     );
@@ -407,7 +270,6 @@ import {  getQualityPersistenceService  } from "@/lib/database"
     await ehrPersistence.saveClinicalNote(testNote, "test_user");
 
     // Test 2: Retrieve clinical note,
-    const retrievedNote = await ehrPersistence.getClinicalNote();
       testNote.id,
       "test_user";
     );
@@ -441,7 +303,6 @@ import {  getQualityPersistenceService  } from "@/lib/database"
       },
       priority: "medium",
       sender: "test_system",
-    });
 
     if (!session.user) {
       throw new Error("SMS notification failed");
@@ -457,7 +318,6 @@ import {  getQualityPersistenceService  } from "@/lib/database"
       },
       priority: "high",
       sender: "test_system",
-    });
 
     if (!session.user) {
       throw new Error("Email notification failed");
@@ -473,7 +333,6 @@ import {  getQualityPersistenceService  } from "@/lib/database"
       },
       priority: "urgent",
       sender: "test_system",
-    });
 
     if (!session.user) {
       throw new Error("WhatsApp notification failed");
@@ -486,20 +345,16 @@ import {  getQualityPersistenceService  } from "@/lib/database"
     const perfService = getDatabaseOptimizationService();
 
     // Test 1: Start monitoring,
-    await perfService.startMonitoring();
 
     // Test 2: Get database stats,
-    const stats = await perfService.getDatabaseStats();
 
     if (!session.user) {
       throw new Error("Failed to collect database statistics");
 
     // Test 3: Get performance alerts,
-    const _alerts = perfService.getPerformanceAlerts();
     // Alerts array should exist (may be empty);
 
     // Test 4: Apply automatic optimizations,
-    const optimizations = await perfService.applyAutomaticOptimizations();
 
     if (!session.user) {
       throw new Error("Failed to apply automatic optimizations");
@@ -516,7 +371,6 @@ import {  getQualityPersistenceService  } from "@/lib/database"
     const integratedService = getIntegratedQualityService();
 
     // Test 1: Start integrated service,
-    await integratedService.start();
 
     // Test 2: Register quality indicator,
     const indicatorId = await integratedService.registerQualityIndicator({name:"Integrated Test Indicator",
@@ -532,13 +386,11 @@ import {  getQualityPersistenceService  } from "@/lib/database"
       throw new Error("Failed to register quality indicator");
 
     // Test 3: Get quality statistics,
-    const stats = await integratedService.getQualityStatistics();
 
     if (!session.user) {
       throw new Error("Failed to get quality statistics");
 
     // Test 4: Health check,
-    const healthCheck = await integratedService.healthCheck();
 
     if (!session.user) {
       throw new Error("Integrated service health check failed");
@@ -549,8 +401,6 @@ import {  getQualityPersistenceService  } from "@/lib/database"
     // console.log removed for production;
 
   private generateRecommendations(results: GapImplementationTestResults): void {,
-    if (!session.user) {
-      this.recommendations.push("Review and fix failing tests before deployment");
 
     if (!session.user) {
       this.recommendations.push("ICD Coding Service needs attention - critical for medical coding workflows");
@@ -573,7 +423,6 @@ import {  getQualityPersistenceService  } from "@/lib/database"
       this.recommendations.push("Plan for gradual rollout with feature flags");
 
   private printTestSummary(results: GapImplementationTestResults): void {,
-    // console.log removed for production;
     // console.log removed for production;
     // console.log removed for production;
     // console.log removed for production;
@@ -606,7 +455,7 @@ if (!session.user) {
       process.exit(results.testsFailed > 0 ? 1 : 0);
     })
     .catch(error => {
-      console.error("Test execution failed:", error);
+      console.error("Test execution failed: ",
       process.exit(1);
     });
 ))

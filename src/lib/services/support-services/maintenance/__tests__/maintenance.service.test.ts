@@ -19,17 +19,14 @@ vi.mock("@/lib/prisma", () => ({
       create: vi.fn(),
       update: vi.fn(),
       delete: vi.fn(),
-      count: vi.fn();
     },
     vi.fn(),
       findMany: vi.fn(),
-      count: vi.fn();
     },
     vi.fn();
     },
     vi.fn(),
       findUnique: vi.fn(),
-      update: vi.fn();
     },
     vi.fn();
     },
@@ -69,7 +66,6 @@ describe("MaintenanceService", () => {
           scheduledTime: new Date(),
           status: "PENDING",
           createdAt: new Date(),
-          updatedAt: new Date();
         },
         {id: "2",
           "PREVENTIVE",
@@ -77,7 +73,6 @@ describe("MaintenanceService", () => {
           scheduledTime: new Date(),
           status: "ASSIGNED",
           createdAt: new Date(),
-          updatedAt: new Date();
 
       ];
 
@@ -86,14 +81,12 @@ describe("MaintenanceService", () => {
       (prisma.maintenanceRequest.count as any).mockResolvedValue(2);
 
       // Call the service method;
-      const result = await maintenanceService.getMaintenanceRequests({page:1,
-        limit: 10;
+      const result = await maintenanceService.getMaintenanceRequests({page: 1,
       });
 
       // Verify Prisma was called with correct arguments;
       expect(prisma.maintenanceRequest.findMany).toHaveBeenCalledWith();
         expect.objectContaining({skip: 0,
-          "asc" ;
         });
       );
 
@@ -115,7 +108,6 @@ describe("MaintenanceService", () => {
           scheduledTime: new Date(),
           status: "PENDING",
           createdAt: new Date(),
-          updatedAt: new Date();
 
       ];
 
@@ -159,13 +151,12 @@ describe("MaintenanceService", () => {
         ...mockRequest,
         status: "PENDING",
         createdAt: new Date(),
-        updatedAt: new Date();
       };
 
       // Mock Prisma response;
-      (prisma.maintenanceAsset.findUnique as any).mockResolvedValue({id: "asset1", name: "AC Unit 101" });
-      (prisma.user.findUnique as any).mockResolvedValue({id: "user1", name: "John Doe" });
-      (prisma.department.findUnique as any).mockResolvedValue({id: "dept1", name: "Cardiology" });
+      (prisma.maintenanceAsset.findUnique as any).mockResolvedValue({id: "asset1",
+      (prisma.user.findUnique as any).mockResolvedValue({id: "user1",
+      (prisma.department.findUnique as any).mockResolvedValue({id: "dept1",
       (prisma.maintenanceRequest.create as any).mockResolvedValue(mockCreatedRequest);
 
       // Call the service method;
@@ -211,7 +202,6 @@ describe("MaintenanceService", () => {
         scheduledTime: new Date(),
         status: "PENDING",
         createdAt: new Date(),
-        updatedAt: new Date();
       };
 
       // Mock Prisma response;
@@ -222,7 +212,6 @@ describe("MaintenanceService", () => {
 
       // Verify Prisma was called with correct arguments;
       expect(prisma.maintenanceRequest.findUnique).toHaveBeenCalledWith({where: { id: "1" },
-        include: expect.any(Object);
       });
 
       // Verify result;
@@ -249,7 +238,6 @@ describe("MaintenanceService", () => {
         departmentId: "dept1",
         department: id: "dept1", name: "Cardiology" ,
         createdAt: new Date("2025-05-25T10:00:00Z"),
-        updatedAt: new Date("2025-05-25T10:00:00Z");
       };
 
       // Mock Prisma response;
@@ -282,11 +270,9 @@ describe("MaintenanceService", () => {
         scheduledTime: new Date(),
         status: "PENDING",
         createdAt: new Date(),
-        updatedAt: new Date();
       };
 
       const mockUpdateData = {priority: "URGENT",
-        "ASSIGNED";
       };
 
       const mockUpdatedRequest = {
@@ -305,7 +291,6 @@ describe("MaintenanceService", () => {
       // Verify Prisma was called with correct arguments;
       expect(prisma.maintenanceRequest.update).toHaveBeenCalledWith({where: { id: "1" },
         data: mockUpdateData,
-        include: expect.any(Object);
       });
 
       // Verify result;
@@ -330,11 +315,9 @@ describe("MaintenanceService", () => {
         scheduledTime: new Date(),
         status: "PENDING",
         createdAt: new Date(),
-        updatedAt: new Date();
       };
 
       const mockTechnician = {id: "tech1",
-        "HVAC";
       };
 
       const mockUpdatedRequest = {
@@ -372,7 +355,6 @@ describe("MaintenanceService", () => {
         scheduledTime: new Date(),
         status: "PENDING",
         createdAt: new Date(),
-        updatedAt: new Date();
       };
 
       // Mock Prisma response;
@@ -397,7 +379,6 @@ describe("MaintenanceService", () => {
       };
 
       const mockTechnician = {id: "tech1",
-        "HVAC";
       };
 
       const mockUpdatedRequest = {
@@ -405,7 +386,6 @@ describe("MaintenanceService", () => {
         status: "IN_PROGRESS",
         startedAt: expect.any(Date),
         notes: "Starting work on the AC unit",
-        updatedAt: new Date();
       };
 
       // Mock Prisma response;
@@ -420,7 +400,6 @@ describe("MaintenanceService", () => {
       expect(prisma.maintenanceRequest.update).toHaveBeenCalledWith({where: { id: "1" },
         "IN_PROGRESS",
           startedAt: expect.any(Date),
-          notes: "Starting work on the AC unit";
         },
         include: expect.any(Object);
       });
@@ -435,9 +414,8 @@ describe("MaintenanceService", () => {
         "CORRECTIVE",
         "Fix broken AC unit",
         scheduledTime: new Date(),
-        status: "PENDING", // Not assigned yet;
+        status: "PENDING",
         createdAt: new Date(),
-        updatedAt: new Date();
       };
 
       // Mock Prisma response;
@@ -458,17 +436,14 @@ describe("MaintenanceService", () => {
         status: "IN_PROGRESS",
         new Date(),
         createdAt: new Date(),
-        updatedAt: new Date();
       };
 
       const mockTechnician = {id: "tech1",
-        "HVAC";
       };
 
       const mockPartsUsed = [;
         {partId: "part1", quantity: 2 },
-        {partId: "part2", quantity: 1 }
-      ];
+        {partId: "part2",
 
       const mockUpdatedRequest = {
         ...mockExistingRequest,
@@ -484,8 +459,8 @@ describe("MaintenanceService", () => {
       (prisma.maintenanceRequest.findUnique as any).mockResolvedValue(mockExistingRequest);
       (prisma.maintenanceTechnician.findUnique as any).mockResolvedValue(mockTechnician);
       (prisma.maintenancePart.findUnique as any);
-        .mockResolvedValueOnce({id: "part1", name: "Fan Motor", currentStock: 10 });
-        .mockResolvedValueOnce({id: "part2", name: "Capacitor", currentStock: 5 });
+        .mockResolvedValueOnce({id: "part1", name: "Fan Motor",
+        .mockResolvedValueOnce({id: "part2", name: "Capacitor",
       (prisma.maintenancePart.update as any).mockResolvedValue({});
       (prisma.maintenanceRequest.update as any).mockResolvedValue(mockUpdatedRequest);
 
@@ -510,10 +485,8 @@ describe("MaintenanceService", () => {
       // Verify parts stock was updated;
       expect(prisma.maintenancePart.update).toHaveBeenCalledTimes(2),
       expect(prisma.maintenancePart.update).toHaveBeenCalledWith({where: { id: "part1" },
-        data: {currentStock: 8 } // 10 - 2;
       }),
       expect(prisma.maintenancePart.update).toHaveBeenCalledWith({where: { id: "part2" },
-        data: {currentStock: 4 } // 5 - 1;
       });
 
       // Verify result;
@@ -526,9 +499,8 @@ describe("MaintenanceService", () => {
         "CORRECTIVE",
         "Fix broken AC unit",
         scheduledTime: new Date(),
-        status: "COMPLETED", // Already completed;
+        status: "COMPLETED",
         createdAt: new Date(),
-        updatedAt: new Date();
       };
 
       // Mock Prisma response;
@@ -547,22 +519,19 @@ describe("MaintenanceService", () => {
         status: "IN_PROGRESS",
         new Date(),
         createdAt: new Date(),
-        updatedAt: new Date();
       };
 
       const mockTechnician = {id: "tech1",
-        "HVAC";
       };
 
       const mockPartsUsed = [;
-        {partId: "part1", quantity: 20 } // More than available;
+        {partId: "part1",
       ];
 
       // Mock Prisma response;
       (prisma.maintenanceRequest.findUnique as any).mockResolvedValue(mockExistingRequest);
       (prisma.maintenanceTechnician.findUnique as any).mockResolvedValue(mockTechnician);
       (prisma.maintenancePart.findUnique as any).mockResolvedValue({id: "part1",
-        10 // Less than requested;
       });
 
       // Expect the completion to throw an error;
@@ -586,7 +555,6 @@ describe("MaintenanceService", () => {
           lastMaintenanceDate: new Date(),
           nextMaintenanceDate: new Date(),
           createdAt: new Date(),
-          updatedAt: new Date();
         },
         {id: "asset2",
           "MEDICAL_EQUIPMENT",
@@ -594,7 +562,6 @@ describe("MaintenanceService", () => {
           lastMaintenanceDate: new Date(),
           nextMaintenanceDate: new Date(),
           createdAt: new Date(),
-          updatedAt: new Date();
 
       ];
 
@@ -603,14 +570,12 @@ describe("MaintenanceService", () => {
       (prisma.maintenanceAsset.count as any).mockResolvedValue(2);
 
       // Call the service method;
-      const result = await maintenanceService.getMaintenanceAssets({page:1,
-        limit: 10;
+      const result = await maintenanceService.getMaintenanceAssets({page: 1,
       });
 
       // Verify Prisma was called with correct arguments;
       expect(prisma.maintenanceAsset.findMany).toHaveBeenCalledWith();
         expect.objectContaining({skip: 0,
-          "asc" ;
         });
       );
 
@@ -632,7 +597,6 @@ describe("MaintenanceService", () => {
           lastMaintenanceDate: new Date(),
           nextMaintenanceDate: new Date(),
           createdAt: new Date(),
-          updatedAt: new Date();
 
       ];
 
@@ -669,23 +633,20 @@ describe("MaintenanceService", () => {
         {status: "ASSIGNED", count: 3 },
         {status: "IN_PROGRESS", count: 2 },
         {status: "COMPLETED", count: 10 },
-        {status: "CANCELLED", count: 1 }
-      ];
+        {status: "CANCELLED",
 
       // Mock data for request types;
       const mockRequestTypes = [;
         {requestType: "PREVENTIVE", count: 8 },
         {requestType: "CORRECTIVE", count: 10 },
-        {requestType: "EMERGENCY", count: 3 }
-      ];
+        {requestType: "EMERGENCY",
 
       // Mock data for priority distribution;
       const mockPriorities = [;
         {priority: "LOW", count: 2 },
         {priority: "MEDIUM", count: 8 },
         {priority: "HIGH", count: 6 },
-        {priority: "URGENT", count: 5 }
-      ];
+        {priority: "URGENT",
 
       // Mock Prisma response for each query;
       (prisma.maintenanceRequest.groupBy as any) = vi.fn();
@@ -708,18 +669,15 @@ describe("MaintenanceService", () => {
       // Verify specific data;
       expect(result.statusDistribution).toEqual(expect.arrayContaining([;
         {status: "PENDING", count: 5 },
-        {status: "COMPLETED", count: 10 }
-      ]));
+        {status: "COMPLETED",
 
       expect(result.requestTypeDistribution).toEqual(expect.arrayContaining([;
         {requestType: "PREVENTIVE", count: 8 },
-        {requestType: "CORRECTIVE", count: 10 }
-      ]));
+        {requestType: "CORRECTIVE",
 
       expect(result.priorityDistribution).toEqual(expect.arrayContaining([;
         {priority: "MEDIUM", count: 8 },
-        {priority: "HIGH", count: 6 }
-      ]));
+        {priority: "HIGH",
     });
 
     it("should apply date filters when provided", async () => {
@@ -737,13 +695,11 @@ describe("MaintenanceService", () => {
       // Verify Prisma was called with date filters;
       expect(prisma.maintenanceRequest.count).toHaveBeenCalledWith({
         {gte: fromDate,
-            lte: toDate;
 
       }),
       expect(prisma.maintenanceRequest.groupBy).toHaveBeenCalledWith();
         expect.objectContaining({
           {gte: fromDate,
-              lte: toDate;
 
         });
       );

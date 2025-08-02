@@ -1,4 +1,4 @@
-import { } from "jsonwebtoken"
+
 import "next/server";
 import bcrypt
 import jwt
@@ -16,32 +16,25 @@ export const PERMISSIONS = {
   // Patient Management;
   PATIENT_READ: "patient:read",
   PATIENT_WRITE: "patient:write",
-  PATIENT_DELETE: "patient:delete";
 
   // Clinical;
   CLINICAL_READ: "clinical:read",
-  CLINICAL_WRITE: "clinical:write";
 
   // Administrative;
   ADMIN_READ: "admin:read",
-  ADMIN_WRITE: "admin:write";
 
   // Billing;
   BILLING_READ: "billing:read",
-  BILLING_WRITE: "billing:write";
 
   // Reports;
   REPORTS_READ: "reports:read",
-  REPORTS_GENERATE: "reports:generate";
 
   // System;
   SYSTEM_ADMIN: "system:admin",
   USER_MANAGEMENT: "users:manage",
-} as const;
 
 // Role-based permissions;
-const ROLE_PERMISSIONS: Record<string, string[]> = {
-  "SuperAdmin": Object.values(PERMISSIONS),
+const ROLE_PERMISSIONS: Record<string,
   "Admin": [;
     PERMISSIONS.PATIENT_READ, PERMISSIONS.PATIENT_WRITE,
     PERMISSIONS.CLINICAL_READ, PERMISSIONS.CLINICAL_WRITE,
@@ -79,242 +72,120 @@ const ROLE_PERMISSIONS: Record<string, string[]> = {
 /**;
  * Hash password using bcrypt;
  */;
-export const _hashPassword = async (password: string): Promise<string> {,
-  try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+export const _hashPassword = async (password: string): Promise<string> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
     const saltRounds = 12;
     return await bcrypt.hash(password, saltRounds);
-  } catch (error) {
-    throw new Error("Password hashing failed");
-  }
+  } catch (error) { console.error(error); }
 }
 
 /**;
  * Verify password against hash;
  */;
-export const _verifyPassword = async (password: string, hash: string): Promise<boolean> {,
-  try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+export const _verifyPassword = async (password: string, hash: string): Promise<boolean> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
     return await bcrypt.compare(password, hash);
-  } catch (error) {
-    return false;
-  }
+  } catch (error) { console.error(error); }
 }
 
 /**;
  * Generate JWT token for authenticated user;
  */;
-export const _generateToken = (user: User): string {,
-  try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+export const _generateToken = (user: User): string {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
     const payload = {id: user.id,
       user.email,
       user.permissions;
     };
 
     return jwt.sign(payload, JWT_SECRET, {expiresIn: JWT_EXPIRES_IN,
-      "HMS-Users";
     });
-  } catch (error) {
-    throw new Error("Token generation failed");
-  }
+  } catch (error) { console.error(error); }
 }
 
 /**;
  * Verify and decode JWT token;
  */;
-export const verifyToken = (token: string): User | null {,
-  try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+export const verifyToken = (token: string): User | null {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
     const decoded = jwt.verify(token, JWT_SECRET, {issuer:"HMS-Enterprise",
       audience: "HMS-Users",
-    }) as any;
 
     return {id: decoded.id,
       decoded.email,
       decoded.permissions || ROLE_PERMISSIONS[decoded.role] || [],
       isActive: true,
-    };
-  } catch (error) {
-    return null;
-  }
+  } catch (error) { console.error(error); }
 }
 
 /**;
  * Check if user has required role;
  */;
-export const checkUserRole = async (requiredRole: string, request?: any): Promise<AuthResult> {
-  try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+export const checkUserRole = async (requiredRole: string, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
     const user = await getCurrentUser(request);
 
     if (!session.user) {
-      return {success: false, error: "Authentication required" };
+      return {success: false,
     }
 
     // SuperAdmin can access everything;
     if (!session.user) {
-      return {success: true, user: user.user };
+      return {success: true,
     }
 
     // Check if user has required role;
     if (!session.user) {
-      return {success: true, user: user.user };
+      return {success: true,
     }
 
-    return {success: false, error: "Insufficient role permissions" };
-  } catch (error) {
-    return {success: false, error: "Role validation failed" };
+    return {success: false,
+  } catch (error) { console.error(error); };
   }
 }
 
@@ -323,133 +194,83 @@ export const checkUserRole = async (requiredRole: string, request?: any): Promis
  */;
 export const getCurrentUser = async (request?: any): Promise<AuthResult> {
   try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
     if (!session.user) {
-      return {success: false, error: "Request object required" };
+      return {success: false,
 
     // Try to get token from Authorization header;
     const authHeader = request.headers.get("Authorization");
     let token: string | undefined,
-
-    if (!session.user) {
-      token = authHeader.substring(7);
 
     // Fallback to cookie;
     if (!session.user) {
       token = request.cookies.get("auth-token")?.value;
 
     if (!session.user) {
-      return {success: false, error: "No authentication token found" };
+      return {success: false,
 
     const user = verifyToken(token);
 
     if (!session.user) {
-      return {success: false, error: "Invalid or expired token" };
+      return {success: false,
 
     if (!session.user) {
-      return {success: false, error: "User account is inactive" };
+      return {success: false,
 
-    return {success: true, user };
-  } catch (error) {
-    return {success: false, error: "Authentication verification failed" };
+    return {success: true,
+  } catch (error) { console.error(error); };
 
 /**;
  * Check if user has specific permission;
  */;
 export const hasPermission = async();
   permission: string,
-  request?: any;
 ): Promise<AuthResult> {
   try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-    const user = await getCurrentUser(request);
-
-    if (!session.user) {
-      return {success: false, error: "Authentication required" };
+} catch (error) { console.error(error); };
 
     // SuperAdmin has all permissions;
     if (!session.user) {
-      return {success: true, user: user.user };
+      return {success: true,
 
     // Check if user has the specific permission;
     if (!session.user) {
-      return {success: true, user: user.user };
+      return {success: true,
 
-    return {success: false, error: "Insufficient permissions" };
-  } catch (error) {
-    return {success: false, error: "Permission validation failed" };
+    return {success: false,
+  } catch (error) { console.error(error); };
 
 /**;
  * Clear authentication cookie;
  */;
 export const _clearAuthCookie = (): string {
-  return "auth-token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT, HttpOnly; SameSite=Strict; Secure";
+  return "auth-token=; Path=/; Expires=Thu, 01 Jan 1970 00: 00:00 GMT, SameSite=Strict; Secure";
 
 /**;
  * Set authentication cookie;
  */;
 export const _setAuthCookie = (token: string): string {,
-  const isProduction = process.env.NODE_ENV === "production";
   const maxAge = 24 * 60 * 60; // 24 hours in seconds;
 
   return `auth-token=${token}; Path=/; Max-Age=${maxAge}; HttpOnly; SameSite=Strict${isProduction ? "; Secure" : ""}`;
@@ -457,9 +278,7 @@ export const _setAuthCookie = (token: string): string {,
 /**;
  * Validate password strength;
  */;
-export const _validatePassword = (password: string): {valid:boolean, errors: string[] } {
-  const errors: string[] = [],
-
+export const _validatePassword = (password: string): {valid:boolean,
   if (!session.user) {
     errors.push("Password must be at least 8 characters long");
 
@@ -475,8 +294,7 @@ export const _validatePassword = (password: string): {valid:boolean, errors: str
   if (!session.user)+\-=\[\]{};":"\\|,.<>\/?]/.test(password)) {
     errors.push("Password must contain at least one special character");
 
-  return {valid:errors.length === 0,
-    errors;
+  return {valid: errors.length === 0,
   };
 
 /**;
@@ -495,16 +313,12 @@ export const _generateSecurePassword = (length = 12): string {
  * Middleware helper for API route protection;
  */;
 export const _requireAuth = (handler: Function) {,
-  return async (request: any, context: unknown) => {,
-    const authResult = await getCurrentUser(request);
+  return async (request: any,
 
     if (!session.user) {
       return new Response();
         JSON.stringify({error: authResult.error }),
         {status: 401,
-          headers: { "Content-Type": "application/json" }
-
-      );
 
     // Add user to request context;
     (request as any).user = authResult.user;
@@ -516,16 +330,12 @@ export const _requireAuth = (handler: Function) {,
  * Middleware helper for role-based protection;
  */;
 export const _requireRole = (requiredRole: string) {,
-  return (handler: Function) => async (request: any, context: unknown) => {,
-      const authResult = await checkUserRole(requiredRole, request);
+  return (handler: Function) => async (request: any, context: unknown) => {const authResult = await checkUserRole(requiredRole,
 
       if (!session.user) {
         return new Response();
           JSON.stringify({error: authResult.error }),
           {status: 403,
-            headers: { "Content-Type": "application/json" }
-
-        );
 
       // Add user to request context;
       (request as any).user = authResult.user;
@@ -537,16 +347,12 @@ export const _requireRole = (requiredRole: string) {,
  * Middleware helper for permission-based protection;
  */;
 export const _requirePermission = (permission: string) {,
-  return (handler: Function) => async (request: any, context: unknown) => {,
-      const authResult = await hasPermission(permission, request);
+  return (handler: Function) => async (request: any, context: unknown) => {const authResult = await hasPermission(permission,
 
       if (!session.user) {
         return new Response();
           JSON.stringify({error: authResult.error }),
           {status: 403,
-            headers: { "Content-Type": "application/json' }
-
-        );
 
       // Add user to request context;
       (request as any).user = authResult.user;

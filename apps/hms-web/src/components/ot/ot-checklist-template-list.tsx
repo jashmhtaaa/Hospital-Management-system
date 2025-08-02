@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 
 import { Badge } from '@/components/ui/badge';
@@ -9,11 +9,11 @@ interface ChecklistTemplate {
   id: string,
   \1,\2 string,
   \1,\2 string,
-  status: 'active' | 'draft' | 'archived'
+  status: 'active' | 'draft' | 'archived';
 }
 
 interface OTChecklistTemplateListProps {
-  templates: ChecklistTemplate[]
+  templates: ChecklistTemplate[];
 }
 
 /**

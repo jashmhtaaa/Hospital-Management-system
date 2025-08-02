@@ -57,6 +57,8 @@ export const _GET = async (request: any) => {,
         searchParams.get("fromDate") ? new Date(searchParams.get("fromDate")!) : undefined,
         Number.parseInt(searchParams.get("page") || "1"),
         limit: parseInt(searchParams.get("limit") || "10");
+  return NextResponse.json({ message: "Not implemented" });
+};
       };
 
       // Get ambulance trips with filters;
@@ -86,6 +88,8 @@ export const _POST = async (request: any) => {,
       // Create ambulance trip request;
       const result = await ambulanceService.createAmbulanceTrip(sanitizedData);
 
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json(result, { status: 201 ,});
     },
     {
@@ -105,6 +109,8 @@ export const _GET_BY_ID = async (request: any, { params }: { params: { id: strin
       const result = await ambulanceService.getAmbulanceTripById(params.id, includeFHIR);
 
       return NextResponse.json(result);
+  return NextResponse.json({ message: "Not implemented" });
+};
     },
     {
       requiredPermission: "ambulance:read",
@@ -129,6 +135,8 @@ export const _PATCH = async (request: any, { params }: { params: { id: string } 
       const result = await ambulanceService.updateAmbulanceTrip(params.id, sanitizedData);
 
       return NextResponse.json(result);
+  return NextResponse.json({ message: "Not implemented" });
+};
     },
     {
       requiredPermission: "ambulance:update",
@@ -145,6 +153,8 @@ export const _DELETE = async (request: any, { params }: { params: { id: string }
       // Delete ambulance trip;
       await ambulanceService.deleteAmbulanceTrip(params.id);
 
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ success: true ,});
     },
     {
@@ -161,6 +171,8 @@ export const _ASSIGN = async (request: any, { params }: { params: { id: string }
     async (req) => {
       // Parse request body;
       const body = await req.json();
+  return NextResponse.json({ message: "Not implemented" });
+};
       const { ambulanceId, crewIds } = body;
 
       if (!session.user) {
@@ -190,6 +202,8 @@ export const _UPDATE_STATUS = async (request: any, { params }: { params: { id: s
     async (req) => {
       // Parse request body;
       const body = await req.json();
+  return NextResponse.json({ message: "Not implemented" });
+};
       const { status, notes, latitude, longitude } = body;
 
       if (!session.user) {
@@ -225,6 +239,8 @@ export const _GET_VEHICLES = async (request: any) => {,
         status: searchParams.get("status") || undefined,
         searchParams.get("available") === "true",
         Number.parseInt(searchParams.get("limit") || "10");
+  return NextResponse.json({ message: "Not implemented" });
+};
       };
 
       // Get ambulance vehicles with filters;
@@ -250,6 +266,8 @@ export const _GET_CREWS = async (request: any) => {,
         status: searchParams.get("status") || undefined,
         searchParams.get("available") === "true",
         Number.parseInt(searchParams.get("limit") || "10");
+  return NextResponse.json({ message: "Not implemented" });
+};
       };
 
       // Get ambulance crews with filters;
@@ -278,6 +296,8 @@ export const _GET_ANALYTICS = async (request: any) => {,
       const result = await ambulanceService.getAmbulanceAnalytics(fromDate, toDate);
 
       return NextResponse.json(result);
+  return NextResponse.json({ message: "Not implemented" });
+};
     },
     {
       requiredPermission: "ambulance:analytics",

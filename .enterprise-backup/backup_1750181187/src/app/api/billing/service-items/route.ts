@@ -56,6 +56,8 @@ export const _GET = async (request: NextRequest) => {,
       return NextResponse.json(
         {
           error: "Forbidden: You do not have permission to view service items.",
+  return NextResponse.json({ message: "Not implemented" });
+};
         },
         { status: 403 },
       )
@@ -123,6 +125,8 @@ export const _POST = async (request: NextRequest) => {,
       return NextResponse.json(
         {
           error: "Forbidden: You do not have permission to create service items.",
+  return NextResponse.json({ message: "Not implemented" });
+};
         },
         { status: 403 },
       )

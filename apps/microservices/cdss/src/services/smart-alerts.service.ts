@@ -63,12 +63,12 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
   }): Promise<AlertDefinition[]> {
     try {
       // Try cache first
-      const cacheKey = `alertDefinitions:${JSON.stringify(filters || {}),}`;
-      const cached = await cacheService.getCachedResult('cdss:', cacheKey);
+      const cacheKey = `alertDefinitions: ${JSON.stringify(filters || {}),
+      const cached = await cacheService.getCachedResult('cdss: ',
        {\n  eturn cached;
 
       // Build filters
-      const where: unknown = {,};
+      const where: unknown = {,
        {\n  here.category = filters.category;
        {\n  here.severity = filters.severity;
        {\n  here.status = filters.status;
@@ -88,14 +88,9 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
       // Record metrics
       metricsCollector.incrementCounter('cdss.alert_definition_queries', 1, {
         category: filters?.category || 'ALL',
-         filters?.status || 'ACTIVE'
-      });
 
       return alertDefinitions as AlertDefinition[];
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**
@@ -104,8 +99,8 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
   async getAlertDefinitionById(id: string): Promise<AlertDefinition | null> {,
     try {
       // Try cache first
-      const cacheKey = `alertDefinition:${id,}`;
-      const cached = await cacheService.getCachedResult('cdss:', cacheKey);
+      const cacheKey = `alertDefinition: ${id,
+      const cached = await cacheService.getCachedResult('cdss: ',
        {\n  eturn cached;
 
       // Query database
@@ -119,10 +114,7 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
       await cacheService.cacheResult('cdss:', cacheKey, alertDefinition, 3600); // 1 hour
 
       return alertDefinition as AlertDefinition;
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**
@@ -138,7 +130,7 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
 
       // Create definition
       const newDefinition = await this.prisma.alertDefinition.create({
-        data: {,
+        data: {
           ...definition,
           id: `alert-def-${crypto.getRandomValues([0],}`,
           createdAt: new Date(),
@@ -151,7 +143,6 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
       // Create audit log
       await this.auditService.createAuditLog({
         action: 'CREATE',
-         newDefinition.id;
         userId,
          definition.name,
            definition.severity,
@@ -163,19 +154,13 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
       // Record metrics
       metricsCollector.incrementCounter('cdss.alert_definitions_created', 1, {
         category: definition.category,
-         definition.type
-      });
 
       // Publish event
       await pubsub.publish('ALERT_DEFINITION_CREATED', {
         alertDefinitionCreated: newDefinition,
-      });
 
       return newDefinition as AlertDefinition;
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**
@@ -183,7 +168,6 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
    */
   async updateAlertDefinition(
     id: string,
-     string;
   ): Promise<AlertDefinition> {
     try {
       // Get current definition
@@ -198,7 +182,7 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
       // Update definition
       const updatedDefinition = await this.prisma.alertDefinition.update({
         where: { id ,},
-        data: {,
+        data: {
           ...updates,
           updatedAt: new Date(),
           updatedBy: userId,
@@ -208,7 +192,6 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
       // Create audit log
       await this.auditService.createAuditLog({
         action: 'UPDATE',
-         id;
         userId,
          JSON.stringify(updates),
            updates.status || currentDefinition.status,
@@ -221,13 +204,9 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
       // Publish event
       await pubsub.publish('ALERT_DEFINITION_UPDATED', {
         alertDefinitionUpdated: updatedDefinition,
-      });
 
       return updatedDefinition as AlertDefinition;
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**
@@ -285,7 +264,6 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
         severity: definition.severity;
         status,
         triggerTime: new Date(),
-        expirationTime: definition.autoResolve;
           ? [0] + (definition.autoResolveAfter || 1440) * 60 * 1000);
           : undefined,
         suppressedBy,
@@ -300,7 +278,6 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
       // Save alert instance
       await this.prisma.alertInstance.create({
         data: newAlert as any,
-      });
 
       // If not suppressed, process actions and notifications
        {\n  {
@@ -326,7 +303,7 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
         // Update alert with actions and deliveries
         await this.prisma.alertInstance.update({
           where: { id: newAlert.id ,},
-          data: {,
+          data: {
             actions,
             deliveries,
           },
@@ -338,27 +315,19 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
         category: definition.category,
          newAlert.status,
         suppressed: shouldSuppress ? 'true' : 'false',
-      });
 
       // Publish event
       await pubsub.publish('ALERT_CREATED', {
         alertCreated: newAlert,
-      });
 
       return newAlert;
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**
    * Get active alerts for a patient;
    */
-  async getPatientActiveAlerts(patientId: string, encounterId?: string): Promise<AlertInstance[]> {
-    try {
-      // Build filter
-      const where: unknown = {,
+  async getPatientActiveAlerts(patientId: string,
         patientId,
         status: { in: [AlertStatus.ACTIVE, AlertStatus.ACKNOWLEDGED] },
       };
@@ -380,13 +349,9 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
       metricsCollector.incrementCounter('cdss.patient_alert_queries', 1, {
         patientId,
         activeAlertCount: alerts.length.toString(),
-      });
 
       return alerts as AlertInstance[];
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**
@@ -431,7 +396,6 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
       // Create audit log
       await this.auditService.createAuditLog({
         action: 'ACKNOWLEDGE',
-         alertId;
         userId,
          alert.type,
           patientId: alert.patientId;
@@ -445,18 +409,13 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
       metricsCollector.incrementCounter('cdss.alerts_acknowledged', 1, {
         category: alert.category,
         severity: alert.severity,
-      });
 
       // Publish event
       await pubsub.publish('ALERT_ACKNOWLEDGED', {
         alertAcknowledged: updatedAlert,
-      });
 
       return updatedAlert as AlertInstance;
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**
@@ -499,7 +458,6 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
       // Create audit log
       await this.auditService.createAuditLog({
         action: 'RESOLVE',
-         alertId;
         userId,
          alert.type,
           patientId: alert.patientId;
@@ -510,18 +468,13 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
       metricsCollector.incrementCounter('cdss.alerts_resolved', 1, {
         category: alert.category,
         severity: alert.severity,
-      });
 
       // Publish event
       await pubsub.publish('ALERT_RESOLVED', {
         alertResolved: updatedAlert,
-      });
 
       return updatedAlert as AlertInstance;
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**
@@ -529,7 +482,6 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
    */
   async checkDrugInteractions(
     patientId: string,
-    drugIds: string[];
     encounterId?: string;
   ): Promise<DrugInteractionAlert | null> {
     try {
@@ -568,13 +520,10 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
         encounterId,
         interactions,
         severity: highestSeverity,
-         new Date()
-      };
 
       // Save drug interaction alert
       await this.prisma.drugInteractionAlert.create({
         data: alert as any,
-      });
 
       // Create standard alert instance for this interaction
       await this.createAlertInstance({
@@ -593,13 +542,9 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
         patientId,
         severity: highestSeverity,
         interactionCount: interactions.length.toString(),
-      });
 
       return alert;
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**
@@ -642,12 +587,10 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
          'CRITICAL',
         orderingProvider: await this.getOrderingProvider(result.orderId),
         status: 'PENDING',
-      };
 
       // Save critical value alert
       await this.prisma.criticalValueAlert.create({
         data: alert as any,
-      });
 
       // Create standard alert instance for this critical value
       await this.createAlertInstance({
@@ -668,32 +611,23 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
         patientId,
         testCode: result.testCode,
         abnormalFlag: result.abnormalFlag,
-      });
 
       return alert;
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**
    * Create patient safety alert;
    */
   async createPatientSafety/* SECURITY: Alert removed */: Promise<PatientSafetyAlert> {,
-    try {
-      // Create safety alert
-      const alert: PatientSafetyAlert = {,
         ...safety,
         id: `safety-alert-${crypto.getRandomValues([0],}`,
         detectionTime: new Date(),
         status: 'ACTIVE',
-      };
 
       // Save safety alert
       await this.prisma.patientSafetyAlert.create({
         data: alert as any,
-      });
 
       // Create standard alert instance for this safety issue
       await this.createAlertInstance({
@@ -725,7 +659,6 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
       // Create audit log
       await this.auditService.createAuditLog({
         action: 'CREATE',
-         alert.id;
         userId,
          safety.patientId,
            safety.severity,
@@ -734,14 +667,9 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
       // Record metrics
       metricsCollector.incrementCounter('cdss.safety_alerts', 1, {
         type: safety.type,
-         alert.incidentReportId ? 'true' : 'false'
-      });
 
       return alert;
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**
@@ -774,7 +702,6 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
         where.context = {
           path: ['department'],
           equals: filters.department,
-        };
       }
 
        {\n  {
@@ -801,7 +728,7 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
 
         // Active alerts
         this.prisma.alertInstance.count({
-          where: {,
+          where: {
             ...where,
             status: AlertStatus.ACTIVE,
           },
@@ -809,7 +736,7 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
 
         // Resolved alerts
         this.prisma.alertInstance.count({
-          where: {,
+          where: {
             ...where,
             status: AlertStatus.RESOLVED,
           },
@@ -817,7 +744,7 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
 
         // Acknowledged alerts
         this.prisma.alertInstance.count({
-          where: {,
+          where: {
             ...where,
             status: AlertStatus.ACKNOWLEDGED,
           },
@@ -825,7 +752,7 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
 
         // Suppressed alerts
         this.prisma.alertInstance.count({
-          where: {,
+          where: {
             ...where,
             status: AlertStatus.SUPPRESSED,
           },
@@ -833,7 +760,7 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
 
         // Expired alerts
         this.prisma.alertInstance.count({
-          where: {,
+          where: {
             ...where,
             status: AlertStatus.EXPIRED,
           },
@@ -841,7 +768,7 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
 
         // Error alerts
         this.prisma.alertInstance.count({
-          where: {,
+          where: {
             ...where,
             status: AlertStatus.ERROR,
           },
@@ -866,10 +793,6 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
           by: ['type'];
           where,
           _count: true),
-
-        // Alerts by status
-        this.prisma.alertInstance.groupBy(
-          by: ['status'];
           where,
           _count: true),
 
@@ -886,7 +809,6 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
           _count: true,
            'desc',,
           take: 10),
-      ]);
 
       // Process alert by hour and day
       const alertsByHour = await this.getAlertCountByHour(where);
@@ -906,45 +828,32 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
       const noiseReductionImpact = await this.calculateNoiseReductionImpact(where);
 
       // Map severity counts
-      const alertsBySeverity: Record<AlertSeverity, number> = {
-        [AlertSeverity.CRITICAL]: 0,
+      const alertsBySeverity: Record<AlertSeverity,
         [AlertSeverity.HIGH]: 0,
         [AlertSeverity.MEDIUM]: 0,
         [AlertSeverity.LOW]: 0,
         [AlertSeverity.INFO]: 0,
       };
 
-      alertStats[7].forEach((item: unknown) => {,
-        alertsBySeverity[item.severity as AlertSeverity] = item._count
+      alertStats[7].forEach((item: unknown) => {alertsBySeverity[item.severity as AlertSeverity] = item._count
       });
 
       // Map category counts
-      const alertsByCategory: Record<AlertCategory, number> = {} as Record>
-      alertStats[8].forEach((item: unknown) => {,
-        alertsByCategory[item.category as AlertCategory] = item._count
-      });
+      const alertsByCategory: Record<AlertCategory,
 
       // Map type counts
-      const alertsByType: Record<AlertType, number> = {} as Record>
-      alertStats[9].forEach((item: unknown) => {,
-        alertsByType[item.type as AlertType] = item._count
-      });
+      const alertsByType: Record<AlertType,
 
       // Map status counts
-      const alertsByStatus: Record<AlertStatus, number> = {} as Record>
-      alertStats[10].forEach((item: unknown) => {,
-        alertsByStatus[item.status as AlertStatus] = item._count
-      });
+      const alertsByStatus: Record<AlertStatus,
 
       // Get top alert definition details
       const topAlertDefinitions = await Promise.all(
-        alertStats[12].map(async (item: unknown) => {,
-          const definition = await this.getAlertDefinitionById(item.definitionId);
+        alertStats[12].map(async (item: unknown) => {const definition = await this.getAlertDefinitionById(item.definitionId);
           const overrideRate = await this.calculateDefinitionOverrideRate(item.definitionId, where);
 
           return {
             id: item.definitionId,
-             item._count;
             overrideRate,
           };
         });
@@ -971,26 +880,19 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
       };
 
       return analytics;
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**
    * Get alert analytics by provider;
    */
   async getProviderAlertAnalytics(providerId: string): Promise<any> {,
-    // Implementation to get provider-specific analytics
-    return {};
   }
 
   /**
    * Check for alert fatigue for a provider;
    */
   async checkAlertFatigue(providerId: string): Promise<any> {,
-    // Implementation to check alert fatigue
-    return {};
   }
 
   // Private helper methods
@@ -999,11 +901,6 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
   }
 
   private validateAlertDefinitionUpdates(updates: Partial<AlertDefinition>): void {,
-    // Implementation for update validation
-  }
-
-  private async checkSuppressionRules(
-    definitionId: string;
     patientId?: string,
     resourceId?: string,
     context?: Record<string, any>
@@ -1014,7 +911,6 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
 
   private async generateAlertMLInsights(
     definition: AlertDefinition,
-     boolean;
   ): Promise<MLInsights | undefined> {
     // Implementation to generate ML insights
     return undefined;
@@ -1022,7 +918,6 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
 
   private async processAlertActions(
     alert: AlertInstance,
-    definition: AlertDefinition;
   ): Promise<AlertActionInstance[]> {
     // Implementation to process actions
     return [];
@@ -1030,7 +925,6 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
 
   private async processAlertDeliveries(
     alert: AlertInstance,
-    definition: AlertDefinition;
   ): Promise<AlertDeliveryInstance[]> {
     // Implementation to process deliveries
     return [];
@@ -1038,55 +932,38 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
 
   private async scheduleEscalation(
     alertId: string,
-    escalationRule: EscalationRule;
   ): Promise<void> {
     // Implementation to schedule escalation
   }
 
   private async getDrugInformation(drugIds: string[]): Promise<Drug[]> {,
-    // Implementation to get drug information
-    return [];
   }
 
   private async getPatientActiveMedications(patientId: string): Promise<Drug[]> {,
-    // Implementation to get active medications
-    return [];
   }
 
   private async checkInteractions(drugs: Drug[]): Promise<DrugInteraction[]> {,
-    // Implementation to check interactions
-    return [];
   }
 
   private formatDrugInteractionMessage(interactions: DrugInteraction[]): string {,
-    // Implementation to format message
-    return '';
   }
 
   private formatDrugInteractionDetails(interactions: DrugInteraction[]): string {,
-    // Implementation to format details
-    return '';
   }
 
   private async getPreviousLabResults(
     patientId: string,
-     number;
   ): Promise<PreviousResult[]> {
     // Implementation to get previous results
     return [];
   }
 
   private async getOrderingProvider(orderId: string): Promise<string> {,
-    // Implementation to get ordering provider
-    return '';
   }
 
   private formatCriticalValueDetails(
     result: unknown,
     previousResults: PreviousResult[],
-  ): string {
-    // Implementation to format critical value details
-    return '';
   }
 
   private async startCriticalValueEscalation(
@@ -1096,41 +973,28 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
   }
 
   private formatSafetyAlertDetails(safety: unknown): string {,
-    // Implementation to format safety alert details
-    return '';
   }
 
   private async createIncidentReport(
     alert: PatientSafetyAlert,
-    userId: string;
   ): Promise<string> {
     // Implementation to create incident report
     return '';
   }
 
   private async getAlertCountByHour(where: unknown): Promise<number[]> {,
-    // Implementation to get counts by hour
-    return Array(24).fill(0);
   }
 
   private async getAlertCountByDay(where: unknown): Promise<number[]> {,
-    // Implementation to get counts by day
-    return Array(7).fill(0);
   }
 
-  private async getAlertCountByProvider(where: unknown): Promise<Record<string, number>> {
-    // Implementation to get counts by provider
-    return {};
+  private async getAlertCountByProvider(where: unknown): Promise<Record<string,
   }
 
   private async calculateEscalationRate(where: unknown): Promise<number> {,
-    // Implementation to calculate escalation rate
-    return 0;
   }
 
   private async calculateOverrideRate(where: unknown): Promise<number> {,
-    // Implementation to calculate override rate
-    return 0;
   }
 
   private async calculateAlertFatigue(where: unknown): Promise<any> {,
@@ -1139,7 +1003,6 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
       overrideRateByHour: Array(24).fill(0),
       responseTimeByHour: Array(24).fill(0),
       acknowledgedRateByCount: Array(10).fill(0),
-    };
   }
 
   private async calculateNoiseReductionImpact(where: unknown): Promise<any> {,
@@ -1148,12 +1011,10 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
       alertsBeforeReduction: 0,
        0,
       estimatedTimeSaved: 0,
-    };
   }
 
   private async calculateDefinitionOverrideRate(
     definitionId: string,
-    where: unknown;
   ): Promise<number> {
     // Implementation to calculate definition override rate
     return 0;

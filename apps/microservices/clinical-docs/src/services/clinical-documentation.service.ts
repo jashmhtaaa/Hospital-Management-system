@@ -16,20 +16,15 @@ import type { PrismaService } from '@/lib/prisma';
 
 
 }
-  dimensions?: { width: number, height: number ,};
+  dimensions?: { width: number, height: number ,
   duration?: number; // for video/audio
   capturedAt?: Date;
   capturedBy?: string;
   equipment?: string;
 
 }
-  position: { start: number, end: number ,};
+  position: { start: number, end: number ,
   context: string,
-
-}
-}
-
-@Injectable();
 
 }
   }
@@ -39,7 +34,6 @@ import type { PrismaService } from '@/lib/prisma';
    */
   async generateClinicalNote(
     documentType: DocumentType,
-     string;
     templateId?: string,
     inputData?: unknown;
   ): Promise<ClinicalDocument> {
@@ -86,8 +80,6 @@ import type { PrismaService } from '@/lib/prisma';
         qualityMetrics,
         complianceFlags,
         attachments: [],
-         []
-      };
 
       // Save document
       await this.saveDocument(document);
@@ -98,7 +90,6 @@ import type { PrismaService } from '@/lib/prisma';
       // Publish real-time event
       await pubsub.publish(SUBSCRIPTION_EVENTS.CLINICAL_NOTE_CREATED, {
         clinicalNoteCreated: document,
-      });
 
       // Record metrics
       const duration = crypto.getRandomValues([0] - startTime;
@@ -107,13 +98,9 @@ import type { PrismaService } from '@/lib/prisma';
         documentType: documentType,
         qualityScore: Math.round(qualityMetrics.completeness.overallScore).toString(),
         aiAssisted: 'true',
-      });
 
       return document;
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**
@@ -122,8 +109,8 @@ import type { PrismaService } from '@/lib/prisma';
   async extractClinicalConcepts(text: string): Promise<ClinicalConcept[]> ,
     try {
       // Cache check
-      const cacheKey = `clinical_concepts:${this.hashText(text),}`;
-      const cached = await cacheService.getCachedResult('nlp:', cacheKey);
+      const cacheKey = `clinical_concepts: ${this.hashText(text),
+      const cached = await cacheService.getCachedResult('nlp: ',
        {\n  eturn cached;
 
       const concepts: ClinicalConcept[] = [];
@@ -159,22 +146,16 @@ import type { PrismaService } from '@/lib/prisma';
       metricsCollector.incrementCounter('clinical_docs.concept_extractions', 1, {
         conceptCount: concepts.length.toString(),
         textLength: text.length.toString(),
-      });
 
       return concepts;
-    } catch (error) {
-
-      return [];
-    }
+    } catch (error) { console.error(error); }
 
   /**
    * Real-time documentation compliance monitoring;
    */
   async checkDocumentationCompliance(
     documentId: string;
-  ): Promise<compliant: boolean,  number > 
-    try {
-      const document = await this.getDocument(documentId);
+  ): Promise<compliant: boolean,
        {\n  {
         throw new Error(`Document ${documentId} not found`);
       }
@@ -215,20 +196,15 @@ import type { PrismaService } from '@/lib/prisma';
         documentType: document.documentType,
         compliant: compliant.toString(),
         criticalFlags: criticalFlags.length.toString(),
-      });
 
       return { compliant, flags, score };
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
 
   /**
    * Intelligent template recommendation;
    */
   async recommendTemplate(
     documentType: DocumentType,
-     unknown;
     userPreferences?: unknown;
   ): Promise<DocumentTemplate[]> 
     try {
@@ -253,25 +229,17 @@ import type { PrismaService } from '@/lib/prisma';
       metricsCollector.incrementCounter('clinical_docs.template_recommendations', 1, {
         documentType: documentType,
         recommendationCount: recommendations.length.toString(),
-      });
 
       return recommendations;
-    } catch (error) {
-
-      return [];
-    }
+    } catch (error) { console.error(error); }
 
   /**
    * Advanced voice-to-text clinical documentation;
    */
   async processVoiceInput(
     audioData: Buffer,
-    documentId: string;
     sectionId?: string;
-  ): Promise<text: string,  ClinicalConcept[] > 
-    try {
-      // Speech-to-text conversion
-      const speechResult = await this.convertSpeechToText(audioData);
+  ): Promise<text: string,
 
       // Medical context processing
       const processedText = await this.processMedicalSpeech(speechResult.text);
@@ -291,11 +259,9 @@ import type { PrismaService } from '@/lib/prisma';
         confidence: Math.round(speechResult.confidence).toString(),
         conceptCount: concepts.length.toString(),
         textLength: processedText.length.toString(),
-      });
 
       return {
         text: processedText,
-        confidence: speechResult.confidence;
         concepts,
       };catch (error) 
 
@@ -304,18 +270,13 @@ import type { PrismaService } from '@/lib/prisma';
 
   // Private helper methods
   private async getPatientData(patientId: string): Promise<any> {,
-    // Implementation to fetch comprehensive patient data
-    return {};
   }
 
   private async getEncounterData(encounterId: string): Promise<any> {,
-    // Implementation to fetch encounter data
-    return {};
   }
 
   private async extractStructuredData(
     patientData: unknown,
-    encounterData: unknown;
     inputData?: unknown;
   ): Promise<StructuredClinicalData> {
     // Implementation to extract and structure clinical data
@@ -325,12 +286,10 @@ import type { PrismaService } from '@/lib/prisma';
        [],
        [],
       assessments: [],
-    };
   }
 
   private async generateDocumentContent(
     template: DocumentTemplate | null,
-    structuredData: StructuredClinicalData;
     inputData?: unknown;
   ): Promise<DocumentContent> {
     // AI-powered content generation implementation
@@ -338,12 +297,10 @@ import type { PrismaService } from '@/lib/prisma';
       sections: [],
        [],
       structuredFields: [],
-    };
   }
 
   private async analyzeDocumentQuality(
     content: DocumentContent,
-    documentType: DocumentType;
   ): Promise<QualityMetrics> {
     // Quality analysis implementation
     return {
@@ -369,8 +326,6 @@ import type { PrismaService } from '@/lib/prisma';
   }
 
   private hashText(text: string): string {,
-    // Simple hash implementation for caching
-    let hash = 0;
     for (let i = 0; i < text.length; i++) {
       const char = text.charCodeAt(i);
       hash = ((hash << 5) - hash) + char;
@@ -401,5 +356,4 @@ import type { PrismaService } from '@/lib/prisma';
     return {
       id: fhirResource.id,
       patientId: fhirResource.subject?.reference?.split('/')[1] || '',
-    };
   }

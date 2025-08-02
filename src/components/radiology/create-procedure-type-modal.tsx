@@ -13,7 +13,7 @@ import { useState } from "react"
   DialogTitle,
   DialogFooter,
   DialogClose} from "@/components/ui/dialog";
-import { } from "@/components/ui/input"
+
 import "@/components/ui/label";
 import "@/components/ui/textarea";
 import "lucide-react";
@@ -44,56 +44,27 @@ export default const _CreateProcedureTypeModal = ({
     e.preventDefault();
     if (!session.user) {
       /* SECURITY: Console statement removed */,
-      return;
     }
     setIsSubmitting(true);
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      await onSubmit({
-        name,
-        description,
-        modality_type: modalityType || undefined, // Ensure null if empty;
-      });
+} catch (error) { console.error(error); });
       // Reset form on successful submission;
       setName(""),
       setDescription("");
       setModalityType("");
       // onClose(); // Keep modal open or close based on parent logic after onSubmit completes;
-    } catch (error) { // FIX: Added error parameter;
-
-      // Optionally show an error message to the user;
-      /* SECURITY: Console statement removed */,
-    } finally {
+    } catch (error) { console.error(error); } finally {
       setIsSubmitting(false);
 
   };

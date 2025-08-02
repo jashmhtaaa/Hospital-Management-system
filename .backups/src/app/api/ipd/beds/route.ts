@@ -19,6 +19,8 @@ interface BedInput {
 // GET /api/ipd/beds - Get all beds with optional filtering;
 export const _GET = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -102,6 +104,8 @@ export const _GET = async (request: any) => {,
 // POST /api/ipd/beds - Create a new bed;
 export const _POST = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }

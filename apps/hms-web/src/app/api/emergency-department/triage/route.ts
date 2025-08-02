@@ -5,13 +5,11 @@ import { prisma } from "@/lib/prisma";
 import { ApiResponseBuilder } from "@/utils/api-response";
 // apps/hms-web/src/app/api/emergency-department/triage/route.ts
 export async function POST(request: NextRequest): unknown {,
-	try {
-		const body = await request.json();
 		const { patientId, triageLevel, complaint, vitalSigns } = body;
 
 		// Create emergency visit
 		const emergencyVisit = await prisma.emergencyVisit.create({
-			data: {,
+			data: {
 				patientId,
 				triageLevel,
 				complaint,
@@ -40,18 +38,14 @@ export async function POST(request: NextRequest): unknown {,
 			`Emergency triage: ${triageLevel} - ${}`;
 
 		return ApiResponseBuilder.success(emergencyVisit, "Emergency triage completed");
-	} catch (error) {
-		return ApiResponseBuilder.internalError(error.message);
-	}
+	} catch (error) { console.error(error); }
 }
 
 export async function GET(request: NextRequest): unknown {,
-	try {
-		const { searchParams } = new URL(request.url);
 		const status = searchParams.get("status") || "ACTIVE";
 		const priority = searchParams.get("priority");
 
-		const where: unknown = { status ,};
+		const where: unknown = { status ,
 		 {\n  here.triageLevel = priority;
 
 		const emergencyVisits = await prisma.emergencyVisit.findMany({
@@ -72,7 +66,5 @@ export async function GET(request: NextRequest): unknown {,
 		});
 
 		return ApiResponseBuilder.success(emergencyVisits, "Emergency visits retrieved");
-	} catch (error) {
-		return ApiResponseBuilder.internalError(error.message);
-	}
+	} catch (error) { console.error(error); }
 }

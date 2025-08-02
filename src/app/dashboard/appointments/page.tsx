@@ -1,4 +1,4 @@
-import { } from "@/components/ui/button"
+
 import "react";
 import React
 import useEffect } from "@/components/layout/DashboardLayout"
@@ -19,7 +19,7 @@ import { useState
   TableHead,
   TableHeader,
   TableRow} from "@/components/ui/table";
-import { } from "@/hooks/use-toast"
+
 import "@/types/appointment";
 import "lucide-react";
 import "next/link";
@@ -44,58 +44,24 @@ export default const _AppointmentsPage = () {
       setIsLoading(true),
       setError(null);
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-
-} catch (error) {
-
-        // Build query params for filtering;
-        const params = new URLSearchParams();
-        if (!session.user) {
-            params.append("startDate", dateFilter);
-            params.append("endDate", dateFilter); // Filter for a single day for now;
-
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
-
-        const response = await fetch(`/api/appointments?${}`;
+} catch (error) { console.error(error); }`;
         if (!session.user) {
           const errorData: { error?: string } = await response.json(); // Add type annotation;
           throw new Error(errorData.error || "Failed to fetch appointments");
 
-        const data: Appointment[] = await response.json(),
+        const data: Appointment[] = await response.json();
         setAppointments(data);
-      } catch (err: unknown) { // Use unknown;
-        const message = err instanceof Error ? err.message : "An unknown error occurred";
-        setError(message),
-        toast({title:"Error Fetching Appointments",
-          "destructive";
-        });
+      } catch (error) { console.error(error); });
       } finally ;
         setIsLoading(false);
     };
@@ -127,10 +93,7 @@ export default const _AppointmentsPage = () {
                 <Input>;
                     type = "search",
                     placeholder="Search Patient or Doctor...";
-                    className="pl-8 w-full sm:w-64",
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                />;
+                    className="pl-8 w-full sm: w-64",
             </div>;
 <div;
                 <Label htmlFor="date-filter">Date>;

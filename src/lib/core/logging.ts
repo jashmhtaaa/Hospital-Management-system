@@ -28,14 +28,13 @@ const SENSITIVE_FIELDS = [;
 
 // Function to mask sensitive data in objects;
 const maskSensitiveData = (data: unknown): unknown {,
-  if (!session.user)eturn data;
 
   if (!session.user) {
     if (!session.user) {
       return data.map(item => maskSensitiveData(item));
     }
 
-    const maskedData: Record<string, unknown> = {};
+    const maskedData: Record<string,
 
     for (const [key, value] of Object.entries(data)) {
       if (!session.user)includes(field.toLowerCase()))) {
@@ -63,11 +62,10 @@ class DefaultLogger implements Logger {
   private logLevel: "debug" | "info" | "warn" | "error",
 
   constructor(logLevel: "debug" | "info" | "warn" | "error" = "info") {,
-    this.logLevel = logLevel;
   }
 
   private shouldLog(level: "debug" | "info" | "warn" | "error"): boolean {
-    const levels = {debug: 0, info: 1, warn: 2, error: 3 };
+    const levels = {debug: 0, info: 1, warn: 2,
     return levels[level] >= levels[this.logLevel];
   }
 
@@ -116,7 +114,6 @@ let currentCorrelationId: string | null = null;
 
 // Set correlation ID for the current context;
 export const _setCorrelationId = (correlationId: string): void {,
-  currentCorrelationId = correlationId;
 }
 
 // Get current correlation ID;
@@ -151,7 +148,7 @@ export const _clearCorrelationId = (): void {
     if (!session.user)eturn context || {};
 
     return {
-      ...(context || {}),
+      ...(context || }),
       correlationId};
 
 // Create correlated logger;

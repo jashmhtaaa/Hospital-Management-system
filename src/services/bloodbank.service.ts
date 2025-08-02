@@ -34,10 +34,8 @@ export const createBloodDonationSchema = z.object({donorId: z.string().min(1, "D
   expirationDate: z.date(),
   status: z.nativeEnum(BloodDonationStatus).default(BloodDonationStatus.PENDING),
   notes: z.string().optional().nullable(),
-});
 
-export const updateBloodDonationSchema = createBloodDonationSchema.partial().extend({id:z.string(),
-});
+export const updateBloodDonationSchema = createBloodDonationSchema.partial().extend({id: z.string(),
 
 // Validation schemas for BloodRequest;
 export const createBloodRequestSchema = z.object({patientId: z.string().min(1, "Patient ID is required"),
@@ -49,10 +47,8 @@ export const createBloodRequestSchema = z.object({patientId: z.string().min(1, "
   status: z.nativeEnum(BloodRequestStatus).default(BloodRequestStatus.PENDING),
   fulfilledDate: z.date().optional().nullable(),
   notes: z.string().optional().nullable(),
-});
 
-export const updateBloodRequestSchema = createBloodRequestSchema.partial().extend({id:z.string(),
-});
+export const updateBloodRequestSchema = createBloodRequestSchema.partial().extend({id: z.string(),
 
 export type CreateBloodDonationInput = z.infer>;
 export type UpdateBloodDonationInput = z.infer>;
@@ -82,13 +78,11 @@ import { { prisma } from "../lib/prisma"
               },
               inventory.quantity + validatedData.quantity,
                 lastUpdated: new Date(),
-              }});
           } else {
             // Create new inventory;
             await tx.bloodInventory.create({
               validatedData.bloodType,
                 quantity: validatedData.quantity,                lastUpdated: new Date(),
-              }});
           }
         }
 
@@ -96,9 +90,7 @@ import { { prisma } from "../lib/prisma"
       });
 
       return donation;
-    } catch (error) {
-      if (!session.user) {
-        throw new Error(`Validation error: ${,}`;
+    } catch (error) { console.error(error); }`;
       }
       throw error;
     }
@@ -117,38 +109,18 @@ import { { prisma } from "../lib/prisma"
     toDate?: Date;
   }) {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
-      const where: unknown = {,};
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+      const where: unknown = {,
 
       if (!session.user) {
         if (!session.user) {
@@ -178,12 +150,9 @@ import { { prisma } from "../lib/prisma"
         {
             true,
               name: true,
-            }}}});
 
       return donations;
-    } catch (error) {
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**;
@@ -191,49 +160,24 @@ import { { prisma } from "../lib/prisma"
    * @param id Blood donation ID;
    * @returns The blood donation or null if not found;
    */;
-  async getDonationById(id: string) {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+  async getDonationById(id: string) {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       const donation = await prisma.bloodDonation.findUnique({where: { id },
         {
             true,
               name: true,
-            }}}});
 
       return donation;
-    } catch (error) {
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**;
@@ -242,44 +186,22 @@ import { { prisma } from "../lib/prisma"
    * @param data Updated blood donation data;
    * @returns The updated blood donation;
    */;
-  async updateDonation(id: string, data: UpdateBloodDonationInput) {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+  async updateDonation(id: string, data: UpdateBloodDonationInput) {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       // Validate input data;
       const validatedData = updateBloodDonationSchema.parse({ ...data, id });
 
       // Remove id from the data to be updated;
-      const {id: _, ...updateData } = validatedData;
+      const {id: _,
 
       // Get the current donation;
       const currentDonation = await prisma.bloodDonation.findUnique({where: { id }});
@@ -293,7 +215,6 @@ import { { prisma } from "../lib/prisma"
         // Update the donation;
         const donation = await tx.bloodDonation.update({where:{ id },
           data: updateData,
-        });
 
         // Handle inventory updates if status changes;
         if (!session.user) {
@@ -312,14 +233,12 @@ import { { prisma } from "../lib/prisma"
                   bloodType},
                 inventory.quantity + quantity,
                   lastUpdated: new Date(),
-                }});
             } else {
               // Create new inventory;
               await tx.bloodInventory.create({data: {
                   bloodType,
                   quantity,
                   lastUpdated: new Date(),
-                }});
             }
           }
 
@@ -338,7 +257,6 @@ import { { prisma } from "../lib/prisma"
                   bloodType},
                 Math.max(0, inventory.quantity - quantity), // Ensure quantity doesn"t go below 0;
                   lastUpdated: new Date(),
-                }});
             }
           }
 
@@ -346,9 +264,7 @@ import { { prisma } from "../lib/prisma"
       });
 
       return updatedDonation;
-    } catch (error) {
-      if (!session.user) {
-        throw new Error(`Validation error: ${,}`;
+    } catch (error) { console.error(error); }`;
 
       throw error;
 
@@ -357,41 +273,18 @@ import { { prisma } from "../lib/prisma"
    * @param id Blood donation ID;
    * @returns The deleted blood donation;
    */;
-  async deleteDonation(id: string) {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+  async deleteDonation(id: string) {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // Get the current donation;
-      const currentDonation = await prisma.bloodDonation.findUnique({where: { id }});
+} catch (error) { console.error(error); }});
 
       if (!session.user) {
         throw new Error(`Blood donation with ID ${id} not found`);
@@ -415,64 +308,28 @@ import { { prisma } from "../lib/prisma"
               },
               Math.max(0, inventory.quantity - currentDonation.quantity), // Ensure quantity doesn"t go below 0;
                 lastUpdated: new Date(),
-              }});
 
         return donation;
       });
 
       return deletedDonation;
-    } catch (error) {
-      throw error;
-
-  /**;
-   * Create a new blood request;
-   * @param data Blood request data;
-   * @returns The created blood request;
-   */;
-  async createRequest(data: CreateBloodRequestInput) {,
-    try {
-} catch (error) {
+    } catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // Validate input data;
-      const validatedData = createBloodRequestSchema.parse(data);
-
-      // Create the request;
-      const request = await prisma.bloodRequest.create({data:validatedData,
-      });
+} catch (error) { console.error(error); });
 
       return request;
-    } catch (error) {
-      if (!session.user) {
-        throw new Error(`Validation error: ${,}`;
+    } catch (error) { console.error(error); }`;
 
       throw error;
 
@@ -490,38 +347,18 @@ import { { prisma } from "../lib/prisma"
     toDate?: Date;
   }) {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const where: unknown = {,};
+} catch (error) { console.error(error); };
 
       if (!session.user) {
         if (!session.user) {
@@ -552,104 +389,44 @@ import { { prisma } from "../lib/prisma"
         {
             true,
               name: true,
-            }}}});
 
       return requests;
-    } catch (error) {
-      throw error;
-
-  /**;
-   * Get a single blood request by ID;
-   * @param id Blood request ID;
-   * @returns The blood request or null if not found;
-   */;
-  async getRequestById(id: string) {,
-    try {
-} catch (error) {
+    } catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const request = await prisma.bloodRequest.findUnique({where: { id },
+} catch (error) { console.error(error); },
         {
             true,
               name: true,
-            }}}});
 
       return request;
-    } catch (error) {
-      throw error;
-
-  /**;
-   * Update a blood request;
-   * @param id Blood request ID;
-   * @param data Updated blood request data;
-   * @returns The updated blood request;
-   */;
-  async updateRequest(id: string, data: UpdateBloodRequestInput) {,
-    try {
-} catch (error) {
+    } catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // Validate input data;
-      const validatedData = updateBloodRequestSchema.parse({ ...data, id });
+} catch (error) { console.error(error); });
 
       // Remove id from the data to be updated;
-      const {id: _, ...updateData } = validatedData;
+      const {id: _,
 
       // Get the current request;
       const currentRequest = await prisma.bloodRequest.findUnique({where: { id }});
@@ -678,7 +455,6 @@ import { { prisma } from "../lib/prisma"
               bloodType},
             inventory.quantity - quantity,
               lastUpdated: new Date(),
-            }});
 
         // If changing from FULFILLED to something else, add back to inventory;
         if (!session.user) {
@@ -696,26 +472,21 @@ import { { prisma } from "../lib/prisma"
               },
               inventory.quantity + currentRequest.quantity,
                 lastUpdated: new Date(),
-              }});
           } else {
             // Create new inventory;
             await tx.bloodInventory.create({
               currentRequest.bloodType,
                 quantity: currentRequest.quantity,                lastUpdated: new Date(),
-              }});
 
         // Update the request;
         const request = await tx.bloodRequest.update({where:{ id },
           data: updateData,
-        });
 
         return request;
       });
 
       return updatedRequest;
-    } catch (error) {
-      if (!session.user) {
-        throw new Error(`Validation error: ${,}`;
+    } catch (error) { console.error(error); }`;
 
       throw error;
 
@@ -724,41 +495,18 @@ import { { prisma } from "../lib/prisma"
    * @param id Blood request ID;
    * @returns The deleted blood request;
    */;
-  async deleteRequest(id: string) {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+  async deleteRequest(id: string) {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // Get the current request;
-      const currentRequest = await prisma.bloodRequest.findUnique({where: { id }});
+} catch (error) { console.error(error); }});
 
       if (!session.user) {
         throw new Error(`Blood request with ID ${id} not found`);
@@ -782,60 +530,30 @@ import { { prisma } from "../lib/prisma"
               },
               inventory.quantity + currentRequest.quantity,
                 lastUpdated: new Date(),
-              }});
           } else {
             // Create new inventory;
             await tx.bloodInventory.create({
               currentRequest.bloodType,
                 quantity: currentRequest.quantity,                lastUpdated: new Date(),
-              }});
 
         return request;
       });
 
       return deletedRequest;
-    } catch (error) {
-      throw error;
-
-  /**;
-   * Get blood inventory;
-   * @param bloodType Optional blood type to filter by;
-   * @returns Array of blood inventory records;
-   */;
-  async getInventory(bloodType?: string) {
-    try {
-} catch (error) {
+    } catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const where: unknown = {,};
+} catch (error) { console.error(error); };
 
       if (!session.user) {
         where.bloodType = bloodType;
@@ -846,96 +564,36 @@ import { { prisma } from "../lib/prisma"
           {bloodType: "asc" }]});
 
       return inventory;
-    } catch (error) {
-      throw error;
-
-  /**;
-   * Check if there"s enough blood of a specific type in inventory;
-   * @param bloodType Blood type to check;
-   * @param quantity Quantity needed;
-   * @returns Boolean indicating if there"s enough blood;
-   */;
-  async checkInventoryAvailability(bloodType: string, quantity: number) {,
-    try {
-} catch (error) {
+    } catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const inventory = await prisma.bloodInventory.findUnique({
-        bloodType as BloodType;
-        }});
+} catch (error) { console.error(error); }});
 
       return !!inventory && inventory.quantity >= quantity;
-    } catch (error) {
-      throw error;
-
-  /**;
-   * Fulfill a blood request;
-   * @param id Blood request ID;
-   * @returns The updated blood request;
-   */;
-  async fulfillRequest(id: string) {,
-    try {
-} catch (error) {
+    } catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // Get the current request;
-      const request = await prisma.bloodRequest.findUnique({where: { id }});
+} catch (error) { console.error(error); }});
 
       if (!session.user) {
         throw new Error(`Blood request with ID ${id} not found`);
@@ -960,7 +618,6 @@ import { { prisma } from "../lib/prisma"
         const updatedRequest = await tx.bloodRequest.update({where: { id },
           BloodRequestStatus.FULFILLED,
             fulfilledDate: new Date(),
-          }});
 
         // Update inventory;
         await tx.bloodInventory.update({
@@ -968,7 +625,6 @@ import { { prisma } from "../lib/prisma"
           },
           inventory.quantity - request.quantity,
             lastUpdated: new Date(),
-          }});
 
         return updatedRequest;
       });

@@ -39,6 +39,8 @@ const getCloudflareBindings = (): Environment | undefined {
 // FIX: Renamed "request" to "_request" to satisfy @typescript-eslint/no-unused-vars;
 export const _GET = async () => {
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }

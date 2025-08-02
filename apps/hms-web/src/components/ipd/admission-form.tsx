@@ -72,16 +72,5 @@ export const _AdmissionForm = () => {
 							<Select>id="ward" options={[{ value: "", label: "Select ward" }]}</Select>
 						</div>
 						\1><Label htmlFor="bed">Bed\1>
-							<Select>id="bed" options={[{ value: "", label: "Select bed" }]}</Select>
-						</div>
-					</div>
-					\1><Label htmlFor="notes">Additional Notes\1>
-						<Textarea id="notes" placeholder="Enter any additional notes" />
-					</div>
-					\1><Button variant="outline">Cancel\1><Button>Admit Patient</Button>
-					</div>
-				</form>
-			</CardContent>
-		</Card>
-	);
+							<Select>id="bed" options={[{ value: "",
 };

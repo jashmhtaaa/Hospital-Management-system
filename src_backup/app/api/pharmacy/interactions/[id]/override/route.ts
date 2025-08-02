@@ -134,6 +134,8 @@ export const POST = async();
  */;
 export const GET = async (req: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }

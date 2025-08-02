@@ -19,6 +19,8 @@ export const POST = async (
     request,
     async (req: NextRequest) => {,
       const _session = await getServerSession(authOptions);
+  return NextResponse.json({ message: "Not implemented" });
+};
       const { variables } = await req.json();
 
        {\n  {

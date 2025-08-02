@@ -1,4 +1,4 @@
-import { } from "@/lib/prisma"
+
 import {  AuditService  } from "@/lib/audit/audit-service"
 import {  prisma  } from "@/lib/database"
 
@@ -31,12 +31,10 @@ import {  prisma  } from "@/lib/database"
 
   static async checkDoctorAvailability();
     doctorId: string,
-    string;
   ): Promise<boolean> {
     const conflictingAppointment = await prisma.appointment.findFirst({where: {
         doctorId,
         appointmentDate: date,
-        "CANCELLED" ;
       }
     });
 
@@ -60,7 +58,6 @@ import {  prisma  } from "@/lib/database"
   static async updateAppointmentStatus();
     appointmentId: string,
     status: "CONFIRMED" | "IN_PROGRESS" | "COMPLETED" | "CANCELLED" | "NO_SHOW",
-    updatedBy?: string;
   ) {
     const oldAppointment = await prisma.appointment.findUnique({where: { id: appointmentId }
     });
@@ -71,7 +68,6 @@ import {  prisma  } from "@/lib/database"
     const appointment = await prisma.appointment.update({where: { id: appointmentId },
       data: {
         status,
-        ...(status === "CANCELLED" && {cancelledAt: new Date() });
 
     });
 
@@ -110,8 +106,6 @@ import {  prisma  } from "@/lib/database"
       prisma.appointment.count({
         {gte:startOfDay, lte: endOfDay },
           status: "IN_PROGRESS",
-
-      });
     ]);
 
     return { scheduled, completed, cancelled, inProgress };

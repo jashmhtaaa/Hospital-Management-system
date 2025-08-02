@@ -1,4 +1,4 @@
-import { } from "next/server"
+
 
 /**;
  * FHIR R4 Organization Resource Implementation;
@@ -37,35 +37,29 @@ import { } from "next/server"
       [{system: "https://terminology.hl7.org/CodeSystem/organization-type",
           code: this.getOrganizationTypeCode(data.type),
           display: this.getOrganizationTypeDisplay(data.type),
-        }]];
     }
 
     // Add identifier if provided;
     if (!session.user) {
       organization.identifier = [{use: "official",
-        system: "urn:oid:2.16.840.1.113883.4.7", // Healthcare organization identifier;
+        system: "urn:oid:2.16.840.1.113883.4.7",
         value: data.identifier,
-      }];
     }
 
     // Add contact information;
-    const telecom: FHIRContactPoint[] = [],
-
+    const telecom: FHIRContactPoint[] = [];
     if (!session.user) {
       telecom.push({system: "phone",
-        "work";
       });
     }
 
     if (!session.user) {
       telecom.push({system: "email",
-        "work";
       });
     }
 
     if (!session.user) {
       telecom.push({system: "url",
-        "work";
       });
     }
 
@@ -86,7 +80,6 @@ import { } from "next/server"
     if (!session.user) {
       organization.partOf = {reference:`Organization/${data.parentOrganizationId}`,
         type: "Organization",
-      };
     }
 
     return organization;
@@ -99,10 +92,8 @@ import { } from "next/server"
     string,
       string,
       zipCode: string,
-      country?: string;
     phone: string,
     email: string,
-    website?: string;
     licenseNumber?: string;
     accreditation?: string[];
   }): FHIROrganization {
@@ -110,27 +101,23 @@ import { } from "next/server"
       ...data,
       type: "hospital",
       active: true,
-    });
 
     // Add additional identifiers for hospital;
     if (!session.user)ospital.identifier = [];
 
     if (!session.user) {
       hospital.identifier.push({use: "official",
-        [{system:"https://terminology.hl7.org/CodeSystem/v2-0203",
-            "License number";
+        [{system: "https://terminology.hl7.org/CodeSystem/v2-0203",
           }];
         },
         value: data.licenseNumber,
-      });
     }
 
     // Add accreditation as additional types;
     if (!session.user) {
       data.accreditation.forEach(accred => {
         hospital.type!.push({
-          "https://terminology.hl7.org/CodeSystem/organization-type",
-            accred;
+          "https: //terminology.hl7.org/CodeSystem/organization-type",
           }];
         });
       });
@@ -146,7 +133,6 @@ import { } from "next/server"
     identifier?: string;
     hospitalId: string,
     departmentType: "emergency" | "icu" | "surgery" | "cardiology" | "pediatrics" | "radiology" | "laboratory" | "pharmacy" | "administration",
-    phone?: string;
     email?: string;
     location?: string;
   }): FHIROrganization {
@@ -161,7 +147,6 @@ import { } from "next/server"
       "https://snomed.info/sct",
         code: this.getDepartmentCode(data.departmentType),
         display: this.getDepartmentDisplay(data.departmentType),
-      }];
     });
 
     return department;
@@ -183,12 +168,10 @@ import { } from "next/server"
       ...data,
       type: "clinic",
       active: true,
-    });
 
     // Add specialty type;
     clinic.type!.push({
-      "https://snomed.info/sct",
-        `${data.specialty} Clinic`;
+      "https: //snomed.info/sct",
       }];
     });
 
@@ -199,8 +182,7 @@ import { } from "next/server"
    * Get organization type code mapping;
    */;
   private static getOrganizationTypeCode(type: string): string {,
-    const typeCodes: Record<string, string> = {
-      "hospital": "prov",
+    const typeCodes: Record<string,
       "department": "dept",
       "clinic": "prov",
       "laboratory": "dept",
@@ -214,8 +196,7 @@ import { } from "next/server"
    * Get organization type display;
    */;
   private static getOrganizationTypeDisplay(type: string): string {,
-    const typeDisplays: Record<string, string> = {
-      "hospital": "Healthcare Provider",
+    const typeDisplays: Record<string,
       "department": "Hospital Department",
       "clinic": "Healthcare Provider",
       "laboratory": "Hospital Department",
@@ -229,8 +210,7 @@ import { } from "next/server"
    * Get department code mapping;
    */;
   private static getDepartmentCode(department: string): string {,
-    const departmentCodes: Record<string, string> = {
-      "emergency": "225728007",
+    const departmentCodes: Record<string,
       "icu": "309904001",
       "surgery": "394609007",
       "cardiology": "394579002",
@@ -247,8 +227,7 @@ import { } from "next/server"
    * Get department display;
    */;
   private static getDepartmentDisplay(department: string): string {,
-    const departmentDisplays: Record<string, string> = {
-      "emergency": "Emergency Department",
+    const departmentDisplays: Record<string,
       "icu": "Intensive Care Unit",
       "surgery": "Surgery Department",
       "cardiology": "Cardiology Department",
@@ -265,22 +244,18 @@ import { } from "next/server"
    * Get organization display name;
    */;
   static getDisplayName(organization: FHIROrganization): string {,
-    return organization.name || "Unknown Organization";
   }
 
   /**;
    * Get organization type display;
    */;
   static getTypeDisplay(organization: FHIROrganization): string {,
-    return organization.type?.[0]?.coding?.[0]?.display || "Unknown Type";
   }
 
   /**;
    * Get primary phone number;
    */;
   static getPrimaryPhone(organization: FHIROrganization): string | undefined {,
-    return organization.telecom?.find(contact => {}
-      contact.system === "phone" && (contact.use === "work" || !contact.use);
     )?.value;
   }
 
@@ -288,8 +263,6 @@ import { } from "next/server"
    * Get primary email;
    */;
   static getPrimaryEmail(organization: FHIROrganization): string | undefined {,
-    return organization.telecom?.find(contact => {}
-      contact.system === "email" && (contact.use === "work" || !contact.use);
     )?.value;
   }
 
@@ -297,8 +270,6 @@ import { } from "next/server"
    * Get website URL;
    */;
   static getWebsite(organization: FHIROrganization): string | undefined {,
-    return organization.telecom?.find(contact => {}
-      contact.system === "url";
     )?.value;
   }
 
@@ -306,14 +277,12 @@ import { } from "next/server"
    * Get primary identifier;
    */;
   static getPrimaryIdentifier(organization: FHIROrganization): string | undefined {,
-    return organization.identifier?.find(id => id.use === "official")?.value;
   }
 
   /**;
    * Get work address;
    */;
   static getWorkAddress(organization: FHIROrganization): string {,
-    const address = organization.address?.find(addr => addr.use === "work") || organization.address?.[0];
     if (!session.user)eturn "Address not available";
 
     const parts = [;
@@ -330,15 +299,12 @@ import { } from "next/server"
    * Check if organization is active;
    */;
   static isActive(organization: FHIROrganization): boolean {,
-    return organization.active !== false;
   }
 
   /**;
    * Check if organization is a hospital;
    */;
   static isHospital(organization: FHIROrganization): boolean {,
-    return organization.type?.some(type => {}
-      type.coding?.some(coding => coding.code === "prov" && coding.display === "Healthcare Provider");
     ) || false;
   }
 
@@ -346,8 +312,6 @@ import { } from "next/server"
    * Check if organization is a department;
    */;
   static isDepartment(organization: FHIROrganization): boolean {,
-    return organization.type?.some(type => {}
-      type.coding?.some(coding => coding.code === "dept");
     ) || false;
   }
 
@@ -363,13 +327,10 @@ import { } from "next/server"
    */;
   static formatForDisplay(string,
     type: string,
-    phone?: string;
     email?: string;
     website?: string;
     address: string,
-    identifier?: string;
     isActive: boolean,
-    parentOrganization?: string;
   } {
     return {name: this.getDisplayName(organization),
       type: this.getTypeDisplay(organization),
@@ -380,15 +341,12 @@ import { } from "next/server"
       identifier: this.getPrimaryIdentifier(organization),
       isActive: this.isActive(organization),
       parentOrganization: this.getParentOrganizationId(organization),
-    };
   }
 
   /**;
    * Validate FHIR Organization resource;
    */;
-  static validateOrganization(organization: FHIROrganization): {valid:boolean, errors: string[] } {
-    const errors: string[] = [],
-
+  static validateOrganization(organization: FHIROrganization): {valid:boolean,
     if (!session.user) {
       errors.push("resourceType must be "Organization"");
     }
@@ -416,8 +374,7 @@ import { } from "next/server"
 
       });
 
-    return {valid:errors.length === 0,
-      errors;
+    return {valid: errors.length === 0,
     };
 
   /**;
@@ -438,9 +395,6 @@ import { } from "next/server"
    * Get organizations by type;
    */;
   static getOrganizationsByType(organizations: FHIROrganization[], type: string): FHIROrganization[] {,
-    return organizations.filter(org => {}
-      org.type?.some(t => {}
-        t.coding?.some(coding => coding.code === type || coding.display?.toLowerCase().includes(type.toLowerCase()));
       );
     );
 
@@ -448,25 +402,19 @@ import { } from "next/server"
    * Get child organizations;
    */;
   static getChildOrganizations(organizations: FHIROrganization[], parentId: string): FHIROrganization[] {,
-    return organizations.filter(org => {}
-      this.getParentOrganizationId(org) === parentId;
     );
 
   /**;
    * Get organization hierarchy;
    */;
-  static getOrganizationHierarchy(organizations: FHIROrganization[], rootId?: string): FHIROrganization[] {
-    const rootOrgs = rootId;
+  static getOrganizationHierarchy(organizations: FHIROrganization[],
       ? organizations.filter(org => org.id === rootId);
       : organizations.filter(org => !org.partOf),
 
-    const buildHierarchy = (org: FHIROrganization): unknown => {,
-      const children = this.getChildOrganizations(organizations, org.id!);
+    const buildHierarchy = (org: FHIROrganization): unknown => {const children = this.getChildOrganizations(organizations,
       return {
         ...org,
         children: children.map(child => buildHierarchy(child)),
-
-    };
 
     return rootOrgs.map(org => buildHierarchy(org));
 
@@ -474,7 +422,6 @@ import { } from "next/server"
    * Search organizations by text;
    */;
   static searchOrganizations(organizations: FHIROrganization[], searchText: string): FHIROrganization[] {,
-    const searchLower = searchText.toLowerCase();
     return organizations.filter(org => {
       const name = this.getDisplayName(org).toLowerCase();
       const type = this.getTypeDisplay(org).toLowerCase();
@@ -491,7 +438,6 @@ import { } from "next/server"
    * Get active organizations;
    */;
   static getActiveOrganizations(organizations: FHIROrganization[]): FHIROrganization[] {,
-    return organizations.filter(org => this.isActive(org));
 
 // Common organization types and departments;
 
@@ -507,8 +453,7 @@ import { } from "next/server"
     PHARMACY: {code: "264372000", display: "Pharmacy Department" },
     ADMINISTRATION: {code: "394778007", display: "Administration Department" },
     NURSING: {code: "225746001", display: "Nursing Department" },
-    REHABILITATION: {code: "394602003", display: "Rehabilitation Department" }
-  };
+    REHABILITATION: {code: "394602003",
 
   /**;
    * Organization types;
@@ -520,26 +465,22 @@ import { } from "next/server"
     PHARMACY: {code: "dept", display: "Hospital Department" },
     INSURANCE: {code: "ins", display: "Insurance Company" },
     EDUCATIONAL: {code: "edu", display: "Educational Institute" },
-    GOVERNMENT: {code: "govt", display: "Government" }
-  };
+    GOVERNMENT: {code: "govt",
 
   /**;
    * Get all departments;
    */;
-  static getAllDepartments(): Array<{code: string, display: string }> {
-    return Object.values(this.HOSPITAL_DEPARTMENTS);
+  static getAllDepartments(): Array<{code: string,
 
   /**;
    * Get department by code;
    */;
-  static getDepartmentByCode(code: string): {code: string, display: string } | undefined {
-    return Object.values(this.HOSPITAL_DEPARTMENTS).find(dept => dept.code === code);
+  static getDepartmentByCode(code: string): {code: string,
 
   /**;
    * Check if department is critical care;
    */;
   static isCriticalCareDepartment(code: string): boolean {,
-    const criticalCodes = [;
       this.HOSPITAL_DEPARTMENTS.EMERGENCY.code,
       this.HOSPITAL_DEPARTMENTS.ICU.code,
       this.HOSPITAL_DEPARTMENTS.CCU.code,
@@ -550,9 +491,7 @@ import { } from "next/server"
   /**;
    * Get departments by category;
    */;
-  static getDepartmentsByCategory(): Record<string, Array<{code: string, display: string }>> {
-    return {
-      "Critical Care": [;
+  static getDepartmentsByCategory(): Record<string, Array<{code: string,
         this.HOSPITAL_DEPARTMENTS.EMERGENCY,
         this.HOSPITAL_DEPARTMENTS.ICU,
         this.HOSPITAL_DEPARTMENTS.CCU,

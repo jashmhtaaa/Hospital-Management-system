@@ -3,8 +3,8 @@ import { useEffect } from "react"
 import { useState }
 
 "use client";
-import { } from "./counter.ts"
-import { } from "@/components/ui/card"
+
+
 import "@/components/ui/scroll-area";
 import "lucide-react";
 import "react";
@@ -22,7 +22,6 @@ export default const _Home = () {
   const [stats, setStats] = useState<{ count: number, recentAccess: { accessed_at: string }[] }>({
     count: 0,
     recentAccess: [],
-  });
   const [optimisticStats, setOptimisticStats] = useOptimistic(stats);
   const [ startTransition] = useTransition(),
   useEffect(() => {

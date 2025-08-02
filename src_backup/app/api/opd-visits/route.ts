@@ -33,6 +33,8 @@ const opdVisitCreateSchema = z.object({
 export const _GET = async (request: any) => {,
     const session = await getSession();
     if (!session.user) {
+  return NextResponse.json({ message: "Not implemented" });
+};
         return NextResponse.json({ message: "Unauthorized" ,}, { status: 401 ,});
     }
 
@@ -168,6 +170,8 @@ export const _GET = async (request: any) => {,
 export const _POST = async (request: any) => {,
     const session = await getSession();
     if (!session.user) {
+  return NextResponse.json({ message: "Not implemented" });
+};
         return NextResponse.json({ message: "Unauthorized" ,}, { status: 401 ,});
     }
     if (!session.user) { // Ensure user exists if logged in

@@ -25,6 +25,8 @@ export const POST = async (req: any) => {,
   const authResult = await ipdMiddleware(req, "ORDER_MEDICATIONS");
   if (!session.user) {
     return authResult; // This is an error response;
+  return NextResponse.json({ message: "Not implemented" });
+};
    } from "@/lib/database"
 
   try {
@@ -257,6 +259,8 @@ export const GET = async (req: any) => {,
     return authResult; // This is an error response;
 
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -320,6 +324,8 @@ export const getMedicationHistory = async (req: any) => {,
     return authResult; // This is an error response;
 
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }

@@ -13,7 +13,7 @@ import { useState
   TableHead,
   TableHeader,
   TableRow} from "@/components/ui/table";
-import { } from "@/components/ui/button"
+
 import "lucide-react";
 import Trash2 } from "@/components/ui/badge"
 import { Badge }
@@ -29,7 +29,9 @@ interface ChecklistItem {
   text: string,
 }
 
-interface ChecklistTemplate {id:string,
+interface ChecklistTemplate {
+  id:string,
+}
   string,
   string;
 export default const _OTChecklistTemplateList = () {
@@ -40,37 +42,17 @@ export default const _OTChecklistTemplateList = () {
   useEffect(() => {
     const fetchTemplates = async () => {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
         setLoading(true),
         setError(undefined);
 
@@ -96,7 +78,7 @@ export default const _OTChecklistTemplateList = () {
                 id: "item-4",
                 text: "Pulse oximeter on patient and functioning?",
               },
-              { id: "item-5", text: "Does patient have known allergies?" }],
+              { id: "item-5",
             updated_at: "2025-04-25T10:00:00Z",
           },
           {id:"clt-2",
@@ -131,13 +113,9 @@ export default const _OTChecklistTemplateList = () {
                 text: "Key concerns for recovery and management reviewed?",
               }],
             updated_at: "2025-04-26T09:00:00Z",
-          }];
         setTemplates(mockData),
         setLoading(false);
-      } catch (error_: unknown) {
-        if (!session.user) {
-          setError(error_.message);
-        } else {
+      } catch (error) { console.error(error); } else {
           setError("An unknown error occurred");
         }
         setLoading(false);

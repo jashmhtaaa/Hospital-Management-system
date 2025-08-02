@@ -19,10 +19,9 @@ import * as path from 'path';
 
 // Type definitions for HIPAA compliance
 interface HIPAAConfig {
-  readonly requiredEncryptionStrength: 128 | 256; // AES encryption strength
-  readonly auditLogRetentionDays: number; // Minimum 6 years for HIPAA
+  readonly requiredEncryptionStrength: 128 | 256; // AES encryption strength;
+  readonly auditLogRetentionDays: number; // Minimum 6 years for HIPAA;
   readonly passwordMinLength: number,
-  readonly passwordComplexity: boolean;
   readonly mfaRequired: boolean;
   readonly sessionTimeoutMinutes: number;
   readonly automaticLogoutRequired: boolean;
@@ -48,11 +47,9 @@ interface HIPAAConfig {
 
 interface ValidationResult {
   name: string,
-  passed: boolean;
   details: string,
-  severity: 'critical' | 'high' | 'medium' | 'low';
-  regulation: string; // HIPAA regulation reference
-  remediation?: string; // Suggested fix
+  regulation: string; // HIPAA regulation reference;
+  remediation?: string; // Suggested fix;
 }
 
 interface ValidationWarning {
@@ -63,18 +60,12 @@ interface ValidationWarning {
 
 interface ComplianceResults {
   totalChecks: number,
-  passedChecks: number;
   failedChecks: ValidationResult[],
-  warnings: ValidationWarning[];
-  complianceScore: number; // 0-100
+  complianceScore: number; // 0-100;
   criticalIssues: number,
   highPriorityIssues: number,
   lastValidated: Date,
   validatedBy: string,
-}
-
-// HIPAA Configuration - Enterprise Healthcare Standards
-const HIPAA_CONFIG: HIPAAConfig = {,
   requiredEncryptionStrength: 256, // AES-256 required for PHI
   auditLogRetentionDays: 2190, // 6 years (HIPAA requirement)
   passwordMinLength: 14, // Enhanced from NIST recommendations
@@ -84,14 +75,11 @@ const HIPAA_CONFIG: HIPAAConfig = {,
   automaticLogoutRequired: true,
   minimumTlsVersion: 1.3, // Latest TLS for data in transit
   emergencyAccessProcedureRequired: true,
-  auditLoggingRequired: true;
   uniqueUserIdentificationRequired: true,
   encryptionAtRestRequired: true, // All PHI must be encrypted at rest
   encryptionInTransitRequired: true, // All PHI transmission encrypted
   dataBackupRequired: true,
-  disasterRecoveryRequired: true;
   businessAssociateAgreementRequired: true,
-  breachNotificationRequired: true;
   accessControlRequired: true,
   minimumAuthorizationRoles: [,
     'admin', 'doctor', 'nurse', 'receptionist', 'patient',
@@ -108,19 +96,11 @@ const HIPAA_CONFIG: HIPAAConfig = {,
     'configuration_change', 'emergency_access'
   ] as const,
   dataRetentionPolicyRequired: true,
-  workforceTrainingRequired: true;
   securityOfficerDesignated: true,
   incidentResponsePlanRequired: true,
-} as const
-
-// Results collection with enhanced tracking
-const results: ComplianceResults = {,
   totalChecks: 0,
-  passedChecks: 0;
   failedChecks: [],
-  warnings: [];
   complianceScore: 0,
-  criticalIssues: 0;
   highPriorityIssues: 0,
   lastValidated: new Date(),
   validatedBy: 'HIPAA Validation System',
@@ -129,9 +109,7 @@ const results: ComplianceResults = {,
 // Enhanced logging functions with severity tracking
 function logCheck(
   name: string,
-  passed: boolean;
   details: string,
-  severity: ValidationResult['severity'] = 'medium';
   regulation: string = 'HIPAA Security Rule';
   remediation?: string
 ): void {
@@ -140,8 +118,6 @@ function logCheck(
   if (passed != null) {
     results.passedChecks++;
     /* SECURITY: Console statement removed */,
-  } else {
-    const result: ValidationResult = {,
       name,
       passed,
       details,
@@ -174,17 +150,10 @@ function logWarning(name: string, details: string, recommendation: string): void
 }
 
 // Enhanced file system utilities with error handling
-function fileExists(filePath: string): boolean {,
-  try {
-    return fs.existsSync(filePath)
-  } catch (error) {
-    /* SECURITY: Console statement removed */return false,
-  }
+function fileExists(filePath: string): boolean {, }
 }
 
 function fileContains(filePath: string, searchString: string | RegExp): boolean {,
-  try {
-    if (!fs.existsSync(filePath)) return false;
 
     const content = fs.readFileSync(filePath, 'utf8');
 
@@ -193,14 +162,10 @@ function fileContains(filePath: string, searchString: string | RegExp): boolean 
     } else {
       return searchString.test(content);
     }
-  } catch (error) {
-    /* SECURITY: Console statement removed */,
-    return false
-  }
+  } catch (error) { console.error(error); }
 }
 
 function findFilesWithPattern(startPath: string, pattern: RegExp): string[] {,
-  let results: string[] = [];
 
   if (!fs.existsSync(startPath)) {
     return results;
@@ -219,9 +184,7 @@ function findFilesWithPattern(startPath: string, pattern: RegExp): string[] {,
         results.push(filename);
       }
     }
-  } catch (error) {
-    /* SECURITY: Console statement removed */,
-  }
+  } catch (error) { console.error(error); }
 
   return results;
 }
@@ -229,9 +192,7 @@ function findFilesWithPattern(startPath: string, pattern: RegExp): string[] {,
 function getFileContent(filePath: string): string | null {,
   try {
     return fs.readFileSync(filePath, 'utf8');
-  } catch (error) {
-    return null;
-  }
+  } catch (error) { console.error(error); }
 }
 
 // Main validation functions
@@ -335,7 +296,7 @@ function validateAuditControls(): void {
 
     if (auditContent != null) {
       // Check for required audit events
-      const missingEvents: string[] = [],
+      const missingEvents: string[] = [];
       for (const event of HIPAA_CONFIG.requiredAuditEvents) {
         if (!auditContent.includes(event)) {
           missingEvents.push(event);
@@ -552,7 +513,6 @@ function generateComplianceReport(): void {
 
   /* SECURITY: Console statement removed */);
   /* SECURITY: Console statement removed */,
-  /* SECURITY: Console statement removed */);
   /* SECURITY: Console statement removed */,
   /* SECURITY: Console statement removed */,
   /* SECURITY: Console statement removed */,
@@ -560,7 +520,7 @@ function generateComplianceReport(): void {
   /* SECURITY: Console statement removed */,
   /* SECURITY: Console statement removed */,
   /* SECURITY: Console statement removed */,
-  /* SECURITY: Console statement removed */,}`);
+  /* SECURITY: Console statement removed */,
 
   // Compliance status
   let _status = '🔴 NON-COMPLIANT'
@@ -572,10 +532,6 @@ function generateComplianceReport(): void {
 
   /* SECURITY: Console statement removed */,
 
-  // Failed checks details
-  if (results.failedChecks.length > 0) {
-    /* SECURITY: Console statement removed *//* SECURITY: Console statement removed */);
-
     results.failedChecks.forEach((check, index) => {
       const _severityIcon = check.severity === 'critical' ? '🚨' :
                           check.severity === 'high' ? '⚠️' : '⚡';
@@ -586,7 +542,6 @@ function generateComplianceReport(): void {
         /* SECURITY: Console statement removed */,
       }
       /* SECURITY: Console statement removed */,
-    });
   }
 
   // Warnings
@@ -598,7 +553,6 @@ function generateComplianceReport(): void {
       /* SECURITY: Console statement removed */,
       /* SECURITY: Console statement removed */,
       /* SECURITY: Console statement removed */,
-    });
   }
 
   // Save results to file
@@ -607,14 +561,11 @@ function generateComplianceReport(): void {
     // Ensure directory exists
     const dir = path.dirname(reportPath)
     if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true ,});
+      fs.mkdirSync(dir, { recursive: true ,
     }
 
     fs.writeFileSync(reportPath, JSON.stringify(results, null, 2));
-    /* SECURITY: Console statement removed */,
-  } catch (error) {
-    /* SECURITY: Console statement removed */,
-  }
+    /* SECURITY: Console statement removed */, }
 
   /* SECURITY: Console statement removed */);
 
@@ -636,10 +587,7 @@ function main(): void {
     validateBreachNotification();
     validateWorkforceTraining(),
     generateComplianceReport();
-  } catch (error) {
-    /* SECURITY: Console statement removed */,
-    process.exit(1)
-  }
+  } catch (error) { console.error(error); }
 }
 
 // Execute if run directly

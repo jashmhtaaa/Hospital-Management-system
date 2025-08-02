@@ -1,5 +1,5 @@
-import { } from "@/lib/audit"
-import { } from "@/lib/prisma"
+
+
 import "@/lib/rbac.service";
 import ExternalServiceError
 import NotFoundError, RBACService
@@ -26,44 +26,23 @@ import {  prisma  } from "@/lib/database"
     );
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       // Audit the request;
       const auditLogger = new AuditLogger({ userId, userRoles });
       await auditLogger.log({action:"integration.patient.info.request",
         resourceId: patientId,
         userId,
         details: patientId ,
-      });
 
       // In a real implementation, this would call the HMS Patient Management API;
       // For this example, we"ll simulate the API call with a database query;
@@ -76,7 +55,6 @@ import {  prisma  } from "@/lib/database"
           ...(RBACService.hasPermission(userRoles, Resource.USER, Action.READ, fullMedicalData: true );
             ? ;
                 allergies: true,
-                true;
             : );
         }
       });
@@ -90,14 +68,9 @@ import {  prisma  } from "@/lib/database"
         resourceId: patientId,
         userId,
         details: { patientId },
-      });
 
       return patient;
-    } catch (error) {
-      // Handle and rethrow appropriate errors;
-      if (!session.user) {
-        throw error;
-      }
+    } catch (error) { console.error(error); }
 
       throw new ExternalServiceError("Patient Management System", "Failed to retrieve patient information");
     }
@@ -112,7 +85,6 @@ import {  prisma  } from "@/lib/database"
    */;
   public static async getLocationInfo();
     locationId: string,
-    string[];
   ): Promise<unknown> {
     // Enforce RBAC;
     RBACService.enforcePermission();
@@ -125,44 +97,23 @@ import {  prisma  } from "@/lib/database"
     );
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       // Audit the request;
       const auditLogger = new AuditLogger({ userId, userRoles });
       await auditLogger.log({action:"integration.location.info.request",
         resourceId: locationId,
         userId,
         details: locationId ,
-      });
 
       // In a real implementation, this would call the HMS Location Management API;
       // For this example, we"ll simulate the API call with a database query;
@@ -172,8 +123,6 @@ import {  prisma  } from "@/lib/database"
           true,
           true,
           currentOccupancy: true,
-        }
-      });
 
       if (!session.user) {
         throw new NotFoundError(`Location with ID ${locationId} not found`);
@@ -184,14 +133,9 @@ import {  prisma  } from "@/lib/database"
         resourceId: locationId,
         userId,
         details: { locationId },
-      });
 
       return location;
-    } catch (error) {
-      // Handle and rethrow appropriate errors;
-      if (!session.user) {
-        throw error;
-      }
+    } catch (error) { console.error(error); }
 
       throw new ExternalServiceError("Location Management System", "Failed to retrieve location information");
     }
@@ -213,7 +157,6 @@ import {  prisma  } from "@/lib/database"
     string,
     Record<string, unknown>,
     userId: string,
-    userRoles: string[];
   ): Promise<unknown> {
     // Enforce RBAC;
     RBACService.enforcePermission();
@@ -226,37 +169,17 @@ import {  prisma  } from "@/lib/database"
     );
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       // Audit the request;
       const auditLogger = new AuditLogger({ userId, userRoles });
       await auditLogger.log({action:"integration.notification.send.request",
@@ -278,88 +201,39 @@ import {  prisma  } from "@/lib/database"
           metadata,
           status: "PENDING",
           createdById: userId,
-        }
-      });
 
       // Audit the successful notification creation;
       await auditLogger.log({action:"integration.notification.send.success",
         resourceId: notification.id,
         userId,
-        details: {,
+        details: {
           recipientId,
           notificationType,
           notificationId: notification.id,
 
-      });
-
       return notification;
-    } catch (error) {
-      // Handle and rethrow appropriate errors;
-      if (!session.user) {
-        throw error;
-
-      throw new ExternalServiceError("Notification System", "Failed to send notification");
-
-  /**;
-   * Retrieves user information from the HMS User Management system;
-   * @param targetUserId The user ID to retrieve information for;
-   * @param userId The requesting user"s ID;
-   * @param userRoles The requesting user"s roles;
-   * @returns User information;
-   */;
-  public static async getUserInfo();
-    targetUserId: string,
-    string[];
-  ): Promise<unknown> {
-    // Enforce RBAC;
-    RBACService.enforcePermission();
-      userRoles,
-      Resource.USER,
-      Action.READ,
-      {userId: targetUserId === userId ? "self" : "other" },
+    } catch (error) { console.error(error); },
       userId,
       targetUserId;
     );
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // Audit the request;
-      const auditLogger = new AuditLogger({ userId, userRoles });
+} catch (error) { console.error(error); });
       await auditLogger.log({action:"integration.user.info.request",
         resourceId: targetUserId,
         userId,
         details: targetUserId ,
-      });
 
       // In a real implementation, this would call the HMS User Management API;
       // For this example, we"ll simulate the API call with a database query;
@@ -373,7 +247,6 @@ import {  prisma  } from "@/lib/database"
           ...(targetUserId === userId || userRoles.includes("admin");
             ? ;
                 lastLogin: true,
-                true;
             : );
 
       });
@@ -386,78 +259,29 @@ import {  prisma  } from "@/lib/database"
         resourceId: targetUserId,
         userId,
         details: { targetUserId },
-      });
 
       return user;
-    } catch (error) {
-      // Handle and rethrow appropriate errors;
-      if (!session.user) {
-        throw error;
-
-      throw new ExternalServiceError("User Management System", "Failed to retrieve user information");
-
-  /**;
-   * Submits data to the HMS Reporting System;
-   * @param reportType The type of report;
-   * @param reportData The report data;
-   * @param userId The requesting user"s ID;
-   * @param userRoles The requesting user"s roles;
-   * @returns The created report;
-   */;
-  public static async submitReportData();
-    reportType: string,
-    reportData: Record<string, unknown>,
-    userId: string,
-    userRoles: string[];
-  ): Promise<unknown> {
-    // Enforce RBAC;
-    RBACService.enforcePermission();
-      userRoles,
-      Resource.SYSTEM,
-      Action.REPORT,
-      { reportType },
+    } catch (error) { console.error(error); },
       userId;
     );
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // Audit the request;
-      const auditLogger = new AuditLogger({ userId, userRoles });
+} catch (error) { console.error(error); });
       await auditLogger.log({action: "integration.report.submit.request",
         resourceId: `report-${reportType}`,
         userId,
         details: { reportType },
-      });
 
       // In a real implementation, this would call the HMS Reporting System API;
       // For this example, we"ll simulate the API call with a database insert;
@@ -466,48 +290,16 @@ import {  prisma  } from "@/lib/database"
           "SUBMITTED",
           submittedById: userId,
 
-      });
-
       // Audit the successful report submission;
       await auditLogger.log({action:"integration.report.submit.success",
         resourceId: report.id,
         userId,
-        details: {,
+        details: {
           reportType,
           reportId: report.id,
 
-      });
-
       return report;
-    } catch (error) {
-      // Handle and rethrow appropriate errors;
-      if (!session.user) {
-        throw error;
-
-      throw new ExternalServiceError("Reporting System", "Failed to submit report data");
-
-  /**;
-   * Links a support service request to a patient record;
-   * @param serviceType The type of support service;
-   * @param requestId The request ID;
-   * @param patientId The patient ID;
-   * @param userId The requesting user"s ID;
-   * @param userRoles The requesting user"s roles;
-   * @returns The updated request with patient link;
-   */;
-  public static async linkRequestToPatient();
-    serviceType: "HOUSEKEEPING" | "MAINTENANCE" | "DIETARY" | "AMBULANCE" | "FEEDBACK",
-    string,
-    string[];
-  ): Promise<unknown> {
-    // Map service type to resource;
-    const resourceMap = {
-      "HOUSEKEEPING": Resource.HOUSEKEEPING,
-      "MAINTENANCE": Resource.MAINTENANCE,
-      "DIETARY": Resource.DIETARY,
-      "AMBULANCE": Resource.AMBULANCE,
-      "FEEDBACK": Resource.FEEDBACK;
-    };
+    } catch (error) { console.error(error); };
 
     const resource = resourceMap[serviceType];
 
@@ -522,39 +314,18 @@ import {  prisma  } from "@/lib/database"
     );
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // Audit the request;
-      const auditLogger = new AuditLogger({ userId, userRoles });
+} catch (error) { console.error(error); });
       await auditLogger.log({action:"integration.request.patient.link.request",
         resourceId: requestId,
         userId,
@@ -577,8 +348,6 @@ import {  prisma  } from "@/lib/database"
           patientId,
           updatedById: userId,
 
-      });
-
       // Audit the successful link;
       await auditLogger.log({action:"integration.request.patient.link.success",
         resourceId: requestId,
@@ -590,34 +359,7 @@ import {  prisma  } from "@/lib/database"
       });
 
       return request;
-    } catch (error) {
-      // Handle and rethrow appropriate errors;
-      if (!session.user) {
-        throw error;
-
-      throw new ExternalServiceError("HMS Integration", "Failed to link request to patient");
-
-  /**;
-   * Links a support service request to a location;
-   * @param serviceType The type of support service;
-   * @param requestId The request ID;
-   * @param locationId The location ID;
-   * @param userId The requesting user"s ID;
-   * @param userRoles The requesting user"s roles;
-   * @returns The updated request with location link;
-   */;
-  public static async linkRequestToLocation();
-    serviceType: "HOUSEKEEPING" | "MAINTENANCE" | "DIETARY" | "AMBULANCE",
-    string,
-    string[];
-  ): Promise<unknown> {
-    // Map service type to resource;
-    const resourceMap = {
-      "HOUSEKEEPING": Resource.HOUSEKEEPING,
-      "MAINTENANCE": Resource.MAINTENANCE,
-      "DIETARY": Resource.DIETARY,
-      "AMBULANCE": Resource.AMBULANCE;
-    };
+    } catch (error) { console.error(error); };
 
     const resource = resourceMap[serviceType];
 
@@ -632,39 +374,18 @@ import {  prisma  } from "@/lib/database"
     );
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // Audit the request;
-      const auditLogger = new AuditLogger({ userId, userRoles });
+} catch (error) { console.error(error); });
       await auditLogger.log({action:"integration.request.location.link.request",
         resourceId: requestId,
         userId,
@@ -686,8 +407,6 @@ import {  prisma  } from "@/lib/database"
         data: {
           locationId,
           updatedById: userId,
-
-      });
 
       // Audit the successful link;
       await auditLogger.log({action:"integration.request.location.link.success",

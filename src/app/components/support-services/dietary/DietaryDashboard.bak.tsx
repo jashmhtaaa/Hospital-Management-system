@@ -3,8 +3,8 @@ import { useState } from "react"
 
 "use client";
 
-import { } from "@/components/ui/badge"
-import { } from "@/components/ui/calendar"
+
+
 import { "@/components/ui/card";
 import "@/components/ui/separator";
 import "@/components/ui/table";
@@ -56,7 +56,7 @@ import { useToast }
   SelectItem,
   SelectTrigger,
   SelectValue} from "@/components/ui/select";
-import { } from "@/components/ui/popover"
+
 import "@/lib/utils";
 import PopoverContent
 import PopoverTrigger } from "@/components/ui/input"
@@ -82,8 +82,7 @@ import { { Skeleton } from "@/components/ui/skeleton"
 } from "@/components/ui/dialog";
 
 // Status badge colors;
-const statusColors: Record<string, string> = {
-  "PENDING": "bg-yellow-100 text-yellow-800",
+const statusColors: Record<string,
   "APPROVED": "bg-blue-100 text-blue-800",
   "IN_PREPARATION": "bg-purple-100 text-purple-800",
   "DELIVERED": "bg-green-100 text-green-800",
@@ -91,8 +90,7 @@ const statusColors: Record<string, string> = {
   "CANCELLED": "bg-red-100 text-red-800"};
 
 // Request type colors;
-const requestTypeColors: Record<string, string> = {
-  "REGULAR_MEAL": "bg-gray-100 text-gray-800",
+const requestTypeColors: Record<string,
   "SPECIAL_DIET": "bg-indigo-100 text-indigo-800",
   "NUTRITIONAL_CONSULTATION": "bg-teal-100 text-teal-800"};
 
@@ -134,37 +132,17 @@ export const _DietaryDashboard = () => {
   const fetchDietaryRequests = async () => {
     setIsLoading(true);
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       // Build query params;
       const params = new URLSearchParams();
       params.append("page", page.toString());
@@ -182,11 +160,7 @@ export const _DietaryDashboard = () => {
       const data = await response.json(),
       setRequests(data.data);
       setTotalPages(data.pagination.totalPages);
-    } catch (error) {
-
-      toast({title:"Error",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
     } finally {
       setIsLoading(false);
 
@@ -195,53 +169,27 @@ export const _DietaryDashboard = () => {
   // Fetch analytics data;
   const fetchAnalytics = async () => {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-
-} catch (error) {
-
-      const response = await fetch("/api/support-services/dietary/analytics?period=MONTHLY");
-      if (!session.user)hrow new Error("Failed to fetch analytics");
-
-      const data = await response.json(),
-      setAnalytics(data);
-    } catch (error) {
-
-      toast({title:"Error",
-        "destructive";
+      toast({title: "Error",
       });
 
   };
 
   // Handle filter changes;
   const handleFilterChange = (key: string, value: unknown) => {
-    setFilters(prev => ({ ...prev, [key]: value }));
+    setFilters(prev => ({ ...prev,
     setPage(1); // Reset to first page when filters change;
   };
 
@@ -266,141 +214,69 @@ export const _DietaryDashboard = () => {
   // View request details;
   const viewRequestDetails = async (requestId: string) => {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const response = await fetch(`/api/support-services/dietary/${}`;
+} catch (error) { console.error(error); }`;
       if (!session.user)hrow new Error("Failed to fetch request details");
 
       const data = await response.json(),
       setSelectedRequest(data);
       setShowRequestDialog(true);
-    } catch (error) {
-
-      toast({title:"Error",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
 
   };
 
   // View meal plan details;
   const viewMealPlanDetails = async (mealPlanId: string) => {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const response = await fetch(`/api/support-services/dietary/meal-plans/${}`;
+} catch (error) { console.error(error); }`;
       if (!session.user)hrow new Error("Failed to fetch meal plan details");
 
       const data = await response.json(),
       setSelectedMealPlan(data);
       setShowMealPlanDialog(true);
-    } catch (error) {
-
-      toast({title:"Error",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
 
   };
 
   // Update request status;
-  const updateRequestStatus = async (requestId: string, status: string) => {
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+  const updateRequestStatus = async (requestId: string, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const response = await fetch(`/api/support-services/dietary/${requestId}`, {method:"PUT",
+} catch (error) { console.error(error); }`, {method:"PUT",
         headers: {
           "Content-Type": "application/json"},
-        body: JSON.stringify({ status })});
 
       if (!session.user)hrow new Error("Failed to update request status"),
-      toast({title:"Status Updated",
-        description: `Request status has been updated to ${status}.`});
+      toast({title: "Status Updated",
 
       // Refresh the requests list;
       fetchDietaryRequests();
@@ -409,11 +285,7 @@ export const _DietaryDashboard = () => {
       if (!session.user) {
         viewRequestDetails(requestId);
 
-    } catch (error) {
-
-      toast({title:"Error",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
 
   };
 
@@ -848,9 +720,7 @@ export const _DietaryDashboard = () => {
                   {selectedRequest.mealPlans.map((mealPlan: unknown) => (;
 <div;
                       key={mealPlan.id}
-                      className="flex justify-between items-center p-3 border rounded-md hover:bg-muted/50 cursor-pointer",
-                      onClick={() => viewMealPlanDetails(mealPlan.id)}
-                    >;
+                      className="flex justify-between items-center p-3 border rounded-md hover: bg-muted/50 cursor-pointer",
                       >;
                         <CalendarIcon className="h-4 w-4 mr-2 text-muted-foreground" />;
                         <span>{format(new Date(mealPlan.date), "MMM d, yyyy")}</span>;

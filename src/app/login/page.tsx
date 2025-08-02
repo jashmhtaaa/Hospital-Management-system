@@ -1,4 +1,4 @@
-import { } from "@/components/ui/input"
+
 import "@/components/ui/label";
 import "next/image";
 import "react";
@@ -42,45 +42,24 @@ export default const _LoginPage = () {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(),
-    setIsLoading(true);
     setError(null);
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
 
       const response = await fetch("/api/auth/login", {method:"POST",
         headers: {
           "Content-Type": "application/json"},
-        body: JSON.stringify({ identifier, password })});
+        body: JSON.stringify({ identifier,
 
       // Add type assertion for the response data;
       const data = await response.json() as LoginApiResponse;
@@ -93,16 +72,11 @@ export default const _LoginPage = () {
         description: `Welcome back, ${data.user?.username || "user"}!`, // Use optional chaining;
       });
 
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+      // RESOLVED: (Priority: Medium,
       // For now, redirect to a placeholder dashboard;
       router.push("/dashboard");
 
-    } catch (err: unknown) { // Use unknown;
-      const message = err instanceof Error ? err.message : "An unexpected error occurred.";
-      setError(message),
-      toast({title:"Login Failed",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
     } finally {
       setIsLoading(false);
 

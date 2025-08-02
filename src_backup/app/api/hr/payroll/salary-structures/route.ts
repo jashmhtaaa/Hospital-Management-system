@@ -28,6 +28,8 @@ const salaryStructureSchema = z.object({
 // POST handler for creating salary structure;
 export const _POST = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -84,6 +86,8 @@ export const _POST = async (request: any) => {,
 // GET handler for listing salary structures;
 export const _GET = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }

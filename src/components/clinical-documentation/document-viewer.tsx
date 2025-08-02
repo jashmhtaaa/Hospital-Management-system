@@ -1,4 +1,4 @@
-import { } from "react"
+
 import React
 import useEffect } from "next/navigation"
 import {
@@ -26,7 +26,7 @@ import { useState
   TabsContent,
   TabsList,
   TabsTrigger} from "../ui/tabs";
-import { } from "../ui/badge"
+
 import "../ui/button";
 import "../ui/checkbox";
 import "../ui/label";
@@ -46,29 +46,33 @@ import { Select
 import { Textarea }
 import { useToast }
 
-interface DocumentSection {id:string,
+interface DocumentSection {
+  id:string,
+}
   string,
   number,
   string,
   authoredDate: string,
-  updatedById?: string;
   updatedDate?: string;
   createdAt: string,
   updatedAt: string,
 }
 
-interface DocumentSignature {id:string,
+interface DocumentSignature {
+  id:string,
+}
   string,
   string,
   signatureType: string,
-  attestation?: string;
   ipAddress?: string;
   deviceInfo?: string;
   notes?: string;
   createdAt: string,
 }
 
-interface DocumentAmendment {id:string,
+interface DocumentAmendment {
+  id:string,
+}
   string,
   string,
   string,
@@ -79,8 +83,8 @@ interface DocumentAmendment {id:string,
   updatedAt: string,
 }
 
-interface Document {id:string,
-  string;
+interface Document {
+  id: string,
   encounterId?: string;
   documentType: string,
   string,
@@ -89,7 +93,6 @@ interface Document {id:string,
   finalizedById?: string;
   version: number,
   content: string,
-  templateId?: string;
   isConfidential: boolean,
   string[],
   string,
@@ -99,8 +102,6 @@ interface Document {id:string,
 
 interface DocumentViewerProps {
   documentId: string,
-export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
-  const router = useRouter();
   const { toast } = useToast();
 
   // State;
@@ -116,7 +117,6 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
   const [amendmentData, setAmendmentData] = useState({amendmentType:"Addendum",
     "",
     status: "Draft",
-  });
   const [submitting, setSubmitting] = useState(false);
 
   // Fetch document;
@@ -124,37 +124,17 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
     setLoading(true);
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       const response = await fetch(`/api/clinical-documentation/${}`;
 
       if (!session.user) {
@@ -163,11 +143,7 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
 
       const data = await response.json(),
       setDocument(data);
-    } catch (error) {
-
-      toast({title:"Error",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
     } finally {
       setLoading(false);
     }
@@ -183,42 +159,21 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
     setSubmitting(true);
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
 
       const response = await fetch(`/api/clinical-documentation/${documentId}/sign`, {method:"POST",
         headers: {
           "Content-Type": "application/json"},
         body: JSON.stringify(signatureData),
-      });
 
       if (!session.user) {
         const errorData = await response.json();
@@ -227,7 +182,6 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
       toast({
         title: "Success",
         description: "Document signed successfully",
-      });
 
       // Close dialog and reset form;
       setSignatureDialogOpen(false),
@@ -238,11 +192,7 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
 
       // Refresh document;
       fetchDocument();
-    } catch (error) {
-
-      toast({title:"Error",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
     } finally {
       setSubmitting(false);
 
@@ -253,42 +203,21 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
     setSubmitting(true);
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const response = await fetch(`/api/clinical-documentation/${documentId}/amend`, {method:"POST",
+} catch (error) { console.error(error); }/amend`, {method:"POST",
         headers: {
           "Content-Type": "application/json"},
         body: JSON.stringify(amendmentData),
-      });
 
       if (!session.user) {
         const errorData = await response.json();
@@ -297,22 +226,16 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
       toast({
         title: "Success",
         description: "Amendment created successfully",
-      });
 
       // Close dialog and reset form;
       setAmendmentDialogOpen(false),
       setAmendmentData({amendmentType:"Addendum",
         "",
         status: "Draft",
-      });
 
       // Refresh document;
       fetchDocument();
-    } catch (error) {
-
-      toast({title:"Error",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
     } finally {
       setSubmitting(false);
 
@@ -333,8 +256,6 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
         return "destructive";
       default: return "default",
 
-  };
-
   // Handle edit document;
   const handleEditDocument = () => {
     router.push(`/clinical-documentation/${documentId}/edit`);
@@ -343,7 +264,6 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
   // Helper function to format date;
   const formatDate = (dateString: string) => {
     return format(new Date(dateString), "MMM dd, yyyy h: mm a"),
-  };
 
   if (!session.user) {
     return();

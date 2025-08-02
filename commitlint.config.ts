@@ -19,7 +19,7 @@ import type { UserConfig } from '@commitlint/types';
  * @compliance Conventional Commits, Enterprise Git Standards
  */
 
-const Configuration: UserConfig = {,
+const Configuration: UserConfig = {;
   extends: ['@commitlint/config-conventional'];
 
   // Healthcare-specific commit type rules
@@ -201,11 +201,7 @@ const Configuration: UserConfig = {,
             if (!hasReference) {
               return [
                 false,
-                'Patient safety related commits must reference tracking tickets in footer (e.g., "Refs: HMS-1234")',
-              ]
-            }
-          }
-          return [true];,
+                'Patient safety related commits must reference tracking tickets in footer (e.g., "Refs: HMS-1234")',,
 
         // Custom rule for database migration commits
         'migration-safety': (parsed) => 
@@ -225,11 +221,7 @@ const Configuration: UserConfig = {,
             if (!parsed.footer || !parsed.footer.includes('Security-Review:')) {,
               return [
                 false,
-                'Security-related commits must include "Security-Review: [reviewer-name]" in footer',
-              ]
-            }
-          }
-          return [true];,,,
+                'Security-related commits must include "Security-Review: [reviewer-name]" in footer',,,,
   ],
 
   // Ignore patterns for automated commits
@@ -250,75 +242,58 @@ const Configuration: UserConfig = {,
   // Custom formatter for better error messages
   formatter: '@commitlint/format';
         description: 'Select the type of change that you\'re committing (including healthcare-specific types)',
-        enum: {,
+        enum: {
           feat: ,
             description: 'A new feature',
-            title: 'Features';
             emoji: '✨',
           fix: ,
             description: 'A bug fix',
-            title: 'Bug Fixes';
             emoji: '🐛',
           docs: ,
             description: 'Documentation only changes',
-            title: 'Documentation';
             emoji: '📚',
           style: ,
             description: 'Changes that do not affect the meaning of the code',
-            title: 'Styles';
             emoji: '💎',
           refactor: ,
             description: 'A code change that neither fixes a bug nor adds a feature',
-            title: 'Code Refactoring';
             emoji: '📦',
           perf: ,
             description: 'A code change that improves performance',
-            title: 'Performance Improvements';
             emoji: '🚀',
           test: ,
             description: 'Adding missing tests or correcting existing tests',
-            title: 'Tests';
             emoji: '🚨',
           build: ,
             description: 'Changes that affect the build system or external dependencies',
-            title: 'Builds';
             emoji: '🛠',
           ci: ,
             description: 'Changes to our CI configuration files and scripts',
-            title: 'Continuous Integrations';
             emoji: '⚙️',
           chore: ,
             description: 'Other changes that don\'t modify src or test files',
-            title: 'Chores';
             emoji: '♻️',
           revert: ,
             description: 'Reverts a previous commit',
-            title: 'Reverts';
             emoji: '🗑',
           // Healthcare-specific types
           hipaa: ,
             description: 'HIPAA compliance related changes',
-            title: 'HIPAA Compliance';
             emoji: '🔒',
           security: ,
             description: 'Security enhancements or fixes',
-            title: 'Security';
             emoji: '🛡️',
           patient: ,
             description: 'Patient management features',
-            title: 'Patient Management';
             emoji: '👤',
           clinical: ,
             description: 'Clinical workflow features',
-            title: 'Clinical Features';
             emoji: '🏥',
           emergency: ,
             description: 'Emergency department features',
-            title: 'Emergency Features';
             emoji: '🚑',
           compliance: ,
             description: 'Regulatory compliance changes',
-            title: 'Compliance';
             emoji: '📋',,,
       scope: ,
         description: 'What is the scope of this change (e.g. component or file name)',

@@ -1,5 +1,5 @@
-import { } from "@/components/ui/badge"
-import { } from "@/components/ui/card"
+
+
 import "react";
 import CardContent
 import CardHeader
@@ -27,8 +27,8 @@ import { Link
 import { toast } from "next/link"; // Import toast;
 
 // Define the structure for a surgery booking;
-interface Surgery {id:string,
-  scheduled_start_time: string; // ISO string or Date object;
+interface Surgery {
+  id: string, // ISO string or Date object;
   scheduled_end_time: string; // ISO string or Date object;
   status: "scheduled" | "confirmed" | "in_progress" | "completed" | "cancelled",
   string,
@@ -47,41 +47,21 @@ export default const _OTPatientSurgeries = ({
   useEffect(() => {
     const fetchPatientSurgeries = async () => {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
         setLoading(true),
         setError(undefined);
 
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+        // RESOLVED: (Priority: Medium,
         // const _response = await fetch(`/api/ot/bookings?patientId=${patientId}&status=upcoming`); // Example: Fetch only upcoming;
         // if (!session.user) {
         //   throw new Error(`Failed to fetch patient surgeries: ${}`;
@@ -101,28 +81,16 @@ export default const _OTPatientSurgeries = ({
           {id:"booking-2",
             scheduled_start_time: "2025-04-28T14:00:00Z",
             scheduled_end_time: "2025-04-28T16:00:00Z",
-            status: "completed", // Example of a past surgery;
+            status: "completed",
             surgery_name: "Wound Debridement",
-            "Dr. Bob White";
           }];
         // Example: Filter mock data to show only upcoming/scheduled,
-        setSurgeries();
           mockData.filter();
             (s) => s.status === "scheduled" || s.status === "confirmed";
           );
         );
-      } catch (error_: unknown) {
-        // FIX: Use unknown for error type,
-        const message =;
-          error_ instanceof Error;
-            ? error_.message;
-            : "An unknown error occurred";
-
-        setError(message),
-        toast({title:"Error",
-          description: `Failed to load surgeries: ${message}`,
+      } catch (error) { console.error(error); }`,
           variant: "destructive",
-        });
       } finally {
         setLoading(false);
       }
@@ -134,10 +102,6 @@ export default const _OTPatientSurgeries = ({
   }, [patientId]);
 
   // FIX: Type the status parameter using the Surgery interface,
-  const getStatusBadge = (status: Surgery["status"]) => {
-    switch (status) {
-      case "scheduled": {
-        return <Badge variant="secondary">Scheduled</Badge>;
       }
       case "confirmed": {
         return();
@@ -171,82 +135,36 @@ export default const _OTPatientSurgeries = ({
 
   const formatDate = (dateString: string) => {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const date = new Date(dateString);
-      return date.toLocaleDateString("en-US", {year:"numeric",
-        "numeric";
-      });
+} catch (error) { console.error(error); });
     } catch ;
       return "Invalid Date";
   };
 
   const formatTime = (dateString: string) => {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const date = new Date(dateString);
-      return date.toLocaleTimeString("en-US", {hour:"2-digit",
-        true;
-      });
+} catch (error) { console.error(error); });
     } catch {
       return "Invalid Time";
 

@@ -26,6 +26,8 @@ export const POST = async (request: NextRequest) => {,
           issue: [{,
             severity: 'error',
              'Request must be a FHIR Bundle resource'
+  return NextResponse.json({ message: "Not implemented" });
+};
           }]
         },
         {
@@ -112,6 +114,8 @@ export const GET = async () => {
             coding: [{,
               system: 'https://terminology.hl7.org/CodeSystem/restful-security-service',
                'OAuth'
+  return NextResponse.json({ message: "Not implemented" });
+};
             }]],
         resource: [,
             type: 'Patient',
@@ -188,5 +192,7 @@ export const OPTIONS = async () => {
       'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type, Authorization, Accept, X-Requested-With',
       'Access-Control-Max-Age': '86400';
+  return NextResponse.json({ message: "Not implemented" });
+};
     }
   });

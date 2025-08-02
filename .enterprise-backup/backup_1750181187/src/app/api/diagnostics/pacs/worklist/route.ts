@@ -15,6 +15,8 @@ export const GET = async (request: NextRequest) => {,
     // Authentication
     const session = await getSession();
      {\n  {
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
@@ -158,6 +160,8 @@ export const _POST_SYNC = async (request: NextRequest) => {,
     // Authentication
     const session = await getSession();
      {\n  {
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
@@ -347,6 +351,8 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
     // Authentication
     const session = await getSession();
      {\n  {
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 

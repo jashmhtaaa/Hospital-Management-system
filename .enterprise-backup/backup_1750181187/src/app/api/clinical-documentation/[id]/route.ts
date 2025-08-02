@@ -18,6 +18,8 @@ export const GET = async (
     // Get session
     const session = await getServerSession(authOptions);
      {\n  {
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
@@ -59,6 +61,8 @@ export const PUT = async (
     // Get session
     const session = await getServerSession(authOptions);
      {\n  {
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 

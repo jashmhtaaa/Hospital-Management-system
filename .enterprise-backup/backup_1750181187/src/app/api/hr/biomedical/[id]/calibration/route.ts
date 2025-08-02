@@ -32,6 +32,8 @@ export const _POST = async (
     const validationResult = calibrationSchema.safeParse(body);
      {\n  {
       return NextResponse.json(
+  return NextResponse.json({ message: "Not implemented" });
+};
         { error: "Validation error", details: validationResult.error.format() ,},
         { status: 400 },
       );
@@ -70,6 +72,8 @@ export const _GET = async (
     const calibrationRecords = await biomedicalService.getCalibrationRecords(params.id);
 
     return NextResponse.json(calibrationRecords);
+  return NextResponse.json({ message: "Not implemented" });
+};
   } catch (error) {
 
     return NextResponse.json(

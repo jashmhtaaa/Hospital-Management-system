@@ -1,4 +1,4 @@
-import { } from "@/components/ui/tabs"
+
 import { */
 import /*
 import React
@@ -14,7 +14,7 @@ import { useState
 "use client";
 export const dynamic = "force-dynamic";
 
-import { } from "@/components/ot/ot-booking-modal"
+
 import "@/components/ot/ot-checklist-template-list";
 import "@/components/ot/ot-checklist-template-modal";
 import "@/components/ot/ot-dashboard-stats";
@@ -33,7 +33,7 @@ import OTTheatreList
 import OTTheatreModal
 
 // import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ot/ot-booking-list";
-import { } from "lucide-react"
+
 import { Button } from "@/components/ui/button"
 import { PlusCircle }
 
@@ -43,9 +43,8 @@ export default const _OTDashboardPage = () {
   const [refreshKey, setRefreshKey] = useState(0);
 
   const handleSave = useCallback(async (data: unknown) => {
-    // In a real app, this might involve re-fetching data or updating state;
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
-    setRefreshKey((previous) => previous + 1); // Increment key to trigger re-render/re-fetch in lists;
+    // In a real app,
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement, // Increment key to trigger re-render/re-fetch in lists;
   }, []);
 
   return();

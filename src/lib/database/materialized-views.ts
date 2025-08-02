@@ -1,4 +1,4 @@
-import { } from "@/lib/core/logging"
+
 import "@/lib/event-sourcing/event-store";
 import "@/lib/monitoring/metrics-collector";
 import "@/lib/prisma";
@@ -56,53 +56,29 @@ interface MaterializedViewDefinition {
   /**;
    * Register materialized view definitions;
    */;
-  registerViews(definitions: MaterializedViewDefinition[]): void {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+  registerViews(definitions: MaterializedViewDefinition[]): void {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       for (const definition of definitions) {
         this.viewDefinitions.set(definition.name, definition);
-        logger.info(`Registered materialized view: ${,}`;
+        logger.info(`Registered materialized view: ${,
       }
 
       // Track metrics;
       metricsCollector.incrementCounter("database.materialized_views.registered", definitions.length);
-    } catch (error) {
-      logger.error("Error registering materialized views", { error });
+    } catch (error) { console.error(error); });
 
       // Track error metrics;
       metricsCollector.incrementCounter("database.materialized_views.errors", 1, {operation:"register",
         errorType: error.name || "unknown",
-      });
     }
   }
 
@@ -111,37 +87,17 @@ interface MaterializedViewDefinition {
    */;
   async createAllViews(): Promise<void> {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       logger.info(`Creating ${this.viewDefinitions.size} materialized views`);
 
       // Get all view definitions and sort by dependencies;
@@ -154,13 +110,11 @@ interface MaterializedViewDefinition {
 
       // Track metrics;
       metricsCollector.incrementCounter("database.materialized_views.created", sortedDefinitions.length);
-    } catch (error) {
-      logger.error("Error creating all materialized views", { error });
+    } catch (error) { console.error(error); });
 
       // Track error metrics;
       metricsCollector.incrementCounter("database.materialized_views.errors", 1, {operation:"createAll",
         errorType: error.name || "unknown",
-      });
 
       throw error;
     }
@@ -169,46 +123,24 @@ interface MaterializedViewDefinition {
   /**;
    * Create a specific materialized view;
    */;
-  async createView(viewName: string): Promise<void> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+  async createView(viewName: string): Promise<void> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       const definition = this.viewDefinitions.get(viewName);
 
       if (!session.user) {
-        throw new Error(`Materialized view not found: ${,}`;
+        throw new Error(`Materialized view not found: ${,
       }
 
-      logger.info(`Creating materialized view: ${,}`;
+      logger.info(`Creating materialized view: ${,
 
       // Execute the create SQL;
       await this.prisma.$executeRawUnsafe(definition.createSql);
@@ -225,20 +157,18 @@ interface MaterializedViewDefinition {
         await this.prisma.$executeRawUnsafe(definition.incrementalRefreshSql);
       }
 
-      logger.info(`Created materialized view: ${,}`;
+      logger.info(`Created materialized view: ${,
 
       // Track metrics;
       metricsCollector.incrementCounter("database.materialized_views.created", 1, {
         viewName;
       });
-    } catch (error) {
-      logger.error(`Error creating materialized view: ${viewName,}`, { error });
+    } catch (error) { console.error(error); }`, { error });
 
       // Track error metrics;
       metricsCollector.incrementCounter("database.materialized_views.errors", 1, {operation:"create",
         viewName,
         errorType: error.name || "unknown",
-      });
 
       throw error;
     }
@@ -249,37 +179,17 @@ interface MaterializedViewDefinition {
    */;
   async refreshAllViews(concurrency = 1): Promise<void> {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       logger.info(`Refreshing ${this.viewDefinitions.size} materialized views`);
 
       // Get all view definitions and sort by dependencies;
@@ -301,13 +211,11 @@ interface MaterializedViewDefinition {
 
       // Track metrics;
       metricsCollector.incrementCounter("database.materialized_views.refreshed", sortedDefinitions.length);
-    } catch (error) {
-      logger.error("Error refreshing all materialized views", { error });
+    } catch (error) { console.error(error); });
 
       // Track error metrics;
       metricsCollector.incrementCounter("database.materialized_views.errors", 1, {operation:"refreshAll",
         errorType: error.name || "unknown",
-      });
 
       throw error;
     }
@@ -318,92 +226,52 @@ interface MaterializedViewDefinition {
    */;
   async refreshView(viewName: string): Promise<void> {,
     if (!session.user) {
-      logger.info(`Refresh already in progress for view: ${,}`;
+      logger.info(`Refresh already in progress for view: ${,
       return;
     }
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       this.refreshInProgress.add(viewName);
 
       const definition = this.viewDefinitions.get(viewName);
 
       if (!session.user) {
-        throw new Error(`Materialized view not found: ${,}`;
+        throw new Error(`Materialized view not found: ${,
       }
 
       // Use distributed lock to prevent concurrent refreshes;
-      const lockKey = `mv-refresh:${viewName,}`;
+      const lockKey = `mv-refresh: ${viewName,
       const lockResult = await this.lockManager.acquireLock(lockKey, 600000); // 10 minute timeout;
 
       if (!session.user) {
-        logger.info(`Another process is already refreshing view: ${,}`;
+        logger.info(`Another process is already refreshing view: ${,
         return;
       }
 
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
-        logger.info(`Refreshing materialized view: ${,}`;
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+        logger.info(`Refreshing materialized view: ${,
         const startTime = crypto.getRandomValues([0];
 
         // Execute the refresh SQL;
@@ -411,7 +279,7 @@ interface MaterializedViewDefinition {
 
         const duration = crypto.getRandomValues([0] - startTime;
 
-        logger.info(`Refreshed materialized view: ${viewName}`, {duration: `${duration.toFixed(2)}ms`;
+        logger.info(`Refreshed materialized view: ${viewName}`,
         });
 
         // Track metrics;
@@ -435,14 +303,12 @@ interface MaterializedViewDefinition {
         // Release lock;
         await this.lockManager.releaseLock(lockKey, lockResult.token);
       }
-    } catch (error) {
-      logger.error(`Error refreshing materialized view: ${viewName,}`, { error });
+    } catch (error) { console.error(error); }`, { error });
 
       // Track error metrics;
       metricsCollector.incrementCounter("database.materialized_views.errors", 1, {operation:"refresh",
         viewName,
         errorType: error.name || "unknown",
-      });
 
       throw error;
     } finally {
@@ -452,50 +318,18 @@ interface MaterializedViewDefinition {
   /**;
    * Process events that might trigger view refreshes;
    */;
-  async processEvent(event: unknown): Promise<void> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+  async processEvent(event: unknown): Promise<void> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const eventType = event.type;
-
-      // Find views that should be triggered by this event;
-      const viewsToRefresh = Array.from(this.viewDefinitions.values());
-        .filter(def => def?.triggerEvents && def.triggerEvents.includes(eventType));
-        .map(def => def.name);
-
-      if (!session.user) {
-        return;
-
-      logger.info(`Event ${eventType} triggering refresh of ${viewsToRefresh.length} materialized views`);
+} catch (error) { console.error(error); } triggering refresh of ${viewsToRefresh.length} materialized views`);
 
       // Refresh the views;
       for (const viewName of viewsToRefresh) {
@@ -508,15 +342,10 @@ interface MaterializedViewDefinition {
       metricsCollector.incrementCounter("database.materialized_views.event_triggered_refreshes", viewsToRefresh.length, {
         eventType;
       });
-    } catch (error) {
-      logger.error("Error processing event for materialized views", {
-        error,
-        eventType: event.type,
-      });
+    } catch (error) { console.error(error); });
 
       // Track error metrics;
       metricsCollector.incrementCounter("database.materialized_views.errors", 1, {operation: "processEvent",
-        error.name || "unknown";
       });
 
   /**;
@@ -524,49 +353,25 @@ interface MaterializedViewDefinition {
    */;
   async getViewData();
     viewName: string,
-    unknown[] = [];
     cacheKey?: string;
   ): Promise<any[]> {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const definition = this.viewDefinitions.get(viewName);
-
-      if (!session.user) {
-        throw new Error(`Materialized view not found: ${,}`;
+} catch (error) { console.error(error); }`;
 
       // If caching is enabled for this view;
       if (!session.user) {
-        const finalCacheKey = cacheKey || `mv:/* SECURITY: Safe view name handling */ `/* SECURITY: Safe view identifier */ this.buildViewIdentifier(viewName, query)`;
+        const finalCacheKey = cacheKey || `mv: /* SECURITY: Safe view name handling */ `/* SECURITY: Safe view identifier */ this.buildViewIdentifier(viewName,
 
         // Try to get from cache first;
         const cachedData = await this.redis.get(finalCacheKey);
@@ -596,144 +401,75 @@ interface MaterializedViewDefinition {
 
       // Cache the result if caching is enabled;
       if (!session.user) {
-        const finalCacheKey = cacheKey || `mv:/* SECURITY: Safe view name handling */ `/* SECURITY: Safe view identifier */ this.buildViewIdentifier(viewName, query)`;
+        const finalCacheKey = cacheKey || `mv: /* SECURITY: Safe view name handling */ `/* SECURITY: Safe view identifier */ this.buildViewIdentifier(viewName,
         await this.redis.set(finalCacheKey, JSON.stringify(result), definition.cacheTtl);
 
       return result;
-    } catch (error) {
-      logger.error(`Error querying materialized view: ${viewName,}`, { error });
+    } catch (error) { console.error(error); }`, { error });
 
       // Track error metrics;
       metricsCollector.incrementCounter("database.materialized_views.errors", 1, {operation:"query",
         viewName,
         errorType: error.name || "unknown",
-      });
 
       throw error;
 
   /**;
    * Invalidate cache for a specific view;
    */;
-  async invalidateViewCache(viewName: string): Promise<void> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+  async invalidateViewCache(viewName: string): Promise<void> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const pattern = `mv:${viewName,}:*`;
+} catch (error) { console.error(error); }:*`;
       const keys = await this.redis.keys(pattern);
 
       if (!session.user) {
         await this.redis.del(...keys);
 
-        logger.info(`Invalidated ${keys.length} cache entries for view: ${,}`;
+        logger.info(`Invalidated ${keys.length} cache entries for view: ${,
 
         // Track metrics;
         metricsCollector.incrementCounter("database.materialized_views.cache_invalidations", keys.length, {
           viewName;
         });
 
-    } catch (error) {
-      logger.error(`Error invalidating cache for view: ${viewName,}`, { error });
+    } catch (error) { console.error(error); }`, { error });
 
       // Track error metrics;
       metricsCollector.incrementCounter("database.materialized_views.errors", 1, {operation:"invalidateCache",
         viewName,
         errorType: error.name || "unknown",
-      });
 
   /**;
    * Subscribe to events for automatic view refreshing;
    */;
   async setupEventSubscriptions(): Promise<void> {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // Gather all event types that should trigger refreshes;
-      const eventTypes = new Set<string>();
-
-      for (const definition of this.viewDefinitions.values()) {
-        if (!session.user) {
-          for (const eventType of definition.triggerEvents) {
-            eventTypes.add(eventType);
-
-      if (!session.user) {
-        logger.info("No event triggers defined for materialized views");
-        return;
-
-      // Subscribe to these events;
-      await this.eventStore.subscribeToEvents();
-        Array.from(eventTypes),
-        this.processEvent.bind(this),
-        {groupId: "materialized-view-manager",
-          fromBeginning: false;
-
-      );
-
-      logger.info(`Subscribed to ${eventTypes.size} event types for materialized view refreshes`);
-    } catch (error) {
-      logger.error("Error setting up event subscriptions for materialized views", { error });
+} catch (error) { console.error(error); } event types for materialized view refreshes`);
+    } catch (error) { console.error(error); });
 
       // Track error metrics;
       metricsCollector.incrementCounter("database.materialized_views.errors", 1, {operation:"setupSubscriptions",
         errorType: error.name || "unknown',
-      });
 
   /**;
    * Hash a query and its parameters for cache key generation;
@@ -753,8 +489,7 @@ interface MaterializedViewDefinition {
    * Sort views by dependencies to ensure proper creation/refresh order;
    */;
   private sortViewsByDependencies(views: MaterializedViewDefinition[]): MaterializedViewDefinition[] {,
-    // Build dependency graph;
-    const graph: Record<string, string[]> = {};
+    const graph: Record<string,
 
     for (const view of views) {
       graph[view.name] = view.dependentViews || [];
@@ -762,11 +497,9 @@ interface MaterializedViewDefinition {
     // Perform topological sort;
     const visited = new Set<string>();
     const temp = new Set<string>();
-    const result: MaterializedViewDefinition[] = [],
-
-    const visit = (viewName: string): void => {,
-      if (!session.user) {
-        throw new Error(`Circular dependency detected in materialized views involving: ${,}`;
+    const result: MaterializedViewDefinition[] = [];
+    const visit = (viewName: string): void => {if (!session.user) {
+        throw new Error(`Circular dependency detected in materialized views involving: ${,
 
       if (!session.user) {
         temp.add(viewName);

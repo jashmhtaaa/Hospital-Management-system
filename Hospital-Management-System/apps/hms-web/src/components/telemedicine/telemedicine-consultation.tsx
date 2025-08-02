@@ -22,25 +22,20 @@ import { Textarea } from '@/components/ui/textarea';
 
 interface TelemedicineSession {
   id: string,
-  patientId: string;
   doctorId: string,
-  type: 'VIDEO_CALL' | 'AUDIO_CALL' | 'CHAT';
   status: 'SCHEDULED' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED',
-  scheduledTime: string;
   patient: {
     id: string,
-    full_name: string;
-    mrn: string
+    mrn: string;
   };
   doctor: {
     id: string,
-    full_name: string;
-    specialization: string
+    specialization: string;
   };
 }
 
 const TelemedicineConsultation: React.FC<{ sessionId: string }> = ({ sessionId }) => {
-  const [session, setSession] = useState<TelemedicineSession | null>(null);
+  const [session,
   const [isVideoEnabled, setIsVideoEnabled] = useState(true);
   const [isAudioEnabled, setIsAudioEnabled] = useState(true);
   const [isScreenSharing, setIsScreenSharing] = useState(false);
@@ -74,9 +69,7 @@ const TelemedicineConsultation: React.FC<{ sessionId: string }> = ({ sessionId }
       const response = await fetch(`/api/telemedicine/sessions/${sessionId}`);
       const data = await response.json();
       setSession(data.session);
-    } catch (error) {
-      /* SECURITY: Console statement removed */
-    }
+    } catch (error) { console.error(error); }
   };
 
   const initializeWebRTC = async () => {
@@ -84,8 +77,6 @@ const TelemedicineConsultation: React.FC<{ sessionId: string }> = ({ sessionId }
       // Get user media
       const stream = await navigator.mediaDevices.getUserMedia({
         video: true,
-        audio: true
-      });
 
       localStreamRef.current = stream;
       if (localVideoRef.current) {
@@ -121,9 +112,7 @@ const TelemedicineConsultation: React.FC<{ sessionId: string }> = ({ sessionId }
         }
       };
 
-    } catch (error) {
-      /* SECURITY: Console statement removed */
-    }
+    } catch (error) { console.error(error); }
   };
 
   const cleanupWebRTC = () => {
@@ -159,8 +148,6 @@ const TelemedicineConsultation: React.FC<{ sessionId: string }> = ({ sessionId }
     try {
       const screenStream = await navigator.mediaDevices.getDisplayMedia({
         video: true,
-        audio: true
-      });
 
       // Replace video track with screen share
       if (peerConnectionRef?.current && localStreamRef.current) {
@@ -189,9 +176,7 @@ const TelemedicineConsultation: React.FC<{ sessionId: string }> = ({ sessionId }
           }
         }
       };
-    } catch (error) {
-      /* SECURITY: Console statement removed */
-    }
+    } catch (error) { console.error(error); }
   };
 
   const endSession = async () => {
@@ -201,25 +186,17 @@ const TelemedicineConsultation: React.FC<{ sessionId: string }> = ({ sessionId }
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           consultationNotes,
-          duration: sessionDuration
-        })
-      });
 
       cleanupWebRTC();
       // Navigate away or show end session UI
-    } catch (error) {
-      /* SECURITY: Console statement removed */
-    }
+    } catch (error) { console.error(error); }
   };
 
   const sendMessage = () => {
     if (newMessage.trim()) {
       const message = {
         id: crypto.getRandomValues(new Uint32Array(1))[0].toString(),
-        text: newMessage;
-        sender: 'doctor', // or 'patient' based on user role
-        timestamp: new Date().toISOString()
-      };
+        sender: 'doctor',
       setChatMessages([...chatMessages, message]);
       setNewMessage('');
     }

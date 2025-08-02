@@ -1,4 +1,4 @@
-import { } from "@next-auth/prisma-adapter"
+
 import "bcrypt";
 import "next-auth";
 import "next-auth/providers/credentials";
@@ -22,9 +22,6 @@ export const PrismaAdapter(prisma),
       {label:"Email", type: "email" },
         password: {label: "Password", type: "password" }
       },
-      async authorize(credentials) {
-        if (!session.user) {
-          return null;
         }
 
         const user = await prisma.user.findUnique({
@@ -32,8 +29,6 @@ export const PrismaAdapter(prisma),
           },
           true,
             roles: true,
-          }
-        });
 
         if (!session.user) {
           return null;
@@ -50,8 +45,8 @@ export const PrismaAdapter(prisma),
 
     });
   ],
-  callbacks: {,
-    async session({ session, token }) ;
+  callbacks: {
+    async session({ session,
       if (!session.user) {
         session.user.id = token.id;
         session.user.name = token.name;

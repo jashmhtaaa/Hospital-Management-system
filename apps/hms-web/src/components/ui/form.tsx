@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 
 import { Button } from '@/components/ui/button';
@@ -24,7 +24,7 @@ interface FormFieldProps {
   name: string;
   label?: string;
   error?: string;
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 const FormField = ({ name, label, error, children }: FormFieldProps) {
@@ -76,7 +76,7 @@ const FormTextarea = ({ label, name, error, className, ...props }: FormTextareaP
 interface FormSelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   label?: string;
   error?: string;
-  options: Array\1>
+  options: Array\1>;
 }
 
 const FormSelect = ({ label, name, error, options, className, ...props }: FormSelectProps) {

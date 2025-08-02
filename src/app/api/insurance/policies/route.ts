@@ -1,4 +1,4 @@
-import { } from "next/server"
+
 import "zod";
 import {  
 import {  NextRequest  } from "@/lib/prisma"
@@ -12,7 +12,7 @@ import {  z  } from "@/lib/database"
   createSuccessResponse,
   createPaginatedResponse;
 } from "@/lib/core/middleware";
-import { } from "@/lib/core/fhir"
+
 import "@/lib/core/logging";
 import {  convertToFHIRCoverage  } from "@/lib/core/errors"
 import {  logger  } from "@/lib/database"
@@ -37,7 +37,6 @@ const createPolicySchema = z.object({patientId: z.string().uuid(),
   outOfPocketMax: z.number().optional(),
   outOfPocketMet: z.number().optional(),
   notes: z.string().optional(),
-});
 
 // Schema for insurance policy query parameters;
 const policyQuerySchema = z.object({page: z.coerce.number().int().positive().optional().default(1),
@@ -49,18 +48,17 @@ const policyQuerySchema = z.object({page: z.coerce.number().int().positive().opt
   planType: z.enum(["HMO", "PPO", "EPO", "POS", "HDHP", "other"]).optional(),
   sortBy: z.enum(["startDate", "endDate", "createdAt"]).optional().default("startDate"),
   sortOrder: z.enum(["asc", "desc"]).optional().default("desc"),
-  format: z.enum(["json", "fhir"]).optional().default("json")});
+  format: z.enum(["json",
 
 // GET handler for retrieving all insurance policies with filtering and pagination;
-export const _GET = withErrorHandling(async (req: any) => {,
-  // Validate query parameters;
+export const GET = withErrorHandling(async (req: any) => {// Validate query parameters;
   const query = validateQuery(policyQuerySchema)(req);
 
   // Check permissions;
   await checkPermission(permissionService, "read", "insurancePolicy")(req);
 
   // Build filter conditions;
-  const where: unknown = {,};
+  const where: unknown = {,
 
   if (!session.user) {
     where.patientId = query.patientId;
@@ -76,8 +74,6 @@ export const _GET = withErrorHandling(async (req: any) => {,
       where.startDate = {lte: today };
       where.OR = [;
         {endDate: null },
-        {endDate: { gte: today } }
-      ];
     } else if (!session.user) {
       const today = new Date();
       where.endDate = {lt: today };
@@ -97,7 +93,7 @@ export const _GET = withErrorHandling(async (req: any) => {,
   const [policies, total] = await Promise.all([;
     prisma.insurancePolicy.findMany({
       where,
-      orderBy: {,
+      orderBy: {
         [query.sortBy]: query.sortOrder},
       skip: (query.page - 1) * query.pageSize,
       {
@@ -106,7 +102,6 @@ export const _GET = withErrorHandling(async (req: any) => {,
             true;
           }},
         {id: true,
-            true;
           }},
         insuranceProvider: true,
       }}),
@@ -122,8 +117,7 @@ export const _GET = withErrorHandling(async (req: any) => {,
 });
 
 // POST handler for creating a new insurance policy;
-export const _POST = withErrorHandling(async (req: any) => {,
-  // Validate request body;
+export const POST = withErrorHandling(async (req: any) => {// Validate request body;
   const data = await validateBody(createPolicySchema)(req);
 
   // Check permissions;
@@ -183,12 +177,10 @@ export const _POST = withErrorHandling(async (req: any) => {,
       true,
           true},
       insuranceProvider: true,
-    }});
 
   logger.info("Insurance policy created", {policyId: policy.id,
     policy.patientId,
     providerId: policy.insuranceProviderId,
-  });
 
   return createSuccessResponse(policy);
 });

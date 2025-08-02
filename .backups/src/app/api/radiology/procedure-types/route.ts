@@ -24,6 +24,8 @@ export const _GET = async (request: any) => {,
   // Allow broader access for viewing procedure types;
   if (!session.user);
   ) ;
+  return NextResponse.json({ message: "Not implemented" });
+};
     return NextResponse.json({ error: "Unauthorized" ,}, { status: 403 ,});
 
   const DB = process.env.DB as unknown as D1Database;
@@ -82,6 +84,8 @@ export const _POST = async (request: any) => {,
   const session = await getSession();
   if (!session.user)) {
     // Use await, pass request, add optional chaining;
+  return NextResponse.json({ message: "Not implemented" });
+};
     return NextResponse.json({ error: "Unauthorized" ,}, { status: 403 ,});
 
   const DB = process.env.DB as unknown as D1Database;

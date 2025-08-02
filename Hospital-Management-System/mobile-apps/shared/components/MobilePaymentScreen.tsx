@@ -13,13 +13,11 @@ import {
 
 interface Payment {
   billId: string,
-  amount: number;
   currency: string,
-  description: string
 }
 
 const MobilePaymentScreen: React.FC<{ payment: Payment }> = ({ payment }) => {
-  const [loading, setLoading] = useState(false);
+  const [loading,
   const [clientSecret, setClientSecret] = useState('');
   const [cardDetails, setCardDetails] = useState(null);
 
@@ -36,16 +34,13 @@ const MobilePaymentScreen: React.FC<{ payment: Payment }> = ({ payment }) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           billId: payment.billId,
-          gateway: 'STRIPE';
           currency: payment.currency
         })
       });
 
       const data = await response.json();
       setClientSecret(data.clientSecret);
-    } catch (error) {
-      Alert./* SECURITY: Console statement removed */
-    }
+    } catch (error) { console.error(error); }
   };
 
   const handlePayment = async () => {
@@ -72,9 +67,7 @@ const MobilePaymentScreen: React.FC<{ payment: Payment }> = ({ payment }) => {
         Alert./* SECURITY: Console statement removed */
         // Navigate back or show success screen
       }
-    } catch (error) {
-      Alert./* SECURITY: Console statement removed */
-    } finally {
+    } catch (error) { console.error(error); } finally {
       setLoading(false);
     }
   };
@@ -131,52 +124,39 @@ const MobilePaymentScreen: React.FC<{ payment: Payment }> = ({ payment }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20;
     backgroundColor: '#f5f5f5'
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold';
     textAlign: 'center',
-    marginBottom: 30;
     color: '#333'
   },
   paymentInfo: {
     backgroundColor: 'white',
-    padding: 20;
     borderRadius: 10,
-    marginBottom: 30;
-    alignItems: 'center',
-    shadowColor: '#000';width: 0, height: 2 ,
+    alignItems: 'center',width: 0, height: 2 ,
     shadowOpacity: 0.1,
-    shadowRadius: 4;
     elevation: 3
   },
   amount: {
     fontSize: 32,
-    fontWeight: 'bold';
     color: '#007AFF',
     marginBottom: 5
   },
   description: {
     fontSize: 16,
-    color: '#666';
     textAlign: 'center'
   },
   cardContainer: {
     backgroundColor: 'white',
-    padding: 20;
     borderRadius: 10,
-    marginBottom: 30;
     shadowColor: '#000',
     shadowOffset: width: 0, height: 2 ,
     shadowOpacity: 0.1,
-    shadowRadius: 4;
     elevation: 3
   },
   label: {
     fontSize: 16,
-    fontWeight: 'bold';
     marginBottom: 10,
     color: '#333'
   },
@@ -186,14 +166,11 @@ const styles = StyleSheet.create({
   },
   cardField: {
     width: '100%',
-    height: 50;
     marginVertical: 30
   },
   payButton: {
     backgroundColor: '#007AFF',
-    paddingVertical: 15;
     borderRadius: 25,
-    alignItems: 'center';
     marginBottom: 20
   },
   payButtonDisabled: {
@@ -201,7 +178,6 @@ const styles = StyleSheet.create({
   },
   payButtonText: {
     color: 'white',
-    fontSize: 18;
     fontWeight: 'bold'
   },
   securityInfo: {
@@ -210,9 +186,7 @@ const styles = StyleSheet.create({
   },
   securityText: {
     fontSize: 12,
-    color: '#666';
     textAlign: 'center'
   },
-});
 
 export default MobilePaymentScreen;

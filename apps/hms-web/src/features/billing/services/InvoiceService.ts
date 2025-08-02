@@ -37,7 +37,7 @@ const prisma = new PrismaClient();
         //     })
         // }
         // For now, using mock charges if none are passed or found
-        const mockCharges: PatientCharge[] = chargeIds && chargeIds.length > 0 ? [] : [,
+        const mockCharges: PatientCharge[] = chargeIds && chargeIds.length > 0 ? [] : [;
             { id: 'charge_1', patientId, serviceId: 'SVC001', serviceName: 'Consultation', quantity: 1, unitPrice: 150, totalAmount: 150, chargeDate: new Date(), department: 'OPD', status: 'PENDING_BILLING' ,},
             { id: 'charge_2', patientId, serviceId: 'SVC002', serviceName: 'X-Ray Chest', quantity: 1, unitPrice: 75, totalAmount: 75, chargeDate: new Date(), department: 'Radiology', status: 'PENDING_BILLING' ,},
         ];
@@ -88,7 +88,6 @@ const prisma = new PrismaClient();
             invoiceType,
             notes: 'Please pay by the due date.',
             insurancePolicyId: mockInsurancePolicy?.policyId,
-        };
 
         // 9. Save the Invoice to Database (placeholder)
         // const _savedInvoice = await prisma.invoice.create({ data: newInvoice }),
@@ -99,8 +98,7 @@ const prisma = new PrismaClient();
         //     data: { status: 'BILLED', invoiceId: savedInvoice.id ,},
         // })
 
-        // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
-        return newInvoice; // Return the mock invoice for now
+        // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement, // Return the mock invoice for now
     }
 
     /**
@@ -110,6 +108,5 @@ const prisma = new PrismaClient();
      */
     async getInvoiceById(invoiceId: string): Promise<Invoice | null> {,
         // return prisma.invoice.findUnique({ where: { id: invoiceId } }),
-        // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
-        return null; // Return null for now
+        // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement, // Return null for now
     }

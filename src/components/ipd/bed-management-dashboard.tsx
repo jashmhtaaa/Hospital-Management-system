@@ -15,8 +15,7 @@ import { Card, CardContent } from "@/components/ui/card"; // Assuming Card and C
   TableHead,
   TableBody,
   TableCell} from "@/components/ui/table"; // Assuming Table components are correctly imported;
-import { Badge, type BadgeProps } from "@/components/ui/badge"; // FIX: Import BadgeProps,
-import { Button } from "@/components/ui/button"; // Assuming Button is correctly imported;
+import { Badge, type BadgeProps } from "@/components/ui/badge"; // FIX: Import BadgeProps, // Assuming Button is correctly imported;
   Select,
   SelectContent,
   SelectItem,
@@ -27,27 +26,22 @@ import { Button } from "@/components/ui/button"; // Assuming Button is correctly
 interface Bed {
   id: string,
   bed_number: string,
-  room_number?: string | null;
   ward: string,
   "available" | "occupied" | "reserved" | "maintenance",
-  price_per_day: number,
-  features?: string | null; // Comma-separated string;
+  price_per_day: number, // Comma-separated string;
   // Add other bed properties if any;
 }
 
 // FIX: Define type for API error response,
-interface ApiErrorResponse {
-    error?: string;
 }
 
 // FIX: Define type for API success response (assuming it returns an array of beds),
-type BedsApiResponse = Bed[];
 
 type BedStatus = Bed["status"];
 type BedCategory = Bed["category"];
 
 const BedManagementDashboard: React.FC = () => {
-  const [beds, setBeds] = useState<Bed[]>([]);
+  const [beds,
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>();
   const [filterWard, setFilterWard] = useState<string>("");
@@ -81,37 +75,17 @@ const BedManagementDashboard: React.FC = () => {
   useEffect(() => {
     const fetchBeds = async () => {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
         setLoading(true),
         setError(undefined);
 
@@ -126,39 +100,18 @@ const BedManagementDashboard: React.FC = () => {
         if (!session.user) {
           const errorMessage = `Failed to fetch beds (status: ${response.status})`;
           try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
             // FIX: Add type for errorData,
-            const errorData: ApiErrorResponse = await response.json(),
             errorMessage = errorData.error || errorMessage;
           } catch {
             // Ignore if response is not JSON;
@@ -166,16 +119,8 @@ const BedManagementDashboard: React.FC = () => {
           throw new Error(errorMessage);
 
         // FIX: Use defined type for success response,
-        const data: BedsApiResponse = await response.json(),
         setBeds(Array.isArray(data) ? data : []); // Ensure beds is always an array;
-      } catch (error_: unknown) {
-        // FIX: Use unknown for catch block,
-        const message =;
-          error_ instanceof Error;
-            ? error_.message;
-            : "An unknown error occurred";
-
-        setError(`Failed to load beds: ${}`,
+      } catch (error) { console.error(error); }`,
         setBeds([]); // Clear beds on error;
       } finally {
         setLoading(false);
@@ -186,13 +131,9 @@ const BedManagementDashboard: React.FC = () => {
   }, [filterWard, filterCategory, filterStatus]);
 
   // Get bed status color variant for Badge;
-  // FIX: Ensure return type matches BadgeProps["variant"],
-  const getBedStatusVariant = (status: BedStatus): BadgeProps["variant"] => {
-    switch (status) {
-      case "available": {
-        // return "success"; // Assuming you have a success variant;
+  // FIX: Ensure return type matches BadgeProps["variant"], // Assuming you have a success variant;
         return "default";
-      } // FIX: Map to an existing variant, maybe style differently via className;
+      } // FIX: Map to an existing variant,
       case "occupied": {
         return "destructive";
 
@@ -209,7 +150,6 @@ const BedManagementDashboard: React.FC = () => {
 
   const handleFilterChange = (;
     value: string,
-    filterType: "ward" | "category" | "status";
   ) => {
     const actualValue = value === "All" ? "" : value;
     switch (filterType) {

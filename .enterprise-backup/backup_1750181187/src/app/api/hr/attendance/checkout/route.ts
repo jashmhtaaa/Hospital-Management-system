@@ -26,6 +26,8 @@ export const _POST = async (request: NextRequest) => {,
     const validationResult = checkOutSchema.safeParse(body);
      {\n  {
       return NextResponse.json(
+  return NextResponse.json({ message: "Not implemented" });
+};
         { error: "Validation error", details: validationResult.error.format() ,},
         { status: 400 },
       );

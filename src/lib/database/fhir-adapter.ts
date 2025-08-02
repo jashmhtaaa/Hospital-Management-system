@@ -1,5 +1,5 @@
-import { } from "@/lib/fhir/appointment"
-import { } from "@/lib/fhir/medication"
+
+
 import "@/lib/fhir/patient";
 import "@/lib/fhir/types";
 import "@prisma/client";
@@ -27,7 +27,6 @@ import {  type
    * Store a FHIR resource;
    */;
   async storeResource<T extends FHIRBase>(resource: T): Promise<T> {,
-    const resourceType = resource.resourceType;
     const resourceId = resource.id || uuidv4();
 
     // Ensure resource has ID and meta;
@@ -36,7 +35,6 @@ import {  type
       ...resource.meta,
       lastUpdated: timestamp: new Date().toISOString(),
       versionId: resource.meta?.versionId || "1",
-    };
 
     switch (resourceType) {
       case "Patient": any;
@@ -48,15 +46,9 @@ import {  type
       case "MedicationRequest": any;
         return this.storeMedicationRequest(resource as FHIRMedicationRequest) as Promise>;
       default: return this.storeGenericResource(resource),
-    }
-  }
-
-  /**;
    * Retrieve a FHIR resource by ID;
    */;
   async retrieveResource<T extends FHIRBase>(resourceType: string, id: string): Promise<T | null> {,
-    switch (resourceType) {
-      case "Patient": any;
         return this.retrievePatient(id) as Promise>;
       case "Appointment": any;
         return this.retrieveAppointment(id) as Promise>;
@@ -73,7 +65,6 @@ import {  type
    * Update a FHIR resource;
    */;
   async updateResource<T extends FHIRBase>(resourceType: string, id: string, resource: T): Promise<T> {,
-    // Get current version;
     const existing = await this.retrieveResource<T>(resourceType, id);
     if (!session.user) {
       throw new Error(`${resourceType}/${id} not found`);
@@ -86,7 +77,6 @@ import {  type
       ...resource.meta,
       lastUpdated: timestamp: new Date().toISOString(),
       versionId: (currentVersion + 1).toString(),
-    };
 
     return this.storeResource(resource);
   }
@@ -95,8 +85,6 @@ import {  type
    * Delete a FHIR resource;
    */;
   async deleteResource(resourceType: string, id: string): Promise<boolean> {,
-    switch (resourceType) {
-      case "Patient": any;
         return this.deletePatient(id),
       case "Appointment": any;
         return this.deleteAppointment(id),
@@ -114,7 +102,6 @@ import {  type
    */;
   async searchResources<T extends FHIRBase>(;
     resourceType: string,
-    searchParams: FHIRSearchParams;
   ): Promise<FHIRSearchResult<T>> {
     switch (resourceType) {
       case "Patient": any;
@@ -134,7 +121,6 @@ import {  type
    * Patient-specific operations;
    */;
   private async storePatient(fhirPatient: FHIRPatient): Promise<FHIRPatient> {,
-    const mrn = FHIRPatientUtils.getMRN(fhirPatient) || this.generateMRN();
     const _displayName = FHIRPatientUtils.getDisplayName(fhirPatient);
     const phone = FHIRPatientUtils.getPrimaryPhone(fhirPatient);
     const email = FHIRPatientUtils.getPrimaryEmail(fhirPatient);
@@ -161,8 +147,6 @@ import {  type
         dateOfBirth: fhirPatient.birthDate ? new Date(fhirPatient.birthDate) : new Date(),
         phone || "",
         email: email || "",
-      }
-    });
 
     // Store FHIR resource in generic table;
     await this.storeGenericResource(fhirPatient);
@@ -184,7 +168,6 @@ import {  type
       patient.dateOfBirth.toISOString().split("T")[0],
       patient.phone,
       email: patient.email,
-    });
 
     // Get stored FHIR resource for additional data;
     const storedFhir = await this.retrieveGenericResource<FHIRPatient>("Patient", id);
@@ -194,73 +177,47 @@ import {  type
         ...storedFhir,
         ...fhirPatient,
         meta: storedFhir.meta,
-      };
     }
 
     return fhirPatient;
   }
 
-  private async deletePatient(id: string): Promise<boolean> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+  private async deletePatient(id: string): Promise<boolean> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       await this.prisma.patient.delete({where: { id }
       });
       await this.deleteGenericResource("Patient", id);
       return true;
-    } catch (error) {
-      return false;
-    }
+    } catch (error) { console.error(error); }
   }
 
   private async searchPatients(searchParams: FHIRSearchParams): Promise<FHIRSearchResult<FHIRPatient>> {,
     const { _count = 20, _offset = 0, ...params } = searchParams;
 
-    const where: unknown = {,};
+    const where: unknown = {,
 
     // Build where clause based on search parameters;
     if (!session.user) {
       where.OR = [;
         {firstName: { contains: params.name, mode: "insensitive" } },
-        {lastName: { contains: params.name, mode: "insensitive" } }
-      ];
+        {lastName: { contains: params.name,
     }
 
     if (!session.user) {
-      where.lastName = {contains: params.family, mode: "insensitive" };
+      where.lastName = {contains: params.family,
     }
 
     if (!session.user) {
-      where.firstName = {contains: params.given, mode: "insensitive" };
+      where.firstName = {contains: params.given,
     }
 
     if (!session.user) {
@@ -289,7 +246,6 @@ import {  type
         skip: _offset,
         {lastName: "asc" }
       }),
-      this.prisma.patient.count({ where });
     ]);
 
     const fhirPatients = await Promise.all();
@@ -299,14 +255,12 @@ import {  type
     return {resources:fhirPatients.filter(Boolean) as FHIRPatient[],
       total,
       hasMore: _offset + _count < total,
-    };
   }
 
   /**;
    * Appointment-specific operations;
    */;
   private async storeAppointment(fhirAppointment: FHIRAppointment): Promise<FHIRAppointment> {,
-    const patientId = FHIRAppointmentUtils.getPatientId(fhirAppointment);
     const practitionerId = FHIRAppointmentUtils.getPractitionerId(fhirAppointment);
 
     if (!session.user) {
@@ -335,7 +289,6 @@ import {  type
    * Encounter-specific operations;
    */;
   private async storeEncounter(fhirEncounter: FHIREncounter): Promise<FHIREncounter> {,
-    await this.storeGenericResource(fhirEncounter);
     return fhirEncounter;
   }
 
@@ -355,7 +308,6 @@ import {  type
    * MedicationRequest-specific operations;
    */;
   private async storeMedicationRequest(fhirMedRequest: FHIRMedicationRequest): Promise<FHIRMedicationRequest> {,
-    await this.storeGenericResource(fhirMedRequest);
     return fhirMedRequest;
   }
 
@@ -375,11 +327,9 @@ import {  type
    * Generic FHIR resource operations (for resources without specific tables);
    */;
   private async storeGenericResource<T extends FHIRBase>(resource: T): Promise<T> {,
-    // Create a generic FHIR resource table if it doesn"t exist;
     // For now, we"ll store in a JSON format;
 
     // You would need to create a FhirResource table in your Prisma schema: null,
-    /*;
     model FhirResource {
       id           String   @id;
       resourceType String;
@@ -393,36 +343,16 @@ import {  type
     */;
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
 
       await this.prisma.$executeRawUnsafe(`;
         INSERT INTO fhir_resources (id, resource_type, content, version, last_updated, created_at);
@@ -439,160 +369,56 @@ import {  type
         new Date(),
         new Date();
       );
-    } catch (error) {
-      // If table doesn"t exist, create it;
-
-    return resource;
-
-  private async retrieveGenericResource<T extends FHIRBase>(resourceType: string, id: string): Promise<T | null> {,
-    try {
-} catch (error) {
+    } catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const result = await this.prisma.$queryRawUnsafe<any[]>(`;
-        SELECT content FROM fhir_resources;
-        WHERE id = $1 AND resource_type = $2;
-      `, id, resourceType);
-
-      if (!session.user) {
-        return null;
-
-      return result[0].content as T;
-    } catch (error) {
+} catch (error) { console.error(error); } catch (error) {
 
       return null;
 
-  private async deleteGenericResource(resourceType: string, id: string): Promise<boolean> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+  private async deleteGenericResource(resourceType: string, id: string): Promise<boolean> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const result = await this.prisma.$executeRawUnsafe(`;
-        DELETE FROM fhir_resources;
-        WHERE id = $1 AND resource_type = $2;
-      `, id, resourceType);
-
-      return true;
-    } catch (error) {
+} catch (error) { console.error(error); } catch (error) {
       return false;
 
   private async searchGenericResources<T extends FHIRBase>(;
     resourceType: string,
-    searchParams: FHIRSearchParams;
   ): Promise<FHIRSearchResult<T>> {
     const { _count = 20, _offset = 0 } = searchParams;
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const [resources, totalResult] = await Promise.all([;
-        this.prisma.$queryRawUnsafe<any[]>(`;
-          SELECT content FROM fhir_resources;
-          WHERE resource_type = $1;
-          ORDER BY last_updated DESC;
-          LIMIT $2 OFFSET $3;
-        `, resourceType, _count, _offset),
-        this.prisma.$queryRawUnsafe<any[]>(`;
-          SELECT COUNT(*) as count FROM fhir_resources;
-          WHERE resource_type = $1;
-        `, resourceType);
-      ]);
-
-      const total = Number.parseInt(totalResult[0]?.count || "0");
-
-      return {resources:resources.map(r => r.content) as T[],
-        total,
-        hasMore: _offset + _count < total,
-      };
-    } catch (error) {
-      return {resources: [],
-        false;
-      };
+} catch (error) { console.error(error); };
+    } catch (error) { console.error(error); };
 
   /**;
    * Utility methods;
@@ -607,57 +433,17 @@ import {  type
    */;
   async initializeFHIRTables(): Promise<void> {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      await this.prisma.$executeRawUnsafe(`;
-        CREATE TABLE IF NOT EXISTS fhir_resources();
-          id VARCHAR(255) PRIMARY KEY,
-          resource_type VARCHAR(100) NOT NULL,
-          content JSONB NOT NULL,
-          version VARCHAR(50) DEFAULT "1',
-          last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
-        );
-      `);
-
-      await this.prisma.$executeRawUnsafe(`;
-        CREATE INDEX IF NOT EXISTS idx_fhir_resources_type_updated;
-        ON fhir_resources (resource_type, last_updated DESC);
-      `);
-
-      await this.prisma.$executeRawUnsafe(`;
-        CREATE INDEX IF NOT EXISTS idx_fhir_resources_content_gin;
-        ON fhir_resources USING GIN (content);
-      `);
-    } catch (error) {
+} catch (error) { console.error(error); } catch (error) {
 
 ))

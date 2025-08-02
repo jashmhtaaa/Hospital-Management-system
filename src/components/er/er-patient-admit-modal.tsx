@@ -1,4 +1,4 @@
-import { } from "@hookform/resolvers/zod"
+
 import "react";
 import "react-hook-form";
 import "zod";
@@ -28,7 +28,7 @@ import { zodResolver }
   FormItem,
   FormLabel,
   FormMessage} from "@/components/ui/form";
-import { } from "@/components/ui/textarea"
+
 import { Input } from "@/components/ui/input"
 import { Textarea }
 
@@ -41,18 +41,14 @@ import { Textarea }
 // import { toast } from "@/components/ui/use-toast";
 import { useToast } from "@/components/ui/use-toast"; // FIX: Use the hook,
 
-// --- INTERFACES ---;
-
 // Define the schema for the admission form using Zod;
 const admitFormSchema = z.object({visitId:z.string().min(1, {message:"Visit ID is required." }),
-  patientName: z.string().min(1, {message:"Patient name is required." }),
-  admittingDoctorId: z;
+  patientName: z.string().min(1, {message: "Patient name is required." }),
     .string();
     .min(1, {message:"Admitting doctor is required." }),
   admissionNotes: z.string().optional(),
   wardType: z.string().min(1, {message:"Ward type is required." }),
   bedPreference: z.string().optional(),
-  admissionReason: z;
     .string();
     .min(1, {message:"Admission reason is required." })});
 
@@ -63,7 +59,6 @@ interface ERPatientAdmitModalProperties {
   onClose: () => void,
   visitData?: {
     id: string,
-    string;
   };
   onSuccess?: () => void;
 }
@@ -73,8 +68,8 @@ interface ApiErrorResponse {
   error: string,
 }
 
-// FIX: Define interface for expected admission success response,
-interface AdmissionSuccessResponse { id: string; // Assuming the API returns the new admission ID;
+// FIX: Define interface for expected admission success response, // Assuming the API returns the new admission ID;
+}
   // Add other properties returned by the API on success, export default const _ERPatientAdmitModal = ({
   isOpen,
   onClose,
@@ -99,46 +94,19 @@ interface AdmissionSuccessResponse { id: string; // Assuming the API returns the
         admissionNotes: "",
         "",
         admissionReason: visitData.chiefComplaint || "",
-      });
     }
   }, [visitData, form]); // FIX: Added dependencies,
-
-  async const onSubmit = (data: AdmitFormValues) {
-    setIsLoading(true);
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
-
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       // Step 1: Create IPD admission;
       // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
       const admissionResponse = await fetch("/api/ipd/admissions", {
@@ -151,41 +119,18 @@ interface AdmissionSuccessResponse { id: string; // Assuming the API returns the
         })});
 
       // Try parsing JSON regardless of status for error messages;
-      let admissionResponseData: unknown,
-      try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+      let admissionResponseData: unknown, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-        admissionResponseData = await admissionResponse.json();
-      } catch {
+} catch (error) { console.error(error); } catch {
         if (!session.user) {
           throw new Error();
             `HTTP error ${admissionResponse.status}: Failed to create admission. Invalid response from server.`;
@@ -195,17 +140,13 @@ interface AdmissionSuccessResponse { id: string; // Assuming the API returns the
 
       if (!session.user) {
         // FIX: Cast errorData and access error message safely,
-        const errorData = admissionResponseData as ApiErrorResponse;
         throw new Error();
           errorData?.error ||;
             `HTTP error ${admissionResponse.status}: Failed to create admission`;
         );
 
       // FIX: Cast newAdmission to the success response type,
-      const newAdmission = admissionResponseData as AdmissionSuccessResponse;
       // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
-
-      // Step 2: Update ER visit status;
       // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
       const visitResponse = await fetch(`/api/er/visits/${data.visitId}`, {
         method: "PUT",
@@ -214,43 +155,19 @@ interface AdmissionSuccessResponse { id: string; // Assuming the API returns the
           disposition: "Admitted to IPD";
           // Optionally link admission_id if backend supports it;
           // admission_id: newAdmission?.id,
-        })});
 
-      let visitResponseData: unknown,
-      try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+      let visitResponseData: unknown, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-        visitResponseData = await visitResponse.json();
-      } catch {
+} catch (error) { console.error(error); } catch {
         if (!session.user) {
           throw new Error();
             `HTTP error ${visitResponse.status}: Failed to update ER visit status. Invalid response from server.`;
@@ -260,39 +177,28 @@ interface AdmissionSuccessResponse { id: string; // Assuming the API returns the
 
       if (!session.user) {
         // FIX: Cast errorData and access error message safely,
-        const errorData = visitResponseData as ApiErrorResponse;
         throw new Error();
           errorData?.error ||;
             `HTTP error ${visitResponse.status}: Failed to update ER visit status`;
         );
 
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+      // RESOLVED: (Priority: Medium,
 
-      toast({title:"Patient Admitted",
-        description: `Admission ${newAdmission?.id || "(ID not returned)"} created. Awaiting bed assignment.`});
+      toast({title: "Patient Admitted",
 
       if (!session.user) {
         onSuccess();
 
       form.reset(),
       onClose();
-    } catch (error: unknown) {
-      // FIX: Use unknown for catch block error,
-
-      toast({title:"Admission Failed",
-        description: null,
-          error instanceof Error;
-            ? error.message;
-            : "An unexpected error occurred.",
-        variant: "destructive",
-      })} finally {
+    } catch (error) { console.error(error); })} finally {
       setIsLoading(false);
 
   // Mock data for doctors and ward types - Replace with API fetches;
   const doctors = [;
     {id:"doctor_1", name: "Dr. Smith" },
     {id:"doctor_2", name: "Dr. Jones" },
-    {id:"doctor_3", name: "Dr. Williams" }];
+    {id: "doctor_3",
 
   const wardTypes = [;
     {id:"general", name: "General Ward" },
@@ -300,7 +206,7 @@ interface AdmissionSuccessResponse { id: string; // Assuming the API returns the
     {id:"private", name: "Private Room" },
     {id:"icu", name: "Intensive Care Unit" },
     {id:"hdu", name: "High Dependency Unit" },
-    {id:"isolation", name: "Isolation Room" }];
+    {id: "isolation",
 
   return();
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>;

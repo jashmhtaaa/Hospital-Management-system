@@ -16,6 +16,8 @@ export const GET = async (request: NextRequest) => {,
     request,
     async (req: NextRequest) => {,
       const session = await getServerSession(authOptions);
+  return NextResponse.json({ message: "Not implemented" });
+};
       const { searchParams } = new URL(req.url);
 
       // Parse query parameters
@@ -60,6 +62,8 @@ export const POST = async (request: NextRequest) => {,
         session?.user?.id as string;
       );
 
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json(template, { status: 201 ,});
     },
     {

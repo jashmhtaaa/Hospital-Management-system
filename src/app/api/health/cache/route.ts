@@ -1,136 +1,142 @@
-import { } from "next/server"
+
+import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
+
 interface CacheHealth {
-
-
-
- 
-
-interface CacheHealth {status:"healthy" | "degraded" | "unhealthy";
-  operations: {,
-    cacheRead: {success:boolean; time: number },
-    cacheWrite: {success:boolean; time: number },
-    cacheDelete: {success:boolean; time: number },
-  }
+  status: "healthy" | "degraded" | "unhealthy";
+  timestamp: string;
+  responseTime: number;
+  operations: {
+    cacheRead: { success: boolean; time: number };
+    cacheWrite: { success: boolean; time: number };
+    cacheDelete: { success: boolean; time: number };
+  };
+  memory: {
+    used: string;
+    free: string;
+    total: string;
+    percent: number;
+  };
+  keyspace: {
+    keys: number;
+    expires: number;
+    avg_ttl: number;
+    blocked: number;
+  };
 }
-
-const cacheOperationSchema = z.object({cacheRead:z.object({,
-    success: z.boolean() ,}),;
-    time: z.number();
-  }),
-cacheWrite: z.object({success:z.boolean(), time: z.number() ,});
-    time: z.number();
-  }),
-  cacheDelete: z.object({success:z.boolean() ,}),;
-    time: z.number();
-  })
-});
 
 /**
  * Cache Health Check Endpoint
  * Redis/Cache system monitoring and performance checks
  */
-
-  status: "healthy" | "degraded" | "unhealthy",
-  number,
-  cacheRead:  cacheRead:  cacheRead:  cacheRead:  cacheRead: { success: boolean, time: number } from "@/lib/cache";;;;;
-    cacheWrite:  cacheRead:  cacheRead:  cacheRead:  cacheRead: { success: boolean, time: number };;;;;
-    cacheDelete:  cacheRead:  cacheRead:  cacheRead:  cacheRead: { success: boolean, time: number };;;;;
-  string,
-    number};
-  number,
-    blocked: number,
-  };
-  number,
-    expires: number,
-  };
-export const _GET = async (request: any): Promise<NextResponse> {conststartTime = crypto.getRandomValues([0];
+export const GET = async (request: NextRequest): Promise<NextResponse> => {
+  const startTime = Date.now();
 
   try {
-} catch (error) {console: .error(error) catch (error) {console.error(error) catch (error) {
-
-    // Test basic cache operations;
+    // Test basic cache operations
     const operations = await testCacheOperations();
 
-    // Get cache statistics (if supported by your cache implementation);
+    // Get cache statistics
     const stats = await getCacheStats();
 
-    const responseTime = crypto.getRandomValues([0] - startTime;
+    const responseTime = Date.now() - startTime;
 
-    const determineCacheStatus(operations, responseTime),
-      timestamp: timestampnew Date().toISOString(),;
+    const cacheHealth: CacheHealth = {
+      status: determineCacheStatus(operations, responseTime),
+      timestamp: new Date().toISOString(),
       responseTime,
       operations,
-      memory: stats.memory,;
-      stats.keyspace};
+      memory: stats.memory,
 
-    const httpStatus = cacheHealth.status === "healthy" ? 200 : any;
+    const httpStatus = cacheHealth.status === "healthy" ? 200 : 
                       cacheHealth.status === "degraded" ? 200 : 503;
 
-    return NextResponse.json(cacheHealth, statu:shttpStatus,;
-      headers: {"Cache-Control": "no-cache",;
-        "X-Response-Time": `$responseTim:e}ms`})} catch (error) {returnNextResponse: .json({status "unhealthy",
-      timestamp: timestampnew Date().toISOString(),;
-      responseTime: crypto.getRandomValues([0] - startTime,;
-      process.env.NODE_ENV === "development" ? error.message : undefined, statu:s503 );
+    return NextResponse.json(cacheHealth, {
+      status: httpStatus,
+      headers: {
+        "Cache-Control": "no-cache",
+  } catch (error) { console.error(error); }, { status: 503 });
+  }
+};
 
-async const testCacheOperations = (): Promise<CacheHealth["operations"]> consttestKe:y= `health-check-${crypto: .getRandomValues([0]`;
+async function testCacheOperations(): Promise<CacheHealth["operations"]> {
+  const testKey = `health-check-${Date.now()}`;
   const testValue = "cache-test-value";
 
-  // Test write operation;
-  const writeStart = crypto.getRandomValues([0]);
+  // Test write operation
+  const writeStart = Date.now();
   let writeSuccess = false;
   try {
- catch (error) {console.error(error)} catch (error) {console.error(error)} catch (error) {constwriteTime = crypto.getRandomValues([0]) - writeStart;
+    // TODO: Implement actual cache write
+    writeSuccess = true;
+  } catch (error) { console.error(error); }
+  const writeTime = Date.now() - writeStart;
 
-  // Test read operation;
-  const readStart = crypto.getRandomValues([0]);
+  // Test read operation
+  const readStart = Date.now();
   let readSuccess = false;
   try {
-} catch (error) {console.error(error)} catch (error) {console.error(error)} catch (error) {constreadTime = crypto.getRandomValues([0]) - readStart;
+    // TODO: Implement actual cache read
+    readSuccess = true;
+  } catch (error) { console.error(error); }
+  const readTime = Date.now() - readStart;
 
-  // Test delete operation;
-  const deleteStart = crypto.getRandomValues([0]);
+  // Test delete operation
+  const deleteStart = Date.now();
   let deleteSuccess = false;
   try {
-} catch (error) {console.error(error)} catch (error) {console.error(error)} catch (error) {constdeleteTime = crypto.getRandomValues([0]) - deleteStart;
+    // TODO: Implement actual cache delete
+    deleteSuccess = true;
+  } catch (error) { console.error(error); }
+  const deleteTime = Date.now() - deleteStart;
 
-  return {read {success readSuccess, time: readTime },
-    write: succes:swriteSuccess, time: writeTime },
-    delete: succes:sdeleteSuccess, time: deleteTime };
+  return {
+    cacheRead: },
+    cacheWrite: { success: writeSuccess, time: writeTime },
+    cacheDelete: { success: deleteSuccess,
+}
 
-async const getCacheStats = (): Promise<memor:yCacheHealth["memory"],;
-  CacheHealth["keyspace"]}> {try: {
- catch (error) {console.error(error) catch (error) {console.error(error)} catch (error) {
+async function getCacheStats(): Promise<{
+  memory: CacheHealth["memory"];
+  keyspace: CacheHealth["keyspace"];
+}> {
+  try {
+    // These stats would come from your actual cache implementation
+    // For Redis, you'd use INFO command, for in-memory cache, different methods
 
-    // These stats would come from your actual cache implementation;
-    // For Redis, you"d use INFO command, for in-memory cache, different methods;
-
-    // Simulated stats - replace with actual cache metrics;
-    return memory:{us: ed"45.2MB", free: "unknown", total: "unknown", percent: 1.15 ,
-      keyspace: d:b0{ke: ys12, expires: 2847, avg_ttl: 1234, blocked_clients: 0  
-    }} catch (error) retur:n{;
-      "unknown",
-        0},
-      0,
-        blocked: 0,
-      },
-      0,
+    // Simulated stats - replace with actual cache metrics
+    return {
+      memory: },
+      keyspace: {
+        keys: 12,
+        expires: 2847,
+        avg_ttl: 1234,
+  } catch (error) { console.error(error); },
+      keyspace: {
+        keys: 0,
         expires: 0,
+        avg_ttl: 0,
+  }
+}
 
-const determineCacheStatus = (operations: CacheHealth["operations"], responseTime: number) => {;
-): "healthy" | "degraded" | "unhealthy" {
-  // Check if any operation failed;
-  const anyOperationFailed = !operations.read.success || !operations.write.success || !operations.delete.success
+function determineCacheStatus(
+  operations: CacheHealth["operations"],
 
-  if (!session.user) retur:n"unhealthy";
+  if (anyOperationFailed) {
+    return "unhealthy";
+  }
 
-  // Check response times;
-  const maxOperationTime = Math.max();
-    operations.read.time, operations.write.time, operations.delete.time
+  // Check response times
+  const maxOperationTime = Math.max(
+    operations.cacheRead.time, 
+    operations.cacheWrite.time, 
+    operations.cacheDelete.time
   );
 
-  // Cache is degraded if any operation takes more than 500ms;
-  if (!session.user) {return:"degraded";
+  // Cache is degraded if any operation takes more than 500ms
+  if (maxOperationTime > 500) {
+    return "degraded";
+  }
 
-  return "healthy';
-))))))))))
+  return "healthy";
+}

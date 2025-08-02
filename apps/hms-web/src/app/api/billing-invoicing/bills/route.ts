@@ -1,6 +1,5 @@
 import type { NextRequest } from 'next/server';
 
-
 import { AuditService } from '@/lib/audit/audit-service';
 import { prisma } from '@/lib/prisma';
 import { ApiResponseBuilder, PaginationBuilder } from '@/utils/api-response';
@@ -19,14 +18,10 @@ export async function POST(request: NextRequest): unknown {,
     const lastBill = await prisma.bill.findFirst({
 orderBy: { createdAt: 'desc' ,},
       select: { billNumber: true },
-    })
-
-    const nextBillNumber = lastBill ?
-      Number.parseInt(lastBill.billNumber.substring(4)) + 1 : 1001;
     const billNumber = `BILL${nextBillNumber.toString().padStart(6, '0')}`;
 
     const bill = await prisma.bill.create({
-      data: {,
+      data: {
         billNumber,
         patientId,
         subtotal,
@@ -40,10 +35,6 @@ orderBy: { createdAt: 'desc' ,},
            true,
             lastName: true,
             mrn: true,
-          }
-        }
-      }
-    });
 
     await AuditService.logUserAction(
       {
@@ -53,8 +44,6 @@ orderBy: { createdAt: 'desc' ,},
         entity: 'BILL',
         entityId: bill.id,
         message: `Bill generated: ${billNumber}- Amount: ${totalAmount}`,
-      }
-    );
 
     // ... previous code ...
     const billItems = await prisma.billItem.findMany({
@@ -62,8 +51,6 @@ orderBy: { createdAt: 'desc' ,},
          true,
             medication: true,
             procedure: true,
-        }
-    });
 
     const totalAmount = billItems.reduce((sum, item) => {
         return sum + (item.amount || 0);
@@ -72,23 +59,19 @@ orderBy: { createdAt: 'desc' ,},
     const response = {
         ...bill,
         items: billItems,
-        totalAmount
-    };
 
-    return NextResponse.json(response, { status: 200 ,});
+    return NextResponse.json(response, { status: 200 ,
 }
 
 export async function POST(req: NextRequest) {,
-    try {
-        const body = await req.json();
         const { patientId, items } = body;
 
          {\n  | items.length === 0) {
-            return NextResponse.json({ error: 'Invalid input' ,}, { status: 400 ,});
+            return NextResponse.json({ error: 'Invalid input' ,}, { status: 400 ,
         }
 
         const bill = await prisma.bill.create({
-            data: {,
+            data: {
                 patientId,
                 status: 'PENDING',
                 createdAt: new Date(),
@@ -102,9 +85,8 @@ export async function POST(req: NextRequest) {,
             }
         });
 
-        return NextResponse.json(bill, { status: 201 ,});
-    } catch (error) {
-        return NextResponse.json({ error: 'Failed to create bill', details: error?.message ,}, { status: 500 ,});
+        return NextResponse.json(bill, { status: 201 ,
+    } catch (error) { console.error(error); }, { status: 500 ,
     }
 }
 // ... next code ...

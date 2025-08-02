@@ -58,17 +58,16 @@ export = "export" interface = "interface" ModelFeature = "ModelFeature" {
   name: string,
    'numeric' | 'categorical' | 'text' | 'date' | 'boolean' | 'image',
   source: string;
-  importance?: number; // 0-100
+  importance?: number; // 0-100;
   transformations: string[],
-  statistics: ,
-    min?: number;
+  statistics:  ,
     max?: number;
     mean?: number;
     median?: number;
     stdDev?: number;
     uniqueValues?: number;
     missingPercentage: number;
-    distribution?: Record>
+    distribution?: Record>;
   engineeringNotes?: string;
 export enum Algorithm {
   LOGISTIC_REGRESSION = 'LOGISTIC_REGRESSION',
@@ -100,52 +99,49 @@ export = "export" interface = "interface" PerformanceMetrics = "PerformanceMetri
      number,
      number,
      number;
-    sensitivityAtSpecificity?: Record>
+    sensitivityAtSpecificity?: Record>;
     confusionMatrix: number[][];
-    rocCurve?: { fpr: number[], tpr: number[] ,};
-    prCurve?: { precision: number[], recall: number[] ,};
-    calibrationCurve?: { predicted: number[], actual: number[] ,};
+    rocCurve?: { fpr: number[], tpr: number[] ,
+    prCurve?: { precision: number[], recall: number[] ,
+    calibrationCurve?: { predicted: number[], actual: number[] ,
   regressionMetrics?: {
     mse: number,
-     number;
     mape?: number;
     r2: number;
     adjustedR2?: number;
     residualPlot?: { predicted: number[], residuals: number[] },
-  };
   timeSeriesMetrics?: {
     mse: number,
-     number;
     mape?: number;
     smape?: number;
     forecastBias?: number;
     theilU?: number;
-    autocorrelation?: Record<string, number>
+    autocorrelation?: Record<string, number>;
   };
   clusteringMetrics?: {
     silhouette: number;
     daviesBouldin?: number;
     calinskiHarabasz?: number;
-    inertia?: number
+    inertia?: number;
   };
   anomalyDetectionMetrics?: {
     precision: number,
      number,
     auc: number;
-    averagePrecision?: number
+    averagePrecision?: number;
   };
   naturalLanguageMetrics?: {
     accuracy: number,
      number,
     f1Score: number;
     bleu?: number;
-    rouge?: Record>
-    perplexity?: number
+    rouge?: Record>;
+    perplexity?: number;
   };
   crossValidationResults?: {
     folds: number,
      Record<string, number>,
-    foldResults: Record<string, number[]>
+    foldResults: Record<string,
   };
 export enum ModelStatus {
   DRAFT = 'DRAFT',
@@ -172,11 +168,11 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
   };
    string,
     memory: string;
-    gpu?: string
+    gpu?: string;
   };
    number,
     maxReplicas: number;
-    targetCPUUtilization?: number
+    targetCPUUtilization?: number;
   };
    boolean,
      boolean,
@@ -186,11 +182,9 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
      string,
        string,
       changes: string,
-    }[]
-  };
   deploymentPipeline: string;
   cicdStatus?: 'success' | 'failure' | 'in_progress';
-  approvals: {,
+  approvals: {
     technical?: {
       approved: boolean;
       by?: string;
@@ -216,17 +210,10 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
   tags: string[],
    string,
     contact: string,
-  };
   reviewers: string[],
    string[],
    string,
-  customFields: Record<string, any>
-}
-
-// Readmission risk models
-
-}
-  }[];
+  customFields: Record<string,
   actualOutcome?: {
     readmitted: boolean;
     daysToReadmission?: number;
@@ -255,8 +242,6 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
   }[];
   similarCases?: {
     encounterId: string,
-     string
-  }[];
 }
 
 // Length of stay models
@@ -291,7 +276,6 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
      number,
      number,
     minCensus: number,
-  };
 
 }
   };
@@ -300,19 +284,14 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
    number,
      number,
     others: number,
-  };
   bedCapacity: number;
   staffingCapacity?: {
     nurses: number,
      number,
     others: number,
-  };
   resourceUtilization: number; // 0-100
   overflow: number,
   status: 'NORMAL' | 'NEAR_CAPACITY' | 'AT_CAPACITY' | 'OVER_CAPACITY',
-
-}
-  }[];
 
 }
   };
@@ -331,14 +310,12 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
     expected: number,
      number,
     marginEstimate: number,
-  };
   historicalCosts?: {
      string,
        Date
     }[];
     averageAnnualCost: number,
     costTrend: 'INCREASING' | 'DECREASING' | 'STABLE',
-  };
   actualOutcome?: {
     actualCost?: number;
     actualCostBreakdown?: Record>
@@ -367,12 +344,12 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
   }): Promise<PredictiveModel[]> {
     try {
       // Try cache first
-      const cacheKey = `models:${JSON.stringify(filters || {}),}`;
-      const cached = await cacheService.getCachedResult('analytics:', cacheKey);
+      const cacheKey = `models: ${JSON.stringify(filters || {}),
+      const cached = await cacheService.getCachedResult('analytics: ',
        {\n  eturn cached;
 
       // Build filters
-      const where: unknown = {,};
+      const where: unknown = {,
        {\n  here.type = filters.type;
        {\n  here.category = filters.category;
        {\n  here.status = filters.status;
@@ -389,14 +366,9 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
       // Record metrics
       metricsCollector.incrementCounter('analytics.model_queries', 1, {
         type: filters?.type || 'ALL',
-         filters?.status || 'ALL'
-      });
 
       return models as PredictiveModel[];
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**
@@ -405,8 +377,8 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
   async getModelById(id: string): Promise<PredictiveModel | null> {,
     try {
       // Try cache first
-      const cacheKey = `model:${id,}`;
-      const cached = await cacheService.getCachedResult('analytics:', cacheKey);
+      const cacheKey = `model: ${id,
+      const cached = await cacheService.getCachedResult('analytics: ',
        {\n  eturn cached;
 
       // Query database
@@ -420,10 +392,7 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
       await cacheService.cacheResult('analytics:', cacheKey, model, 3600); // 1 hour
 
       return model as PredictiveModel;
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**
@@ -438,29 +407,25 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
       this.validateModel(model);
 
       // Create model
-      const newModel: PredictiveModel = {,
+      const newModel: PredictiveModel = {;
         ...model,
         id: `model-${crypto.getRandomValues([0],}`,
         created: new Date(),
         updated: new Date(),
         createdBy: userId,
         updatedBy: userId,
-      };
 
       // Save model
       await this.prisma.predictiveModel.create({
         data: newModel as any,
-      });
 
       // Create audit log
       await this.auditService.createAuditLog({
         action: 'CREATE',
-         newModel.id;
         userId,
          model.name,
            model.category,
           algorithm: model.algorithm,
-      });
 
       // Invalidate cache
       await cacheService.invalidatePattern('analytics:models:*');
@@ -468,19 +433,13 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
       // Record metrics
       metricsCollector.incrementCounter('analytics.models_created', 1, {
         type: model.type,
-         model.algorithm
-      });
 
       // Publish event
       await pubsub.publish('MODEL_CREATED', {
         modelCreated: newModel,
-      });
 
       return newModel;
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**
@@ -488,7 +447,6 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
    */
   async updateModel(
     id: string,
-     string;
   ): Promise<PredictiveModel> {
     try {
       // Get current model
@@ -503,7 +461,7 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
       // Update model
       const updatedModel = await this.prisma.predictiveModel.update({
         where: { id ,},
-        data: {,
+        data: {
           ...updates,
           updated: new Date(),
           updatedBy: userId,
@@ -513,7 +471,6 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
       // Create audit log
       await this.auditService.createAuditLog({
         action: 'UPDATE',
-         id;
         userId,
          currentModel.name,
            updates.status || currentModel.status,
@@ -527,7 +484,6 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
           date: new Date(),
           changedBy: userId,
           changes: 'Model updated',
-        });
 
         await this.prisma.predictiveModel.update({
           where: { id ,},
@@ -548,13 +504,9 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
       // Publish event
       await pubsub.publish('MODEL_UPDATED', {
         modelUpdated: updatedModel,
-      });
 
       return updatedModel as PredictiveModel;
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**
@@ -562,7 +514,6 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
    */
   async trainModel(
     id: string,
-     string;
       startDate?: Date;
       endDate?: Date;
       hyperparameters?: Record>
@@ -590,18 +541,14 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
       // Create audit log
       await this.auditService.createAuditLog({
         action: 'TRAIN',
-         id;
         userId,
          model.name,
            trainingConfig.startDate,
           endDate: trainingConfig.endDate,
-      });
 
       // Record metrics
       metricsCollector.incrementCounter('analytics.model_training_started', 1, {
         modelId: id,
-         model.category
-      });
 
       // Publish event
       await pubsub.publish('MODEL_TRAINING_STARTED', {
@@ -619,15 +566,7 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
         modelId: id,
          'STARTED',
         estimatedCompletionTime: trainingJob.estimatedCompletionTime,
-      };
-    } catch (error) {
-
-      // Update model status to ERROR
-      await this.updateModel(
-        id,
-        {
-          status: ModelStatus.ERROR,
-        },
+    } catch (error) { console.error(error); },
         userId;
       );
 
@@ -640,7 +579,6 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
    */
   async deployModel(
     id: string,
-     'development' | 'staging' | 'production';
       resources?: {
         cpu?: string;
         memory?: string;
@@ -678,7 +616,6 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
         id,
         {
           status: ModelStatus.DEPLOYING,
-          deploymentStatus: DeploymentStatus.DEPLOYING;
             ...model.mlOpsInfo,
             environment: deploymentConfig.environment,
              deploymentConfig.scaling || model.mlOpsInfo.scaling,
@@ -690,18 +627,14 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
       // Create audit log
       await this.auditService.createAuditLog({
         action: 'DEPLOY',
-         id;
         userId,
          model.name,
            deploymentConfig.resources,
           scaling: deploymentConfig.scaling,
-      });
 
       // Record metrics
       metricsCollector.incrementCounter('analytics.model_deployment_started', 1, {
         modelId: id,
-         deploymentConfig.environment
-      });
 
       // Publish event
       await pubsub.publish('MODEL_DEPLOYMENT_STARTED', {
@@ -719,16 +652,7 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
         modelId: id,
          'STARTED',
         estimatedCompletionTime: deploymentJob.estimatedCompletionTime,
-      };
-    } catch (error) {
-
-      // Update model status to ERROR
-      await this.updateModel(
-        id,
-        {
-          status: model.status, // Maintain previous status
-          deploymentStatus: DeploymentStatus.FAILED,
-        },
+    } catch (error) { console.error(error); },
         userId;
       );
 
@@ -741,8 +665,6 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
    */
   async predictReadmissionRisk(
     patientId: string,
-    options: {,
-      encounterId?: string;
       modelId?: string;
       timeHorizon?: number; // days, default 30
       useCache?: boolean;
@@ -757,8 +679,8 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
 
       // Try cache first if enabled
        {\n  {
-        const cacheKey = `readmission:${patientId}:${options.encounterId || 'current'}:${timeHorizon,}`;
-        const cached = await cacheService.getCachedResult('analytics:', cacheKey);
+        const cacheKey = `readmission: ${patientId}:${options.encounterId || 'current'}:${timeHorizon,
+        const cached = await cacheService.getCachedResult('analytics: ',
          {\n  eturn cached;
       }
 
@@ -794,7 +716,6 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
           Math.min(1, prediction.probability + 0.1),
         ],
         riskFactors: prediction.riskFactors || [],
-         prediction.recommendedInterventions || [];
         modelId,
         modelVersion: model.version,
          'FEATURE_IMPORTANCE',
@@ -805,11 +726,10 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
       // Save prediction to database
       await this.prisma.readmissionRisk.create({
         data: readmissionRisk as any,
-      });
 
       // Cache the result
        {\n  {
-        const cacheKey = `readmission:${patientId}:${options.encounterId || 'current'}:${timeHorizon,}`;
+        const cacheKey = `readmission: ${patientId}:${options.encounterId || 'current'}:${timeHorizon,
         await cacheService.cacheResult('analytics:', cacheKey, readmissionRisk, 3600); // 1 hour
       }
 
@@ -819,12 +739,11 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
       metricsCollector.incrementCounter('analytics.readmission_predictions', 1, {
         riskLevel: readmissionRisk.riskLevel,
         timeHorizon: timeHorizon.toString(),
-      });
 
       // If high risk, publish alert event
        {\n  {
         await pubsub.publish('HIGH_READMISSION_RISK', {
-          highReadmissionRisk: {,
+          highReadmissionRisk: {
             patientId,
             encounterId: options.encounterId,
              readmissionRisk.riskLevel,
@@ -834,13 +753,7 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
       }
 
       return readmissionRisk;
-    } catch (error) {
-
-      // Record error metric
-      metricsCollector.incrementCounter('analytics.readmission_prediction_errors', 1, {
-        patientId,
-        errorType: error.name,
-      });
+    } catch (error) { console.error(error); });
 
       throw error;
     }
@@ -851,7 +764,6 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
    */
   async predictLengthOfStay(
     patientId: string,
-    encounterId: string;
     {
       modelId?: string;
       includeInterventions?: boolean;
@@ -867,8 +779,8 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
 
       // Try cache first if enabled
        {\n  {
-        const cacheKey = `los:${patientId}:${encounterId,}`;
-        const cached = await cacheService.getCachedResult('analytics:', cacheKey);
+        const cacheKey = `los: ${patientId}:${encounterId,
+        const cached = await cacheService.getCachedResult('analytics: ',
          {\n  eturn cached;
       }
 
@@ -911,7 +823,6 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
         interventions: prediction.interventions || [];
         targetDischargeDate,
         dischargeBarriers: prediction.dischargeBarriers || [],
-        resourceImplications: prediction.resourceImplications || [];
         modelId,
         modelVersion: model.version,
          'FEATURE_IMPORTANCE',
@@ -922,11 +833,10 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
       // Save prediction to database
       await this.prisma.lengthOfStayPrediction.create({
         data: losPrediction as any,
-      });
 
       // Cache the result
        {\n  {
-        const cacheKey = `los:${patientId}:${encounterId,}`;
+        const cacheKey = `los: ${patientId}:${encounterId,
         await cacheService.cacheResult('analytics:', cacheKey, losPrediction, 3600); // 1 hour
       }
 
@@ -935,12 +845,11 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
       metricsCollector.recordTimer('analytics.los_prediction_time', duration);
       metricsCollector.incrementCounter('analytics.los_predictions', 1, {
         category: losPrediction.predictionCategory,
-      });
 
       // If extended stay risk is high, publish alert event
        {\n  {
         await pubsub.publish('HIGH_EXTENDED_STAY_RISK', {
-          highExtendedStayRisk: {,
+          highExtendedStayRisk: {
             patientId,
             encounterId,
             predictedLOS: losPrediction.predictedLOS,
@@ -950,13 +859,7 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
       }
 
       return losPrediction;
-    } catch (error) {
-
-      // Record error metric
-      metricsCollector.incrementCounter('analytics.los_prediction_errors', 1, {
-        patientId,
-        errorType: error.name,
-      });
+    } catch (error) { console.error(error); });
 
       throw error;
     }
@@ -970,7 +873,6 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
       unitId?: string;
       serviceLineId?: string;
       startDate: Date,
-      endDate: Date;
       aggregation?: 'HOURLY' | 'DAILY' | 'WEEKLY' | 'MONTHLY';
       modelId?: string;
       forecastType?: 'BASELINE' | 'OPTIMISTIC' | 'PESSIMISTIC' | 'CUSTOM';
@@ -994,10 +896,10 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
 
       // Try cache first if enabled
        {\n  {
-        const cacheKey = `census:${options.facilityId,}:${options.unitId ||;
+        const cacheKey = `census: ${options.facilityId,
           'all'}:${options.serviceLineId ||
           'all'}:${startDate.toISOString()}:${endDate.toISOString()}:${aggregation}:${forecastType}`;
-        const cached = await cacheService.getCachedResult('analytics:', cacheKey);
+        const cached = await cacheService.getCachedResult('analytics: ',
          {\n  eturn cached;
       }
 
@@ -1011,8 +913,6 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
       // Select model to use
       const modelId = options.modelId || await this.selectBestModel(ModelCategory.PATIENT_FLOW, {
         facilityId: options.facilityId,
-         options.serviceLineId
-      });
 
       // Get model
       const model = await this.getModelById(modelId);
@@ -1023,7 +923,6 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
       // Call prediction API
       const prediction = await this.callPredictionAPI(model, 'census_forecast', {
         facilityId: options.facilityId,
-         options.serviceLineId;
         startDate,
         endDate,
         aggregation,
@@ -1041,7 +940,6 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
         intervals: prediction.intervals || [];
         aggregation,
         trends: prediction.trends || [],
-         prediction.seasonalPatterns || [];
         modelId,
         modelVersion: model.version,
          0,
@@ -1061,11 +959,10 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
       // Save forecast to database
       await this.prisma.censusForecast.create({
         data: censusForecast as any,
-      });
 
       // Cache the result
        {\n  {
-        const cacheKey = `census:${options.facilityId,}:${options.unitId ||;
+        const cacheKey = `census: ${options.facilityId,
           'all'}:${options.serviceLineId ||
           'all'}:${startDate.toISOString()}:${endDate.toISOString()}:${aggregation}:${forecastType}`;
         await cacheService.cacheResult('analytics:', cacheKey, censusForecast, 3600); // 1 hour
@@ -1076,10 +973,8 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
       metricsCollector.recordTimer('analytics.census_forecast_time', duration);
       metricsCollector.incrementCounter('analytics.census_forecasts', 1, {
         facilityId: options.facilityId,
-        unitId: options.unitId || 'all';
         aggregation,
         horizon: forecastHorizon.toString(),
-      });
 
       // If capacity issues predicted, publish alert event
       const capacityIssues = censusForecast.intervals.filter(
@@ -1097,13 +992,7 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
       }
 
       return censusForecast;
-    } catch (error) {
-
-      // Record error metric
-      metricsCollector.incrementCounter('analytics.census_forecast_errors', 1, {
-        facilityId: options.facilityId,
-        errorType: error.name,
-      });
+    } catch (error) { console.error(error); });
 
       throw error;
     }
@@ -1114,8 +1003,6 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
    */
   async predictCost(
     patientId: string,
-    options: {,
-      encounterId?: string;
       modelId?: string;
       includeReimbursement?: boolean;
       includeScenarios?: boolean;
@@ -1132,8 +1019,8 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
 
       // Try cache first if enabled
        {\n  {
-        const cacheKey = `cost:${patientId}:${options.encounterId || 'future',}`;
-        const cached = await cacheService.getCachedResult('analytics:', cacheKey);
+        const cacheKey = `cost: ${patientId}:${options.encounterId || 'future',
+        const cached = await cacheService.getCachedResult('analytics: ',
          {\n  eturn cached;
       }
 
@@ -1180,17 +1067,14 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
           localExplanation: [],
         },
         scenarioAnalysis: prediction.scenarioAnalysis || [],
-         await this.getHistoricalCosts(patientId)
-      };
 
       // Save prediction to database
       await this.prisma.costPrediction.create({
         data: costPrediction as any,
-      });
 
       // Cache the result
        {\n  {
-        const cacheKey = `cost:${patientId}:${options.encounterId || 'future',}`;
+        const cacheKey = `cost: ${patientId}:${options.encounterId || 'future',
         await cacheService.cacheResult('analytics:', cacheKey, costPrediction, 3600); // 1 hour
       }
 
@@ -1199,12 +1083,11 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
       metricsCollector.recordTimer('analytics.cost_prediction_time', duration);
       metricsCollector.incrementCounter('analytics.cost_predictions', 1, {
         riskLevel: costPrediction.riskLevel,
-      });
 
       // If high cost risk, publish alert event
        {\n  {
         await pubsub.publish('HIGH_COST_RISK', {
-          highCostRisk: {,
+          highCostRisk: {
             patientId,
             encounterId: options.encounterId,
              costPrediction.riskLevel,
@@ -1214,13 +1097,7 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
       }
 
       return costPrediction;
-    } catch (error) {
-
-      // Record error metric
-      metricsCollector.incrementCounter('analytics.cost_prediction_errors', 1, {
-        patientId,
-        errorType: error.name,
-      });
+    } catch (error) { console.error(error); });
 
       throw error;
     }
@@ -1253,10 +1130,7 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
       metricsCollector.incrementCounter('analytics.prediction_outcomes_recorded', 1, {
         predictionType,
       });
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**
@@ -1264,7 +1138,6 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
    */
   async recordClinicalValidation(
     predictionType: 'readmission' | 'length_of_stay' | 'cost',
-    predictionId: string;
     {
       agreement: boolean;
       notes?: string;
@@ -1276,8 +1149,6 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
         validatedBy: userId,
         validationTimestamp: new Date(),
         clinicalAssessment: validation.notes || '',
-         validation.notes
-      };
 
       switch (predictionType) {
         case 'readmission':
@@ -1304,32 +1175,26 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
       // Create audit log
       await this.auditService.createAuditLog({
         action: 'CLINICAL_VALIDATION',
-         predictionId;
         userId,
         details: ,
           predictionType,
           agreement: validation.agreement,
-      });
 
       // Record metrics
       metricsCollector.incrementCounter('analytics.prediction_validations', 1, {
         predictionType,
         agreement: validation.agreement.toString(),
-      });
 
       // Publish event
       await pubsub.publish('PREDICTION_VALIDATED', {
-        predictionValidated: {,
+        predictionValidated: {
           predictionType,
           predictionId,
           agreement: validation.agreement,
            new Date()
         },
       });
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**
@@ -1337,8 +1202,6 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
    */
   async getModelPerformanceMetrics(
     modelId: string,
-    options: {,
-      startDate?: Date;
       endDate?: Date;
       segment?: string;
     } = {}
@@ -1364,11 +1227,8 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
       switch (model.type) {
         case ModelType.CLASSIFICATION:
           performanceMetrics = this.calculateClassificationMetrics(predictions),\n    }\n    case ModelType.REGRESSION:
-          performanceMetrics = this.calculateRegressionMetrics(predictions),\n    }\n    case ModelType.TIME_SERIES:
-          performanceMetrics = this.calculateTimeSeriesMetrics(predictions),
-          break;
-        default:
-          performanceMetrics = {,};
+          performanceMetrics = this.calculateRegressionMetrics(predictions),\n    }\n    case ModelType.TIME_SERIES: performanceMetrics = this.calculateTimeSeriesMetrics(predictions),
+        default: performanceMetrics = {,
       }
 
       // Add model drift metrics
@@ -1386,18 +1246,13 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
           startDate,
           endDate,,
         predictionsCount: predictions.length,
-         predictions.filter(p => p.validation !== undefined).length;
         performanceMetrics,
         driftMetrics,
         dataQualityMetrics,
         segment: options.segment,
-      };
 
       return result;
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   // Private helper methods
@@ -1413,9 +1268,6 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
     model: PredictiveModel,
     trainingConfig: unknown,
   ): Promise<{ jobId: string, estimatedCompletionTime: Date }> {,
-    // This would be implemented to start an actual training job
-    // Here we just simulate a job
-    const jobId = `training-job-${crypto.getRandomValues([0]}`;
     const estimatedCompletionTime = new Date();
     estimatedCompletionTime.setHours(estimatedCompletionTime.getHours() + 2);
 
@@ -1424,11 +1276,7 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
 
   private async startModelDeploymentJob(
     model: PredictiveModel,
-    deploymentConfig: unknown;
   ): Promise<{ jobId: string, estimatedCompletionTime: Date }> {,
-    // This would be implemented to start an actual deployment job
-    // Here we just simulate a job
-    const jobId = `deployment-job-${crypto.getRandomValues([0]}`;
     const estimatedCompletionTime = new Date();
     estimatedCompletionTime.setMinutes(estimatedCompletionTime.getMinutes() + 30);
 
@@ -1452,14 +1300,13 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
 
     // For demonstration, just get the first active model of the category
     const models = await this.prisma.predictiveModel.findMany({
-      where: {,
+      where: {
         category,
         status: ModelStatus.DEPLOYED,
       },
        'desc'
       },
       take: 1,
-    });
 
      {\n  {
       throw new Error(`No deployed models found for category ${}`;
@@ -1470,7 +1317,6 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
 
   private async callPredictionAPI(
     model: PredictiveModel,
-     unknown;
   ): Promise<any> {
     // This would be implemented to call the actual prediction API
     // Here we just simulate a prediction
@@ -1491,7 +1337,6 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
   }
 
   private getRiskLevel(score: number): 'LOW' | 'MODERATE' | 'HIGH' | 'VERY_HIGH' {,
-     {\n  eturn 'LOW';
      {\n  eturn 'MODERATE';
      {\n  eturn 'HIGH';
     return 'VERY_HIGH';
@@ -1518,17 +1363,12 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
   private async getHistoricalReadmissionPredictions(
     patientId: string;
     encounterId?: string;
-  ): Promise<{ timestamp: Date,  string }[]> {
-    // Implementation to get historical predictions
-    return [];
+  ): Promise<{ timestamp: Date,
   }
 
   private async getHistoricalLOSPredictions(
     patientId: string,
-    encounterId: string;
-  ): Promise<{ timestamp: Date,  string }[]> {
-    // Implementation to get historical predictions
-    return [];
+  ): Promise<{ timestamp: Date,
   }
 
   private async getHistoricalCensusData(
@@ -1540,41 +1380,34 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
     return {
       days: 90,
       data: [],
-    };
   }
 
   private async getHistoricalCosts(patientId: string): Promise<any> {,
     // Implementation to get historical costs
     return {
       previousEncounters: [],
-       'STABLE'
-    };
   }
 
   private async recordReadmissionOutcome(
     predictionId: string,
-     string;
   ): Promise<void> {
     // Implementation to record readmission outcome
   }
 
   private async recordLOSOutcome(
     predictionId: string,
-     string;
   ): Promise<void> {
     // Implementation to record length of stay outcome
   }
 
   private async recordCostOutcome(
     predictionId: string,
-     string;
   ): Promise<void> {
     // Implementation to record cost outcome
   }
 
   private async getModelPredictions(
     modelId: string,
-     Date;
     segment?: string;
   ): Promise<any[]> {
     // Implementation to get model predictions
@@ -1582,33 +1415,22 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
   }
 
   private calculateClassificationMetrics(predictions: unknown[]): unknown {,
-    // Implementation to calculate classification metrics
-    return {};
   }
 
   private calculateRegressionMetrics(predictions: unknown[]): unknown {,
-    // Implementation to calculate regression metrics
-    return {};
   }
 
   private calculateTimeSeriesMetrics(predictions: unknown[]): unknown {,
-    // Implementation to calculate time series metrics
-    return {};
   }
 
   private async calculateModelDrift(model: PredictiveModel, predictions: unknown[]): Promise<any> {,
-    // Implementation to calculate model drift
-    return {};
   }
 
   private async calculateDataQualityMetrics(model: PredictiveModel, predictions: unknown[]): Promise<any> {,
-    // Implementation to calculate data quality metrics
-    return {};
   }
 
   // Mock data generators for demonstration
   private generateMockReadmissionPrediction(payload: unknown): unknown {,
-    const riskScore = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 100);
     const probability = riskScore / 100;
 
     return {
@@ -1616,12 +1438,6 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
       probability,
       confidenceInterval: [Math.max(0, probability - 0.1), Math.min(1, probability + 0.1)],
       riskFactors: [,
-        {
-          name: 'Previous Admissions',
-           '3 in last 6 months',
-           'STABLE',
-           false,
-          source: 'EHR',
         },
         {
           name: 'Medication Adherence',
@@ -1688,7 +1504,6 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
   }
 
   private generateMockLOSPrediction(payload: unknown): unknown {,
-    const predictedLOS = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 10) + 3;
     const optimizedLOS = Math.max(2, predictedLOS - Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 3));
 
     return {
@@ -1712,7 +1527,7 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
            true,
           source: 'Care Management',
       ],
-       `los-intervention-${crypto.getRandomValues([0]}-1`,
+       `los-intervention-$}-1`,
           name: 'Early Discharge Planning',
            'CARE_COORDINATION',
            1.5,
@@ -1746,7 +1561,6 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
   }
 
   private generateMockCensusForecast(payload: unknown): unknown {,
-    const startDate = new Date(payload.startDate);
     const endDate = new Date(payload.endDate);
     const days = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
 
@@ -1811,7 +1625,7 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
     }
 
     // Generate trends
-    const trends: CensusTrend[] = [,
+    const trends: CensusTrend[] = [;
       {
         trendType: 'STABLE',
         startDate: new Date(startDate),
@@ -1822,17 +1636,17 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
           { factor: 'Seasonal Pattern', contribution: 0.4 ,},
           { factor: 'Historical Trend', contribution: 0.3 ,},
           { factor: 'Admission Rate', contribution: 0.2 ,},
-        ],
+        ];
       },
     ];
 
     // Generate seasonal patterns
-    const seasonalPatterns: SeasonalPattern[] = [,
+    const seasonalPatterns: SeasonalPattern[] = [;
       {
         patternType: 'WEEKLY',
         description: 'Lower census on weekends, higher during mid-week',
         strength: 75,
-        peakTimes: ['Tuesday', 'Wednesday', 'Thursday'],
+        peakTimes: ['Tuesday', 'Wednesday', 'Thursday'];
         lowTimes: ['Saturday', 'Sunday'],
       },
     ];
@@ -1852,7 +1666,6 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
            (diff / prevCensus) * 100,
            Math.abs(diff) > 20 ? 'HIGH' : 'MEDIUM',
           explanation: diff > 0 ? 'Unexpected surge in admissions' : 'Unexpected increase in discharges',
-        });
       }
     }
 
@@ -1885,18 +1698,11 @@ export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
   }
 
   private generateMockCostPrediction(payload: unknown): unknown {,
-    const predictedTotalCost = 5000 + Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 20000);
 
     return {
       predictedTotalCost,
       confidenceInterval: [predictedTotalCost * 0.8, predictedTotalCost * 1.2],
       costBreakdown: [,
-        {
-          category: 'Room & Board',
-           35,
-          confidenceInterval: [predictedTotalCost * 0.3, predictedTotalCost * 0.4],
-          comparisonToBenchmark: 5,
-          trend: 'STABLE',
         },
         {
           category: 'Pharmacy',

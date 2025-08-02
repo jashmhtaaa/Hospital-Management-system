@@ -1,4 +1,4 @@
-import { } from "next/navigation"
+
 import { ChangeEvent, React
 import type
 import useEffect
@@ -32,7 +32,7 @@ export const dynamic = "force-dynamic";
   UseSortByState,
   TableState, // Import TableState;
 } from "react-table";
-import { } from "@/components/ui/input"
+
 import "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button"
 import { Input }
@@ -41,19 +41,16 @@ import { Skeleton }
 import { ArrowUpDown } from "lucide-react"; // Icon for sorting;
 
 // Define the interface for a single medication object;
-interface Medication { id: string; // Assuming ID is a string (like nanoid), item_code: string,
+interface Medication {
+  id: string; // Assuming ID is a string (like nanoid), item_code: string,
+}
   generic_name: string,
-  brand_name?: string | null;
   dosage_form: string,
   strength: string,
-  category_name?: string | null;
   manufacturer_name?: string | null;
   total_stock?: number | null;
   unit_of_measure?: string | null;
   prescription_required: boolean,
- }
-
-// Define API response types;
 interface MedicationsApiResponse {
     medications?: Medication[];
   error?: string;
@@ -70,7 +67,6 @@ type MedicationTableInstance = TableInstance<Medication> &;
   UseGlobalFiltersInstanceProps<Medication> & {
     // State includes parts from different hooks;
     state: UsePaginationState<Medication> &,
-      UseGlobalFiltersState<Medication> &;
       UseSortByState<Medication>;
   };
 
@@ -90,86 +86,43 @@ export default const _MedicationsListPage = () {
       setLoading(true),
       setError(undefined);
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
         const response = await fetch("/api/pharmacy/medications");
         if (!session.user) {
           const errorMessage = "Failed to fetch medications";
           try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-
-} catch (error) {
-
-            const errorData: ApiErrorResponse = await response.json(),
+            const errorData: ApiErrorResponse = await response.json();
             errorMessage = errorData.error || errorMessage;
           } catch {
             /* Ignore */;
 
           throw new Error(errorMessage);
 
-        const data: MedicationsApiResponse = await response.json(),
+        const data: MedicationsApiResponse = await response.json();
         setMedicationsData(data.medications || []);
-      } catch (error_: unknown) {
-        setError();
-          error_ instanceof Error ? error_.message : "An unknown error occurred";
-        );
-      } finally {
+      } catch (error) { console.error(error); } finally {
         setLoading(false);
 
     };
@@ -183,8 +136,7 @@ export default const _MedicationsListPage = () {
         Header: "Item Code",
         accessor: "item_code",
       },
-      {Header:"Medication",
-        (;
+      {Header: "Medication",
           { row }: CellProps<Medication> // Type the row;
         ) => (;
 >;
@@ -197,8 +149,7 @@ export default const _MedicationsListPage = () {
             )}
           </div>;
         )},
-      {Header:"Form & Strength",
-        (;
+      {Header: "Form & Strength",
           { row }: CellProps<Medication> // Type the row;
         ) => (;
 <div;
@@ -231,8 +182,7 @@ export default const _MedicationsListPage = () {
             </span>;
           );
         }},
-      {Header:"Prescription",
-        (;
+      {Header: "Prescription",
           { value }: CellProps<Medication, boolean> // Type the value;
         ) => (;
 <span;
@@ -260,14 +210,13 @@ export default const _MedicationsListPage = () {
 
   // FIX: Remove sortBy from initialState as it's not part of TableState,
   const initialState: Partial<TableState<Medication>> = {
-    // sortBy: [], // Removed: sortBy is part of UseSortByState, not TableState;
+    // sortBy: [], // Removed: sortBy is part of UseSortByState,
   };
 
   const tableInstance = useTable<Medication>( // Specify the type argument;
     {
       columns,
       data: medicationsData,
-      initialState: initialState;
       // FIX: Remove autoReset properties as they are not valid TableOptions in v7;
       // autoResetPage: false;
       // autoResetFilters: false;
@@ -294,7 +243,6 @@ export default const _MedicationsListPage = () {
     setPageSize,
     state: { pageIndex, pageSize }, // pageSize is correctly accessed from state here;
     setGlobalFilter: setTableGlobalFilter,
-  } = tableInstance;
 
   // Set initial page size after instance creation;
   useEffect(() => {
@@ -326,8 +274,6 @@ export default const _MedicationsListPage = () {
   if (!session.user) {
     return();
       <div className="container mx-auto px-4 py-8 text-red-600 dark: text-red-400 p-4 bg-red-50 dark:bg-red-900/30 rounded-md">,
-        Error: {error}
-      </div>;
     );
 
   return();
@@ -337,8 +283,7 @@ export default const _MedicationsListPage = () {
           Medications Catalog;
         </h1>;
         <Button>;
-          className="bg-teal-600 hover:bg-teal-700 text-white",
-          onClick={() => router.push("/dashboard/pharmacy/medications/add")} // Ensure route is correct;
+          className="bg-teal-600 hover: bg-teal-700 text-white",
         >;
           Add New Medication;
         </Button>;

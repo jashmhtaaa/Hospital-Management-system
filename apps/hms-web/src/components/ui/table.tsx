@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 
 import { cn } from '@/lib/utils';
@@ -33,10 +33,7 @@ const TableBody = React.forwardRef<HTMLTableSectionElement, TableBodyProps>(
   ({ className, ...props }, ref) => (
     <tbody>
       ref={ref}
-      className={cn("[&_tr:last-child]:border-0", className)}
-      {...props}
-    />
-  );
+      className={cn("[&_tr: last-child]:border-0",
 );
 TableBody.displayName = "TableBody";
 

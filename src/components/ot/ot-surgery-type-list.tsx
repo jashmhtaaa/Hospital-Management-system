@@ -13,7 +13,7 @@ import { useState
   TableHead,
   TableHeader,
   TableRow} from "@/components/ui/table";
-import { } from "lucide-react"
+
 import Trash2 } from "@/components/ui/button"
 import { Button }
 import { Edit
@@ -22,7 +22,9 @@ import { Card, CardContent } from "@/components/ui/card"; // FIX: Add missing im
 
 
 // Mock data structure - replace with actual API response type;
-interface SurgeryType {id:string,
+interface SurgeryType {
+  id:string,
+}
   string | null,
   number | null,
   updated_at: string,
@@ -34,36 +36,16 @@ export default const _OTSurgeryTypeList = () {
   useEffect(() => {
     const fetchSurgeryTypes = async () => {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
 
         setLoading(true),
         setError(undefined);
@@ -98,13 +80,9 @@ export default const _OTSurgeryTypeList = () {
             "Surgical procedure to restore normal blood flow to an obstructed coronary artery.",
             240,
             updated_at: "2025-04-26T14:00:00Z",
-          }];
         setSurgeryTypes(mockData),
         setLoading(false);
-      } catch (error_: unknown) {
-        if (!session.user) {
-          setError(error_.message);
-        } else {
+      } catch (error) { console.error(error); } else {
           setError("An unknown error occurred while fetching surgery types");
 
         setLoading(false);

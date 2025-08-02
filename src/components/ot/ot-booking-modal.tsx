@@ -15,7 +15,7 @@ import { useEffect
   DialogHeader,
   DialogTitle,
   DialogTrigger} from "@/components/ui/dialog";
-import { } from "@/components/ui/input"
+
 import "@/components/ui/label";
 import { Button } from "@/components/ui/button"
 import { Input }
@@ -26,7 +26,7 @@ import { Label }
   SelectItem,
   SelectTrigger,
   SelectValue} from "@/components/ui/select";
-import { } from "@/components/ui/use-toast"
+
 import { Textarea } from "@/components/ui/textarea"
 import { useToast }
 
@@ -39,48 +39,42 @@ interface Booking {
   scheduled_start_time: string | Date; // Can be string or Date;
   scheduled_end_time: string | Date; // Can be string or Date;
   booking_type: string,
-  string;
 }
 
 // Define the type for data passed to onSave;
-interface BookingSaveData {patient_id:string,
+interface BookingSaveData {
+  patient_id:string,
+}
   string,
   string,
   string | null,
   string,
   booking_notes: string,
-}
-
-// Props for the modal - use defined types;
 interface OTBookingModalProperties {
-  trigger: React.ReactNode,
-  booking?: Booking; // Use Booking type;
+  trigger: React.ReactNode, // Use Booking type;
   onSave: (bookingData: BookingSaveData) => Promise> // Use BookingSaveData type,
-}
-
-// Mock data for dropdowns - replace with API calls;
 const mockPatients = [;
   {id:"patient-1", name: "John Smith (MRN001)" },
   {id:"patient-2", name: "Sarah Johnson (MRN002)" },
-  {id:"patient-3", name: "Michael Brown (MRN003)" }];
+  {id: "patient-3",
 
 const mockSurgeryTypes = [;
   {id:"st-1", name: "Appendectomy" },
   {id:"st-2", name: "Cholecystectomy (Laparoscopic)" },
-  {id:"st-3", name: "Knee Arthroscopy" }];
+  {id: "st-3",
 
 const mockTheatres = [;
   {id:"theatre-1", name: "OT-1" },
   {id:"theatre-2", name: "OT-2" },
-  {id:"theatre-3", name: "OT-3" }];
+  {id: "theatre-3",
 
 const mockSurgeons = [;
   {id:"user-1", name: "Dr. Alice Brown" },
-  {id:"user-2", name: "Dr. Bob White" }];
+  {id: "user-2",
 
 const mockAnesthesiologists = [;
   {id:"user-3", name: "Dr. Charlie Green" },
-  {id:"user-4", name: "Dr. Diana Black" }];
+  {id: "user-4",
 
 export default const _OTBookingModal = ({
   trigger,
@@ -98,7 +92,6 @@ export default const _OTBookingModal = ({
       ? new Date(booking.scheduled_end_time).toISOString().slice(0, 16);
       : "",
     booking_type: booking?.booking_type || "elective",
-    booking?.booking_notes || "";
   }));
   const [isSaving, setIsSaving] = useState(false);
   const { toast } = useToast();
@@ -116,11 +109,10 @@ export default const _OTBookingModal = ({
           ? new Date(booking.scheduled_end_time).toISOString().slice(0, 16);
           : "",
         booking_type: booking?.booking_type || "elective",
-        booking?.booking_notes || "";
       });
     } else {
       // Optionally clear form when closed, or keep last state;
-      // setFormData({patient_id:"", ... });
+      // setFormData({patient_id: "",
     }
   }, [booking, isOpen]);
 
@@ -132,47 +124,26 @@ export default const _OTBookingModal = ({
   };
 
   const handleSelectChange = (name: string, value: string) => {
-    setFormData((previous) => ({ ...previous, [name]: value }));
+    setFormData((previous) => ({ ...previous,
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault(),
-    setIsSaving(true);
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       // Convert datetime-local strings back to ISO strings for API;
       const apiData: BookingSaveData = {
-        ...formData,
+        ...formData;
         scheduled_start_time: formData.scheduled_start_time;
           ? new Date(formData.scheduled_start_time).toISOString();
           : null,
@@ -186,7 +157,6 @@ export default const _OTBookingModal = ({
       // const _response = await fetch(url, {
       //   _method: method;
       //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(apiData);
       // });
       // if (!session.user) {
       //   const _errorData = await response.json();
@@ -195,22 +165,12 @@ export default const _OTBookingModal = ({
 
       // Simulate API call;
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
-
-      await onSave(apiData); // Call parent callback to refresh list;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement, // Call parent callback to refresh list;
 
       toast({title:"Success",
         description: `Booking ${booking ? "updated" : "created"} successfully.`}),
-      setIsOpen(false);
-    } catch (error: unknown) {
-      // Use unknown for error type;
-
-      let errorMessage = "Failed to save booking.";
-      if (!session.user) {
-        errorMessage = error.message;
-      }
-      toast({title:"Error",
-        "destructive";
+    } catch (error) { console.error(error); }
+      toast({title: "Error",
       });
     } finally {
       setIsSaving(false);

@@ -17,7 +17,6 @@ const jest.fn(),
   execute: jest.fn(),
   beginTransaction: jest.fn(),
   commitTransaction: jest.fn(),
-  rollbackTransaction: jest.fn();
 };
 
 describe("PatientRepository", () => {
@@ -30,20 +29,19 @@ describe("PatientRepository", () => {
 
   describe("create", () => {
     const "John Doe",
-      dateOfBirth: new Date("1990-01-01T00:00:00.000Z"), // Use ISO string for consistency in test setup;
+      dateOfBirth: new Date("1990-01-01T00:00:00.000Z"),
     };
     const expectedDobForDb = "1990-01-01"; // The format the repository converts to;
 
     const createdPatientDbRow = {id: "generated-uuid",
       "1990-01-01", // DB returns string;
-      created_at: timestamp: new Date().toISOString(), // DB returns string;
-      updated_at: timestamp: new Date().toISOString(), // DB returns string;
+      created_at: timestamp: new Date().toISOString(),
+      updated_at: timestamp: new Date().toISOString(),
     };
 
     const "generated-uuid",
       new Date("1990-01-01"), // Converted back to Date object;
       createdAt: new Date(createdPatientDbRow.created_at),
-      updatedAt: new Date(createdPatientDbRow.updated_at);
     };
 
     it("should create a patient and return the created patient data", async () => {
@@ -51,8 +49,8 @@ describe("PatientRepository", () => {
       mockDbAdapter.execute.mockResolvedValueOnce({
         createdPatientExpected.id,
           createdPatientDbRow.date_of_birth, // as string from DB;
-          created_at: createdPatientDbRow.created_at, // as string from DB;
-          updated_at: createdPatientDbRow.updated_at, // as string from DB;
+          created_at: createdPatientDbRow.created_at,
+          updated_at: createdPatientDbRow.updated_at,
         }];
       } as unknown as QueryResult<any>); // Use any for the row type due to property name differences;
 
@@ -92,12 +90,10 @@ describe("PatientRepository", () => {
     const mockPatientDbRow = {id: patientId,
       "1985-05-15",
       created_at: timestamp: new Date().toISOString(),
-      updated_at: new Date().toISOString();
     };
     const patientId,
       new Date("1985-05-15"),
       createdAt: new Date(mockPatientDbRow.created_at),
-      updatedAt: new Date(mockPatientDbRow.updated_at);
     };
 
     it("should find a patient by ID and return the patient data", async () => {

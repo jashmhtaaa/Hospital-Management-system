@@ -37,6 +37,8 @@ export const _GET = async (request: NextRequest) => {,
     const session: IronSession<IronSessionData> = await getSession(),
     // Check session and user existence first
      {\n  {
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
     // Role check example (adjust roles as needed)
@@ -117,6 +119,8 @@ export const _POST = async (request: NextRequest) => {,
     const session: IronSession<IronSessionData> = await getSession(),
     // Check session and user existence first
      {\n  {
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
     // Use the user directly from session

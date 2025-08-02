@@ -66,6 +66,8 @@ export const POST = async (req: NextRequest) => {,
     const validationResult = validateBarcodeVerificationRequest(data);
      {\n  {
       return NextResponse.json(
+  return NextResponse.json({ message: "Not implemented" });
+};
         { error: 'Validation failed', details: validationResult.errors ,},
         { status: 400 },
       );

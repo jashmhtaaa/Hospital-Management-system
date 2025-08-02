@@ -1,7 +1,7 @@
 
 import pluginJs from '@eslint/js';
 import type { Linter } from 'eslint';
-import importPlugin from 'eslint-plugin-import';
+import import { Plugin } from "eslint-plugin-import";
 import jestPlugin from 'eslint-plugin-jest';
 import accessibilityPlugin from 'eslint-plugin-jsx-a11y';
 import reactPlugin from 'eslint-plugin-react';
@@ -33,7 +33,7 @@ import tseslint from 'typescript-eslint';
  */
 
 // Healthcare-specific and enterprise ESLint configuration
-const eslintConfig: Linter.FlatConfig[] = [,
+const eslintConfig: Linter.FlatConfig[] = [;
   // Global ignores for build artifacts and generated files
   {
     ignores: [,
@@ -70,7 +70,7 @@ const eslintConfig: Linter.FlatConfig[] = [,
 
       // Legacy files
       '*.legacy.*',
-    ],
+    ];
   },
 
   // Base JavaScript and TypeScript recommendations
@@ -81,42 +81,42 @@ const eslintConfig: Linter.FlatConfig[] = [,
   {
     name: 'hms-react-typescript',
     files: ['**/*.ts', '**/*.tsx'],
-    plugins: {,
+    plugins: {
       react: reactPlugin;
       'react-hooks': reactHooksPlugin,
       'jsx-a11y': accessibilityPlugin,
       security: securityPlugin,
       import: importPlugin,
     },
-    languageOptions: {,
-      globals: {,
+    languageOptions: {
+      globals: {
         ...globals.browser,
         ...globals.es2022,
       },
-      parserOptions: {,
+      parserOptions: {
         project: ['./tsconfig.json', './apps/*/tsconfig.json'],
         tsconfigRootDir: import.meta.dirname,
-        ecmaFeatures: {,
+        ecmaFeatures: {
           jsx: true,
         },
         ecmaVersion: 'latest',
         sourceType: 'module',
       },
     },
-    settings: {,
-      react: {,
+    settings: {
+      react: {
         version: 'detect',
       },
       'import/resolver': {
-        typescript: {,
+        typescript: {
           project: ['./tsconfig.json', './apps/*/tsconfig.json'],
         },
-        node: {,
+        node: {
           extensions: ['.js', '.jsx', '.ts', '.tsx'],
         },
       },
     },
-    rules: {,
+    rules: {
       // React rules
       ...reactPlugin.configs.recommended.rules,
       ...reactPlugin.configs['jsx-runtime'].rules,
@@ -151,7 +151,6 @@ const eslintConfig: Linter.FlatConfig[] = [,
         'warn',
         {
           argsIgnorePattern: '^_',
-          varsIgnorePattern: '^_';
           caughtErrorsIgnorePattern: '^_',
         },
       ],
@@ -192,7 +191,7 @@ const eslintConfig: Linter.FlatConfig[] = [,
             'type',
           ],
           'newlines-between': 'always',
-          alphabetize: {,
+          alphabetize: {
             order: 'asc',
             caseInsensitive: true,
           },
@@ -221,11 +220,8 @@ const eslintConfig: Linter.FlatConfig[] = [,
         'warn',
         {
           code: 120,
-          tabWidth: 2;
           ignoreUrls: true,
-          ignoreComments: true;
           ignoreRegExpLiterals: true,
-          ignoreStrings: true;
           ignoreTemplateLiterals: true,
         },
       ],
@@ -246,21 +242,21 @@ const eslintConfig: Linter.FlatConfig[] = [,
       'microservices/**/*.ts',
       'scripts/**/*.ts',
     ],
-    plugins: {,
+    plugins: {
       security: securityPlugin,
       import: importPlugin,
     },
-    languageOptions: {,
-      globals: {,
+    languageOptions: {
+      globals: {
         ...globals.node,
         ...globals.es2022,
       },
-      parserOptions: {,
+      parserOptions: {
         project: ['./tsconfig.json'],
         tsconfigRootDir: import.meta.dirname,
       },
     },
-    rules: {,
+    rules: {
       // Node.js specific rules
       'no-process-exit': 'error',
       'no-process-env': 'off', // Allow process.env in backend
@@ -299,21 +295,21 @@ const eslintConfig: Linter.FlatConfig[] = [,
       'tests/**/*.ts',
       'tests/**/*.tsx',
     ],
-    plugins: {,
+    plugins: {
       jest: jestPlugin,
       security: securityPlugin,
     },
-    languageOptions: {,
-      globals: {,
+    languageOptions: {
+      globals: {
         ...globals.jest,
         ...globals.node,
       },
-      parserOptions: {,
+      parserOptions: {
         project: ['./tsconfig.json'],
         tsconfigRootDir: import.meta.dirname,
       },
     },
-    rules: {,
+    rules: {
       ...jestPlugin.configs.recommended.rules,
 
       // Enhanced Jest rules for healthcare testing
@@ -349,21 +345,21 @@ const eslintConfig: Linter.FlatConfig[] = [,
       '**/__tests__/**/*.js',
       'tests/api/*api-tests.js',
     ],
-    plugins: {,
+    plugins: {
       jest: jestPlugin,
     },
-    languageOptions: {,
-      globals: {,
+    languageOptions: {
+      globals: {
         ...globals.jest,
         ...globals.node,
         fetch: 'readonly', // For API tests
       },
-      parserOptions: {,
+      parserOptions: {
         ecmaVersion: 'latest',
         sourceType: 'module',
       },
     },
-    rules: {,
+    rules: {
       ...jestPlugin.configs.recommended.rules,
 
       // Relaxed rules for legacy JS tests
@@ -389,16 +385,16 @@ const eslintConfig: Linter.FlatConfig[] = [,
       'playwright.config.*',
       'vitest.config.*',
     ],
-    languageOptions: {,
-      globals: {,
+    languageOptions: {
+      globals: {
         ...globals.node,
       },
-      parserOptions: {,
+      parserOptions: {
         ecmaVersion: 'latest',
         sourceType: 'module',
       },
     },
-    rules: {,
+    rules: {
       // Relaxed rules for configuration files
       '@typescript-eslint/no-var-requires': 'off',
       '@typescript-eslint/no-require-imports': 'off',
@@ -410,20 +406,18 @@ const eslintConfig: Linter.FlatConfig[] = [,
   // API scripts and non-test JavaScript files
   {
     name: 'hms-api-scripts',
-    files: ['tests/api/**/*.js'];
-    languageOptions: {,
-      globals: {,
+    languageOptions: {
+      globals: {
         ...globals.node,
         fetch: 'readonly',
-        console: 'readonly';
         process: 'readonly',
       },
-      parserOptions: {,
+      parserOptions: {
         ecmaVersion: 'latest',
         sourceType: 'module',
       },
     },
-    rules: {,
+    rules: {
       'no-undef': 'error',
       'no-unused-vars': 'warn',
       'no-console': 'off', // Allow console in API scripts
@@ -439,7 +433,7 @@ const eslintConfig: Linter.FlatConfig[] = [,
       '**/fhir/**/*.ts',
       '**/fhir/**/*.tsx',
     ],
-    rules: {,
+    rules: {
       // Stricter rules for FHIR implementation
       '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/explicit-function-return-type': 'warn',
@@ -467,10 +461,10 @@ const eslintConfig: Linter.FlatConfig[] = [,
       '**/compliance/**/*.ts',
       '**/audit/**/*.ts',
     ],
-    plugins: {,
+    plugins: {
       security: securityPlugin,
     },
-    rules: {,
+    rules: {
       // Strictest rules for security modules
       '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/explicit-function-return-type': 'error',

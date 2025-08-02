@@ -6,7 +6,6 @@ const project = new Project({
     tsConfigFilePath: path.join(__dirname, '../tsconfig.json'),
     skipAddingFilesFromTsConfig: false,
     skipFileDependencyResolution: false,
-});
 
 // Fix common import/export patterns
 project.getSourceFiles().forEach(file => {
@@ -37,8 +36,7 @@ project.getSourceFiles().forEach(file => {
                 exp.replaceWithText(fixedText);
             }
         });
-    } catch (error) {
-        console.error(`Error processing ${filePath}:`, error);
+    } catch (error) { console.error(error); }:`, error);
     }
 });
 

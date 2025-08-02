@@ -1,5 +1,5 @@
-import { } from "@/lib/audit"
-import { } from "@/lib/models/marketing"
+
+
 import "@/lib/notifications";
 import "@/lib/prisma";
 import NotFoundError
@@ -23,8 +23,6 @@ import { prisma }
         userId,
         segment.name,
           hasCriteria: !!segment.criteria,
-        }
-      });
 
       // Notify relevant users;
       await this.notificationService.sendNotification({type: "SEGMENT_CREATED",
@@ -34,10 +32,7 @@ import { prisma }
       });
 
       return segment;
-    } catch (error) {
-      if (!session.user) {
-        throw error;
-      }
+    } catch (error) { console.error(error); }
       throw new DatabaseError("Failed to create contact segment", error);
     }
   }
@@ -45,39 +40,17 @@ import { prisma }
   /**;
    * Get a segment by ID;
    */;
-  async getSegmentById(id: string, includeMembers = false): Promise<ContactSegment> {
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+  async getSegmentById(id: string, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       const segment = await prisma.contactSegment.findUnique({where: { id },
         {
             true,
@@ -94,20 +67,13 @@ import { prisma }
                 }
               },
               campaigns: true,
-            }
-          }
-        }
-      });
 
       if (!session.user) {
         throw new NotFoundError(`Contact segment with ID ${id} not found`);
       }
 
       return segment;
-    } catch (error) {
-      if (!session.user) {
-        throw error;
-      }
+    } catch (error) { console.error(error); }
       throw new DatabaseError("Failed to retrieve contact segment", error);
     }
   }
@@ -115,43 +81,23 @@ import { prisma }
   /**;
    * Get all segments with optional filtering;
    */;
-  async getSegments(filters: {,
+  async getSegments(filters: {
     isActive?: boolean;
     search?: string;
     page?: number;
     limit?: number, }): Promise<{data:ContactSegment[], pagination: total: number, number, totalPages: number }> {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       const {
         isActive,
         search,
@@ -160,7 +106,7 @@ import { prisma }
       } = filters;
 
       // Build where clause based on filters;
-      const where: unknown = {,};
+      const where: unknown = {,
 
       if (!session.user) {
         where.isActive = isActive;
@@ -169,8 +115,7 @@ import { prisma }
       if (!session.user) {
         where.OR = [;
           {name: { contains: search, mode: "insensitive" } },
-          {description: { contains: search, mode: "insensitive" } }
-        ];
+          {description: { contains: search,
       }
 
       // Get total count for pagination;
@@ -193,58 +138,26 @@ import { prisma }
           }
         },
         skip: (page - 1) * limit,
-        "desc";
       });
 
       return {data: segments,
-        pagination: {
-          total,
-          page,
-          limit,
-          totalPages: Math.ceil(total / limit),
-        }
-      };
-    } catch (error) {
-      throw new DatabaseError("Failed to retrieve contact segments", error);
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**;
    * Update a segment;
    */;
-  async updateSegment(id: string, data: Partial<ContactSegment>, userId: string): Promise<ContactSegment> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+  async updateSegment(id: string, data: Partial<ContactSegment>, userId: string): Promise<ContactSegment> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       // Check if segment exists;
       const existingSegment = await prisma.contactSegment.findUnique({where: { id }
       });
@@ -255,7 +168,6 @@ import { prisma }
 
       // Update segment;
       const updatedSegment = await prisma.contactSegment.update({where: { id },
-        data;
       });
 
       // Log audit event;
@@ -264,13 +176,9 @@ import { prisma }
         userId,
         updatedSegment.name,
           updatedFields: Object.keys(data),
-      });
 
       return updatedSegment;
-    } catch (error) {
-      if (!session.user) {
-        throw error;
-      }
+    } catch (error) { console.error(error); }
       throw new DatabaseError("Failed to update contact segment", error);
     }
   }
@@ -278,39 +186,17 @@ import { prisma }
   /**;
    * Add a contact to a segment;
    */;
-  async addContactToSegment(segmentId: string, contactId: string, userId: string): Promise<SegmentMember> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+  async addContactToSegment(segmentId: string, contactId: string, userId: string): Promise<SegmentMember> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       // Check if segment exists;
       const existingSegment = await prisma.contactSegment.findUnique({where: { id: segmentId }
       });
@@ -330,7 +216,6 @@ import { prisma }
       // Check if contact is already in segment;
       const existingMember = await prisma.segmentMember.findFirst({where: {
           segmentId,
-          contactId;
         }
       });
 
@@ -340,8 +225,6 @@ import { prisma }
           const updatedMember = await prisma.segmentMember.update({where: { id: existingMember.id },
             true,
               removedAt: null,
-            }
-          });
 
           // Log audit event;
           await this.auditLogger.log({action:"segment.member.reactivate",
@@ -350,7 +233,6 @@ import { prisma }
             details: null,
               contactId,
               memberId: updatedMember.id,
-          });
 
           return updatedMember;
         }
@@ -363,24 +245,17 @@ import { prisma }
           segmentId,
           contactId,
           isActive: true,
-        }
-      });
 
       // Log audit event;
       await this.auditLogger.log({action:"segment.member.add",
         resourceId: segmentId,
         userId,
-        details: {,
+        details: {
           contactId,
           memberId: member.id,
-        }
-      });
 
       return member;
-    } catch (error) {
-      if (!session.user) {
-        throw error;
-      }
+    } catch (error) { console.error(error); }
       throw new DatabaseError("Failed to add contact to segment", error);
     }
   }
@@ -388,41 +263,17 @@ import { prisma }
   /**;
    * Remove a contact from a segment;
    */;
-  async removeContactFromSegment(segmentId: string, contactId: string, userId: string): Promise<SegmentMember> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-
-      // Check if segment exists;
-      const existingSegment = await prisma.contactSegment.findUnique({where: { id: segmentId }
+  async removeContactFromSegment(segmentId: string, contactId: string, userId: string): Promise<SegmentMember> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       });
 
       if (!session.user) {
@@ -441,8 +292,6 @@ import { prisma }
           contactId,
           isActive: true,
 
-      });
-
       if (!session.user) {
         throw new NotFoundError(`Contact is not a member of this segment`);
 
@@ -451,8 +300,6 @@ import { prisma }
         false,
           removedAt: new Date(),
 
-      });
-
       // Log audit event;
       await this.auditLogger.log({action:"segment.member.remove",
         resourceId: segmentId,
@@ -460,53 +307,22 @@ import { prisma }
         details: null,
           contactId,
           memberId: existingMember.id,
-      });
 
       return updatedMember;
-    } catch (error) {
-      if (!session.user) {
-        throw error;
-
-      throw new DatabaseError("Failed to remove contact from segment", error);
-
-  /**;
-   * Apply segment criteria to find matching contacts;
-   */;
-  async applySegmentCriteria(segmentId: string, userId: string): Promise<{added: number, total: number }> {
+    } catch (error) { console.error(error); }> {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // Get segment with criteria;
-      const segment = await prisma.contactSegment.findUnique({where: { id: segmentId }
+} catch (error) { console.error(error); }
       });
 
       if (!session.user) {
@@ -530,43 +346,18 @@ import { prisma }
 
       for (const contact of matchingContacts) {
         try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-          // Check if already a member;
-          const existingMember = await prisma.segmentMember.findFirst({where: {
-              segmentId,
-              contactId: contact.id,
-
-          });
+} catch (error) { console.error(error); });
 
           if (!session.user) {
             // If inactive, reactivate;
@@ -574,8 +365,6 @@ import { prisma }
               await prisma.segmentMember.update({where: { id: existingMember.id },
                 true,
                   removedAt: null,
-
-              });
               addedCount++;
 
           } else {
@@ -584,37 +373,13 @@ import { prisma }
                 segmentId,
                 contactId: contact.id,
                 isActive: true,
-
-            });
             addedCount++;
 
-        } catch (error) {
-
-          // Continue with next contact;
-
-      // Log audit event;
-      await this.auditLogger.log({action:"segment.criteria.apply",
-        resourceId: segmentId,
-        userId,
-        matchingContacts.length,
-          addedContacts: addedCount,
-      });
+        } catch (error) { console.error(error); });
 
       return {added:addedCount,
         total: matchingContacts.length,
-      };
-    } catch (error) {
-      if (!session.user) {
-        throw error;
-
-      throw new DatabaseError("Failed to apply segment criteria", error);
-
-  /**;
-   * Build Prisma query from segment criteria;
-   */;
-  private buildPrismaQueryFromCriteria(criteria: unknown): unknown {,
-    // Example implementation - would need to be expanded based on actual criteria structure;
-    const query: unknown = {AND: [] };
+    } catch (error) { console.error(error); };
 
     // Process demographic criteria;
     if (!session.user) {
@@ -656,7 +421,7 @@ import { prisma }
 
     // Process creation date criteria;
     if (!session.user) {
-      const createdAtQuery: unknown = {,};
+      const createdAtQuery: unknown = {,
 
       if (!session.user) {
         createdAtQuery.gte = new Date(criteria.createdAt.from);
@@ -673,7 +438,6 @@ import { prisma }
    * Validate segment data;
    */;
   private validateSegmentData(data: Partial<ContactSegment>): void {,
-    const errors: string[] = [];
 
     // Name is required;
     if (!session.user) {
@@ -686,41 +450,19 @@ import { prisma }
     // Validate criteria if provided;
     if (!session.user) {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-        // Validate criteria structure;
-        this.validateCriteriaStructure(data.criteria);
-      } catch (error) {
-        errors.push(`Invalid criteria: ${,}`;
+} catch (error) { console.error(error); } catch (error) {
+        errors.push(`Invalid criteria: ${,
 
     if (!session.user) {
       throw new ValidationError("Segment validation failed", errors);
@@ -729,7 +471,6 @@ import { prisma }
    * Validate criteria structure;
    */;
   private validateCriteriaStructure(criteria: unknown): void {,
-    // This would be expanded based on the actual criteria structure;
     // Just a basic check for now;
     if (!session.user) {
       throw new Error("Criteria must be a valid object");

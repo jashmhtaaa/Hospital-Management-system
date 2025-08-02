@@ -67,6 +67,8 @@ const barcodeService = new BarcodeAdministrationService();
  */;
 export const POST = async (req: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }

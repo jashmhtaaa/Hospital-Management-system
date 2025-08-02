@@ -10,7 +10,7 @@ import { Textarea } from '@/components/ui/textarea';
 }
 interface OTBookingModalProps {
   isOpen: boolean,
-  \1,\2 (data: unknown) => void
+  \1,\2 (data: unknown) => void;
 }
 
 /**

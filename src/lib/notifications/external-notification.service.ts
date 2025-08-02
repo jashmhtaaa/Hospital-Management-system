@@ -1,4 +1,4 @@
-import { } from "zod"
+
 import {  PrismaClient  } from "@prisma/client"
 import {  z  } from "@/lib/database"
 
@@ -21,7 +21,6 @@ export const NotificationConfigSchema = z.object({{
   z.enum(["twilio", "whatsapp_business", "messagebird"]),
     config: z.record(z.string()),
     enabled: z.boolean().default(true),
-  }).optional()});
 
 // Notification Template Schema;
 export const NotificationTemplateSchema = z.object({name: z.string().min(1, "Template name is required"),
@@ -38,13 +37,12 @@ export const NotificationTemplateSchema = z.object({name: z.string().min(1, "Tem
     "marketing",
     "general";
   ]),
-  subject: z.string().optional(), // For email;
+  subject: z.string().optional(),
   body: z.string().min(1, "Template body is required"),
-  variables: z.array(z.string()).default([]), // Available variables for substitution;
+  variables: z.array(z.string()).default([]),
   priority: z.enum(["low", "medium", "high", "urgent"]).default("medium"),
   status: z.enum(["active", "inactive", "draft"]).default("active"),
   createdBy: z.string(),
-});
 
 // Notification Request Schema;
 export const NotificationRequestSchema = z.object({templateId: z.string().optional(),
@@ -57,12 +55,11 @@ export const NotificationRequestSchema = z.object({templateId: z.string().option
   }),
   subject: z.string().optional(),
   message: z.string().min(1, "Message is required"),
-  variables: z.record(z.string()).optional(), // Variables for template substitution;
+  variables: z.record(z.string()).optional(),
   priority: z.enum(["low", "medium", "high", "urgent"]).default("medium"),
-  scheduledAt: z.date().optional(), // For scheduled notifications;
+  scheduledAt: z.date().optional(),
   metadata: z.record(z.any()).optional(),
   sender: z.string(),
-});
 
 // Type definitions;
 export type NotificationConfig = z.infer<typeof NotificationConfigSchema>;
@@ -96,8 +93,7 @@ class TwilioSMSProvider implements ISMSProvider {
   private authToken: string,
   private fromNumber: string,
 
-  constructor(config: Record<string, string>) {
-    this.accountSid = config.accountSid || process.env.TWILIO_ACCOUNT_SID || "";
+  constructor(config: Record<string,
     this.authToken = config.authToken || process.env.TWILIO_AUTH_TOKEN || "";
     this.fromNumber = config.fromNumber || process.env.TWILIO_PHONE_NUMBER || "";
 
@@ -108,37 +104,17 @@ class TwilioSMSProvider implements ISMSProvider {
 
   async sendSMS(to: string, message: string, metadata?: Record<string, unknown>) {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       // In production, use actual Twilio SDK;
       // const client = twilio(this.accountSid, this.authToken);
       // const result = await client.messages.create({
@@ -153,16 +129,11 @@ class TwilioSMSProvider implements ISMSProvider {
         "-0.0075", // Typical SMS cost;
       }
 
-      /* SECURITY: Console statement removed */,}...`);
+      /* SECURITY: Console statement removed */,
 
       return {id: result.sid,
-        Math.abs(Number.parseFloat(result.price || "0"));
       };
-    } catch (error) {
-      /* SECURITY: Console statement removed */,
-      return {id:"",
-        error instanceof Error ? error.message : "Unknown error";
-      };
+    } catch (error) { console.error(error); };
     }
   }
 }
@@ -173,8 +144,7 @@ class SendGridEmailProvider implements IEmailProvider {
   private fromEmail: string,
   private fromName: string,
 
-  constructor(config: Record<string, string>) {
-    this.apiKey = config.apiKey || process.env.SENDGRID_API_KEY || "";
+  constructor(config: Record<string,
     this.fromEmail = config.fromEmail || process.env.SENDGRID_FROM_EMAIL || "";
     this.fromName = config.fromName || process.env.SENDGRID_FROM_NAME || "Hospital Management System";
 
@@ -185,37 +155,17 @@ class SendGridEmailProvider implements IEmailProvider {
 
   async sendEmail(to: string, subject: string, body: string, isHtml = true, metadata?: Record<string, unknown>) {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       // In production, use actual SendGrid SDK;
       // const _sgMail = require("@sendgrid/mail");
       // sgMail.setApiKey(this.apiKey);
@@ -236,11 +186,7 @@ class SendGridEmailProvider implements IEmailProvider {
       return {id: result.messageId,
         0.001, // Typical email cost;
       }
-    } catch (error) {
-      /* SECURITY: Console statement removed */,
-      return {id:"",
-        error instanceof Error ? error.message : "Unknown error";
-      };
+    } catch (error) { console.error(error); };
     }
   }
 }
@@ -251,8 +197,7 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
   private authToken: string,
   private fromNumber: string,
 
-  constructor(config: Record<string, string>) {
-    this.accountSid = config.accountSid || process.env.TWILIO_ACCOUNT_SID || "";
+  constructor(config: Record<string,
     this.authToken = config.authToken || process.env.TWILIO_AUTH_TOKEN || "";
     this.fromNumber = config.fromNumber || process.env.TWILIO_WHATSAPP_NUMBER || "";
 
@@ -263,43 +208,23 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
 
   async sendWhatsApp(to: string, message: string, metadata?: Record<string, unknown>) {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       // In production, use actual Twilio SDK;
       // const client = twilio(this.accountSid, this.authToken);
       // const result = await client.messages.create({
       //   body: message;
       //   from: `whatsapp:${this.fromNumber,}`,
-      //   to: `whatsapp:${to,}`;
+      //   to: `whatsapp:${to,
       // });
 
       // Mock implementation for demonstration;
@@ -308,16 +233,11 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
         "-0.005", // Typical WhatsApp cost;
       }
 
-      /* SECURITY: Console statement removed */,}...`);
+      /* SECURITY: Console statement removed */,
 
       return {id: result.sid,
-        Math.abs(Number.parseFloat(result.price || "0"));
       };
-    } catch (error) {
-      /* SECURITY: Console statement removed */,
-      return {id:"",
-        error instanceof Error ? error.message : "Unknown error";
-      };
+    } catch (error) { console.error(error); };
     }
   }
 }
@@ -337,75 +257,39 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
           this.smsProvider = new TwilioSMSProvider(this.config.sms.config)\n    }\n    case "aws_sns": any;
           // Initialize AWS SNS provider;
           /* SECURITY: Console statement removed */break,
-        case "messagebird": any;
           // Initialize MessageBird provider;
           /* SECURITY: Console statement removed */break,
-      }
-    }
-
-    // Initialize Email Provider;
     if (!session.user) {
       switch (this.config.email.provider) {
         case "sendgrid": any;
           this.emailProvider = new SendGridEmailProvider(this.config.email.config)\n    }\n    case "aws_ses": any;
           // Initialize AWS SES provider;
           /* SECURITY: Console statement removed */break,
-        case "mailgun": any;
           // Initialize Mailgun provider;
           /* SECURITY: Console statement removed */break,
-        case "smtp": any;
           // Initialize SMTP provider;
           /* SECURITY: Console statement removed */break,
-      }
-    }
-
-    // Initialize WhatsApp Provider;
     if (!session.user) {
       switch (this.config.whatsapp.provider) {
         case "twilio": any;
           this.whatsappProvider = new TwilioWhatsAppProvider(this.config.whatsapp.config)\n    }\n    case "whatsapp_business": any;
           // Initialize WhatsApp Business API provider;
           /* SECURITY: Console statement removed */break,
-        case "messagebird": any;
           // Initialize MessageBird WhatsApp provider;
           /* SECURITY: Console statement removed */break,
-      }
-    }
-  }
-
-  // Template Management;
   async createTemplate(template: NotificationTemplate): Promise<NotificationTemplate & {id: string }> {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
+} catch (error) { console.error(error); } catch (error) {
 
       const validated = NotificationTemplateSchema.parse(template);
 
@@ -418,65 +302,23 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
       return {
         ...validated,
         id};
-    } catch (error) {
-      throw new Error(`Failed to create notification template: $error instanceof Error ? error.message : "Unknown error"`),
-
-  async getTemplate(id: string): Promise<NotificationTemplate | null> {,
-    // In production, fetch from database;
-    // For now, return mock template;
-    return {
-      id,
-      name: "Appointment Reminder",
-      "appointment_reminder",
-      body: "Dear {{patientName},}, your appointment is scheduled for {{appointmentDate}} at {{appointmentTime}}.",
+    } catch (error) { console.error(error); },}, your appointment is scheduled for {{appointmentDate}} at {{appointmentTime}}.",
       variables: ["patientName", "appointmentDate", "appointmentTime"],
       priority: "medium",
-      "system";
 
   // Core Notification Methods;
-  async sendNotification(request: NotificationRequest): Promise<NotificationResult> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+  async sendNotification(request: NotificationRequest): Promise<NotificationResult> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const validated = NotificationRequestSchema.parse(request);
-
-      let finalMessage = validated.message;
-      let subject = validated.subject;
-
-      // If template is specified, load and process it;
-      if (!session.user) {
-        const template = await this.getTemplate(validated.templateId);
-        if (!session.user) {
-          finalMessage = this.processTemplate(template.body, validated.variables || {});
+} catch (error) { console.error(error); });
           if (!session.user) {
             subject = this.processTemplate(template.subject, validated.variables || {});
 
@@ -486,49 +328,20 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
 
       // Send immediately;
       return this.sendImmediateNotification(validated, finalMessage, subject);
-    } catch (error) {
-      throw new Error(`Failed to send notification: $error instanceof Error ? error.message : "Unknown error"`),
-
-  private async sendImmediateNotification();
-    request: NotificationRequest,
-    message: string,
-    subject?: string;
-  ): Promise<NotificationResult> {
-    const notificationId = `notif_$crypto.getRandomValues([0]_$crypto.getRandomValues([0] / (0xFFFFFFFF + 1).toString(36).substr(2, 9)`;
-
-    try {
-} catch (error) {
+    } catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      let result: {id:string, status: "sent" | "failed", errorMessage?: string; cost?: number };
+} catch (error) { console.error(error); };
 
       switch (request.type) {
         case "sms": any;
@@ -571,33 +384,22 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
 
         default: null,
           throw new Error(`Unsupported notification type: $request.type`),
-
-      // Log notification in database (implement actual storage);
       await this.logNotification(notificationId, request, result);
 
       return {id: notificationId,
         result.id,
         result.status === "sent" ? new Date() : undefined,
         cost: result.cost,
-      };
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "Unknown error";
-
-      // Log failed notification;
-      await this.logNotification(notificationId, request, {id:"",
-        status: "failed",
-        errorMessage});
+    } catch (error) { console.error(error); });
 
       return {id:notificationId,
         status: "failed",
         errorMessage,
         sentAt: new Date(),
-      };
 
   private async scheduleNotification();
     request: NotificationRequest,
     message: string,
-    subject?: string;
   ): Promise<NotificationResult> {
     const notificationId = `scheduled_$crypto.getRandomValues([0]_$crypto.getRandomValues([0] / (0xFFFFFFFF + 1).toString(36).substr(2, 9)`;
 
@@ -608,7 +410,6 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
 
   // Bulk Notifications;
   async sendBulkNotifications(requests: NotificationRequest[]): Promise<NotificationResult[]> {,
-    const results: NotificationResult[] = [];
 
     // Process in batches to avoid overwhelming providers;
     const batchSize = 10;
@@ -624,7 +425,6 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
           results.push({id: `bulk_error_$crypto.getRandomValues([0]_$index`,
             status: "failed",
             errorMessage: result.reason?.message || "Unknown error",
-          });
 
       });
 
@@ -651,7 +451,6 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
         message: `Dear $appointmentDetails.patientName, your appointment with Dr. ${appointmentDetails.doctorName} is scheduled for ${appointmentDetails.appointmentDate} at $appointmentDetails.appointmentTime. Location: $appointmentDetails.location`,
         priority: "medium",
         sender: "appointment_system",
-      });
       results.push(smsResult);
 
     // Email Reminder;
@@ -659,7 +458,6 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
       const emailResult = await this.sendNotification({type: "email",
         recipient: {email:patientEmail },
         subject: "Appointment Reminder",
-        message: `;
           <h2>Appointment Reminder</h2>;
           <p>Dear $appointmentDetails.patientName,</p>;
           <p>This is a reminder for your upcoming appointment:</p>;
@@ -674,13 +472,11 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
         `,
         priority: "medium",
         sender: "appointment_system",
-      });
       results.push(emailResult);
 
     return results;
 
   async sendCriticalLab/* SECURITY: Alert removed */: Promise<NotificationResult[]> {,
-    const results: NotificationResult[] = [];
 
     // SMS Alert;
     if (!session.user) {
@@ -689,7 +485,6 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
         message: `CRITICAL LAB ALERT: ${alertDetails.patientName} - ${alertDetails.labTest}: ${alertDetails.criticalValue} (Normal: ${alertDetails.normalRange}). Immediate attention required.`,
         priority: alertDetails.urgency,
         sender: "lab_system",
-      });
       results.push(smsResult);
 
     // Email Alert;
@@ -697,17 +492,15 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
       const emailResult = await this.sendNotification({type: "email",
         recipient: {email:doctorEmail },
         subject: `CRITICAL LAB ALERT - ${alertDetails.patientName}`,
-        message: `;
           <h2 style="color: red;">CRITICAL LAB ALERT</h2>;
-          <p><strong>Patient:</strong> ${alertDetails.patientName,}</p>;
-          <p><strong>Test:</strong> ${alertDetails.labTest,}</p>;
-          <p><strong>Critical Value:</strong> ${alertDetails.criticalValue,}</p>;
-          <p><strong>Normal Range:</strong> ${alertDetails.normalRange,}</p>;
+          <p><strong>Patient: </strong> ${alertDetails.patientName,
+          <p><strong>Test: </strong> ${alertDetails.labTest,
+          <p><strong>Critical Value: </strong> ${alertDetails.criticalValue,
+          <p><strong>Normal Range: </strong> ${alertDetails.normalRange,
           <p style="color: red;"><strong>This requires immediate attention!</strong></p>;
         `,
         priority: alertDetails.urgency,
         sender: "lab_system",
-      });
       results.push(emailResult);
 
     return results;
@@ -727,23 +520,19 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
       totalCost: 45.50;
 
   // Utility Methods;
-  private processTemplate(template: string, variables: Record<string, string>): string {
-    let processed = template;
+  private processTemplate(template: string, variables: Record<string,
     Object.entries(variables).forEach(([key, value]) => {
-      const regex = new RegExp(`{{${key}}}`, "g");
+      const regex = new RegExp(`{{$}}}`, "g");
       processed = processed.replace(regex, value);
     });
     return processed;
 
   private async logNotification();
     id: string,
-    request: NotificationRequest;
-    {id:string, status: string, errorMessage?: string; cost?: number }
+    {id:string, status: string, cost?: number }
   ): Promise<void> {
     // In production, store in database;
     /* SECURITY: Console statement removed */},
-
-  // Cleanup;
   async disconnect(): Promise<void> {
     await this.prisma.$disconnect();
 
@@ -772,10 +561,6 @@ export const createNotificationService = (config?: Partial<NotificationConfig>):
 
 // Export singleton instance;
 let notificationServiceInstance: ExternalNotificationService | null = null,
-
-export const _getNotificationService = (config?: Partial<NotificationConfig>): ExternalNotificationService => {
-  if (!session.user) {
-    notificationServiceInstance = createNotificationService(config);
 
   return notificationServiceInstance;
 };

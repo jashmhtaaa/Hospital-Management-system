@@ -1,5 +1,5 @@
-import { } from "./errors.ts"
-import { } from "next/server"
+
+
 import "zod";
 import NextRequest
 import NextResponse, ValidationError } from "./logging.ts"
@@ -20,46 +20,20 @@ import {  z  } from "@/lib/database"
  * @param schema Zod schema to validate against;
  * @returns Middleware function;
  */;
-export function validateRequestBody<T>(schema: z.ZodType<T>) {,
-  return async (req: any) => {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+export function validateRequestBody<T>(schema: z.ZodType<T>) {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       const body = await req.json();
       return schema.parse(body);
-    } catch (error) {
-      if (!session.user) {
-        throw new ValidationError("Invalid request body", error.errors);
-      }
+    } catch (error) { console.error(error); }
       throw new ValidationError("Could not parse request body");
     }
   };
@@ -70,55 +44,24 @@ export function validateRequestBody<T>(schema: z.ZodType<T>) {,
  * @param schema Zod schema to validate against;
  * @returns Middleware function;
  */;
-export function validateQueryParams<T>(schema: z.ZodType<T>) {,
-  return (req: any) => {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-
-      const url = new URL(req.url);
-      const queryParams: Record<string, string> = {};
+export function validateQueryParams<T>(schema: z.ZodType<T>) {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); };
 
       url.searchParams.forEach((value, key) => {
         queryParams[key] = value;
       });
 
       return schema.parse(queryParams);
-    } catch (error) {
-      if (!session.user) {
-        throw new ValidationError("Invalid query parameters", error.errors);
-
-      throw new ValidationError("Could not parse query parameters");
-
-  };
+    } catch (error) { console.error(error); };
 
 /**;
  * Middleware for handling errors in API routes;
@@ -126,52 +69,27 @@ export function validateQueryParams<T>(schema: z.ZodType<T>) {,
  * @returns Wrapped handler with error handling;
  */;
 export const _withErrorHandling = (;
-  handler: (req: any, ...args: unknown[]) => Promise>;
+  handler: (req: any,
 ) {
-  return async (req: any, ...args: unknown[]) => {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+  return async (req: any, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      return await handler(req, ...args);
-    } catch (error) {
+} catch (error) { console.error(error); } catch (error) {
       logger.error("API error", {path:req.nextUrl.pathname,
         method: req.method,
-        error;
       });
 
       if (!session.user) {
         return NextResponse.json();
           {error: error.message,
-            error.details;
           },status: error.statusCode ;
         );
 
@@ -179,7 +97,6 @@ export const _withErrorHandling = (;
       const isProd = process.env.NODE_ENV === "production";
       return NextResponse.json();
         {error: "Internal server error",
-          isProd ? undefined : String(error);
         },
         {status: 500 }
       );
@@ -192,18 +109,15 @@ export const _withErrorHandling = (;
  * @returns Wrapped handler with authentication check;
  */;
 export const _withAuth = (;
-  handler: (req: any, ...args: unknown[]) => Promise>;
+  handler: (req: any,
 ) {
-  return async (req: any, ...args: unknown[]) => {,
-    // In a real implementation, this would check session/token;
+  return async (req: any, ...args: unknown[]) => {// In a real implementation,
     // For now, we"ll assume authentication is handled by Next.js middleware;
     const session = req.headers.get("x-session");
 
     if (!session.user) {
       return NextResponse.json();
         {error: "Unauthorized", code: "UNAUTHORIZED" },
-        {status: 401 }
-      );
 
     return handler(req, ...args);
   };
@@ -216,18 +130,15 @@ export const _withAuth = (;
  */;
 export const _withPermissions = (;
   permissions: string[],
-  handler: (req: any, ...args: unknown[]) => Promise>;
+  handler: (req: any,
 ) {
-  return async (req: any, ...args: unknown[]) => {,
-    // In a real implementation, this would check user permissions;
+  return async (req: any, ...args: unknown[]) => {// In a real implementation,
     // For now, we"ll assume a simple role-based check;
     const userRole = req.headers.get("x-user-role");
 
     if (!session.user)) {
       return NextResponse.json();
         {error: "Forbidden", code: "FORBIDDEN' },
-        {status: 403 }
-      );
 
     return handler(req, ...args);
   };

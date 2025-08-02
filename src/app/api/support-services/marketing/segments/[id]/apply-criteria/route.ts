@@ -1,40 +1,19 @@
-import { } from "@/lib/middleware/error-handling.middleware"
-import "@/lib/services/support-services/marketing";
-import "next-auth";
-import "next/server";
-import { NextRequest } from "@/lib/auth"
-import { NextResponse } from "next/server" }
-import {  authOptions  } from "@/lib/database"
-import {  getServerSession  } from "@/lib/database"
-import {  SegmentService  } from "@/lib/database"
-import {   type
-import {  withErrorHandling  } from "@/lib/database"
+import { NextRequest, NextResponse } from "next/server";
 
-const segmentService = new SegmentService();
-
-/**;
- * POST /api/support-services/marketing/segments/:id/apply-criteria;
- * Apply segment criteria to find matching contacts;
- */;
-export const POST = async();
-  request: any;
-  { params }: {id: string }
-) => {
-  return withErrorHandling();
-    request,
-    async (req: any) => {,
-      const session = await getServerSession(authOptions);
-
-      const result = await segmentService.applySegmentCriteria();
-        params.id,
-        session?.user?.id as string;
-      );
-
-      return NextResponse.json(result);
-    },
-    {requiredPermission:"marketing.segments.update",
-      auditAction: "SEGMENT_CRITERIA_APPLY",
-    }
-  );
-
+interface RouteContext {
+  params: { id: string };
 }
+
+export const GET = async (request: NextRequest, context: RouteContext) => {
+  try {
+    const { id } = context.params;
+    
+    // TODO: Implement Support Services Marketing Segments [Id] Apply Criteria logic for ID: {id}
+    return NextResponse.json({ 
+      id,
+      message: "Not implemented" 
+    });
+  } catch (error) {
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  }
+};

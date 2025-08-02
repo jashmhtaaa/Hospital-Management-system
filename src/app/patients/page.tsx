@@ -1,4 +1,4 @@
-import { } from "../../lib/auth"
+
 import "next-auth";
 import "next/navigation";
 import "react";
@@ -46,36 +46,16 @@ export default async const _PatientsPage = ({
   // Fetch patients data (server-side);
   let initialData;
   try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
 
     // Build query parameters;
     const params = new URLSearchParams();
@@ -88,21 +68,14 @@ export default async const _PatientsPage = ({
     });
 
     // Fetch patients;
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ""}/api/patients?${params.toString()}`, {cache:"no-store",
-      `next-auth.session-token=${session.user.id}`;
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ""}/api/patients?${params.toString()}`, {cache: "no-store",
 
     });
 
     if (!session.user) {
       initialData = await response.json();
 
-  } catch (error) {
-
-    // Will let client-side handling take over;
-
-  return();
-    >;
-      <Suspense fallback={<div>Loading patients...</div>}>;
+  } catch (error) { console.error(error); }>;
         <PatientList initialData={initialData} />;
       </Suspense>;
     </div>;

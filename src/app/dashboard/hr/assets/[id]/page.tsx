@@ -3,7 +3,7 @@ import { useState } from "react"
 
 "use client";
 
-import { } from "react"
+
 import useEffect } from "next/navigation"
 import {
 import { useRouter }
@@ -16,7 +16,7 @@ import { useState
   CardHeader,
   CardTitle;
 } from "@/components/ui/card";
-import { } from "@/components/ui/button"
+
 import "@/components/ui/separator";
 import "@/components/ui/tabs";
 import TabsContent
@@ -56,7 +56,7 @@ import { Tabs
   DollarSign,
   FileText;
 } from "lucide-react";
-import { } from "date-fns"
+
 import { format } from "@/components/ui/use-toast"
 import { toast }
 
@@ -72,37 +72,17 @@ export default const _AssetDetail = ({ params }: {id:string }) {
   useEffect(() => {
     const fetchAsset = async () => {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
         setLoading(true);
         const response = await fetch(`/api/hr/assets/${}`;
 
@@ -114,11 +94,7 @@ export default const _AssetDetail = ({ params }: {id:string }) {
 
         const data = await response.json(),
         setAsset(data);
-      } catch (err) {
-        setError(err.message),
-        toast({title:"Error",
-          "destructive";
-        });
+      } catch (error) { console.error(error); });
       } finally ;
         setLoading(false);
     };
@@ -134,40 +110,19 @@ export default const _AssetDetail = ({ params }: {id:string }) {
   // Handle delete;
   const handleDelete = async () => {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const response = await fetch(`/api/hr/assets/${params.id}`, {
+} catch (error) { console.error(error); }`, {
         method: "DELETE",
-      });
 
       if (!session.user) {
         throw new Error("Failed to delete asset");
@@ -175,13 +130,9 @@ export default const _AssetDetail = ({ params }: {id:string }) {
       toast({
         title: "Success",
         description: "Asset has been deleted",
-      });
 
       router.push("/dashboard/hr/assets");
-    } catch (err) {
-      toast({title:"Error",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
 
   };
 
@@ -215,20 +166,17 @@ export default const _AssetDetail = ({ params }: {id:string }) {
         return "outline";
       default: return "default",
 
-  };
-
   // Format currency;
   const formatCurrency = (amount: unknown) => {
     if (!session.user)eturn "—";
     return new Intl.NumberFormat("en-US", {
       style: "currency",
       currency: "USD",
-    }).format(amount);
   };
 
   // Format date or show placeholder;
   const formatDateOrPlaceholder = (date: unknown) => {
-    return date ? format(new Date(date), "PPP") : "—";
+    return date ? format(new Date(date),
   };
 
   if (!session.user) {

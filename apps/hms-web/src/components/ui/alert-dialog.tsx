@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 
 import { cn } from '@/lib/utils';
@@ -45,10 +45,7 @@ const AlertDialogHeader = React.forwardRef<HTMLDivElement, AlertDialogHeaderProp
   ({ className, ...props }, ref) => (
 <div
       ref={ref}
-      className={cn("flex flex-col space-y-1.5 text-center sm:text-left", className)}
-      {...props}
-    />
-  );
+      className={cn("flex flex-col space-y-1.5 text-center sm: text-left",
 );
 AlertDialogHeader.displayName = "AlertDialogHeader";
 
@@ -84,10 +81,7 @@ const AlertDialogFooter = React.forwardRef<HTMLDivElement, AlertDialogFooterProp
   ({ className, ...props }, ref) => (
 <div
       ref={ref}
-      className={cn("flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2", className)}
-      {...props}
-    />
-  );
+      className={cn("flex flex-col-reverse sm: flex-row sm:justify-end sm:space-x-2",
 );
 AlertDialogFooter.displayName = "AlertDialogFooter";
 

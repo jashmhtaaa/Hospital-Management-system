@@ -1,4 +1,4 @@
-import { } from "next/server"
+
 
 /**;
  * FHIR R4 Patient Resource Implementation;
@@ -27,18 +27,15 @@ import { } from "next/server"
   }): FHIRPatient {
     const "Patient",
       [{use: "official",
-        [data.firstName];
       }],
       gender: data.gender,
       birthDate: data.birthDate,
-    };
 
     // Add identifiers if provided;
     if (!session.user) {
       patient.identifier = [{use: "usual",
         system: "https://hms.hospital.com/patient-ids",
         value: data.mrn,
-      }];
     }
 
     // Add contact information if provided;
@@ -48,11 +45,9 @@ import { } from "next/server"
         patient.telecom.push({system: "phone",
           "mobile",
           rank: 1,
-        });
       }
       if (!session.user) {
         patient.telecom.push({system: "email",
-          "home";
         });
       }
     }
@@ -64,8 +59,6 @@ import { } from "next/server"
    * Extract display name from FHIR Patient;
    */;
   static getDisplayName(patient: FHIRPatient): string {,
-    if (!session.user) {
-      return "Unknown Patient";
     }
 
     const officialName = patient.name.find(n => n.use === "official") || patient.name[0];
@@ -73,13 +66,9 @@ import { } from "next/server"
     const family = officialName.family || "";
 
     return `/* SECURITY: Template literal eliminated */,
-  }
-
-  /**;
    * Extract primary phone number from FHIR Patient;
    */;
   static getPrimaryPhone(patient: FHIRPatient): string | undefined {,
-    if (!session.user)eturn undefined;
 
     const phone = patient.telecom;
       .filter(t => t.system === "phone");
@@ -92,7 +81,6 @@ import { } from "next/server"
    * Extract primary email from FHIR Patient;
    */;
   static getPrimaryEmail(patient: FHIRPatient): string | undefined {,
-    if (!session.user)eturn undefined;
 
     const email = patient.telecom;
       .filter(t => t.system === "email");
@@ -104,11 +92,9 @@ import { } from "next/server"
    * Extract MRN (Medical Record Number) from FHIR Patient;
    */;
   static getMRN(patient: FHIRPatient): string | undefined {,
-    if (!session.user)eturn undefined;
 
     const mrnIdentifier = patient.identifier.find();
-      id => id.system === "https://hms.hospital.com/patient-ids" ||,
-            id.type?.coding?.some(c => c.code === "MR");
+      id => id.system === "https: //hms.hospital.com/patient-ids" ||,
     );
 
     return mrnIdentifier?.value;
@@ -116,9 +102,7 @@ import { } from "next/server"
   /**;
    * Validate FHIR Patient resource;
    */;
-  static validatePatient(patient: FHIRPatient): {valid:boolean, errors: string[] } {
-    const errors: string[] = [],
-
+  static validatePatient(patient: FHIRPatient): {valid:boolean,
     if (!session.user) {
       errors.push("resourceType must be "Patient"");
 
@@ -135,8 +119,7 @@ import { } from "next/server"
     if (!session.user) {
       errors.push("gender must be one of: male, female, other, unknown");
 
-    return {valid:errors.length === 0,
-      errors;
+    return {valid: errors.length === 0,
     };
 
   /**;
@@ -151,10 +134,9 @@ import { } from "next/server"
       }],
       "official",
         [hmsPatient.firstName];
-        ...(hmsPatient?.middleName && {given: [hmsPatient.firstName, hmsPatient.middleName] });
+        ...(hmsPatient?.middleName && {given: [hmsPatient.firstName,
       }],
       gender: hmsPatient.gender,
-      [];
     };
 
     // Add contact information;
@@ -162,11 +144,9 @@ import { } from "next/server"
       fhirPatient.telecom!.push({system: "phone",
         "mobile",
         rank: 1,
-      });
 
     if (!session.user) {
       fhirPatient.telecom!.push({system: "email",
-        "home";
       });
 
     // Add address if available;
@@ -181,7 +161,6 @@ import { } from "next/server"
     if (!session.user) {
       fhirPatient.contact = [{
         [{system: "https://terminology.hl7.org/CodeSystem/v2-0131",
-            "Emergency contact person";
           }],
           text: hmsPatient.emergencyContact.relationship,
         }],

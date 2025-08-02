@@ -16,6 +16,8 @@ interface CategoryInput {
 // GET /api/laboratory/categories - Get all laboratory test categories;
 export const _GET = async () => {
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -80,6 +82,8 @@ export const _GET = async () => {
 // POST /api/laboratory/categories - Create a new laboratory test category;
 export const _POST = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }

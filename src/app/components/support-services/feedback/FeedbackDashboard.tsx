@@ -3,8 +3,8 @@ import { useState } from "react"
 
 "use client";
 
-import { } from "@/components/ui/badge"
-import { } from "@/components/ui/card"
+
+
 import { "@/components/ui/data-table";
 import "@/components/ui/label";
 import "@/components/ui/select";
@@ -54,62 +54,59 @@ import { toast }
 import { useEffect
 
 // Define types for feedback and complaint data;
-interface Feedback {id:string,
+interface Feedback {
+  id:string,
+}
   string,
   rating: number,
-  comments?: string;
   status: string,
   createdAt: string,
-  departmentId?: string;
   department?: {name:string };
   serviceType?: string;
   submittedById?: string;
-  submittedByUser?: {name:string, email: string };
+  submittedByUser?: {name: string,
   reviewedById?: string;
   reviewedByUser?: {name:string };
   reviewedAt?: string;
-  _count?: {responses:number, number };
+  _count?: {responses: number,
 }
 
-interface Complaint {id:string,
+interface Complaint {
+  id:string,
+}
   string,
   string,
   createdAt: string,
-  departmentId?: string;
   department?: {name:string };
   submittedById?: string;
-  submittedByUser?: {name:string, email: string };
+  submittedByUser?: {name: string,
   assignedToId?: string;
   assignedToUser?: {name:string };
   dueDate?: string;
-  _count?: {activities:number, number };
+  _count?: {activities: number,
 }
 
-interface AnalyticsData {feedbackByType:{ type: string, _count: number }[];
-  feedbackBySource: {source:string, _count: number }[];
-  feedbackByStatus: {status:string, _count: number }[];
-  feedbackByServiceType: {serviceType:string, _count: number }[];
-  feedbackByDepartment: {department:string, count: number }[];
+interface AnalyticsData {feedbackByType: { type: string,
+  feedbackBySource: {source:string,
+  feedbackByStatus: {status:string,
+  feedbackByServiceType: {serviceType:string,
+  feedbackByDepartment: {department:string,
   overallRating: number,
-  Record>;
-  complaintsByCategory: {category:string, _count: number }[];
-  complaintsBySeverity: {severity:string, _count: number }[];
-  complaintsByStatus: {status:string, _count: number }[];
+  complaintsByCategory: {category:string,
+  complaintsBySeverity: {severity:string,
+  complaintsByStatus: {status:string,
   string;
 
 // Define columns for feedback table;
 const feedbackColumns: ColumnDef<Feedback>[] = [;
   {accessorKey:"id",
     ({ row }) => <div className="font-mono text-xs">{row.getValue("id").substring(0, 8)}...</div>},
-  {accessorKey:"type",
-    ({ row }) => (;
+  {accessorKey: "type",
       >;
         {row.getValue("type").replace(/_/g, " ").toLowerCase()}
       </Badge>;
     )},
-  {accessorKey:"rating",
-    ({ row }) => {
-      const rating = row.getValue("rating") as number;
+  {accessorKey: "rating",
       return();
         >;
           {[...Array(5)].map((_, i) => (;
@@ -120,24 +117,16 @@ const feedbackColumns: ColumnDef<Feedback>[] = [;
         </div>;
       );
     }},
-  {accessorKey:"source",
-    ({ row }) => (;
+  {accessorKey: "source",
       >;
         {row.getValue("source").toLowerCase()}
       </Badge>;
     )},
-  {accessorKey:"department",
-    ({ row }) => {
-      const department = row.original.department;
+  {accessorKey: "department",
       return department ? department.name : "-";
     }},
-  {accessorKey:"status",
-    ({ row }) => {
-      const status = row.getValue("status") as string;
+  {accessorKey: "status",
       let variant: "default" | "secondary" | "destructive" | "outline" = "outline",
-
-      switch (status) {
-        case "NEW": any;
           variant = "default",\n    }\n    case "REVIEWED": any;
           variant = "secondary",\n    }\n    case "ADDRESSED": any;
           variant = "outline",\n    }\n    case "CLOSED": any;
@@ -152,8 +141,7 @@ const feedbackColumns: ColumnDef<Feedback>[] = [;
     }},
   {accessorKey:"createdAt",
     ({ row }) => format(, "MMM d, yyyy")},
-  {id:"actions",
-    cell: ({ row }) => (;
+  {id: "actions",
       <Button variant="ghost" size="sm" onClick={() => window.location.href = `/feedback/${row.original.id}`}>;
         View;
       </Button>;
@@ -165,19 +153,13 @@ const complaintColumns: ColumnDef<Complaint>[] = [;
     ({ row }) => <div className="font-mono text-xs">{row.getValue("id").substring(0, 8)}...</div>},
   {accessorKey:"title",
     ({ row }) => <div className="max-w-[200px] truncate">{row.getValue("title")}</div>},
-  {accessorKey:"category",
-    ({ row }) => (;
+  {accessorKey: "category",
       >;
         {row.getValue("category").toLowerCase()}
       </Badge>;
     )},
-  {accessorKey:"severity",
-    ({ row }) => {
-      const severity = row.getValue("severity") as string;
+  {accessorKey: "severity",
       let variant: "default" | "secondary" | "destructive" | "outline" = "outline",
-
-      switch (severity) {
-        case "LOW": any;
           variant = "outline",\n    }\n    case "MEDIUM": any;
           variant = "secondary",\n    }\n    case "HIGH": any;
           variant = "default",\n    }\n    case "CRITICAL": any;
@@ -190,13 +172,8 @@ const complaintColumns: ColumnDef<Complaint>[] = [;
         </Badge>;
       );
     }},
-  {accessorKey:"status",
-    ({ row }) => {
-      const status = row.getValue("status") as string;
+  {accessorKey: "status",
       let variant: "default" | "secondary" | "destructive" | "outline" = "outline",
-
-      switch (status) {
-        case "SUBMITTED": any;
           variant = "default",\n    }\n    case "UNDER_INVESTIGATION": any;
           variant = "secondary",\n    }\n    case "RESOLVED": any;
           variant = "outline",\n    }\n    case "CLOSED": any;
@@ -210,20 +187,15 @@ const complaintColumns: ColumnDef<Complaint>[] = [;
         </Badge>;
       );
     }},
-  {accessorKey:"department",
-    ({ row }) => {
-      const department = row.original.department;
+  {accessorKey: "department",
       return department ? department.name : "-";
     }},
-  {accessorKey:"assignedToUser",
-    ({ row }) => {
-      const assignedTo = row.original.assignedToUser;
+  {accessorKey: "assignedToUser",
       return assignedTo ? assignedTo.name : "-";
     }},
   {accessorKey:"createdAt",
     ({ row }) => format(, "MMM d, yyyy")},
-  {id:"actions",
-    cell: ({ row }) => (;
+  {id: "actions",
       <Button variant="ghost" size="sm" onClick={() => window.location.href = `/complaints/${row.original.id}`}>;
         View;
       </Button>;
@@ -257,12 +229,10 @@ export default const _FeedbackDashboard = () {
   const [feedbackPagination, setFeedbackPagination] = useState({
     total: 0,
     totalPages: 0,
-  });
 
   const [complaintPagination, setComplaintPagination] = useState({
     total: 0,
     totalPages: 0,
-  });
 
   // Load data on component mount and when filters change;
   useEffect(() => {
@@ -281,41 +251,18 @@ export default const _FeedbackDashboard = () {
   const loadFeedbackData = async () => {
     setIsLoading(true);
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const queryParams = new URLSearchParams();
-      Object.entries(feedbackFilters).forEach(([key, value]) => {
-        if (!session.user)ueryParams.append(key, value.toString());
-      });
+} catch (error) { console.error(error); });
 
       const response = await fetch(`/api/support-services/feedback?${}`;
       if (!session.user) {
@@ -326,12 +273,7 @@ export default const _FeedbackDashboard = () {
       setFeedbackPagination({
         total: data.pagination.total,
         totalPages: data.pagination.totalPages,
-      });
-    } catch (error) {
-
-      toast({title:"Error",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
     } finally {
       setIsLoading(false);
 
@@ -341,41 +283,18 @@ export default const _FeedbackDashboard = () {
   const loadComplaintData = async () => {
     setIsLoading(true);
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const queryParams = new URLSearchParams();
-      Object.entries(complaintFilters).forEach(([key, value]) => {
-        if (!session.user)ueryParams.append(key, value.toString());
-      });
+} catch (error) { console.error(error); });
 
       const response = await fetch(`/api/support-services/feedback/complaint?${}`;
       if (!session.user) {
@@ -386,12 +305,7 @@ export default const _FeedbackDashboard = () {
       setComplaintPagination({
         total: data.pagination.total,
         totalPages: data.pagination.totalPages,
-      });
-    } catch (error) {
-
-      toast({title:"Error",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
     } finally {
       setIsLoading(false);
 
@@ -400,48 +314,24 @@ export default const _FeedbackDashboard = () {
   // Load analytics data;
   const loadAnalyticsData = async () => {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const response = await fetch(`/api/support-services/feedback/analytics?period=${}`;
+} catch (error) { console.error(error); }`;
       if (!session.user) {
         throw new Error("Failed to load analytics data");
 
       const data = await response.json(),
       setAnalyticsData(data);
-    } catch (error) {
-
-      toast({title:"Error",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
 
   };
 
@@ -450,7 +340,7 @@ export default const _FeedbackDashboard = () {
     setFeedbackFilters(prev => ({
       ...prev,
       [key]: value,
-      page: key === "page" ? value : 1, // Reset page when other filters change;
+      page: key === "page" ? value : 1,
     }));
   };
 
@@ -459,13 +349,12 @@ export default const _FeedbackDashboard = () {
     setComplaintFilters(prev => ({
       ...prev,
       [key]: value,
-      page: key === "page" ? value : 1, // Reset page when other filters change;
+      page: key === "page" ? value : 1,
     }));
   };
 
   // Export data to CSV;
-  const exportToCSV = (data: unknown[], filename: string) => {
-    const headers = Object.keys(data[0]).filter(key => !key.startsWith("_"));
+  const exportToCSV = (data: unknown[],
     const csvContent = [;
       headers.join(","),
       ...data.map(row => {}
@@ -479,7 +368,7 @@ export default const _FeedbackDashboard = () {
       );
     ].join("\n");
 
-    const blob = new Blob([csvContent], { type: "text/csv,charset=utf-8;" });
+    const blob = new Blob([csvContent], { type: "text/csv," });
     const link = document.createElement("a");
     const url = URL.createObjectURL(blob);
     link.setAttribute("href", url);
@@ -495,7 +384,6 @@ export default const _FeedbackDashboard = () {
     return data.map((item, index) => ({
       ...item,
       color: COLORS[index % COLORS.length],
-    }));
   };
 
   return();
@@ -612,8 +500,7 @@ export default const _FeedbackDashboard = () {
                 isLoading={isLoading}
                 pagination={{pageIndex:feedbackFilters.page - 1,
                   feedbackPagination.totalPages,
-                  onPageChange: (pageIndex) => handleFeedbackFilterChange("page", pageIndex + 1)}}
-              />;
+                  onPageChange: (pageIndex) => handleFeedbackFilterChange("page",
             </CardContent>;
           </Card>;
         </TabsContent>;
@@ -713,8 +600,7 @@ export default const _FeedbackDashboard = () {
                 isLoading={isLoading}
                 pagination={{pageIndex:complaintFilters.page - 1,
                   complaintPagination.totalPages,
-                  onPageChange: (pageIndex) => handleComplaintFilterChange("page", pageIndex + 1)}}
-              />;
+                  onPageChange: (pageIndex) => handleComplaintFilterChange("page",
             </CardContent>;
           </Card>;
         </TabsContent>;
@@ -805,8 +691,7 @@ export default const _FeedbackDashboard = () {
                                     name: type.replace(/_/g, " "),
                                     rating: data.avg,
                                   }))]}
-                                margin={{top:20, right: 30, left: 20, bottom: 40 }}
-                              >;
+                                margin={{top:20, right: 30, left: 20,
                                 <CartesianGrid strokeDasharray="3 3" />;
                                 <XAxis dataKey="name" angle={-45} textAnchor="end" height={60} />;
                                 <YAxis domain={[0, 5]} />;
@@ -864,8 +749,7 @@ export default const _FeedbackDashboard = () {
                             >;
                               <BarChart>;
                                 data={analyticsData.complaintsBySeverity}
-                                margin={{top:20, right: 30, left: 20, bottom: 5 }}
-                              >;
+                                margin={{top:20, right: 30, left: 20,
                                 <CartesianGrid strokeDasharray="3 3" />;
                                 <XAxis dataKey="severity" />;
                                 <YAxis />;
@@ -907,8 +791,7 @@ export default const _FeedbackDashboard = () {
                               {name:"Medium", days: analyticsData.resolutionTimes.MEDIUM.avgDays },
                               {name:"High", days: analyticsData.resolutionTimes.HIGH.avgDays },
                               {name:"Critical", days: analyticsData.resolutionTimes.CRITICAL.avgDays }]}
-                            margin={{top:20, right: 30, left: 20, bottom: 5 }}
-                          >;
+                            margin={{top:20, right: 30, left: 20,
                             <CartesianGrid strokeDasharray="3 3" />;
                             <XAxis dataKey="name" />;
                             <YAxis />;

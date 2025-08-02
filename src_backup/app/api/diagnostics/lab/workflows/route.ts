@@ -19,6 +19,8 @@ interface TestWorkflowCreateBody {
 // GET /api/diagnostics/lab/workflows - Get all test workflows;
 export const _GET = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -205,6 +207,8 @@ export const _GET = async (request: any) => {,
 // POST /api/diagnostics/lab/workflows - Create a new test workflow;
 export const _POST = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }

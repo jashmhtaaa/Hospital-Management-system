@@ -23,6 +23,8 @@ const checkInSchema = z.object({
 // POST handler for check-in;
 export const _POST = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -98,6 +100,8 @@ export const _POST = async (request: any) => {,
 // GET handler for attendance records;
 export const _GET = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }

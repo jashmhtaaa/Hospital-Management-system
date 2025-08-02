@@ -3,7 +3,7 @@ import { useState } from "react"
 
 "use client";
 
-import { } from "react"
+
 import useEffect } from "next/navigation"
 import {
 import { useRouter }
@@ -29,8 +29,8 @@ import { useState
   SelectTrigger,
   SelectValue;
 } from "@/components/ui/select";
-import { } from "@/components/ui/button"
-import { } from "@/components/ui/checkbox"
+
+
 import "@/components/ui/popover";
 import "@/components/ui/use-toast";
 import "@hookform/resolvers/zod";
@@ -57,7 +57,6 @@ const positionAssignmentSchema = z.object({positionId:z.string().min(1, "Positio
   isPrimary: z.boolean().default(false),
   startDate: z.date(),
   endDate: z.date().optional(),
-});
 
 export default const _AssignPosition = ({ params }: {id:string }) {
   const router = useRouter();
@@ -70,60 +69,27 @@ export default const _AssignPosition = ({ params }: {id:string }) {
     "",
       new Date(),
       endDate: undefined,
-    }});
 
   // Fetch positions and employee data;
   useEffect(() => {
     const fetchData = async () => {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-
-        // Fetch positions;
-        const posResponse = await fetch("/api/hr/positions");
-        if (!session.user) {
-          const posData = await posResponse.json(),
-          setPositions(posData.positions || []);
-
-        // Fetch employee;
-        const empResponse = await fetch(`/api/hr/staff/${}`;
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }`;
         if (!session.user) {
           const empData = await empResponse.json(),
           setEmployee(empData);
 
-      } catch (err) {
-
-        toast({title:"Error",
-          "destructive";
-        });
+      } catch (error) { console.error(error); });
 
     };
 
@@ -133,50 +99,23 @@ export default const _AssignPosition = ({ params }: {id:string }) {
   // Handle form submission;
   const _onSubmit = async (data) => {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      setLoading(true);
-
-      // Format dates for API;
-      const formattedData = {
-        ...data,
-        startDate: format(data.startDate, "yyyy-MM-dd"),
-        endDate: data.endDate ? format(data.endDate, "yyyy-MM-dd") : undefined};
+} catch (error) { console.error(error); };
 
       const response = await fetch(`/api/hr/staff/${params.id}/positions`, {method:"POST",
         headers: {
           "Content-Type": "application/json"},
         body: JSON.stringify(formattedData),
-      });
 
       if (!session.user) {
         const errorData = await response.json();
@@ -185,14 +124,10 @@ export default const _AssignPosition = ({ params }: {id:string }) {
       toast({
         title: "Position Assigned",
         description: "Successfully assigned position to employee",
-      });
 
       // Navigate back to employee profile;
       router.push(`/dashboard/hr/staff/${}`;
-    } catch (error) {
-      toast({title:"Error",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
     } finally {
       setLoading(false);
 

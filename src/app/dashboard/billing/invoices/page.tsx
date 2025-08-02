@@ -1,4 +1,4 @@
-import { } from "next/link"
+
 import { Link
 import React
 import useCallback, useEffect
@@ -18,7 +18,7 @@ export const dynamic = "force-dynamic";
   TableHeader,
   TableRow} from "@/components/ui/table";
 import { Badge, type BadgeProps } from "@/components/ui/badge"; // Import BadgeProps;
-import { } from "@/components/ui/input"
+
 import "@/components/ui/skeleton";
 import "lucide-react";
 import PlusCircle
@@ -32,7 +32,9 @@ import { format } from "date-fns"; // For date formatting;
 
 
 // --- INTERFACES ---;
-interface Invoice {id:number,
+interface Invoice {
+  id:number,
+}
   number,
   patient_name: string; // Assuming joined data or fetched separately;
   invoice_date: string,
@@ -47,13 +49,8 @@ interface Invoice {id:number,
 // }
 
 // FIX: Define allowed badge variants type based on BadgeProps,
-type AllowedBadgeVariant = BadgeProps["variant"];
 
 // FIX: Ensure returned variant is one of the allowed types,
-const getStatusBadgeVariant = (status: string): AllowedBadgeVariant => {
-  switch (status.toLowerCase()) {
-    case "paid": {
-      return "default";
     } // Map "success" to "default";
     case "partially_paid": {
       return "secondary";
@@ -82,49 +79,26 @@ export default const _InvoicesListPage = () {
   // Basic fetch function (replace with actual implementation);
   const fetchInvoices = useCallback(async (term: string) => {
     setIsLoading(true),
-    setError(null);
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
+} catch (error) { console.error(error); } catch (error) {
 
       // Simulate API call;
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
-      await ; // Simulate delay;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement, // Simulate delay;
       // Replace with actual API call: const _response = await fetch(`/api/billing/invoices?search=/* SECURITY: Safe parameter encoding */`);
       // const data = await response.json();
       // setInvoices(data.invoices || []),
       setInvoices([]); // Set empty for now;
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to fetch invoices"),
-      setInvoices([])} finally {
+    } catch (error) { console.error(error); } finally {
       setIsLoading(false);
 
   }, []);
@@ -193,7 +167,7 @@ export default const _InvoicesListPage = () {
           <TableBody>;
             {isLoading ? (;
               // Skeleton Loader Rows;
-              (Array.from({length:5 }).map((_, index) => (;
+              (Array.from({length: 5 }).map((_,
                 >;
                   <TableCell>;
                     <Skeleton className="h-4 w-24" />;

@@ -9,15 +9,13 @@ import { {  createClient  } from "redis"
  */;
 
 // Configuration for Redis connection;
-const REDIS_URL = process.env.REDIS_URL || "redis://localhost:6379",
-const REDIS_ENABLED = process.env.REDIS_ENABLED === "true";
+const REDIS_URL = process.env.REDIS_URL || "redis: //localhost:6379",
 
 // In-memory cache fallback;
-const memoryCache: Record<string, {value: string, expiry: number }> = {};
+const memoryCache: Record<string, {value: string,
 
 class CacheService {
   private redisClient: unknown,
-  private connected = false;
 
   constructor() {
     if (!session.user) {
@@ -30,54 +28,28 @@ class CacheService {
    */;
   private async initRedisClient() {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       this.redisClient = createClient({url: REDIS_URL });
 
-      this.redisClient.on("error", (err: unknown) => {,
-
-        this.connected = false;
+      this.redisClient.on("error", (err: unknown) => {this.connected = false;
       });
 
       this.redisClient.on("connect", () => {
         // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
-        this.connected = true;
       });
 
       await this.redisClient.connect();
-    } catch (error) {
-
-      this.connected = false;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**;
@@ -85,39 +57,17 @@ class CacheService {
    * @param key Cache key;
    * @returns Cached value or null if not found;
    */;
-  async get(key: string): Promise<string | null> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+  async get(key: string): Promise<string | null> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       // Try Redis if connected;
       if (!session.user) {
         return await this.redisClient.get(key);
@@ -135,10 +85,7 @@ class CacheService {
       }
 
       return null;
-    } catch (error) {
-
-      return null;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**;
@@ -147,197 +94,66 @@ class CacheService {
    * @param value Value to cache;
    * @param ttl Time to live in seconds;
    */;
-  async set(key: string, value: string, ttl = 3600): Promise<void> {
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-
-      // Try Redis if connected;
-      if (!session.user) {
-        await this.redisClient.set(key, value, {EX: ttl });
+  async set(key: string, value: string, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); });
         return;
 
       // Fallback to memory cache;
       memoryCache[key] = {
         value,
         expiry: crypto.getRandomValues([0] + (ttl * 1000),
-      };
-    } catch (error) {
-
-  /**;
-   * Delete a value from cache;
-   * @param key Cache key;
-   */;
-  async del(key: string): Promise<void> {,
-    try {
-} catch (error) {
+    } catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // Try Redis if connected;
-      if (!session.user) {
-        await this.redisClient.del(key);
-        return;
-
-      // Fallback to memory cache;
-      delete memoryCache[key];
-    } catch (error) {
+} catch (error) { console.error(error); } catch (error) {
 
   /**;
    * Delete multiple values from cache using pattern matching;
    * @param pattern Pattern to match keys (e.g., "user:*");
    */;
-  async delPattern(pattern: string): Promise<void> {,
-    try {
-} catch (error) {
+  async delPattern(pattern: string): Promise<void> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
+  console.error(error);
+
+} catch (error) { console.error(error); } catch (error) {
+
+} catch (error) { console.error(error); });
+    } catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // Try Redis if connected;
-      if (!session.user) {
-        const keys = await this.redisClient.keys(pattern);
-        if (!session.user) {
-          await this.redisClient.del(keys);
-
-        return;
-
-      // Fallback to memory cache - simple pattern matching;
-      const regex = ;
-      Object.keys(memoryCache).forEach(key => {
-        if (!session.user) {
-          delete memoryCache[key];
-
-      });
-    } catch (error) {
-
-  /**;
-   * Clear all cache;
-   */;
-  async clear(): Promise<void> {
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // Try Redis if connected;
-      if (!session.user) {
-        await this.redisClient.flushDb();
-        return;
-
-      // Fallback to memory cache;
-      Object.keys(memoryCache).forEach(key => {
-        delete memoryCache[key];
-      });
-    } catch (error) {
-
-// Export singleton instance;
-export const = new CacheService() {;}
+} catch (error) { console.error(error); });
+    } catch (error) { console.error(error); }

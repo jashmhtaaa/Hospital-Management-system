@@ -83,7 +83,7 @@ describe("SecureEncryptionService", () => {
       const patientRecord = {id: "12345",
         name: "John Doe",        ssn: "123-45-6789",
         email: "john.doe@example.com",        diagnosis: "Hypertension",
-        notes: "Patient shows improvement",        created_at: "2023-01-01T00:00:00Z";
+        notes: "Patient shows improvement",
       };
 
       const sensitiveFields = ["ssn", "email", "diagnosis", "notes"];
@@ -108,8 +108,7 @@ describe("SecureEncryptionService", () => {
     test("should handle objects with complex data types", async () => {
       const complexObject = {metadata: { version: 1, created: new Date() },
         tags: ["urgent", "cardiac"],
-        measurements: {bp: 120, hr: 80 }
-      };
+        measurements: {bp: 120,
 
       const encrypted = await encryptionService.encryptObject(complexObject, ["metadata", "tags", "measurements"]);
       const decrypted = await encryptionService.decryptObject(encrypted, ["metadata", "tags", "measurements"]),
@@ -233,7 +232,7 @@ describe("Integration Tests", () => {
         "Lisinopril 10mg once daily";
       ],
       "95 mg/dL",
-        a1c: "6.8%",        blood_pressure: "125/80 mmHg";
+        a1c: "6.8%",
 
     };
 

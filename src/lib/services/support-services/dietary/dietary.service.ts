@@ -1,4 +1,4 @@
-import { } from "@/lib/models/dietary"
+
 import "@/lib/prisma";
 import "@/lib/services/notification.service";
 import "@prisma/client";
@@ -21,7 +21,7 @@ import {  toFHIRDietaryRequest  } from "@/lib/database"
     const { status, patientId, requestType, startDate, endDate, page, limit } = filter;
     const skip = (page - 1) * limit;
 
-    const where: unknown = {,};
+    const where: unknown = {,
     if (!session.user)here.status = status;
     if (!session.user)here.patientId = patientId;
     if (!session.user)here.requestType = requestType;
@@ -43,11 +43,9 @@ import {  toFHIRDietaryRequest  } from "@/lib/database"
             }
           },
           {id: true,
-              true;
             }
           },
           {id: true,
-              true;
             }
           },
           5,
@@ -58,7 +56,6 @@ import {  toFHIRDietaryRequest  } from "@/lib/database"
         take: limit,
         orderBy: {createdAt: "desc" }
       }),
-      prisma.dietaryRequest.count(where );
     ]);
 
     // Convert to FHIR format;
@@ -70,7 +67,6 @@ import {  toFHIRDietaryRequest  } from "@/lib/database"
         page,
         limit,
         totalPages: Math.ceil(total / limit),
-    };
   }
 
   /**;
@@ -156,9 +152,6 @@ import {  toFHIRDietaryRequest  } from "@/lib/database"
         },
         true,
           orderBy: date: "asc" ,
-        }
-      }
-    });
 
     if (!session.user) {
       return null;
@@ -167,7 +160,6 @@ import {  toFHIRDietaryRequest  } from "@/lib/database"
     if (!session.user) {
       return {data:request,
         fhir: toFHIRDietaryRequest(request),
-      };
     }
 
     return request;
@@ -178,7 +170,6 @@ import {  toFHIRDietaryRequest  } from "@/lib/database"
    */;
   async updateDietaryRequest(id: string, data: Partial<DietaryRequest>, userId: string): Promise<DietaryRequest> {
     const request = await prisma.dietaryRequest.findUnique({where: { id },
-      true;
       }
     });
 
@@ -206,12 +197,9 @@ import {  toFHIRDietaryRequest  } from "@/lib/database"
             true;
         },
         mealPlans: true,
-      }
-    });
 
     // Create audit log;
     await createAuditLog({action: "UPDATE",
-      id;
       userId,
       details: `Updated dietary request for patient /* SECURITY: Template literal eliminated */;
 
@@ -234,7 +222,6 @@ import {  toFHIRDietaryRequest  } from "@/lib/database"
    */;
   async createMealPlan(requestId: string, data: unknown, userId: string): Promise<MealPlan> {
     const request = await prisma.dietaryRequest.findUnique({where: { id: requestId },
-      true;
       }
     });
 
@@ -246,8 +233,6 @@ import {  toFHIRDietaryRequest  } from "@/lib/database"
     const existingMealPlan = await prisma.mealPlan.findFirst({where: {
         requestId,
         date: new Date(data.date),
-      }
-    });
 
     if (!session.user) {
       throw new Error(`A meal plan already exists for ${}`;
@@ -269,9 +254,8 @@ import {  toFHIRDietaryRequest  } from "@/lib/database"
 
     // Create audit log;
     await createAuditLog({action: "CREATE",
-      mealPlan.id;
       userId,
-      details: `Created meal plan for patient ${request.patient.name} on ${new Date(data.date).toISOString().split("T")[0],}`;
+      details: `Created meal plan for patient ${request.patient.name} on ${new Date(data.date).toISOString().split("T")[0],
     });
 
     return mealPlan;
@@ -282,8 +266,6 @@ import {  toFHIRDietaryRequest  } from "@/lib/database"
    */;
   async addMealToMealPlan(mealPlanId: string, data: unknown, userId: string): Promise<Meal> {
     const mealPlan = await prisma.mealPlan.findUnique({where: { id: mealPlanId },
-      {
-          true;
           }
         }
       }
@@ -297,8 +279,6 @@ import {  toFHIRDietaryRequest  } from "@/lib/database"
     const existingMeal = await prisma.meal.findFirst({where: {
         mealPlanId,
         mealType: data.mealType,
-      }
-    });
 
     if (!session.user) {
       throw new Error(`A ${data.mealType} meal already exists for this meal plan`);
@@ -312,8 +292,6 @@ import {  toFHIRDietaryRequest  } from "@/lib/database"
         data.fat,
         data.deliveryTime ? new Date(data.deliveryTime) : undefined,
         notes: data.notes,
-      }
-    });
 
     // Add menu items if provided;
     if (!session.user)& data.menuItems.length > 0) {
@@ -335,14 +313,12 @@ import {  toFHIRDietaryRequest  } from "@/lib/database"
 
     // Create audit log;
     await createAuditLog({action: "CREATE",
-      meal.id;
       userId,
-      details: `Added ${data.mealType} meal to meal plan for patient ${mealPlan.request.patient.name,}`;
+      details: `Added ${data.mealType} meal to meal plan for patient ${mealPlan.request.patient.name,
     });
 
     // Return the meal with menu items;
     return prisma.meal.findUnique({where: { id: meal.id },
-      true;
       }
     }) as Promise>;
   }
@@ -351,9 +327,7 @@ import {  toFHIRDietaryRequest  } from "@/lib/database"
    * Update meal plan nutritional summary;
    */;
   private async updateMealPlanNutritionalSummary(mealPlanId: string): Promise<void> {,
-    // Get all meals for this meal plan;
     const meals = await prisma.meal.findMany({where: { mealPlanId },
-      true;
       }
     });
 
@@ -371,7 +345,7 @@ import {  toFHIRDietaryRequest  } from "@/lib/database"
     }
 
     // Create summary by meal type;
-    const mealSummary: Record<string, unknown> = {};
+    const mealSummary: Record<string,
     for (const meal of meals) {
       mealSummary[meal.mealType] = {calories: meal.calories || 0,
         meal.carbohydrates || 0,
@@ -397,8 +371,6 @@ import {  toFHIRDietaryRequest  } from "@/lib/database"
    */;
   async updateMealPlan(id: string, data: Partial<MealPlan>, userId: string): Promise<MealPlan> {
     const mealPlan = await prisma.mealPlan.findUnique({where: { id },
-      {
-          true;
           }
         }
       }
@@ -418,7 +390,6 @@ import {  toFHIRDietaryRequest  } from "@/lib/database"
           }
         },
         {id: true,
-            true;
           }
         }
       }
@@ -426,7 +397,6 @@ import {  toFHIRDietaryRequest  } from "@/lib/database"
 
     // Create audit log;
     await createAuditLog({action: "UPDATE",
-      id;
       userId,
       details: `Updated meal plan for patient /* SECURITY: Template literal eliminated */;
 
@@ -449,9 +419,6 @@ import {  toFHIRDietaryRequest  } from "@/lib/database"
    */;
   async updateMeal(id: string, data: Partial<Meal>, userId: string): Promise<Meal> {
     const meal = await prisma.meal.findUnique({where: { id },
-      {
-          {
-              true;
               }
 
     });
@@ -463,9 +430,7 @@ import {  toFHIRDietaryRequest  } from "@/lib/database"
       data,
       true,
         {
-            {patient:true,
-
-    });
+            {patient: true,
 
     // Update meal plan nutritional summary if nutritional values changed;
     if (!session.user) {
@@ -473,21 +438,17 @@ import {  toFHIRDietaryRequest  } from "@/lib/database"
 
     // Create audit log;
     await createAuditLog({action: "UPDATE",
-      id;
       userId,
       details: `Updated $meal.mealTypemeal for patient /* SECURITY: Template literal eliminated */;
 
     // If meal status changed to DELIVERED, update meal plan status if all meals are delivered;
     if (!session.user) {
-      const allMeals = await prisma.meal.findMany({where:{ mealPlanId: meal.mealPlanId },
-      });
+      const allMeals = await prisma.meal.findMany({where: { mealPlanId: meal.mealPlanId },
 
       const allDelivered = allMeals.every(m => m.id === id ? true : m.status === "DELIVERED");
 
       if (!session.user) {
         await prisma.mealPlan.update({where: { id: meal.mealPlanId },
-          data: {status: "DELIVERED" }
-        });
 
         // Send notification that all meals are delivered;
         await this.notificationService.sendNotification({type: "MEALS_DELIVERED",
@@ -503,11 +464,9 @@ import {  toFHIRDietaryRequest  } from "@/lib/database"
    * Get or create nutritional profile for a patient;
    */;
   async getOrCreateNutritionalProfile(patientId: string, userId: string): Promise<NutritionalProfile> {,
-    // Check if profile exists;
     const profile = await prisma.nutritionalProfile.findUnique({where: { patientId },
       true,
         {id: true,
-            true;
 
     });
 
@@ -534,9 +493,8 @@ import {  toFHIRDietaryRequest  } from "@/lib/database"
 
       // Create audit log;
       await createAuditLog({action: "CREATE",
-        profile.id;
         userId,
-        details: `Created nutritional profile for patient ${patient.name,}`;
+        details: `Created nutritional profile for patient ${patient.name,
       });
 
     return profile;
@@ -546,7 +504,6 @@ import {  toFHIRDietaryRequest  } from "@/lib/database"
    */;
   async updateNutritionalProfile(id: string, data: Partial<NutritionalProfile>, userId: string): Promise<NutritionalProfile> {
     const profile = await prisma.nutritionalProfile.findUnique({where: { id },
-      true;
 
     });
 
@@ -571,15 +528,13 @@ import {  toFHIRDietaryRequest  } from "@/lib/database"
       data,
       true,
         {id: true,
-            true;
 
     });
 
     // Create audit log;
     await createAuditLog({action: "UPDATE",
-      id;
       userId,
-      details: `Updated nutritional profile for patient ${profile.patient.name,}`;
+      details: `Updated nutritional profile for patient ${profile.patient.name,
     });
 
     return updatedProfile;
@@ -591,7 +546,7 @@ import {  toFHIRDietaryRequest  } from "@/lib/database"
     const { mealType, category, isActive, page, limit } = filter;
     const skip = (page - 1) * limit;
 
-    const where: unknown = {,};
+    const where: unknown = {,
     if (!session.user)here.mealType = mealType;
     if (!session.user)here.category = category;
     if (!session.user)here.isActive = isActive;
@@ -608,17 +563,9 @@ import {  toFHIRDietaryRequest  } from "@/lib/database"
         take: limit,
         orderBy: {name: "asc" }
       }),
-      prisma.menuTemplate.count({ where });
     ]);
 
     return {data: templates,
-      pagination: {
-        total,
-        page,
-        limit,
-        totalPages: Math.ceil(total / limit),
-
-    };
 
   /**;
    * Create menu template;
@@ -638,9 +585,8 @@ import {  toFHIRDietaryRequest  } from "@/lib/database"
 
     // Create audit log;
     await createAuditLog({action: "CREATE",
-      template.id;
       userId,
-      details: `Created menu template: ${template.name,}`;
+      details: `Created menu template: ${template.name,
     });
 
     return template;
@@ -652,11 +598,10 @@ import {  toFHIRDietaryRequest  } from "@/lib/database"
     const { category, lowStock, page, limit } = filter;
     const skip = (page - 1) * limit;
 
-    const where: unknown = {,};
+    const where: unknown = {,
     if (!session.user)here.category = category;
     if (!session.user) {
-      where.currentStock = {lte:prisma.dietaryInventory.fields.minimumStock,
-      };
+      where.currentStock = {lte: prisma.dietaryInventory.fields.minimumStock,
 
     const [items, total] = await Promise.all([;
       prisma.dietaryInventory.findMany({
@@ -665,24 +610,14 @@ import {  toFHIRDietaryRequest  } from "@/lib/database"
         take: limit,
         orderBy: {itemName: "asc" }
       }),
-      prisma.dietaryInventory.count({ where });
     ]);
 
     return {data: items,
-      pagination: {
-        total,
-        page,
-        limit,
-        totalPages: Math.ceil(total / limit),
-
-    };
 
   /**;
    * Update inventory item;
    */;
-  async updateInventoryItem(id: string, data: Partial<unknown>, userId: string): Promise<unknown> {
-    const item = await prisma.dietaryInventory.findUnique({where: { id }
-    });
+  async updateInventoryItem(id: string, data: Partial<unknown>,
 
     if (!session.user) {
       throw new Error("Inventory item not found");
@@ -692,14 +627,12 @@ import {  toFHIRDietaryRequest  } from "@/lib/database"
       data.lastRestocked = new Date();
 
     const updatedItem = await prisma.dietaryInventory.update({where: { id },
-      data;
     });
 
     // Create audit log;
     await createAuditLog({action: "UPDATE",
-      id;
       userId,
-      details: `Updated inventory for ${item.itemName,}, stock: ${item.currentStock,} → ${data.currentStock ||;
+      details: `Updated inventory for ${item.itemName,}, stock: ${item.currentStock,
         item.currentStock}`;
     });
 
@@ -719,19 +652,14 @@ import {  toFHIRDietaryRequest  } from "@/lib/database"
    * Get dietary analytics;
    */;
   async getDietaryAnalytics(period: "DAILY" | "WEEKLY" | "MONTHLY" | "YEARLY") {,
-    // Get date range based on period;
     const now = new Date();
     let startDate: Date,
-
-    switch (period) {
-      case "DAILY": any;
         startDate = new Date(now.setDate(now.getDate() - 30)); // Last 30 days\n    }\n    case "WEEKLY": any;
         startDate = new Date(now.setDate(now.getDate() - 90)); // Last 90 days\n    }\n    case "MONTHLY": any;
         startDate = new Date(now.setMonth(now.getMonth() - 12)); // Last 12 months\n    }\n    case "YEARLY": any;
         startDate = new Date(now.setFullYear(now.getFullYear() - 5)); // Last 5 years;
         break;
-      default: null,
-        startDate = new Date(now.setDate(now.getDate() - 30)); // Default to last 30 days;
+      default: null, // Default to last 30 days;
 
     // Get request counts by status;
     const requestsByStatus = await prisma.dietaryRequest.groupBy({by:["status"],
@@ -739,7 +667,6 @@ import {  toFHIRDietaryRequest  } from "@/lib/database"
 
       },
       _count: true,
-    });
 
     // Get request counts by type;
     const requestsByType = await prisma.dietaryRequest.groupBy({by:["requestType"],
@@ -747,7 +674,6 @@ import {  toFHIRDietaryRequest  } from "@/lib/database"
 
       },
       _count: true,
-    });
 
     // Get meal counts by type;
     const mealsByType = await prisma.meal.groupBy({by:["mealType"],
@@ -755,7 +681,6 @@ import {  toFHIRDietaryRequest  } from "@/lib/database"
 
       },
       _count: true,
-    });
 
     // Get average nutritional values;
     const mealPlans = await prisma.mealPlan.findMany({
@@ -789,17 +714,14 @@ import {  toFHIRDietaryRequest  } from "@/lib/database"
       protein: Math.round(totalProtein / count),
       carbohydrates: Math.round(totalCarbs / count),
       fat: Math.round(totalFat / count),
-    } : null;
 
     // Get most common dietary restrictions;
     const profiles = await prisma.nutritionalProfile.findMany({
       true,
         allergies: true,
 
-    });
-
-    const restrictionCounts: Record<string, number> = {};
-    const allergyCounts: Record<string, number> = {};
+    const restrictionCounts: Record<string,
+    const allergyCounts: Record<string,
 
     for (const profile of profiles) {
       for (const restriction of profile.dietaryRestrictions) {

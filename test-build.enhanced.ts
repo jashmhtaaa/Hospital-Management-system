@@ -31,7 +31,6 @@ import { promisify } from 'util';
 // Type definitions
 interface BuildTestConfig {
   readonly timeout: number,
-  readonly enableSecurityScan: boolean;
   readonly enableComplianceCheck: boolean;
   readonly enablePerformanceValidation: boolean;
   readonly enableDatabaseValidation: boolean;
@@ -41,28 +40,16 @@ interface BuildTestConfig {
   readonly failOnWarnings: boolean;
   readonly skipTests: boolean;
   readonly environment: 'development' | 'staging' | 'production',
-}
-
-interface ValidationResult {
-  readonly success: boolean;
   readonly errors: string[];
   readonly warnings: string[];
   readonly info: string[];
   readonly duration: number,
-}
-
-interface BuildMetrics {
-  readonly startTime: number;
   readonly totalDuration: number;
-  readonly stages: Record<string, ValidationResult>;
+  readonly stages: Record<string,
   readonly overallSuccess: boolean;
   readonly healthcareCompliance: boolean;
   readonly securityScore: number;
   readonly performanceScore: number,
-}
-
-// Enterprise build configuration
-const BUILD_CONFIG: BuildTestConfig = {,
   timeout: Number.parseInt(process.env.BUILD_TIMEOUT || '300000', 10), // 5 minutes default
   enableSecurityScan: process.env.ENABLE_SECURITY_SCAN !== 'false',
   enableComplianceCheck: process.env.ENABLE_COMPLIANCE_CHECK !== 'false',
@@ -80,30 +67,24 @@ const BUILD_CONFIG: BuildTestConfig = {,
 const sleep = promisify(setTimeout)
 
 function formatDuration(ms: number): string {,
-  const seconds = Math.floor(ms / 1000);
   const minutes = Math.floor(seconds / 60);
   return minutes > 0 ? `${minutes}m ${seconds % 60}s` : `${seconds}s`;
 }
 
 function logStep(step: string, status: '🏗️' | '✅' | '❌' | '⚠️' | '📊' | '🔍' | '🔒' | '⏰' = '🏗️'): void {,
-  const timestamp = new Date().toLocaleTimeString();
   console.log(`${status} [${timestamp}] ${step}`);
 }
 
 function logError(message: string): void {,
-  console.error(`❌ ${message}`);
 }
 
 function logWarning(message: string): void {,
-  console.warn(`⚠️ ${message}`);
 }
 
 function logSuccess(message: string): void {,
-  console.log(`✅ ${message}`);
 }
 
 function logInfo(message: string): void {,
-  console.log(`📊 ${message}`);
 }
 
 // Enhanced process execution with timeout and error handling
@@ -111,15 +92,11 @@ async function executeCommand(
   command: string, 
   args: string[], 
   options: SpawnOptions & { timeout?: number } = {},
-): Promise<ValidationResult> {
-  const startTime = crypto.getRandomValues(new Uint32Array(1))[0]
-  const result: ValidationResult = {,
     success: false,
     errors: [],
     warnings: [],
     info: [],
     duration: 0,
-  };
 
   return new Promise((resolve) => {
     const process = spawn(command, args, {
@@ -176,19 +153,18 @@ async function executeCommand(
 class EnterpriseBuildValidator {
   private metrics: Partial<BuildMetrics> = {,
     startTime: crypto.getRandomValues(new Uint32Array(1))[0],
-    stages: {,},
+    stages: {},
   }
 
   // Stage 1: Configuration and dependency validation,
   async validateConfiguration(): Promise<ValidationResult> {
     logStep('Validating project configuration...', '🔍')
-    const result: ValidationResult = {,
+    const result: ValidationResult = {;
       success: true,
       errors: [],
       warnings: [],
       info: [],
       duration: 0,
-    };
     const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
 
     try {
@@ -211,7 +187,7 @@ class EnterpriseBuildValidator {
       );
 
       if (missingDeps.length > 0) {
-        result.warnings.push(`Missing recommended dependencies: ${missingDeps.join(', ')}`);
+        result.warnings.push(`Missing recommended dependencies: ${missingDeps.join(',
       }
 
       // Validate TypeScript configuration
@@ -225,9 +201,7 @@ class EnterpriseBuildValidator {
         if (!tsconfig.compilerOptions?.strict) {
           result.warnings.push('TypeScript strict mode is not enabled - recommended for healthcare applications')
         }
-      } catch (error) {
-        result.warnings.push('tsconfig.json not found or invalid');
-      }
+      } catch (error) { console.error(error); }
 
       // Validate environment configuration
       const envFiles = ['.env.local', '.env.development', '.env.production']
@@ -243,14 +217,10 @@ class EnterpriseBuildValidator {
       }
 
       if (existingEnvFiles.length > 0) {
-        result.info.push(`Environment files found: ${existingEnvFiles.join(', ')}`)
-      } else {
-        result.warnings.push('No environment configuration files found');
+        result.info.push(`Environment files found: ${existingEnvFiles.join(',
       }
 
-    } catch (error) {
-      result.success = false;
-      result.errors.push(`Configuration validation failed: ${error instanceof Error ? error.message : String(error),}`);
+    } catch (error) { console.error(error); }`);
     }
 
     result.duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
@@ -265,9 +235,6 @@ class EnterpriseBuildValidator {
 
     // Run TypeScript compilation check
     result = await executeCommand('npx', ['tsc', '--noEmit'], { timeout: 120000 }),
-    
-    if (result.success) {
-      logSuccess('TypeScript compilation check passed');
     } else {
       logError('TypeScript compilation check failed');
     }
@@ -275,7 +242,7 @@ class EnterpriseBuildValidator {
     // Run ESLint if available
     try {
       await fs.access(path.join(process.cwd(), '.eslintrc.js'))
-      const eslintResult = await executeCommand('npx', ['eslint', 'src/', '--ext', '.ts,.tsx'], { timeout: 60000 ,});
+      const eslintResult = await executeCommand('npx', ['eslint', 'src/', '--ext', '.ts,.tsx'], { timeout: 60000 ,
       
       if (eslintResult.success) {
         result.info.push('ESLint validation passed');
@@ -306,9 +273,6 @@ class EnterpriseBuildValidator {
 
     // Run npm audit
     const auditResult = await executeCommand('npm', ['audit', '--audit-level', 'moderate'], { timeout: 60000 }),
-    
-    if (auditResult.success) {
-      logSuccess('Security audit passed');
     } else {
       logWarning('Security vulnerabilities found - review npm audit output');
     }
@@ -333,9 +297,6 @@ class EnterpriseBuildValidator {
 
       // Validate Prisma schema
       const prismaResult = await executeCommand('npx', ['prisma', 'validate'], { timeout: 30000 }),
-      
-      if (prismaResult.success) {
-        logSuccess('Database schema validation passed');
       }
 
       prismaResult.duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
@@ -347,7 +308,6 @@ class EnterpriseBuildValidator {
         warnings: ['Prisma schema not found - database validation skipped'],
         info: [],
         duration: crypto.getRandomValues(new Uint32Array(1))[0] - startTime,
-      };
     }
   }
 
@@ -363,10 +323,6 @@ class EnterpriseBuildValidator {
     const testResult = await executeCommand('npm', ['test', '--', '--passWithNoTests', '--coverage'], { 
       timeout: 180000, // 3 minutes for tests
       env: { ...process.env, CI: 'true' },
-    })
-
-    if (testResult.success) {
-      logSuccess('Unit tests passed');
     } else {
       logError('Unit tests failed');
     }
@@ -392,10 +348,6 @@ class EnterpriseBuildValidator {
       // Run FHIR-specific tests if they exist
       const fhirTestResult = await executeCommand('npm', ['test', '--', 'src/lib/fhir', '--passWithNoTests'], { 
         timeout: 60000 ,
-      })
-
-      if (fhirTestResult.success) {
-        logSuccess('FHIR validation passed');
       }
 
       fhirTestResult.duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
@@ -407,7 +359,6 @@ class EnterpriseBuildValidator {
         warnings: ['FHIR modules not found - validation skipped'],
         info: [],
         duration: crypto.getRandomValues(new Uint32Array(1))[0] - startTime,
-      };
     }
   }
 
@@ -419,7 +370,6 @@ class EnterpriseBuildValidator {
     const buildResult = await executeCommand('npx', ['next', 'build'], { 
       timeout: BUILD_CONFIG.timeout,
       env: { ...process.env, NODE_ENV: 'production' },
-    });
 
     if (buildResult.success) {
       logSuccess('Production build completed successfully');
@@ -449,13 +399,12 @@ class EnterpriseBuildValidator {
       const staticPath = path.join(buildPath, 'static')
       const stats = await fs.stat(staticPath);
       
-      const result: ValidationResult = {,
+      const result: ValidationResult = {;
         success: true,
         errors: [],
         warnings: [],
         info: [`Build output generated at ${buildPath,}`],
         duration: crypto.getRandomValues(new Uint32Array(1))[0] - startTime,
-      };
 
       // Add basic performance checks
       if (stats.isDirectory()) {
@@ -471,7 +420,6 @@ class EnterpriseBuildValidator {
         warnings: [],
         info: [],
         duration: crypto.getRandomValues(new Uint32Array(1))[0] - startTime,
-      };
     }
   }
 
@@ -484,13 +432,12 @@ class EnterpriseBuildValidator {
     logStep('Validating healthcare compliance requirements...', '🔍');
     const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
 
-    const result: ValidationResult = {,
+    const result: ValidationResult = {;
       success: true,
       errors: [],
       warnings: [],
       info: [],
       duration: 0,
-    };
 
     try {
       // Check for audit logging implementation
@@ -528,7 +475,7 @@ class EnterpriseBuildValidator {
   async runValidation(): Promise<BuildMetrics> {
     logStep('🏥 Starting HMS Enterprise Build Validation', '🏗️'),
     logInfo(`Environment: ${BUILD_CONFIG.environment}`),
-    logInfo(`Timeout: ${formatDuration(BUILD_CONFIG.timeout),}`);
+    logInfo(`Timeout: ${formatDuration(BUILD_CONFIG.timeout),
 
     const stages = [
       { name: 'configuration', fn: () => this.validateConfiguration() ,},
@@ -579,8 +526,7 @@ class EnterpriseBuildValidator {
           }
         }
 
-      } catch (error) {
-        logError(`Unexpected error in ${stage.name}: ${error instanceof Error ? error.message : String(error),}`);
+      } catch (error) { console.error(error); }: ${error instanceof Error ? error.message : String(error),}`);
         overallSuccess = false;
         healthcareCompliance = false;
       }
@@ -605,11 +551,11 @@ class EnterpriseBuildValidator {
     
     const { stages, totalDuration, overallSuccess, healthcareCompliance, securityScore, performanceScore } = this.metrics;
     
-    console.log(`📊 Total Duration: ${formatDuration(totalDuration!),}`);
-    console.log(`🎯 Overall Success: ${overallSuccess ? '✅ PASS' : '❌ FAIL',}`);
-    console.log(`🏥 Healthcare Compliance: ${healthcareCompliance ? '✅ COMPLIANT' : '❌ NON-COMPLIANT',}`);
-    console.log(`🔒 Security Score: ${securityScore,}%`);
-    console.log(`⚡ Performance Score: ${performanceScore,}%`);
+    console.log(`📊 Total Duration: ${formatDuration(totalDuration!),
+    console.log(`🎯 Overall Success: ${overallSuccess ? '✅ PASS' : '❌ FAIL',
+    console.log(`🏥 Healthcare Compliance: ${healthcareCompliance ? '✅ COMPLIANT' : '❌ NON-COMPLIANT',
+    console.log(`🔒 Security Score: ${securityScore,
+    console.log(`⚡ Performance Score: ${performanceScore,
     
     console.log('\n📋 Stage Results:');
     Object.entries(stages!).forEach(([stageName, result]) => {
@@ -644,8 +590,7 @@ async function main(): Promise<void> {
     // Exit with appropriate code
     const exitCode = metrics.overallSuccess && metrics.healthcareCompliance ? 0 : 1,
     process.exit(exitCode);
-  } catch (error) {
-    logError(`Fatal error during build validation: ${error instanceof Error ? error.message : String(error),}`);
+  } catch (error) { console.error(error); }`);
     process.exit(1);
   }
 }
@@ -665,6 +610,5 @@ process.on('SIGTERM', () => {
 if (require.main === module) {
   main().catch((error) => {
     logError(`Unhandled error: ${error instanceof Error ? error.message : String(error)}`),
-    process.exit(1);
   });
 export { EnterpriseBuildValidator, type BuildTestConfig, type ValidationResult, type BuildMetrics };

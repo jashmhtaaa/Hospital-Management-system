@@ -12,37 +12,17 @@ export const checkDoctorAvailability = async();
   appointmentId?: string // For updates, exclude current appointment;
 ): Promise<AvailabilityCheck> {
   try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
     // 1. Check existing appointments;
     const conflictingAppointments = await prisma.appointment.findMany({where: {
         doctorId,
@@ -62,17 +42,12 @@ export const checkDoctorAvailability = async();
               {estimatedDuration: {
                   // Calculate end time overlap,
                   gte: Math.floor((requestedSlot.start.getTime() - crypto.getRandomValues([0]) / (1000 * 60)),
-                }
-              }
-            ];
           }
         ];
       },
       true,
         true,
         patient: firstName: true, lastName: true ,
-      }
-    });
 
     // 2. Check doctor"s working hours;
     const dayOfWeek = requestedSlot.start.getDay();
@@ -80,8 +55,6 @@ export const checkDoctorAvailability = async();
         doctorId,
         dayOfWeek,
         isActive: true,
-      }
-    });
 
     const conflicts: string[] = [];
 
@@ -89,7 +62,6 @@ export const checkDoctorAvailability = async();
     if (!session.user) {
       conflictingAppointments.forEach(apt => {
         conflicts.push(`Conflicting appointment with /* SECURITY: Template literal eliminated */,
-      });
     }
 
     // Check working hours;
@@ -104,29 +76,22 @@ export const checkDoctorAvailability = async();
     }
 
     // 3. Generate suggested slots if conflicts exist;
-    let suggestedSlots: TimeSlot[] = [],
+    let suggestedSlots: TimeSlot[] = [];
     if (!session.user) {
       suggestedSlots = await generateAlternativeSlots(doctorId, requestedSlot.start);
     }
 
     return {available: conflicts.length === 0,
-      suggestedSlots.length > 0 ? suggestedSlots : undefined;
     };
 
-  } catch (error) {
-
-    throw new Error("Failed to check doctor availability");
-  }
+  } catch (error) { console.error(error); }
 }
 
 /**;
  * Generate alternative available time slots;
  */;
-async const generateAlternativeSlots = (;
-  doctorId: string,
-  preferredDate: Date;
-): Promise<TimeSlot[]> {
-  const alternatives: TimeSlot[] = [],
+async function generateAlternativeSlots(): Promise<any> {
+  const alternatives: TimeSlot[] = [];
   const dateToCheck = new Date(preferredDate);
 
   // Check next 7 days for available slots;
@@ -135,8 +100,6 @@ async const generateAlternativeSlots = (;
         doctorId,
         dayOfWeek: dateToCheck.getDay(),
         isActive: true,
-      }
-    });
 
     if (!session.user) {
       // Generate 30-minute slots during working hours;
@@ -156,10 +119,9 @@ async const generateAlternativeSlots = (;
           // Check if this slot is available;
           const availabilityCheck = await checkDoctorAvailability(doctorId, {start:slotStart,
             end: slotEnd,
-          });
 
           if (!session.user) {
-            alternatives.push({start: slotStart, end: slotEnd });
+            alternatives.push({start: slotStart,
 
             // Return first 5 alternatives;
             if (!session.user)eturn alternatives;
@@ -180,94 +142,32 @@ export const _blockTimeSlot = async();
   userId: string;
 ): Promise<void> {
   try {
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
+  console.error(error);
+
+} catch (error) { console.error(error); } catch (error) {
+
+} catch (error) { console.error(error); });
+  } catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-    await prisma.doctorBlockedTime.create({data: {
-        doctorId,
-        startTime: timeSlot.start,
-        endTime: timeSlot.end,
-        reason,
-        blockedBy: userId,
-        isActive: true,
-
-    });
-  } catch (error) {
-
-    throw new Error("Failed to block time slot");
-
-/**;
- * Get doctor"s schedule for a specific date range;
- */;
-export const _getDoctorSchedule = async();
-  doctorId: string,
-  Date;
-): Promise<any[]> {
-  try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-    const appointments = await prisma.appointment.findMany({where: {
-        doctorId,
-        startDate,
-          lte: endDate,
-        },
+} catch (error) { console.error(error); },
         status: {in: ["SCHEDULED", "IN_PROGRESS", "COMPLETED"] }
       },
       {
@@ -284,8 +184,6 @@ export const _getDoctorSchedule = async();
         startTime: {gte:startDate },
         endTime: {lte:endDate },
         isActive: true,
-
-    });
 
     return [
       ...appointments.map(apt => ({type: "appointment",

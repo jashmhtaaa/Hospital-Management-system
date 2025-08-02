@@ -1,4 +1,4 @@
-import { } from "@/components/ui/button"
+
 import "react";
 import React
 import useEffect } from "@/components/layout/DashboardLayout"
@@ -19,7 +19,7 @@ export const dynamic = "force-dynamic";
   TableHead,
   TableHeader,
   TableRow} from "@/components/ui/table";
-import { } from "@/hooks/use-toast"
+
 import "lucide-react";
 import "next/link";
 import Link
@@ -47,50 +47,20 @@ export default const _PatientsPage = () {
       setIsLoading(true),
       setError(null);
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-
-} catch (error) {
-
-        const response = await fetch("/api/patients"); // Use the GET endpoint created earlier;
-        if (!session.user) {
-          // FIX: Cast error response JSON to defined type,
-          const errorData = (await response.json()) as ErrorResponse;
-          throw new Error(errorData?.error || errorData?.message || "Failed to fetch patients");
-
-        const data: Patient[] = await response.json(),
-        setPatients(data);
-      } catch (err: unknown) { // Use unknown;
+} catch (error) { console.error(error); } catch (err: unknown) { // Use unknown;
         const message = err instanceof Error ? err.message : "An unknown error occurred";
         setError(message),
-        toast({title:"Error Fetching Patients",
-          "destructive";
+        toast({title: "Error Fetching Patients",
         });
       } finally ;
         setIsLoading(false);
@@ -125,10 +95,7 @@ export default const _PatientsPage = () {
             <Input>;
                 type = "search",
                 placeholder="Search by name, phone, or email...";
-                className="pl-8 w-full md:w-1/3 lg:w-1/4",
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-            />;
+                className="pl-8 w-full md: w-1/3 lg:w-1/4",
         </div>;
 
         {/* Patients Table */}

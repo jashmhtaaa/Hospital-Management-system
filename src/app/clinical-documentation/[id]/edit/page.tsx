@@ -1,4 +1,4 @@
-import { } from "../../../../lib/auth"
+
 import "@prisma/client";
 import "next-auth";
 import "next/navigation";
@@ -15,8 +15,6 @@ const prisma = new PrismaClient();
 export default async const _DocumentEditPage = ({
   params;
 }: {id: string ,
-}) {
-  // Get session;
   const session = await getServerSession(authOptions);
 
   // Redirect to login if not authenticated;

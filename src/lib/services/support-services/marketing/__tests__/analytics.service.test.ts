@@ -15,11 +15,9 @@ jest.mock("@/lib/prisma", () => ({
   },
   jest.fn(),
     count: jest.fn(),
-    groupBy: jest.fn();
   },
   jest.fn(),
     count: jest.fn(),
-    groupBy: jest.fn();
   }}));
 
 jest.mock("@/lib/audit", () => ({
@@ -47,13 +45,13 @@ describe("AnalyticsService", () => {
       {id: "activity-2", type: "EMAIL_OPEN", timestamp: new Date("2023-01-03") },
       {id: "activity-3", type: "EMAIL_CLICK", timestamp: new Date("2023-01-04") },
       {id: "activity-4", type: "EMAIL_OPEN", timestamp: new Date("2023-01-05") },
-      {id: "activity-5", type: "CONVERSION", timestamp: new Date("2023-01-06") }];
+      {id: "activity-5", type: "CONVERSION",
 
     const mockActivityCounts = [;
       {type: "EMAIL_SENT", count: 100 },
       {type: "EMAIL_OPEN", count: 45 },
       {type: "EMAIL_CLICK", count: 20 },
-      {type: "CONVERSION", count: 5 }];
+      {type: "CONVERSION",
 
     const mockDailyStats = [;
       {date: "2023-01-02", type: "EMAIL_SENT", count: 100 },
@@ -61,7 +59,7 @@ describe("AnalyticsService", () => {
       {date: "2023-01-04", type: "EMAIL_OPEN", count: 15 },
       {date: "2023-01-04", type: "EMAIL_CLICK", count: 10 },
       {date: "2023-01-05", type: "EMAIL_CLICK", count: 10 },
-      {date: "2023-01-06", type: "CONVERSION", count: 5 }];
+      {date: "2023-01-06", type: "CONVERSION",
 
     it("should retrieve campaign analytics successfully", async () => {
       // Arrange;
@@ -96,7 +94,6 @@ describe("AnalyticsService", () => {
           expect.any(Number),
             opens: expect.any(Number),
             clicks: expect.any(Number),
-            conversions: expect.any(Number);
           })})]));
     });
 
@@ -214,11 +211,9 @@ describe("AnalyticsService", () => {
       expect(service.getCampaignAnalytics).toHaveBeenCalledWith("campaign-1", undefined, undefined),
       expect(service.getCampaignAnalytics).toHaveBeenCalledWith("campaign-2", undefined, undefined),
       expect(result).toEqual({campaigns: expect.arrayContaining([;
-          expect.objectContaining({id:"campaign-1",
-            mockCampaignMetrics[0].metrics;
+          expect.objectContaining({id: "campaign-1",
           }),
           expect.objectContaining({id: "campaign-2",
-            mockCampaignMetrics[1].metrics;
           })]),
         expect.any(Object),
           opens: expect.any(Object),
@@ -226,7 +221,6 @@ describe("AnalyticsService", () => {
           conversions: expect.any(Object),
           openRate: expect.any(Object),
           clickRate: expect.any(Object),
-          conversionRate: expect.any(Object);
         })});
 
       // Check comparison calculations;
@@ -234,7 +228,6 @@ describe("AnalyticsService", () => {
         "campaign-1": 100,
         "campaign-2": 150,
         difference: 50,
-        percentageChange: 50;
       });
     });
 
@@ -272,7 +265,7 @@ describe("AnalyticsService", () => {
 
       // Assert;
       expect(AuditLogger.prototype.log).toHaveBeenCalledWith({action: "analytics.campaign.compare",
-        resourceId: expect.any(String), // Generated ID;
+        resourceId: expect.any(String),
         userId: mockUserId,
         ["campaign-1", "campaign-2"]})});
     });
@@ -280,7 +273,6 @@ describe("AnalyticsService", () => {
 
   describe("getContactActivityAnalytics", () => {
     const _mockContact = {id: "contact-123",
-      "john.doe@example.com";
     };
 
     const mockActivities = [;
@@ -288,18 +280,18 @@ describe("AnalyticsService", () => {
       {id: "activity-2", type: "EMAIL_CLICK", timestamp: new Date("2023-01-03"), campaignId: "campaign-1" },
       {id: "activity-3", type: "FORM_SUBMISSION", timestamp: new Date("2023-01-04"), campaignId: null },
       {id: "activity-4", type: "PAGE_VIEW", timestamp: new Date("2023-01-05"), campaignId: null },
-      {id: "activity-5", type: "CONVERSION", timestamp: new Date("2023-01-06"), campaignId: "campaign-2" }];
+      {id: "activity-5", type: "CONVERSION", timestamp: new Date("2023-01-06"),
 
     const mockActivityCounts = [;
       {type: "EMAIL_OPEN", count: 10 },
       {type: "EMAIL_CLICK", count: 5 },
       {type: "FORM_SUBMISSION", count: 2 },
       {type: "PAGE_VIEW", count: 15 },
-      {type: "CONVERSION", count: 1 }];
+      {type: "CONVERSION",
 
     const mockCampaignActivities = [;
       {campaignId: "campaign-1", count: 3 },
-      {campaignId: "campaign-2", count: 2 }];
+      {campaignId: "campaign-2",
 
     it("should retrieve contact activity analytics successfully", async () => {
       // Arrange;
@@ -319,10 +311,8 @@ describe("AnalyticsService", () => {
 
       // Assert;
       expect(prisma.contactActivity.count).toHaveBeenCalledWith({where: { contactId: "contact-123" }}),
-      expect(prisma.contactActivity.groupBy).toHaveBeenCalledWith();
         expect.objectContaining({by: ["type"],
           where: {contactId:"contact-123" },
-          _count: true;
         });
       );
 
@@ -333,15 +323,12 @@ describe("AnalyticsService", () => {
         }),
         campaignEngagement: expect.arrayContaining([;
           expect.objectContaining({campaignId: "campaign-1",
-            activityCount: 3;
           }),
           expect.objectContaining({campaignId: "campaign-2",
-            activityCount: 2;
           })]),
         recentActivities: expect.arrayContaining([;
           expect.objectContaining({id: expect.any(String),
             type: expect.any(String),
-            timestamp: expect.any(Date);
           })])}));
     });
 

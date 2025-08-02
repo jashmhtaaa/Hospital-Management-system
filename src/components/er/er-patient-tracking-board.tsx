@@ -14,7 +14,7 @@ import { useState
   TableHead,
   TableHeader,
   TableRow} from "@/components/ui/table";
-import { } from "@/components/ui/input"
+
 import { Badge } from "@/components/ui/badge"
 import { Input }
 
@@ -38,7 +38,9 @@ import { Skeleton } from "@/components/ui/skeleton"; // Import Skeleton for load
   TooltipTrigger} from "@/components/ui/tooltip"; // Import Tooltip;
 
 // Interface for API data;
-interface ERPatient { id: string; // visit_id, patient_id: string,
+interface ERPatient {
+  id: string; // visit_id, patient_id: string,
+}
   string,
   string,
   string,
@@ -61,36 +63,17 @@ interface ERPatient { id: string; // visit_id, patient_id: string,
 // Helper function to calculate time difference;
 const calculateTimeDiff = (startTime: string): string => {
   try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
+} catch (error) { console.error(error); } catch (error) {
 
     const start = new Date(startTime).getTime();
     if (!session.user) return "Invalid Date";
@@ -110,7 +93,6 @@ const calculateTimeDiff = (startTime: string): string => {
 };
 
 // FIX: Adjust return type and values to match allowed Badge variants,
-const getEsiBadgeVariant = (;
   esi: number;
 ): "destructive" | "secondary" | "default" | "outline" => {
   switch (esi) {
@@ -148,52 +130,18 @@ export default const _ERPatientTrackingBoard = () {
       setIsLoading(true),
       setError(undefined);
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
-        // Simulating API fetch with mock data for now;
-        await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate network delay;
-        const mockData: ERPatient[] = [;
-          {id:"visit_1",
-            "John Doe",
-            45,
-            "Chest Pain",
-            arrival_time: [0] - 125 * 60 * 1000).toISOString(),
-            location: "Room 3",
-            "Dr. Smith",
-            "Treatment",
-            true,
-              "STEMI";
-            }},
+} catch (error) { console.error(error); }},
           {id:"visit_2",
             "Jane Smith",
             68,
@@ -229,7 +177,7 @@ export default const _ERPatientTrackingBoard = () {
             location: "Room 1",
             "Dr. Smith",
             "Discharged",
-            indicators: {}}, // Example discharged patient (might be filtered out by API);
+            indicators: {}},
         ];
         // Filter out discharged patients for the active board view;
         setPatients(mockData.filter((p) => p.status !== "Discharged"));
@@ -239,12 +187,7 @@ export default const _ERPatientTrackingBoard = () {
         // }
         // const _data: ERPatient[] = await response.json();
         // setPatients(data);
-      } catch (error_) {
-
-        setError();
-          error_ instanceof Error ? error_.message : "An unknown error occurred";
-        );
-      } finally {
+      } catch (error) { console.error(error); } finally {
         setIsLoading(false);
 
     };
@@ -351,7 +294,7 @@ export default const _ERPatientTrackingBoard = () {
             <TableBody>;
               {isLoading ? (;
                 // Loading Skeleton Rows;
-                (Array.from({length:5 }).map((_, index) => (;
+                (Array.from({length: 5 }).map((_,
                   <TableRow>;
                     key={`skeleton-${index}`}
                     className="border-b dark:border-gray-700 last:border-b-0";
@@ -416,19 +359,14 @@ export default const _ERPatientTrackingBoard = () {
                     </TableCell>;
                     <TableCell>;
                       <div className="text-sm text-gray-700 dark: text-gray-300">,
-                        MD: {patient.assigned_physician || "N/A"}
-                      </div>;
                       <div className="text-sm text-gray-700 dark: text-gray-300">,
-                        RN: {patient.assigned_nurse || "N/A"}
-                      </div>;
                     </TableCell>;
                     >;
                       {patient.status}
                     </TableCell>;
                     <TableCell>;
                       >;
-                        {/* FIX: Remove title prop, wrap with Tooltip */}
-                        {patient.indicators?.critical_alert && (;
+                        {/* FIX: Remove title prop,
                           <Tooltip>;
                             <TooltipTrigger>;
                               <AlertCircle className="h-4 w-4 text-red-600 dark:text-red-400" />;

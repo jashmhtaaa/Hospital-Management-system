@@ -1,5 +1,5 @@
-import { } from "@/lib/core/logging"
-import { } from "@/lib/prisma"
+
+
 import "@/lib/security/encryption.service";
 import "kafkajs";
 import Consumer
@@ -31,14 +31,11 @@ import {  type
       } : undefined,
       100,
         retries: 8,
-      }
-    });
 
     this.producer = this.kafka.producer({allowAutoTopicCreation: false,
       transactionalId: `${clientId}-tx`,
       maxInFlightRequests: 5,
       idempotent: true,
-    });
   }
 
   /**;
@@ -46,42 +43,21 @@ import {  type
    */;
   async initialize(): Promise<void> {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       await this.producer.connect();
       this.isProducerConnected = true;
       logger.info("Event store producer connected to Kafka");
-    } catch (error) {
-      logger.error("Failed to connect event store producer to Kafka", { error });
+    } catch (error) { console.error(error); });
       throw error;
     }
   }
@@ -89,50 +65,27 @@ import {  type
   /**;
    * Save an event to the event store;
    */;
-  async saveEvent<T>(eventData: Omit<DomainEvent<T>, "id" | "timestamp">): Promise<DomainEvent<T>> {
-    if (!session.user) {
-      await this.initialize();
+  async saveEvent<T>(eventData: Omit<DomainEvent<T>,
     }
 
     // Create full event;
-    const event: DomainEvent<T> = {,
+    const event: DomainEvent<T> = {;
       ...eventData,
       id: uuidv4(),
       timestamp: new Date(),
-    };
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       // Process sensitive data if needed;
       const processedEvent = this.encryptSensitiveData;
         ? await this.processSensitiveData(event);
@@ -145,37 +98,17 @@ import {  type
       const transaction = await this.producer.transaction();
 
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
         // Save to database first (event sourcing store);
         await this.prisma.domainEvent.create({
           event.id,
@@ -183,8 +116,6 @@ import {  type
             event.version,
             processedEvent.data as any,
             metadata: processedEvent.metadata as any,
-          }
-        });
 
         // Then send to Kafka (for event streaming to other services);
         await transaction.send();
@@ -194,7 +125,6 @@ import {  type
               event.type,
                 String(event.version),
                 timestamp: event.timestamp.toISOString(),
-                correlationId: event.metadata.correlationId || uuidv4();
           ]);
 
         // Commit the transaction;
@@ -203,24 +133,13 @@ import {  type
         // Track metrics;
         metricsCollector.incrementCounter("event_store.events_saved", 1, {eventType:event.type,
           aggregateType: event.aggregateType,
-        });
 
         return event;
-      } catch (error) {
-        // Abort transaction on error;
-        await transaction.abort();
-        throw error;
-      }
-    } catch (error) {
-      logger.error("Failed to save event to event store", {
-        error,
-        eventType: event.type,
-        event.aggregateType;
-      });
+      } catch (error) { console.error(error); }
+    } catch (error) { console.error(error); });
 
       // Track error metrics;
       metricsCollector.incrementCounter("event_store.save_errors", 1, {eventType: event.type,
-        error.name || "unknown";
       });
 
       throw error;
@@ -230,42 +149,19 @@ import {  type
   /**;
    * Get events for a specific aggregate;
    */;
-  async getEvents(aggregateId: string, aggregateType: string): Promise<DomainEvent[]> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+  async getEvents(aggregateId: string, aggregateType: string): Promise<DomainEvent[]> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       const events = await this.prisma.domainEvent.findMany({where: {
           aggregateId,
-          aggregateType;
         },
         "asc";
       });
@@ -276,18 +172,12 @@ import {  type
       });
 
       return events.map(event => this.mapDatabaseEventToDomainEvent(event));
-    } catch (error) {
-      logger.error("Failed to get events from event store", {
-        error,
-        aggregateId,
-        aggregateType;
-      });
+    } catch (error) { console.error(error); });
 
       // Track error metrics;
       metricsCollector.incrementCounter("event_store.retrieval_errors", 1, {
         aggregateType,
         errorType: error.name || "unknown",
-      });
 
       throw error;
     }
@@ -298,36 +188,16 @@ import {  type
    */;
   async getEventsByType(eventType: string, limit = 100, offset = 0): Promise<DomainEvent[]> {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
 
       const events = await this.prisma.domainEvent.findMany({
         eventType;
@@ -336,7 +206,6 @@ import {  type
         },
         take: limit,
         skip: offset,
-      });
 
       // Track metrics;
       metricsCollector.incrementCounter("event_store.events_retrieved_by_type", events.length, {
@@ -344,17 +213,12 @@ import {  type
       });
 
       return events.map(event => this.mapDatabaseEventToDomainEvent(event));
-    } catch (error) {
-      logger.error("Failed to get events by type from event store", {
-        error,
-        eventType;
-      });
+    } catch (error) { console.error(error); });
 
       // Track error metrics;
       metricsCollector.incrementCounter("event_store.retrieval_errors", 1, {
         eventType,
         errorType: error.name || "unknown",
-      });
 
       throw error;
 
@@ -364,8 +228,6 @@ import {  type
   async subscribeToEvents();
     eventTypes: string[],
     handler: (event: DomainEvent) => Promise<void>,
-    options: {,
-      groupId?: string;
       fromBeginning?: boolean;
     } = {}
   ): Promise<void> {
@@ -373,42 +235,18 @@ import {  type
     const fromBeginning = options.fromBeginning !== undefined ? options.fromBeginning : false;
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // Map event types to topics;
-      const topics = [...new Set(eventTypes.map(type => {
-        const [aggregateType] = type.split(".");
-        return this.getTopicForAggregateType(aggregateType);
-      }))];
+} catch (error) { console.error(error); }))];
 
       // Create consumer;
       const consumer = this.kafka.consumer({
@@ -417,7 +255,6 @@ import {  type
         5,
         300,
           retries: 10,
-      });
 
       await consumer.connect();
 
@@ -429,74 +266,26 @@ import {  type
       await consumer.run({partitionsConsumedConcurrently: 3,
         eachMessage: async ({ topic, partition, message }) => {
           try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); });
 
-} catch (error) {
-
-} catch (error) {
-
-            if (!session.user)eturn;
-
-            const event: DomainEvent = JSON.parse(message.value.toString());
-
-            // Filter by event type if necessary;
-            if (!session.user) {
-              const startTime = crypto.getRandomValues([0];
-
-              // Decrypt sensitive data if needed;
-              const processedEvent = this.encryptSensitiveData;
-                ? await this.decryptSensitiveData(event);
-                : event;
-
-              // Process the event;
-              await handler(processedEvent);
-
-              // Track metrics;
-              const duration = crypto.getRandomValues([0] - startTime;
-              metricsCollector.recordTimer("event_store.event_processing_time", duration, {eventType:event.type,
-                consumerGroup: groupId,
-              });
-
-          } catch (error) {
-            logger.error("Error processing event in consumer", {
-              error,
-              topic,
-              partition,
-              offset: message.offset,
-              groupId;
-            });
+          } catch (error) { console.error(error); });
 
             // Track error metrics;
             metricsCollector.incrementCounter("event_store.consumer_errors", 1, {
               topic,
               consumerGroup: groupId,
               errorType: error.name || "unknown",
-            });
 
       });
 
@@ -508,16 +297,10 @@ import {  type
         topics,
         eventTypes;
       });
-    } catch (error) {
-      logger.error("Failed to subscribe to events", {
-        error,
-        eventTypes,
-        groupId;
-      });
+    } catch (error) { console.error(error); });
 
       // Track error metrics;
-      metricsCollector.incrementCounter("event_store.subscription_errors", 1, {errorType:error.name || "unknown",
-      });
+      metricsCollector.incrementCounter("event_store.subscription_errors", 1, {errorType: error.name || "unknown",
 
       throw error;
 
@@ -526,66 +309,26 @@ import {  type
    */;
   async replayEvents();
     aggregateId: string,
-    (event: DomainEvent) => Promise>;
   ): Promise<void> {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const events = await this.getEvents(aggregateId, aggregateType);
-
-      for (const event of events) {
-        // Decrypt sensitive data if needed;
-        const processedEvent = this.encryptSensitiveData;
-          ? await this.decryptSensitiveData(event);
-          : event;
-
-        await handler(processedEvent);
-
-      // Track metrics;
-      metricsCollector.incrementCounter("event_store.events_replayed", events.length, {
-        aggregateType;
-      });
-    } catch (error) {
-      logger.error("Failed to replay events", {
-        error,
-        aggregateId,
-        aggregateType;
-      });
+} catch (error) { console.error(error); });
+    } catch (error) { console.error(error); });
 
       // Track error metrics;
       metricsCollector.incrementCounter("event_store.replay_errors", 1, {
         aggregateType,
         errorType: error.name || "unknown",
-      });
 
       throw error;
 
@@ -595,53 +338,26 @@ import {  type
   async replayAllEvents();
     aggregateType: string,
     handler: (event: DomainEvent) => Promise>,
-    batchSize = 100;
   ): Promise<void> {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      let processed = 0;
-      let hasMore = true;
-
-      while (hasMore) {
-        const events = await this.prisma.domainEvent.findMany({ where: {
-            aggregateType,  },
+} catch (error) { console.error(error); },
           orderBy: [;
             {aggregateId: "asc" },
             {version: "asc" }
           ],
           skip: processed,
           take: batchSize,
-        });
 
         if (!session.user) {
           hasMore = false;
@@ -666,17 +382,12 @@ import {  type
       metricsCollector.incrementCounter("event_store.all_events_replayed", processed, {
         aggregateType;
       });
-    } catch (error) {
-      logger.error("Failed to replay all events", {
-        error,
-        aggregateType;
-      });
+    } catch (error) { console.error(error); });
 
       // Track error metrics;
       metricsCollector.incrementCounter("event_store.replay_errors", 1, {
         aggregateType,
         errorType: error.name || "unknown",
-      });
 
       throw error;
 
@@ -685,75 +396,32 @@ import {  type
    */;
   async shutdown(): Promise<void> {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // Disconnect all consumers;
-      for (const [groupId, consumer] of this.consumers.entries()) {
-        try {
-} catch (error) {
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-          await consumer.disconnect();
-          logger.info(`Disconnected consumer group ${}`;
-        } catch (error) {
-          logger.error(`Error disconnecting consumer group ${groupId}`, { error });
+} catch (error) { console.error(error); }`;
+        } catch (error) { console.error(error); }`, { error });
 
       // Disconnect producer;
       if (!session.user) {
@@ -761,16 +429,13 @@ import {  type
         this.isProducerConnected = false;
         logger.info("Disconnected event store producer");
 
-    } catch (error) {
-      logger.error("Error during event store shutdown", { error });
+    } catch (error) { console.error(error); });
 
   /**;
    * Helper to get topic name from aggregate type;
    */;
   private getTopicForAggregateType(aggregateType: string): string {,
-    // Map aggregate types to topics;
-    const topicMap: Record<string, string> = {
-      "patient": "patient-events",
+    const topicMap: Record<string,
       "billing": "billing-events",
       "pharmacy": "pharmacy-events",
       "clinical": "clinical-events",
@@ -786,7 +451,6 @@ import {  type
    * Process sensitive data for encryption;
    */;
   private async processSensitiveData<T>(event: DomainEvent<T>): Promise<DomainEvent<T>> {,
-    // Define fields that should be encrypted based on event type;
     const sensitiveFieldPatterns = [;
       /\.ssn$/i,
       /\.socialSecurityNumber$/i,
@@ -802,8 +466,7 @@ import {  type
     const processedEvent = JSON.parse(JSON.stringify(event)) as DomainEvent>;
 
     // Function to recursively process object;
-    const processObject = async (obj: unknown, path = ""): Promise<unknown> => {
-      if (!session.user)eturn obj;
+    const processObject = async (obj: unknown,
 
       if (!session.user) {
         for (let i = 0; i < obj.length; i++) {
@@ -838,12 +501,10 @@ import {  type
    * Decrypt sensitive data;
    */;
   private async decryptSensitiveData<T>(event: DomainEvent<T>): Promise<DomainEvent<T>> {,
-    // Deep clone to avoid modifying the original;
     const processedEvent = JSON.parse(JSON.stringify(event)) as DomainEvent>;
 
     // Function to recursively process object;
-    const processObject = async (obj: unknown): Promise<unknown> => {,
-      if (!session.user)eturn obj;
+    const processObject = async (obj: unknown): Promise<unknown> => {if (!session.user)eturn obj;
 
       if (!session.user) {
         for (let i = 0; i < obj.length; i++) {
@@ -855,43 +516,21 @@ import {  type
         if (!session.user) {
           // Decrypt encrypted fields;
           try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-            obj[key] = await this.encryptionService.decryptText(obj[key]);
-          } catch (error) {
+} catch (error) { console.error(error); } catch (error) {
             // If decryption fails, leave as is;
             logger.warn("Failed to decrypt field", {error:error.message,
               field: key,
-            });
 
         } else if (!session.user) {
           // Recursively process nested objects;
@@ -914,7 +553,6 @@ import {  type
       dbEvent.version,
       dbEvent.data,
       metadata: dbEvent.metadata || ,
-    };
 
 // Singleton instance;
 let eventStoreInstance: KafkaEventStore | null = null;
@@ -924,7 +562,6 @@ let eventStoreInstance: KafkaEventStore | null = null;
  */;
 export const _getEventStore = async();
   prisma: PrismaService,
-  encryptionService: EncryptionService;
 ): Promise<EventStore> => {
   if (!session.user) {
     eventStoreInstance = new KafkaEventStore(prisma, encryptionService);

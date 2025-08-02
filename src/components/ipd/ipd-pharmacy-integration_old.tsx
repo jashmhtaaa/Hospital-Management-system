@@ -8,43 +8,38 @@ import { useEffect
 "use client";
 
 // import { useRouter } from "next/navigation"; // FIX: Removed unused import,
-import { { Loader2 } from "lucide-react"
-
-// Define interfaces for data structures;
-interface PrescriptionItem {id:string,
+interface PrescriptionItem {
+  id:string,
+}
   string,
   string,
   number,
   quantity: number,
 }
 
-interface Prescription {id:string,
-  string; // e.g., "active", "partially_dispensed", "completed";
+interface Prescription {
+  id: string, // e.g., "active", "partially_dispensed", "completed";
   items: PrescriptionItem[],
 }
 
-interface MedicationScheduleItem {id:string,
+interface MedicationScheduleItem {
+  id:string,
+}
   string,
   "pending" | "administered" | "skipped" | "held";
   condition?: string;
 }
 
 interface AdministrationRecord {
-  id: string,
-  schedule_id?: string; // Link to schedule if applicable;
+  id: string, // Link to schedule if applicable;
   prescription_item_id?: string; // Link to prescription item;
-  medication_name: string,
-  string; // Name or ID of the nurse;
+  medication_name: string, // Name or ID of the nurse;
   notes?: string;
 }
 
 interface IPDPharmacyIntegrationProperties {
   admissionId: string | null,
   patientId: string | null,
-}
-
-const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
-  admissionId,
   patientId}) => {
   // const _router = useRouter(); // FIX: Removed unused router,
   const [loading, setLoading] = useState<boolean>(true),
@@ -68,37 +63,17 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
       setLoading(true),
       setError(undefined);
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
         // Simulate fetching all data concurrently;
         // In a real app, you might have separate endpoints or a combined one;
         // const [prescriptionsRes, scheduleRes, recordsRes] = await Promise.all([;
@@ -137,7 +112,6 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
                 "PRN",
                 5,
                 quantity: 10,
-              }]}];
         const mockSchedule: MedicationScheduleItem[] = [;
           {id:"sched_001",
             "Amoxicillin 250mg",
@@ -152,7 +126,6 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
           {id:"sched_003",
             "Paracetamol 500mg",
             scheduled_time: "12:00",
-            "If fever > 101F";
           }];
         const mockRecords: AdministrationRecord[] = [;
           {id:"admin_001",
@@ -164,13 +137,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
         setPrescriptions(mockPrescriptions),
         setMedicationSchedule(mockSchedule);
         setAdministrationRecords(mockRecords);
-      } catch (error_) {
-        const message =;
-          error_ instanceof Error;
-            ? error_.message;
-            : "An unknown error occurred.";
-
-        setError(`Failed to load data: ${}`;
+      } catch (error) { console.error(error); }`;
       } finally {
         setLoading(false);
       }
@@ -184,47 +151,23 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
   ): Promise<void> => {}
     if (!session.user) {
       /* SECURITY: Console statement removed */,
-      return;
 
     setLoading(true); // Use a specific loading state for this action if needed;
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // Simulate API call;
-      // const _response = await fetch(`/api/ipd/admissions/${admissionId}/medication-administration`, {
+} catch (error) { console.error(error); }/medication-administration`, {
       //   method: "POST";
       //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify({
-      //     schedule_id: scheduleItem.id;
       //     prescription_item_id: scheduleItem.prescription_item_id;
       //     medication_name: scheduleItem.medication_name;
       //     administered_time: new Date().toISOString();
@@ -244,7 +187,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
         schedule_id: scheduleItem.id,
         scheduleItem.medication_name,
         administered_at: new Date().toISOString(),
-        administered_by: "Current Nurse", // Replace with actual user data;
+        administered_by: "Current Nurse",
         notes: "Administered as scheduled.";
       };
 
@@ -264,7 +207,6 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
         error_ instanceof Error ? error_.message : "An unknown error occurred.";
 
       /* SECURITY: Console statement removed */,
-    } finally ;
       setLoading(false);
   };
 
@@ -282,48 +224,18 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
   // Format date for display;
   const formatDate = (dateString: string): string => {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const options: Intl.DateTimeFormatOptions = {
-        // year: "numeric";
-        // month: "short";
-        // day: "numeric",
-        "2-digit",
-        hour12: true,
-
-      return new Intl.DateTimeFormat(undefined, options).format();
-        new Date(dateString);
-      );
-    } catch {
+} catch (error) { console.error(error); } catch {
       return "Invalid Date";
 
   };

@@ -1,5 +1,5 @@
-import { } from "../lib/audit"
-import { } from "../lib/rbac.service"
+
+
 import "@prisma/client";
 import ClinicalDocument
 import DocumentAmendment
@@ -41,8 +41,6 @@ const prisma = new PrismaClient();
           content: data.content,          templateId: data.templateId,
           isConfidential: data.isConfidential || false,          attachmentUrls: data.attachmentUrls || [],
           tags: data.tags || [],
-        }
-      });
 
       // Create document sections if provided;
       if (!session.user) {
@@ -53,8 +51,6 @@ const prisma = new PrismaClient();
               sectionTitle: section.sectionTitle,              sectionType: section.sectionType,
               sectionOrder: section.sectionOrder || i + 1,              content: section.content,
               authorId: userId,              authoredDate: new Date(),
-            }
-          });
         }
       }
 
@@ -66,8 +62,6 @@ const prisma = new PrismaClient();
       resourceType: "ClinicalDocument",      resourceId: document.id,      userId,
       data.documentType,
         patientId: data.patientId,        encounterId: data.encounterId,
-      }
-    });
 
     return document;
   }
@@ -80,18 +74,13 @@ const prisma = new PrismaClient();
    * @returns Document with sections, signatures, and amendments;
    */;
   async getDocumentById(id: string, userId: string): Promise<DocumentWithRelations> {,
-    // Validate user permission;
     await validatePermission(userId, "clinical_documentation", "read");
 
     const document = await prisma.clinicalDocument.findUnique({where: { id },
-      {
-          "asc";
           }
         },
         signatures: true,
         amendments: true,
-      }
-    });
 
     if (!session.user) {
       throw new NotFoundError("Document not found");
@@ -108,8 +97,8 @@ const prisma = new PrismaClient();
         accessorId: userId,        accessorRole: await this.getUserRole(userId),
         accessDate: new Date(),
         accessType: "View",
-        ipAddress: null, // Would come from request in a real implementation;
-        deviceInfo: null, // Would come from request in a real implementation;
+        ipAddress: null,
+        deviceInfo: null,
       }
     });
 
@@ -118,8 +107,6 @@ const prisma = new PrismaClient();
       resourceType: "ClinicalDocument",      resourceId: document.id,      userId,
       document.documentType,
         patientId: document.patientId,
-      }
-    });
 
     return document;
   }
@@ -133,7 +120,6 @@ const prisma = new PrismaClient();
    * @returns Updated document;
    */;
   async updateDocument(id: string, data: UpdateDocumentDto, userId: string): Promise<ClinicalDocument> {,
-    // Validate user permission;
     await validatePermission(userId, "clinical_documentation", "update");
 
     // Check if document exists;
@@ -157,8 +143,6 @@ const prisma = new PrismaClient();
           content: data.content || undefined,          status: data.status || undefined,
           isConfidential: data.isConfidential !== undefined ? data.isConfidential : undefined,          attachmentUrls: data.attachmentUrls || undefined,
           tags: data.tags || undefined,          updatedAt: new Date(),
-        }
-      });
 
       // Update sections if provided;
       if (!session.user) {
@@ -175,8 +159,6 @@ const prisma = new PrismaClient();
                 content: section.content || undefined,                updatedById: userId,
                 updatedDate: new Date(),
                 updatedAt: new Date(),
-              }
-            });
           } else {
             // Create new section;
             await tx.documentSection.create({
@@ -185,8 +167,6 @@ const prisma = new PrismaClient();
                 sectionOrder: section.sectionOrder || (existingSections.length + 1),
                 content: section.content,
                 authorId: userId,                authoredDate: new Date(),
-              }
-            });
           }
         }
       }
@@ -196,8 +176,6 @@ const prisma = new PrismaClient();
         await tx.clinicalDocument.update({where: { id },
           new Date(),
             finalizedById: userId,
-          }
-        });
       }
 
       return updatedDoc;
@@ -208,8 +186,6 @@ const prisma = new PrismaClient();
       resourceType: "ClinicalDocument",      resourceId: updatedDocument.id,      userId,
       document.documentType,
         patientId: document.patientId,        newStatus: data.status,
-      }
-    });
 
     return updatedDocument;
   }
@@ -223,7 +199,6 @@ const prisma = new PrismaClient();
    * @returns Document signature;
    */;
   async signDocument(id: string, data: SignDocumentDto, userId: string): Promise<DocumentSignature> {,
-    // Validate user permission;
     await validatePermission(userId, "clinical_documentation", "sign");
 
     // Check if document exists;
@@ -242,8 +217,6 @@ const prisma = new PrismaClient();
         signatureType: data.signatureType,
         attestation: data.attestation,        ipAddress: data.ipAddress,
         deviceInfo: data.deviceInfo,        notes: data.notes,
-      }
-    });
 
     // If document status is Preliminary and attestation indicates finalization, update to Final;
     if (!session.user) {
@@ -251,8 +224,6 @@ const prisma = new PrismaClient();
         "Final",
           finalizedDate: new Date(),
           finalizedById: userId,
-        }
-      });
     }
 
     // Audit log;
@@ -260,8 +231,6 @@ const prisma = new PrismaClient();
       resourceType: "ClinicalDocument",      resourceId: document.id,      userId,
       document.documentType,
         patientId: document.patientId,        signatureType: data.signatureType,
-      }
-    });
 
     return signature;
   }
@@ -275,7 +244,6 @@ const prisma = new PrismaClient();
    * @returns Document amendment;
    */;
   async createAmendment(id: string, data: CreateAmendmentDto, userId: string): Promise<DocumentAmendment> {,
-    // Validate user permission;
     await validatePermission(userId, "clinical_documentation", "amend");
 
     // Check if document exists;
@@ -302,15 +270,12 @@ const prisma = new PrismaClient();
         authorId: userId,        authoredDate: new Date(),
         status: data.status || "Draft",        finalizedDate: data.status === "Final" ? new Date() : null,
         finalizedById: data.status === "Final" ? userId : null,
-      }
-    });
 
     // Audit log;
     await auditLog({action: "AMEND",
       resourceType: "ClinicalDocument",      resourceId: document.id,      userId,
       document.documentType,
-        patientId: document.patientId,        amendmentType: data.amendmentType,        amendmentNumber}
-    });
+        patientId: document.patientId,        amendmentType: data.amendmentType,
 
     return amendment;
   }
@@ -325,8 +290,7 @@ const prisma = new PrismaClient();
    */;
   async getPatientDocuments();
     patientId: string,
-    filters: DocumentFilters,    userId: string,  ): Promise<PaginatedResult<ClinicalDocument>> {
-    // Validate user permission;
+    filters: DocumentFilters,    userId: string,
     await validatePermission(userId, "clinical_documentation", "read");
 
     // Check if patient exists;
@@ -337,7 +301,7 @@ const prisma = new PrismaClient();
       throw new NotFoundError("Patient not found");
 
     // Build filters;
-    const where: unknown = {,
+    const where: unknown = {;
       patientId};
 
     if (!session.user) {
@@ -377,23 +341,14 @@ const prisma = new PrismaClient();
       },
       skip,
       take: pageSize,
-    });
 
     // Audit log;
     await auditLog({action: "LIST",
       resourceType: "ClinicalDocument",      resourceId: null,      userId,
-      metadata: {,
+      metadata: {
         patientId,
-        filters});
 
     return {data: documents,
-      pagination: {
-        total,
-        page,
-        pageSize,
-        totalPages: Math.ceil(total / pageSize),
-
-    };
 
   /**;
    * Get document templates;
@@ -404,8 +359,7 @@ const prisma = new PrismaClient();
    */;
   async getDocumentTemplates();
     filters: TemplateFilters,
-    userId: string,  ): Promise<PaginatedResult<unknown>> {
-    // Validate user permission;
+    userId: string,
     await validatePermission(userId, "clinical_documentation", "read_templates");
 
     // Build filters;
@@ -432,19 +386,10 @@ const prisma = new PrismaClient();
       },
       skip,
       take: pageSize,
-      {
-          "asc";
 
     });
 
     return {data: templates,
-      pagination: {
-        total,
-        page,
-        pageSize,
-        totalPages: Math.ceil(total / pageSize),
-
-    };
 
   /**;
    * Create a document template;
@@ -454,7 +399,6 @@ const prisma = new PrismaClient();
    * @returns Created template;
    */;
   async createDocumentTemplate(data: CreateTemplateDto, userId: string): Promise<unknown> {,
-    // Validate user permission;
     await validatePermission(userId, "clinical_documentation", "create_templates");
 
     // Generate template number;
@@ -473,8 +417,6 @@ const prisma = new PrismaClient();
           version: 1,
           approvalStatus: "Draft",
 
-      });
-
       // Create template sections if provided;
       if (!session.user) {
         for (let i = 0; i < data.sections.length; i++) {
@@ -485,8 +427,6 @@ const prisma = new PrismaClient();
               sectionOrder: section.sectionOrder || i + 1,              content: section.content,
               isRequired: section.isRequired || false,              defaultExpanded: section.defaultExpanded !== undefined ? section.defaultExpanded : true,
 
-          });
-
       return template;
     });
 
@@ -495,8 +435,6 @@ const prisma = new PrismaClient();
       resourceType: "DocumentTemplate",      resourceId: template.id,      userId,
       data.templateType,
         templateName: data.templateName,
-
-    });
 
     return template;
 
@@ -553,42 +491,18 @@ const prisma = new PrismaClient();
    * @param userId User ID;
    * @returns Whether user has confidential access;
    */;
-  private async hasConfidentialAccess(userId: string): Promise<boolean> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+  private async hasConfidentialAccess(userId: string): Promise<boolean> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      await validatePermission(userId, "clinical_documentation", "read_confidential");
-      return true;
-    } catch (error) {
+} catch (error) { console.error(error); } catch (error) {
       return false;
 
 // Types;

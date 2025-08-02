@@ -20,14 +20,9 @@ try {
         tsConfigFilePath: path.join(__dirname, '../tsconfig.json'),
         skipAddingFilesFromTsConfig: false,
         skipFileDependencyResolution: false,
-    });
 
     // Register typed repair functions
-    const repairStrategies: Record<string, RepairStrategy> = {
-        // Fix malformed imports
-        fixImports: (file: SourceFile) => {,
-            file.getImportDeclarations().forEach((imp: ImportDeclaration) => {,
-                const text = imp.getText();
+    const repairStrategies: Record<string,
                 if (text.includes('import') && text.includes('}') && !text.includes('from')) {
                     const fixedText = text
                         .replace(/import\s*\{/g, 'import { ')
@@ -38,9 +33,7 @@ try {
         },
         
         // Fix malformed exports
-        fixExports: (file: SourceFile) => {,
-            file.getExportDeclarations().forEach((exp: ExportDeclaration) => {,
-                const text = exp.getText();
+        fixExports: (file: SourceFile) => {file.getExportDeclarations().forEach((exp: ExportDeclaration) => {const text = exp.getText();
                 if (text.includes('export') && text.includes('}') && !text.includes('from')) {
                     const fixedText = text
                         .replace(/export\s*\{/g, 'export { ')
@@ -52,8 +45,7 @@ try {
     };
 
     // Process files with enhanced error handling
-    project.getSourceFiles().forEach((file: SourceFile) => {,
-        const filePath = file.getFilePath();
+    project.getSourceFiles().forEach((file: SourceFile) => {const filePath = file.getFilePath();
         
         // Skip excluded files
         if (EXCLUSIONS.some(excl => filePath.includes(excl))) return;
@@ -63,13 +55,11 @@ try {
             Object.values(repairStrategies).forEach(strategy => {
                 try {
                     strategy(file);
-                } catch (error) {
-                    console.error(`Error applying strategy to ${filePath}:`, error);
+                } catch (error) { console.error(error); }:`, error);
                 }
             });
             
-        } catch (error) {
-            console.error(`Error processing ${filePath}:`, error);
+        } catch (error) { console.error(error); }:`, error);
         }
     });
     
@@ -77,7 +67,4 @@ try {
     project.saveSync();
     console.log('Syntax repairs completed with strict typing');
     
-} catch (error) {
-    console.error('Fatal error in repair engine:', error);
-    process.exit(1);
-}
+} catch (error) { console.error(error); }

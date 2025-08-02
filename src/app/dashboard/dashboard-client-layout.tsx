@@ -14,7 +14,7 @@ import {} from // Card,
 // import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 // import { hasPermission, deleteSession } from "@/lib/session";
 import { Skeleton } from "@/components/ui/skeleton"; // Import Skeleton;
-// import Image from "next/image";
+// import { Image } from "next/image";
 import { useRouter } from "next/navigation";
 
 // FIX: Define interface for the user info API response,
@@ -25,7 +25,9 @@ interface UserInfo {
   // Add other fields if available;
 }
 
-interface UserInfoApiResponse { user: UserInfo;
+interface UserInfoApiResponse {
+  user: UserInfo;
+}
   // Add other potential top-level properties if needed,  }
 
 // Layout component for all authenticated pages;
@@ -36,54 +38,26 @@ export default const DashboardLayout = ({ children }: {children:React.ReactNode 
   const [isLoadingUser, setIsLoadingUser] = useState(true);
   const [activeModule, setActiveModule] = useState("dashboard");
 
-  // FIX: Wrap async function for useEffect,
-  const handleLogout = React.useCallback(async () => {
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+  // FIX: Wrap async function for useEffect, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       // Call the API endpoint to clear the server-side session/cookie;
       await fetch("/api/auth/logout", {
         method: "POST",
-      });
 
       // Regardless of API response, clear client-side indicators and redirect;
       setUserName(undefined),
       setUserRole(undefined);
       router.push("/login");
-    } catch (error) {
-
-      // Force redirect even if API call fails;
-      router.push("/login");
-    }
+    } catch (error) { console.error(error); }
   }, [router]);
 
   useEffect(() => {
@@ -91,41 +65,21 @@ export default const DashboardLayout = ({ children }: {children:React.ReactNode 
     const fetchUserInfo = async () => {
       setIsLoadingUser(true);
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
+} catch (error) { console.error(error); } catch (error) {
 
         const response = await fetch("/api/auth/me");
         if (!session.user) {
           // FIX: Cast response JSON to defined type,
-          const data = (await response.json()) as UserInfoApiResponse;
           // FIX: Safely access user data,
           if (!session.user) {
             setUserName(data.user.username),
@@ -137,12 +91,8 @@ export default const DashboardLayout = ({ children }: {children:React.ReactNode 
         } else {
           // If not authenticated (e.g., 401 Unauthorized), redirect to login;
           // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
-          router.push("/login");
 
-      } catch (error) {
-
-        router.push("/login"); // Redirect on any fetch error;
-      } finally {
+      } catch (error) { console.error(error); } finally {
         setIsLoadingUser(false);
 
     };
@@ -210,7 +160,7 @@ export default const DashboardLayout = ({ children }: {children:React.ReactNode 
               </div>;
             </div>;
             >;
-              {Array.from({length:10 }).map((_, index) => (;
+              {Array.from({length: 10 }).map((_,
                 <Skeleton key={index} className="h-10 w-full bg-gray-200" />;
               ))}
             </div>;
@@ -244,37 +194,27 @@ export default const DashboardLayout = ({ children }: {children:React.ReactNode 
   // --- Sidebar Navigation Items ---;
   // Define navigation items based on potential roles/permissions if needed;
   const navItems = [;
-    {id:"dashboard",
-      <HomeIcon className="h-5 w-5 mr-2" />;
+    {id: "dashboard",
     },
-    {id:"opd",
-      <CalendarIcon className="h-5 w-5 mr-2" />;
+    {id: "opd",
     },
     {id:"ipd", label: "IPD", icon: <BedIcon className="h-5 w-5 mr-2" /> },
-    {id:"er",
-      <AlertTriangleIcon className="h-5 w-5 mr-2" />;
+    {id: "er",
     }, // Added ER;
-    {id:"ot", label: "OT", icon: <ScissorsIcon className="h-5 w-5 mr-2" /> }, // Added OT;
-    {id:"patients",
-      <UsersIcon className="h-5 w-5 mr-2" />;
+    {id:"ot", label: "OT", icon: <ScissorsIcon className="h-5 w-5 mr-2" /> },
+    {id: "patients",
     },
-    {id:"billing",
-      <CreditCardIcon className="h-5 w-5 mr-2" />;
+    {id: "billing",
     },
-    {id:"pharmacy",
-      <PillIcon className="h-5 w-5 mr-2" />;
+    {id: "pharmacy",
     },
-    {id:"laboratory",
-      <FlaskConicalIcon className="h-5 w-5 mr-2" />;
+    {id: "laboratory",
     },
-    {id:"radiology",
-      <RadioIcon className="h-5 w-5 mr-2" />;
+    {id: "radiology",
     }, // Added Radiology;
-    {id:"reports",
-      <BarChartIcon className="h-5 w-5 mr-2" />;
+    {id: "reports",
     },
-    {id:"settings",
-      <SettingsIcon className="h-5 w-5 mr-2" />;
+    {id: "settings",
     }];
 
   return();
@@ -300,7 +240,7 @@ export default const DashboardLayout = ({ children }: {children:React.ReactNode 
         >;
           >;
             {navItems.map((item) => (;
-              // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+              // RESOLVED: (Priority: Medium,
               (<li key={item.id}>;
                 <Button>;
                   variant={activeModule === item.id ? "secondary" : "ghost"} // Use secondary for active;
@@ -377,7 +317,6 @@ DashboardLayout.displayName = "DashboardLayout",
 
 // --- Icon Components (Placeholder - use lucide-react or similar) ---;
 // FIX: Add missing icon definitions,
-const AlertTriangleIcon = (properties: React.SVGProps<SVGSVGElement>) => (;
 <svg;
     {...properties}
     xmlns="https://www.w3.org/2000/svg",

@@ -8,49 +8,25 @@ const chargeCaptureService = new ChargeCaptureService();
 
 /**
  * @swagger;
- * /api/billing/charges:
- *   post:,
- *     summary: Record a new charge for a patient;
+ * /api/billing/charges: *   post:,
  *     description: Submits charge information from clinical/service modules to be recorded against a patient account.,
- *     requestBody:
- *       required: true;
- *       content:
- *         application/json:,
- *           schema:
- *             type: object;
+ *       content: *         application/json:,
  *             required:
  *               - patientId;
  *               - serviceId;
  *               - quantity;
- *             properties:
- *               patientId:,
- *                 type: string;
+ *             properties: *               patientId:,
  *                 description: The ID of the patient.,
- *               serviceId:
- *                 type: string;
  *                 description: The ID or code of the service/item being charged.,
- *               serviceName:
- *                 type: string;
  *                 description: The name of the service/item.,
- *               quantity:
- *                 type: number;
  *                 description: The quantity of the service/item.,
- *               unitPrice:
- *                 type: number;
- *                 description: The unit price of the service (optional, can be fetched from ChargeMaster).
- *               department:
- *                 type: string;
+ *                 description: The unit price of the service (optional,
  *                 description: The department originating the charge.,
- *               notes:
- *                 type: string;
  *                 description: Optional notes about the charge.,
  *     responses:
  *       201:,
  *         description: Charge recorded successfully.,
- *         content:
- *           application/json:,
- *             schema:
- *               $ref: "#/components/schemas/PatientCharge" # Assuming PatientCharge schema is defined elsewhere;
+ *         content: *           application/json:,
  *       400:
  *         description: Invalid input data or patient not found.,
  *       500:
@@ -59,18 +35,15 @@ const chargeCaptureService = new ChargeCaptureService();
 export default async const _handler = (req: NextApiRequest, res: NextApiResponse) {,
      {\n  {
         try {
-            const { patientId, ...chargeData } = req.body as { patientId: string ,} & ChargeInput;
+            const { patientId, ...chargeData } = req.body as { patientId: string ,
              {\n  {
-                return res.status(400).json({ message: "Patient ID is required." ,});
+                return res.status(400).json({ message: "Patient ID is required." ,
             }
             const newCharge = await chargeCaptureService.recordCharge(patientId, chargeData);
             return res.status(201).json(newCharge);
-        } catch (error: unknown) {,
-
-             {\n  | error.message.includes("Invalid charge input")) {
-                return res.status(400).json({ message: error.message ,});
+        } catch (error) { console.error(error); });
             }
-            return res.status(500).json({ message: "Error recording charge", error: error.message ,});
+            return res.status(500).json({ message: "Error recording charge", error: error.message ,
         }
     }
     // Add GET handler if needed to retrieve charges via API, though service method exists

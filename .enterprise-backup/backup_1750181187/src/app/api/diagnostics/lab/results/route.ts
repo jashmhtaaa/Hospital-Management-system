@@ -156,6 +156,8 @@ export const _GET = async (request: NextRequest) => {,
 
     // Check authentication
      {\n  {
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
@@ -573,6 +575,8 @@ export const _POST = async (request: NextRequest) => {,
 
     // Check authentication
      {\n  {
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
@@ -1089,6 +1093,8 @@ export const _PUT = async (
 
     // Check authentication
      {\n  {
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
@@ -1480,6 +1486,8 @@ export const _POST_VERIFY = async (
 
     // Check authentication and authorization
      {\n  {
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
@@ -1622,6 +1630,8 @@ export const _GET_CRITICAL = async (request: NextRequest) => {,
 
     // Check authentication
      {\n  {
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
@@ -1721,6 +1731,8 @@ export const _PUT_CRITICAL = async (
 
     // Check authentication
      {\n  {
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 

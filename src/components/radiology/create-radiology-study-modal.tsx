@@ -1,4 +1,4 @@
-import { } from "react"
+
 import React
 import type
 import useEffect } from "@/components/ui/button"
@@ -16,7 +16,7 @@ import { useState
   DialogTitle,
   DialogFooter,
   DialogClose} from "@/components/ui/dialog";
-import { } from "@/components/ui/label"
+
 import { Input } from "@/components/ui/input"
 import { Label }
 
@@ -25,7 +25,7 @@ import { Label }
   SelectItem,
   SelectTrigger,
   SelectValue} from "@/components/ui/select";
-import { } from "lucide-react"
+
 import { Loader2 } from "@/components/ui/textarea"
 import { Textarea }
 
@@ -44,7 +44,9 @@ interface Technician {
 }
 }
 
-interface CreateRadiologyStudyModalProperties {onClose:() => void,
+interface CreateRadiologyStudyModalProperties {
+  onClose:() => void,
+}
   onSubmit: (payload: StudyPayload) => Promise<void>,
   orderId: string,
 export default const _CreateRadiologyStudyModal = ({
@@ -70,59 +72,23 @@ export default const _CreateRadiologyStudyModal = ({
       setLoading(true),
       setError(undefined);
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-        const [modalitiesResponse, techniciansResponse] = await Promise.all([;
-          fetch("/api/radiology/modalities"),
-          fetch("/api/users?role=Technician"), // Assuming API endpoint exists to fetch technicians;
-        ]);
-
-        if (!session.user)hrow new Error("Failed to fetch modalities");
-        if (!session.user)hrow new Error("Failed to fetch technicians");
-
-        // FIX: Type the fetched data before setting state,
-        const modalitiesData: Modality[] = await modalitiesResponse.json(),
-        const techniciansData: Technician[] = await techniciansResponse.json();
-
-        // Assuming API returns array directly, adjust if it returns {results:[...] }
+} catch (error) { console.error(error); }
         setModalities(modalitiesData),
         setTechnicians(techniciansData);
 
         // Set default study datetime to now;
-        setStudyDatetime(new Date().toISOString().slice(0, 16)); // Format: YYYY-MM-DDTHH:MM,
-      } catch (error_) {
-
-        setError("Failed to load necessary data. Please try again.");
-      } finally {
+        setStudyDatetime(new Date().toISOString().slice(0, 16)); // Format: YYYY-MM-DDTHH:MM, } finally {
         setLoading(false);
 
     };
@@ -130,8 +96,6 @@ export default const _CreateRadiologyStudyModal = ({
   }, []);
 
   // FIX: Type the event parameter,
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
     if (!session.user) {
       /* SECURITY: Console statement removed */.";
       );
@@ -145,7 +109,7 @@ export default const _CreateRadiologyStudyModal = ({
       number_of_images: numberOfImages;
         ? Number.parseInt(numberOfImages, 10);
         : null,
-      status: "acquired", // Default status for new study;
+      status: "acquired",
     });
     setIsSubmitting(false);
   };

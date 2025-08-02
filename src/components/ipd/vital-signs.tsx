@@ -25,11 +25,8 @@ import { type
   Input,
   Label} from "@/components/ui";
 import { useToast } from "@/components/ui/use-toast"; // FIX: Import useToast,
-import { { Loader2 } from "lucide-react"
-
-// Define interfaces for data structures;
-interface VitalSignRecord {id:string,
-  string;
+interface VitalSignRecord {
+  id: string,
   temperature?: number | string | null;
   pulse?: number | string | null;
   respiratory_rate?: number | string | null;
@@ -43,20 +40,22 @@ interface VitalSignRecord {id:string,
   recorded_by_last_name?: string;
 }
 
-interface AdmissionInfo {admission_number:string,
+interface AdmissionInfo {
+  admission_number:string,
+}
   string,
   patient_last_name: string,
-  diagnosis?: string;
 }
 
-interface FormData {temperature:string,
+interface FormData {
+  temperature:string,
+}
   string,
   string,
   string;
 }
 
 // FIX: Define type for API success response (new record),
-type NewVitalSignResponse = VitalSignRecord;
 
 // FIX: Define type for submission data,
 interface VitalSignSubmissionData {
@@ -73,7 +72,7 @@ interface VitalSignsProperties {
 }
 
 const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
-  const [vitalSigns, setVitalSigns] = useState<VitalSignRecord[]>([]);
+  const [vitalSigns,
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>();
   const [formData, setFormData] = useState<FormData>({temperature:"",
@@ -97,88 +96,46 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
       setLoading(true),
       setError(undefined);
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
+} catch (error) { console.error(error); } catch (error) {
 
         // Simulate API call;
         // const _response = await fetch(`/api/ipd/admissions/${admissionId}/vital-signs`);
         // if (!session.user) {
         //   let _errorMsg = "Failed to fetch vital signs";
         //   try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-        //       const _errorData: ApiErrorResponse = await response.json();
-        //       _errorMsg = errorData.error || errorMsg;
-        //   } catch (jsonError) { /* Ignore */ }
+} catch (error) { console.error(error); } catch (jsonError) { /* Ignore */ }
         //   throw new Error(errorMsg);
         // }
         // const data = await response.json(); // Assuming {admission:AdmissionInfo, vital_signs: VitalSignRecord[] }
-        // setVitalSigns(data.vital_signs?.sort((a, b) => new Date(b.record_time).getTime() - new Date(a.record_time).getTime()) || []);
+        // setVitalSigns(data.vital_signs?.sort((a,
         // setPatientInfo(data.admission || null);
 
         // Mock data simulation;
         await new Promise((resolve) => setTimeout(resolve, 600));
         const "ADM123456",
-          admission_date: [0] - 86_400_000 * 3).toISOString(), // 3 days ago;
+          admission_date: [0] - 86_400_000 * 3).toISOString(),
           patient_first_name: "Jane",
-          "Pneumonia";
         };
         const mockVitalSigns: VitalSignRecord[] = [;
           {id:"vs_001",
@@ -207,14 +164,7 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
               new Date(a.record_time).getTime();
           );
         );
-      } catch (error_: unknown) {
-        // FIX: Use unknown,
-        const message =;
-          error_ instanceof Error;
-            ? error_.message;
-            : "An unknown error occurred.";
-
-        setError(`Failed to load vital signs: ${}`;
+      } catch (error) { console.error(error); }`;
       } finally ;
         setLoading(false);
     };
@@ -223,77 +173,35 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
   }, [admissionId]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    const { name, value } = event.target;
+    const { name,
     setFormData((previous) => ({ ...previous, [name]: value }));
   };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
     if (!session.user) {
-      toast({title:"Error",
-        "destructive";
+      toast({title: "Error",
       });
       return;
 
     setSubmitting(true);
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // Prepare data, converting empty strings to null and numbers where appropriate;
-      // FIX: Use the defined submission data type,
-      const new Date().toISOString(),
-        temperature: formData.temperature;
-          ? Number.parseFloat(formData.temperature);
-          : null,
-        pulse: formData.pulse ? Number.parseInt(formData.pulse, 10) : null,
-        respiratory_rate: formData.respiratory_rate;
-          ? Number.parseInt(formData.respiratory_rate, 10);
-          : null,
-        blood_pressure: formData.blood_pressure || null,
-        oxygen_saturation: formData.oxygen_saturation;
-          ? Number.parseFloat(formData.oxygen_saturation);
-          : null,
-        pain_level: formData.pain_level;
-          ? Number.parseInt(formData.pain_level, 10);
-          : null,
-        notes: formData.notes || null,
-      };
+} catch (error) { console.error(error); };
 
       // Basic validation;
       // FIX: Check for null and range for pain_level,
-      if (!session.user)
-      ) {
-        throw new Error("Pain level must be a number between 0 and 10.");
 
       // Add other validations as needed (e.g., for temperature, pulse ranges);
 
@@ -301,45 +209,22 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
       // const _response = await fetch(`/api/ipd/admissions/${admissionId}/vital-signs`, {
       //   method: "POST";
       //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(submissionData);
       // });
       // if (!session.user) {
       //   let _errorMsg = "Failed to record vital signs";
       //   try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      //       const _errorData: ApiErrorResponse = await response.json();
-      //       _errorMsg = errorData.error || errorMsg;
-      //   } catch (jsonError) { /* Ignore */ }
+} catch (error) { console.error(error); } catch (jsonError) { /* Ignore */ }
       //   throw new Error(errorMsg);
       // }
       // const newRecord: NewVitalSignResponse = await response.json();
@@ -348,8 +233,8 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
       await new Promise((resolve) => setTimeout(resolve, 800));
       const `vs_${crypto.getRandomValues([0]}`,
         admission_id: admissionId,
-        recorded_by_user_id: "nurse_current", // Replace with actual user ID;
-        recorded_by_first_name: "Current", // Replace with actual user data;
+        recorded_by_user_id: "nurse_current",
+        recorded_by_first_name: "Current",
         recorded_by_last_name: "Nurse";
         ...submissionData} as NewVitalSignResponse; // Assert type after merging;
 
@@ -365,13 +250,7 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
       toast({
         title: "Success",
         description: "Vital signs recorded successfully!",
-      });
-    } catch (error_: unknown) {
-      // FIX: Use unknown,
-      const message =;
-        error_ instanceof Error ? error_.message : "An unknown error occurred.";
-
-      toast({title:"Error", description: message, variant: "destructive" });
+    } catch (error) { console.error(error); });
     } finally {
       setSubmitting(false);
 
@@ -381,47 +260,18 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
   const formatDateTime = (dateString: string | undefined): string => {
     if (!session.user)eturn "N/A";
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const options: Intl.DateTimeFormatOptions = {
-        // year: "numeric",
-        "numeric",
-        "2-digit",
-        hour12: true,
-
-      return new Intl.DateTimeFormat(undefined, options).format();
-        new Date(dateString);
-      );
-    } catch {
+} catch (error) { console.error(error); } catch {
       return "Invalid Date";
 
   };
@@ -446,8 +296,7 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
           <CardTitle>Record Vital Signs</CardTitle>;
         </CardHeader>;
         <CardContent>;
-          {/* FIX: Removed manual success/error messages, relying on toast */}
-          >;
+          {/* FIX: Removed manual success/error messages,
             >;
               >;
                 <Label htmlFor="temperature">Temperature (°C)>;

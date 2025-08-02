@@ -73,6 +73,8 @@ export const _GET = async (request: NextRequest) => {,
     const session = await getSession(); // Call without request
     // Check session and user existence first
      {\n  {
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
     // Pass session.user to checkUserRole if needed, or check roleName directly
@@ -142,6 +144,8 @@ export const _POST = async (request: NextRequest) => {,
     const session = await getSession(); // Call without request
     // Check session and user existence first
      {\n  {
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
     // Use roleName for check

@@ -1,5 +1,5 @@
-import { } from "@/lib/audit"
-import { } from "@/lib/errors"
+
+
 import { "@/lib/fhir";
 import "@/lib/models/marketing";
 import "@/lib/notifications";
@@ -28,7 +28,6 @@ import { prisma }
         resourceId: campaign.id,
         userId,
         details: {campaignName:campaign.name, campaignType: campaign.type },
-      });
 
       // Notify relevant users;
       await this.notificationService.sendNotification({type: "CAMPAIGN_CREATED",
@@ -38,10 +37,7 @@ import { prisma }
       });
 
       return campaign;
-    } catch (error) {
-      if (!session.user) {
-        throw error;
-      }
+    } catch (error) { console.error(error); }
       throw new DatabaseError("Failed to create marketing campaign", error);
     }
   }
@@ -49,39 +45,17 @@ import { prisma }
   /**;
    * Get a marketing campaign by ID;
    */;
-  async getCampaignById(id: string, includeFHIR = false): Promise<MarketingCampaign & { fhir?: unknown }> {
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+  async getCampaignById(id: string, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       const campaign = await prisma.marketingCampaign.findUnique({where: { id },
         true,
           {segment:true,
@@ -96,7 +70,6 @@ import { prisma }
             }
           },
           {id: true,
-              true;
             }
           }
         }
@@ -107,16 +80,13 @@ import { prisma }
       }
 
       // Generate FHIR representation if requested;
-      const result: unknown = campaign,
+      const result: unknown = campaign;
       if (!session.user) {
         result.fhir = this.generateCampaignFHIR(campaign);
       }
 
       return result;
-    } catch (error) {
-      if (!session.user) {
-        throw error;
-      }
+    } catch (error) { console.error(error); }
       throw new DatabaseError("Failed to retrieve marketing campaign", error);
     }
   }
@@ -124,7 +94,7 @@ import { prisma }
   /**;
    * Get all marketing campaigns with optional filtering;
    */;
-  async getCampaigns(filters: {,
+  async getCampaigns(filters: {
     type?: string;
     status?: string;
     startDateFrom?: Date;
@@ -134,37 +104,17 @@ import { prisma }
     page?: number;
     limit?: number, }): Promise<{data:MarketingCampaign[], pagination: total: number, number, totalPages: number }> {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       const {
         type,
         status,
@@ -177,7 +127,7 @@ import { prisma }
       } = filters;
 
       // Build where clause based on filters;
-      const where: unknown = {,};
+      const where: unknown = {,
 
       if (!session.user) {
         where.type = type;
@@ -227,58 +177,26 @@ import { prisma }
           }
         },
         skip: (page - 1) * limit,
-        "desc";
       });
 
       return {data: campaigns,
-        pagination: {
-          total,
-          page,
-          limit,
-          totalPages: Math.ceil(total / limit),
-        }
-      };
-    } catch (error) {
-      throw new DatabaseError("Failed to retrieve marketing campaigns", error);
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**;
    * Update a marketing campaign;
    */;
-  async updateCampaign(id: string, data: Partial<MarketingCampaign>, userId: string): Promise<MarketingCampaign> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+  async updateCampaign(id: string, data: Partial<MarketingCampaign>, userId: string): Promise<MarketingCampaign> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       // Check if campaign exists;
       const existingCampaign = await prisma.marketingCampaign.findUnique({where: { id }
       });
@@ -292,8 +210,6 @@ import { prisma }
         data: {
           ...data,
           updatedById: userId,
-        }
-      });
 
       // Log audit event;
       await this.auditLogger.log({action:"campaign.update",
@@ -301,13 +217,9 @@ import { prisma }
         userId,
         updatedCampaign.name,
           updatedFields: Object.keys(data),
-      });
 
       return updatedCampaign;
-    } catch (error) {
-      if (!session.user) {
-        throw error;
-      }
+    } catch (error) { console.error(error); }
       throw new DatabaseError("Failed to update marketing campaign", error);
     }
   }
@@ -315,39 +227,17 @@ import { prisma }
   /**;
    * Delete a marketing campaign;
    */;
-  async deleteCampaign(id: string, userId: string): Promise<void> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+  async deleteCampaign(id: string, userId: string): Promise<void> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       // Check if campaign exists;
       const existingCampaign = await prisma.marketingCampaign.findUnique({where: { id }
       });
@@ -366,11 +256,7 @@ import { prisma }
         userId,
         existingCampaign.name,
           campaignType: existingCampaign.type,
-      });
-    } catch (error) {
-      if (!session.user) {
-        throw error;
-      }
+    } catch (error) { console.error(error); }
       throw new DatabaseError("Failed to delete marketing campaign", error);
     }
   }
@@ -378,39 +264,17 @@ import { prisma }
   /**;
    * Add a channel to a campaign;
    */;
-  async addCampaignChannel(campaignId: string, channelData: Omit<CampaignChannel, "id" | "campaignId" | "createdAt" | "updatedAt">, userId: string): Promise<CampaignChannel> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+  async addCampaignChannel(campaignId: string, channelData: Omit<CampaignChannel, "id" | "campaignId" | "createdAt" | "updatedAt">, userId: string): Promise<CampaignChannel> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       // Check if campaign exists;
       const existingCampaign = await prisma.marketingCampaign.findUnique({where: { id: campaignId }
       });
@@ -426,8 +290,6 @@ import { prisma }
           channelData.content,
           channelData.status || "DRAFT",
           metrics: channelData.metrics,
-        }
-      });
 
       // Log audit event;
       await this.auditLogger.log({action:"campaign.channel.add",
@@ -439,10 +301,7 @@ import { prisma }
       });
 
       return channel;
-    } catch (error) {
-      if (!session.user) {
-        throw error;
-      }
+    } catch (error) { console.error(error); }
       throw new DatabaseError("Failed to add campaign channel", error);
     }
   }
@@ -450,39 +309,17 @@ import { prisma }
   /**;
    * Get campaign analytics;
    */;
-  async getCampaignAnalytics(campaignId: string): Promise<unknown> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+  async getCampaignAnalytics(campaignId: string): Promise<unknown> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       // Check if campaign exists;
       const existingCampaign = await prisma.marketingCampaign.findUnique({where: { id: campaignId }
       });
@@ -493,14 +330,9 @@ import { prisma }
 
       // Get analytics data;
       const analytics = await prisma.campaignAnalytics.findMany({where: { campaignId },
-        orderBy: {date: "asc" }
-      });
 
       // Get channel metrics;
       const channels = await prisma.campaignChannel.findMany({where: { campaignId },
-        {
-            {
-                true;
                 }
               }
             }
@@ -539,13 +371,9 @@ import { prisma }
           byStatus: this.groupLeadsByStatus(leads),
         },
         timeSeriesData: this.aggregateTimeSeriesData(analytics),
-      };
 
       return aggregatedData;
-    } catch (error) {
-      if (!session.user) {
-        throw error;
-      }
+    } catch (error) { console.error(error); }
       throw new DatabaseError("Failed to retrieve campaign analytics", error);
     }
   }
@@ -553,39 +381,17 @@ import { prisma }
   /**;
    * Add a segment to a campaign;
    */;
-  async addCampaignSegment(campaignId: string, segmentId: string, userId: string): Promise<unknown> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+  async addCampaignSegment(campaignId: string, segmentId: string, userId: string): Promise<unknown> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       // Check if campaign exists;
       const existingCampaign = await prisma.marketingCampaign.findUnique({where: { id: campaignId }
       });
@@ -605,7 +411,6 @@ import { prisma }
       // Check if segment is already added to campaign;
       const existingRelation = await prisma.campaignSegment.findFirst({where: {
           campaignId,
-          segmentId;
         }
       });
 
@@ -616,7 +421,6 @@ import { prisma }
       // Add segment to campaign;
       const campaignSegment = await prisma.campaignSegment.create({data: {
           campaignId,
-          segmentId;
         }
       });
 
@@ -624,17 +428,12 @@ import { prisma }
       await this.auditLogger.log({action:"campaign.segment.add",
         resourceId: campaignId,
         userId,
-        details: {,
+        details: {
           segmentId,
           segmentName: existingSegment.name,
-        }
-      });
 
       return campaignSegment;
-    } catch (error) {
-      if (!session.user) {
-        throw error;
-      }
+    } catch (error) { console.error(error); }
       throw new DatabaseError("Failed to add segment to campaign", error);
     }
   }
@@ -644,13 +443,10 @@ import { prisma }
    * Maps to FHIR Communication and CommunicationRequest resources;
    */;
   private generateCampaignFHIR(campaign: unknown): unknown {,
-    // Create FHIR Communication resource for the campaign;
     const communicationResource = {resourceType: "Communication",
       id: `marketing-campaign-${campaign.id}`,
       status: this.mapCampaignStatusToFHIR(campaign.status),
-      category: [;
-        { coding: [, {system:"https://terminology.hl7.org/CodeSystem/communication-category",
-              "Marketing";
+        { coding: [, {system: "https://terminology.hl7.org/CodeSystem/communication-category",
              }
           ];
         }
@@ -662,9 +458,8 @@ import { prisma }
       [],
       `Organization/hospital`,
         display: "Hospital Marketing Department",
-      campaign.description;
       ],
-      `Marketing campaign: ${campaign.name,}`;
+      `Marketing campaign: ${campaign.name,
       ];
     };
 
@@ -672,9 +467,7 @@ import { prisma }
     const communicationRequestResource = {resourceType: "CommunicationRequest",
       id: `marketing-campaign-request-${campaign.id}`,
       status: this.mapCampaignStatusToFHIRRequest(campaign.status),
-      category: [;
-        { coding: [, {system:"https://terminology.hl7.org/CodeSystem/communication-category",
-              "Marketing";
+        { coding: [, {system: "https://terminology.hl7.org/CodeSystem/communication-category",
              }
           ];
         }
@@ -691,23 +484,17 @@ import { prisma }
         end: campaign.endDate,
       },
       authoredOn: campaign.createdAt,
-      payload: [;
-        {contentString:campaign.description,
-        }
-      ];
+        {contentString: campaign.description,
     }
 
     return {communication:communicationResource,
       communicationRequest: communicationRequestResource,
-    };
   }
 
   /**;
    * Map campaign status to FHIR Communication status;
    */;
   private mapCampaignStatusToFHIR(status: string): string {,
-    switch (status) {
-      case "DRAFT": any;
         return "preparation";
       case "SCHEDULED": any;
         return "preparation";
@@ -720,15 +507,9 @@ import { prisma }
       case "CANCELLED": any;
         return "stopped";
       default: return "unknown",
-    }
-  }
-
-  /**;
    * Map campaign status to FHIR CommunicationRequest status;
    */;
   private mapCampaignStatusToFHIRRequest(status: string): string {,
-    switch (status) {
-      case "DRAFT": any;
         return "draft";
       case "SCHEDULED": any;
         return "active";
@@ -741,14 +522,10 @@ import { prisma }
       case "CANCELLED": any;
         return "revoked";
       default: return "unknown",
-    }
-  }
-
-  /**;
    * Group leads by status;
    */;
   private groupLeadsByStatus(leads: unknown[]): Record<string, number> {
-    const result: Record<string, number> = {NEW: 0,
+    const result: Record<string,
       0,
       0;
     };
@@ -766,7 +543,6 @@ import { prisma }
    * Aggregate time series data from analytics;
    */;
   private aggregateTimeSeriesData(analytics: unknown[]): unknown {,
-    // Implementation depends on the structure of metrics in analytics;
     // This is a simplified example;
     return analytics.map(item => ({ date: item.date;
       ...item.metrics,  }));
@@ -776,7 +552,6 @@ import { prisma }
    * Validate campaign data;
    */;
   private validateCampaignData(data: unknown): void {,
-    const errors = [];
 
     if (!session.user)== "") {
       errors.push("Campaign name is required");
@@ -812,13 +587,9 @@ import { prisma }
         userId,
         data.email,
           contactSource: data.source,
-      });
 
       return this.decryptSensitiveData(contact);
-    } catch (error) {
-      if (!session.user) {
-        throw error;
-      }
+    } catch (error) { console.error(error); }
       throw new DatabaseError("Failed to create contact", error);
     }
   }
@@ -826,39 +597,17 @@ import { prisma }
   /**;
    * Get a contact by ID;
    */;
-  async getContactById(id: string): Promise<Contact> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+  async getContactById(id: string): Promise<Contact> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       const contact = await prisma.contact.findUnique({where: { id },
         {
             true,
@@ -868,7 +617,6 @@ import { prisma }
           },
           true,
                   name: true,
-            "desc";
           },
           true,
             true;
@@ -884,10 +632,7 @@ import { prisma }
       }
 
       return this.decryptSensitiveData(contact);
-    } catch (error) {
-      if (!session.user) {
-        throw error;
-      }
+    } catch (error) { console.error(error); }
       throw new DatabaseError("Failed to retrieve contact", error);
     }
   }
@@ -895,7 +640,7 @@ import { prisma }
   /**;
    * Get all contacts with optional filtering;
    */;
-  async getContacts(filters: {,
+  async getContacts(filters: {
     search?: string;
     status?: string;
     source?: string;
@@ -903,37 +648,17 @@ import { prisma }
     page?: number;
     limit?: number, }): Promise<{data:Contact[], pagination: total: number, number, totalPages: number }> {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       const {
         search,
         status,
@@ -944,15 +669,13 @@ import { prisma }
       } = filters;
 
       // Build where clause based on filters;
-      const where: unknown = {,};
+      const where: unknown = {,
 
       if (!session.user) {
         where.OR = [;
           {firstName: { contains: search, mode: "insensitive" } },
           {lastName: { contains: search, mode: "insensitive" } },
           {email: { contains: search, mode: "insensitive" } },
-          {phone: { contains: search } }
-        ];
       }
 
       if (!session.user) {
@@ -964,8 +687,7 @@ import { prisma }
       }
 
       if (!session.user) {
-        where.tags = {hasSome:tags,
-        };
+        where.tags = {hasSome: tags,
       }
 
       // Get total count for pagination;
@@ -985,65 +707,30 @@ import { prisma }
           }
         },
         skip: (page - 1) * limit,
-        take: limit;
-        {createdAt:"desc",
-        }
-      });
+        {createdAt: "desc",
 
       // Decrypt sensitive data;
       const decryptedContacts = contacts.map(contact => this.decryptSensitiveData(contact));
 
       return {data: decryptedContacts,
-        pagination: {
-          total,
-          page,
-          limit,
-          totalPages: Math.ceil(total / limit),
-        }
-      };
-    } catch (error) {
-      throw new DatabaseError("Failed to retrieve contacts", error);
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**;
    * Update a contact;
    */;
-  async updateContact(id: string, data: Partial<Contact>, userId: string): Promise<Contact> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+  async updateContact(id: string, data: Partial<Contact>, userId: string): Promise<Contact> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // Check if contact exists;
-      const existingContact = await prisma.contact.findUnique({where: { id }
+} catch (error) { console.error(error); }
       });
 
       if (!session.user) {
@@ -1055,7 +742,6 @@ import { prisma }
       // Update contact;
       const updatedContact = await prisma.contact.update({where:{ id },
         data: encryptedData,
-      });
 
       // Log audit event;
       await this.auditLogger.log({action:"contact.update",
@@ -1065,50 +751,20 @@ import { prisma }
       });
 
       return this.decryptSensitiveData(updatedContact);
-    } catch (error) {
-      if (!session.user) {
-        throw error;
-
-      throw new DatabaseError("Failed to update contact", error);
-
-  /**;
-   * Delete a contact;
-   */;
-  async deleteContact(id: string, userId: string): Promise<void> {,
-    try {
-} catch (error) {
+    } catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // Check if contact exists;
-      const existingContact = await prisma.contact.findUnique({where: { id }
+} catch (error) { console.error(error); }
       });
 
       if (!session.user) {
@@ -1124,50 +780,20 @@ import { prisma }
         userId,
         existingContact.email;
       });
-    } catch (error) {
-      if (!session.user) {
-        throw error;
-
-      throw new DatabaseError("Failed to delete contact", error);
-
-  /**;
-   * Add a note to a contact;
-   */;
-  async addContactNote(contactId: string, content: string, userId: string): Promise<unknown> {,
-    try {
-} catch (error) {
+    } catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // Check if contact exists;
-      const existingContact = await prisma.contact.findUnique({where: { id: contactId }
+} catch (error) { console.error(error); }
       });
 
       if (!session.user) {
@@ -1183,8 +809,6 @@ import { prisma }
             true,
               name: true,
 
-      });
-
       // Log audit event;
       await this.auditLogger.log({action:"contact.note.add",
         resourceId: contactId,
@@ -1193,59 +817,20 @@ import { prisma }
       });
 
       return note;
-    } catch (error) {
-      if (!session.user) {
-        throw error;
-
-      throw new DatabaseError("Failed to add contact note", error);
-
-  /**;
-   * Create a new contact segment;
-   */;
-  async createSegment(data: Omit<ContactSegment, "id" | "createdAt" | "updatedAt">, userId: string): Promise<ContactSegment> {,
-    try {
-} catch (error) {
+    } catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // Validate segment data;
-      if (!session.user)== "") {
-        throw new ValidationError("Segment validation failed", ["Segment name is required"]);
-
-      // Create segment in database;
-      const segment = await prisma.contactSegment.create({
-        data.name,
-          data.criteria,
-          userId;
-
-      });
+} catch (error) { console.error(error); });
 
       // Log audit event;
       await this.auditLogger.log({action:"segment.create",
@@ -1256,59 +841,23 @@ import { prisma }
       });
 
       return segment;
-    } catch (error) {
-      if (!session.user) {
-        throw error;
-
-      throw new DatabaseError("Failed to create contact segment", error);
-
-  /**;
-   * Get all segments with optional filtering;
-   */;
-  async getSegments(filters: {,
-    isActive?: boolean;
-    page?: number;
-    limit?: number, }): Promise<{data:ContactSegment[], pagination: total: number, number, totalPages: number }> {
+    } catch (error) { console.error(error); }): Promise<{data:ContactSegment[], pagination: total: number, number, totalPages: number }> {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const {
-        isActive,
-        page = 1,
-        limit = 10;
-      } = filters;
+} catch (error) { console.error(error); } = filters;
 
       // Build where clause based on filters;
-      const where: unknown = {,};
+      const where: unknown = {,
 
       if (!session.user) {
         where.isActive = isActive;
@@ -1329,58 +878,23 @@ import { prisma }
 
         },
         skip: (page - 1) * limit,
-        "desc";
       });
 
       return {data: segments,
-        pagination: {
-          total,
-          page,
-          limit,
-          totalPages: Math.ceil(total / limit),
-
-      };
-    } catch (error) {
-      throw new DatabaseError("Failed to retrieve segments", error);
-
-  /**;
-   * Add a contact to a segment;
-   */;
-  async addContactToSegment(segmentId: string, contactId: string, userId: string): Promise<unknown> {,
-    try {
-} catch (error) {
+    } catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // Check if segment exists;
-      const existingSegment = await prisma.contactSegment.findUnique({where: { id: segmentId }
+} catch (error) { console.error(error); }
       });
 
       if (!session.user) {
@@ -1399,8 +913,6 @@ import { prisma }
           contactId,
           isActive: true,
 
-      });
-
       if (!session.user) {
         return existingMembership;
 
@@ -1410,14 +922,10 @@ import { prisma }
           contactId,
           isActive: false,
 
-      });
-
       if (!session.user) {
         const updatedMembership = await prisma.segmentMember.update({where: { id: inactiveMemebership.id },
           true,
             removedAt: null,
-
-        });
 
         // Log audit event;
         await this.auditLogger.log({action:"segment.contact.reactivate",
@@ -1426,7 +934,6 @@ import { prisma }
           details: null,
             contactId,
             segmentName: existingSegment.name,
-        });
 
         return updatedMembership;
 
@@ -1436,8 +943,6 @@ import { prisma }
           contactId,
           isActive: true,
 
-      });
-
       // Log audit event;
       await this.auditLogger.log({action:"segment.contact.add",
         resourceId: segmentId,
@@ -1445,53 +950,22 @@ import { prisma }
         details: null,
           contactId,
           segmentName: existingSegment.name,
-      });
 
       return membership;
-    } catch (error) {
-      if (!session.user) {
-        throw error;
-
-      throw new DatabaseError("Failed to add contact to segment", error);
-
-  /**;
-   * Remove a contact from a segment;
-   */;
-  async removeContactFromSegment(segmentId: string, contactId: string, userId: string): Promise<unknown> {,
-    try {
-} catch (error) {
+    } catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // Check if segment exists;
-      const existingSegment = await prisma.contactSegment.findUnique({where: { id: segmentId }
+} catch (error) { console.error(error); }
       });
 
       if (!session.user) {
@@ -1510,8 +984,6 @@ import { prisma }
           contactId,
           isActive: true,
 
-      });
-
       if (!session.user) {
         throw new NotFoundError(`Contact is not a member of this segment`);
 
@@ -1520,8 +992,6 @@ import { prisma }
         false,
           removedAt: new Date(),
 
-      });
-
       // Log audit event;
       await this.auditLogger.log({action:"segment.contact.remove",
         resourceId: segmentId,
@@ -1529,20 +999,9 @@ import { prisma }
         details: null,
           contactId,
           segmentName: existingSegment.name,
-      });
 
       return updatedMembership;
-    } catch (error) {
-      if (!session.user) {
-        throw error;
-
-      throw new DatabaseError("Failed to remove contact from segment", error);
-
-  /**;
-   * Encrypt sensitive contact data;
-   */;
-  private encryptSensitiveData(data: unknown): unknown {,
-    const result = { ...data };
+    } catch (error) { console.error(error); };
 
     // Encrypt address if present;
     if (!session.user) {
@@ -1558,81 +1017,38 @@ import { prisma }
    * Decrypt sensitive contact data;
    */;
   private decryptSensitiveData(data: unknown): unknown {,
-    const result = { ...data };
 
     // Decrypt address if present;
     if (!session.user) {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-        result.address = JSON.parse(decryptData(result.address));
-      } catch (error) {
+} catch (error) { console.error(error); } catch (error) {
 
     // Decrypt preferences if present;
     if (!session.user) {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-        result.preferences = JSON.parse(decryptData(result.preferences));
-      } catch (error) {
+} catch (error) { console.error(error); } catch (error) {
 
     return result;
 
@@ -1640,7 +1056,6 @@ import { prisma }
    * Validate contact data;
    */;
   private validateContactData(data: unknown): void {,
-    const errors = [];
 
     // Either email or phone is required;
     if (!session.user) {
@@ -1657,7 +1072,6 @@ import { prisma }
    * Validate email format;
    */;
   private isValidEmail(email: string): boolean {,
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
 
 /**;
@@ -1684,52 +1098,22 @@ import { prisma }
         await this.notificationService.sendNotification({type: "LEAD_ASSIGNED",
           `A new lead has been assigned to [lead.assignedToId],
           metadata: {leadId:lead.id },
-        });
 
       return lead;
-    } catch (error) {
-      if (!session.user) {
-        throw error;
-
-      throw new DatabaseError("Failed to create lead", error);
-
-  /**;
-   * Get a lead by ID;
-   */;
-  async getLeadById(id: string): Promise<Lead> {,
-    try {
-} catch (error) {
+    } catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const lead = await prisma.lead.findUnique({where: { id },
+} catch (error) { console.error(error); },
         true,
           {
             true,
@@ -1754,65 +1138,23 @@ import { prisma }
         throw new NotFoundError(`Lead with ID $idnot found`);
 
       return lead;
-    } catch (error) {
-      if (!session.user) {
-        throw error;
-
-      throw new DatabaseError("Failed to retrieve lead", error);
-
-  /**;
-   * Get all leads with optional filtering;
-   */;
-  async getLeads(filters: {,
-    status?: string;
-    source?: string;
-    campaignId?: string;
-    assignedToId?: string;
-    page?: number;
-    limit?: number, }): Promise<{data:Lead[], pagination: {total:number, number, totalPages: number } }> {
+    } catch (error) { console.error(error); }): Promise<{data:Lead[], pagination: {total:number, number, totalPages: number } }> {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const {
-        status,
-        source,
-        campaignId,
-        assignedToId,
-        page = 1,
-        limit = 10;
-      } = filters;
+} catch (error) { console.error(error); } = filters;
 
       // Build where clause based on filters;
-      const where: unknown = {,};
+      const where: unknown = {,
 
       if (!session.user) {
         where.status = status;
@@ -1850,59 +1192,23 @@ import { prisma }
 
         },
         skip: (page - 1) * limit,
-        {createdAt:"desc",
-
-      });
+        {createdAt: "desc",
 
       return {data: leads,
-        pagination: {
-          total,
-          page,
-          limit,
-          totalPages: Math.ceil(total / limit),
-
-      };
-    } catch (error) {
-      throw new DatabaseError("Failed to retrieve leads", error);
-
-  /**;
-   * Update a lead;
-   */;
-  async updateLead(id: string, data: Partial<Lead>, userId: string): Promise<Lead> {,
-    try {
-} catch (error) {
+    } catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // Check if lead exists;
-      const existingLead = await prisma.lead.findUnique({where: { id },
+} catch (error) { console.error(error); },
         {
             true,
               true;
@@ -1939,60 +1245,28 @@ import { prisma }
         await this.addLeadActivity(id, {activityType: "STATUS_CHANGE",
           description: `Status changed from $existingLead.statusto $data.status`,
           performedById: userId,
-        });
 
       // Notify newly assigned user if applicable;
       if (!session.user) {
         await this.notificationService.sendNotification({type: "LEAD_ASSIGNED",
           `A lead has been assigned to [data.assignedToId],
           metadata: leadId: id ,
-        });
 
       return updatedLead;
-    } catch (error) {
-      if (!session.user) {
-        throw error;
-
-      throw new DatabaseError("Failed to update lead", error);
-
-  /**;
-   * Add an activity to a lead;
-   */;
-  async addLeadActivity(leadId: string, data: {activityType:string, string, metadata?: unknown }): Promise<unknown> {
+    } catch (error) { console.error(error); }): Promise<unknown> {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // Check if lead exists;
-      const existingLead = await prisma.lead.findUnique({where: { id: leadId }
+} catch (error) { console.error(error); }
       });
 
       if (!session.user) {
@@ -2007,7 +1281,6 @@ import { prisma }
         },
         true,
               name: true,
-      });
 
       // Log audit event;
       await this.auditLogger.log({action: "lead.activity.add",
@@ -2015,53 +1288,21 @@ import { prisma }
         activity.id,
           activityType: data.activityType,
 
-      });
-
       return activity;
-    } catch (error) {
-      if (!session.user) {
-        throw error;
-
-      throw new DatabaseError("Failed to add lead activity", error);
-
-  /**;
-   * Convert a lead to a patient;
-   */;
-  async convertLeadToPatient(leadId: string, patientData: unknown, userId: string): Promise<unknown> {,
-    try {
-} catch (error) {
+    } catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // Check if lead exists;
-      const existingLead = await prisma.lead.findUnique({where: { id: leadId },
+} catch (error) { console.error(error); },
         true;
 
       });
@@ -2102,10 +1343,8 @@ import { prisma }
       await this.addLeadActivity(leadId, {activityType: "CONVERSION",
         userId,
         metadata: {patientId:patient.id },
-      });
 
-      return {lead:updatedLead,
-        patient;
+      return {lead: updatedLead,
       };
     } catch (error) {
       if (!session.user) {
@@ -2117,7 +1356,6 @@ import { prisma }
    * Validate lead data;
    */;
   private validateLeadData(data: unknown): void {,
-    const errors = [];
 
     if (!session.user) {
       errors.push("Contact ID is required");

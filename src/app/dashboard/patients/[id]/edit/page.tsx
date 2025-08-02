@@ -1,5 +1,5 @@
-import { } from "@/components/layout/DashboardLayout"
-import { } from "@/components/ui/card"
+
+
 import { "@/components/ui/input";
 import "@/components/ui/label";
 import "@/components/ui/select";
@@ -75,38 +75,18 @@ export default const _EditPatientPage = () {
       setIsLoading(true),
       setErrors([]);
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-        const response = await fetch(`/api/patients/${}`;
+} catch (error) { console.error(error); }`;
         if (!session.user) {
           const errorData: { error?: string } = await response.json();
           throw new Error(errorData.error || "Failed to fetch patient details");
@@ -116,13 +96,8 @@ export default const _EditPatientPage = () {
         const formattedData = {
             ...data,
             date_of_birth: data.date_of_birth ? data.date_of_birth.split("T")[0] : "",
-
-        setFormData(formattedData);
-      } catch (err: unknown) { // Use unknown;
-        const message = err instanceof Error ? err.message : "An unknown error occurred";
-        setErrors([{code:z.ZodIssueCode.custom, path: ["form"], message: message }]),
-        toast({title:"Error Fetching Patient",
-          "destructive";
+      } catch (error) { console.error(error); }]),
+        toast({title: "Error Fetching Patient",
         });
       } finally {
         setIsLoading(false);
@@ -136,17 +111,16 @@ export default const _EditPatientPage = () {
   }, [patientId, fetchPatient]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
+    const { name,
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSelectChange = (name: keyof FormData, value: string) => {
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev,
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(),
-    setIsSaving(true);
     setErrors([]);
 
     // Prepare only changed fields for update;
@@ -159,8 +133,7 @@ export default const _EditPatientPage = () {
     if (!session.user) {
       setErrors(validation.error.errors),
       setIsSaving(false);
-      toast({title:"Validation Error",
-        "destructive";
+      toast({title: "Validation Error",
       });
       return;
 
@@ -175,46 +148,24 @@ export default const _EditPatientPage = () {
 
      if (!session.user)length === 0) {
         toast({title:"No Changes", description: "No changes detected to save." }),
-        setIsSaving(false);
         return;
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const response = await fetch(`/api/patients/${patientId}`, {method:"PUT",
+} catch (error) { console.error(error); }`, {method:"PUT",
         headers: {
           "Content-Type": "application/json"},
         body: JSON.stringify(dataToSend),
-      });
 
       const result: { error?: string } = await response.json();
 
@@ -224,15 +175,11 @@ export default const _EditPatientPage = () {
       toast({
         title: "Patient Updated",
         description: `/* SECURITY: Template literal eliminated */,
-      });
 
       router.push(`/dashboard/patients/${}`; // Redirect back to patient detail view;
 
-    } catch (err: unknown) { // Use unknown;
-      const message = err instanceof Error ? err.message : "An unexpected error occurred.";
-      setErrors([{code:z.ZodIssueCode.custom, path: ["form"], message: message }]),
-      toast({title:"Update Failed",
-        "destructive";
+    } catch (error) { console.error(error); }]),
+      toast({title: "Update Failed",
       });
     } finally {
       setIsSaving(false);

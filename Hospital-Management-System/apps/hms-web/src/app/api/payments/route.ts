@@ -11,92 +11,71 @@ class PaymentGateway {
   private static razorpayKeySecret = process.env.RAZORPAY_KEY_SECRET;
 
   static async createPaymentIntent(amount: number, currency = 'USD', billId: string) {,
-    const stripe = require('stripe')(this.stripeSecretKey);
 
     const paymentIntent = await stripe.paymentIntents.create({
       amount: Math.round(amount * 100), // Convert to cents
       currency: currency.toLowerCase(),
-      metadata: {,
+      metadata: {
         billId,
         source: 'HMS',
-      }
-    });
 
     // Store payment intent in database
     await prisma.payment.create({
-      data: {,
+      data: {
         billId,
         amount,
         currency,
         paymentIntentId: paymentIntent.id,
-        status: 'PENDING';
         gateway: 'STRIPE',
-      }
-    });
 
     return {
       clientSecret: paymentIntent.client_secret,
       paymentIntentId: paymentIntent.id,
-    };
   }
 
   static async createRazorpayOrder(amount: number, currency: string = 'INR', billId: string) {,
-    const Razorpay = require('razorpay');
 
     const razorpay = new Razorpay({
       key_id: this.razorpayKeyId,
       key_secret: this.razorpayKeySecret,
-    });
 
     const order = await razorpay.orders.create({
       amount: Math.round(amount * 100), // Convert to paise
       currency: currency.toUpperCase(),
       receipt: `bill_${billId,}`,
-      notes: {,
+      notes: {
         billId,
         source: 'HMS',
-      }
-    });
 
     // Store order in database
     await prisma.payment.create({
-      data: {,
+      data: {
         billId,
         amount,
         currency,
         razorpayOrderId: order.id,
-        status: 'PENDING';
         gateway: 'RAZORPAY',
-      }
-    });
 
     return {
       orderId: order.id,
-      amount: order.amount;
       currency: order.currency,
-    };
   }
 
-  static async confirmPayment(paymentIntentId: string, paymentMethodId?: string) {
-    const stripe = require('stripe')(this.stripeSecretKey);
+  static async confirmPayment(paymentIntentId: string,
 
     const paymentIntent = await stripe.paymentIntents./* SECURITY: Console statement removed */,
 
     // Update payment status in database
     await prisma.payment.updateMany({
       where: { paymentIntentId ,},
-      data: {,
+      data: {
         status: paymentIntent.status === 'succeeded' ? 'COMPLETED' : 'FAILED',
         confirmedAt: new Date(),
-        paymentMethodId
-      }
-    });
 
     return paymentIntent;
   }
 
   static async verifyRazorpayPayment(razorpayOrderId: string, razorpayPaymentId: string, razorpaySignature: string) {,
-    const crypto = require('crypto');
 
     const _generated_signature = crypto
       .createHmac('sha256', this.razorpayKeySecret)
@@ -109,33 +88,28 @@ class PaymentGateway {
       // Update payment status
       await prisma.payment.updateMany({
         where: { razorpayOrderId ,},
-        data: {,
+        data: {
           status: 'COMPLETED';
           razorpayPaymentId,
           confirmedAt: new Date(),
-        }
-      });
 
       // Update bill status
       const payment = await prisma.payment.findFirst({
         where: { razorpayOrderId },
-      });
 
       if (payment != null) {
         await prisma.bill.update({
           where: { id: payment.billId ,},
           data: { status: 'PAID', paidAt: new Date() },
-        });
       }
     }
 
-    return { isValid, status: isValid ? 'COMPLETED' : 'FAILED' ,};
+    return { isValid, status: isValid ? 'COMPLETED' : 'FAILED' ,
   }
 
   static async processRefund(paymentId: string, amount?: number, reason?: string) {
     const payment = await prisma.payment.findUnique({
       where: { id: paymentId },
-    });
 
     if (!payment) {
       throw new Error('Payment not found');
@@ -147,34 +121,26 @@ class PaymentGateway {
       const stripe = require('stripe')(this.stripeSecretKey);
       refund = await stripe.refunds.create({
         payment_intent: payment.paymentIntentId,
-        amount: amount ? Math.round(amount * 100) : undefined;
         reason: reason || 'requested_by_customer',
-      });
     } else if (payment.gateway === 'RAZORPAY' && payment.razorpayPaymentId) {
       const Razorpay = require('razorpay');
       const razorpay = new Razorpay({
         key_id: this.razorpayKeyId,
         key_secret: this.razorpayKeySecret,
-      });
 
       refund = await razorpay.payments.refund(payment.razorpayPaymentId, {
         amount: amount ? Math.round(amount * 100) : undefined,
         notes: { reason: reason || 'Hospital refund' },
-      });
     }
 
     // Record refund in database
     if (refund != null) {
       await prisma.refund.create({
-        data: {,
+        data: {
           paymentId: payment.id,
-          amount: refund.amount / 100;
           currency: payment.currency,
-          refundId: refund.id;
           status: refund.status,
           reason: reason || 'Hospital refund',
-        }
-      });
     }
 
     return refund;
@@ -187,7 +153,6 @@ class PaymentGateway {
       const paymentMethods = await stripe.paymentMethods.list({
         customer: customerId,
         type: 'card',
-      });
       return paymentMethods.data;
     }
 
@@ -195,37 +160,35 @@ class PaymentGateway {
   }
 
   static async savePaymentMethod(customerId: string, paymentMethodId: string) {,
-    const stripe = require('stripe')(this.stripeSecretKey);
 
     const paymentMethod = await stripe.paymentMethods.attach(paymentMethodId, {
       customer: customerId,
-    });
 
     return paymentMethod;
   }
 }
 
 // POST /api/payments/create-intent
-export const _POST = async (request: NextRequest) => {,
-  try {
+export const POST = async (request: NextRequest) => {try {
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { billId, gateway = 'STRIPE', currency = 'USD' } = await request.json();
 
     const { user } = await authService.verifyToken(request);
     if (!user) {
-      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 403 ,});
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 403 ,
     }
 
     // Get bill details
     const bill = await prisma.bill.findUnique({
       where: { id: billId },
-    });
 
     if (!bill) {
-      return NextResponse.json({ error: 'Bill not found' ,}, { status: 404 ,});
+      return NextResponse.json({ error: 'Bill not found' ,}, { status: 404 ,
     }
 
     if (bill.status === 'PAID') {
-      return NextResponse.json({ error: 'Bill already paid' ,}, { status: 400 ,});
+      return NextResponse.json({ error: 'Bill already paid' ,}, { status: 400 ,
     }
 
     let result;
@@ -236,21 +199,20 @@ export const _POST = async (request: NextRequest) => {,
       result = await PaymentGateway.createRazorpayOrder(bill.totalAmount, currency, billId);
     }
 
-    return NextResponse.json({ success: true, ...result });
-  } catch (error) {
-    /* SECURITY: Console statement removed */,
-    return NextResponse.json({ error: 'Failed to create payment intent' ,}, { status: 500 ,}),
+    return NextResponse.json({ success: true,
+  } catch (error) { console.error(error); }, { status: 500 ,}),
   }
 };
 
 // POST /api/payments/confirm
-export const _POST = async (request: NextRequest) => {,
-  try {
+export const POST = async (request: NextRequest) => {try {
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { paymentIntentId, paymentMethodId, gateway = 'STRIPE' } = await request.json();
 
     const { user } = await authService.verifyToken(request);
     if (!user) {
-      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 403 ,});
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 403 ,
     }
 
     let result;
@@ -259,16 +221,15 @@ export const _POST = async (request: NextRequest) => {,
       result = await PaymentGateway.confirmPayment(paymentIntentId, paymentMethodId);
     }
 
-    return NextResponse.json({ success: true, result });
-  } catch (error) {
-    /* SECURITY: Console statement removed */,
-    return NextResponse.json({ error: 'Payment confirmation failed' ,}, { status: 500 ,}),
+    return NextResponse.json({ success: true,
+  } catch (error) { console.error(error); }, { status: 500 ,}),
   }
 };
 
 // POST /api/payments/verify-razorpay
-export const _POST = async (request: NextRequest) => {,
-  try {
+export const POST = async (request: NextRequest) => {try {
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = await request.json();
 
     const result = await PaymentGateway.verifyRazorpayPayment(
@@ -277,10 +238,8 @@ export const _POST = async (request: NextRequest) => {,
       razorpay_signature
     );
 
-    return NextResponse.json({ success: true, result });
-  } catch (error) {
-    /* SECURITY: Console statement removed */,
-    return NextResponse.json({ error: 'Payment verification failed' ,}, { status: 500 ,}),
+    return NextResponse.json({ success: true,
+  } catch (error) { console.error(error); }, { status: 500 ,}),
   }
 };
 

@@ -208,6 +208,8 @@ class PaymentGateway {
 // POST /api/payments/create-intent
 export const _POST = async (request: NextRequest) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { billId, gateway = 'STRIPE', currency = 'USD' } = await request.json();
 
     const { user } = await authService.verifyToken(request);
@@ -246,6 +248,8 @@ export const _POST = async (request: NextRequest) => {,
 // POST /api/payments/confirm
 export const _POST = async (request: NextRequest) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { paymentIntentId, paymentMethodId, gateway = 'STRIPE' } = await request.json();
 
     const { user } = await authService.verifyToken(request);
@@ -269,6 +273,8 @@ export const _POST = async (request: NextRequest) => {,
 // POST /api/payments/verify-razorpay
 export const _POST = async (request: NextRequest) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = await request.json();
 
     const result = await PaymentGateway.verifyRazorpayPayment(

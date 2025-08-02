@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 
 import { Button } from '@/components/ui/button';
@@ -9,7 +9,6 @@ import { Select } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 interface DischargeSummaryProps {
   patientId: string,
-  patientName: string
 }
 
 /**
@@ -95,17 +94,5 @@ export const _DischargeSummary = ({ patientId, patientName }: DischargeSummaryPr
               id="dischargingPhysician"
               options={[
                 { value: "", label: "Select physician" },
-              ]}
-            />
-          </div>
-
-          \1>
-            <Button variant="outline">Cancel\1>
-            <Button>Generate Discharge Summary</Button>
-          </div>
-        </form>
-      </CardContent>
-    </Card>
-  );
 
 }

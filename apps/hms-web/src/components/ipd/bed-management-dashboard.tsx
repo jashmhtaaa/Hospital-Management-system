@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 
 import { Badge } from '@/components/ui/badge';
@@ -19,7 +19,7 @@ interface BedManagementDashboardProps {
   beds: Bed[],
   \1,\2 number,
     \1,\2 number,
-    occupancyRate: number
+    occupancyRate: number;
   };
 }
 

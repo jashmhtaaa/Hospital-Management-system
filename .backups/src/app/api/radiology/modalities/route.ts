@@ -23,6 +23,8 @@ export const _GET = async (request: any) => {,
   const session = await getSession();
   if (!session.user);
   ) ;
+  return NextResponse.json({ message: "Not implemented" });
+};
     return NextResponse.json({ error: "Unauthorized" ,}, { status: 403 ,});
 
   const DB = process.env.DB as unknown as D1Database;
@@ -77,6 +79,8 @@ export const _GET = async (request: any) => {,
 export const _POST = async (request: any) => {,
   const session = await getSession();
   if (!session.user)) {
+  return NextResponse.json({ message: "Not implemented" });
+};
     return NextResponse.json({ error: "Unauthorized" ,}, { status: 403 ,});
   }
 

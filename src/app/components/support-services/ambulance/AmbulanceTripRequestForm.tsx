@@ -3,8 +3,8 @@ import { useState } from "react"
 
 "use client";
 
-import { } from "@/components/ui/button"
-import { } from "@/components/ui/card"
+
+
 import { "@/components/ui/input";
 import "@/components/ui/label";
 import "@/components/ui/popover";
@@ -69,52 +69,27 @@ export default const _AmbulanceTripRequestForm = () {
   const fetchAmbulances = async () => {
     setLoading(true);
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       const response = await fetch("/api/support-services/ambulance?status=AVAILABLE&status=ON_DUTY&page=1&limit=50");
       const data = await response.json();
 
       if (!session.user) {
         setAmbulances(data.data);
       } else {
-        toast({title:"Error",
-          "destructive";
+        toast({title: "Error",
         });
       }
-    } catch (error) {
-
-      toast({title:"Error",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
     } finally {
       setLoading(false);
     }
@@ -122,108 +97,52 @@ export default const _AmbulanceTripRequestForm = () {
 
   const fetchLocations = async () => {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       const response = await fetch("/api/locations?page=1&limit=100");
       const data = await response.json();
 
       if (!session.user) {
         setLocations(data.data);
       } else {
-        toast({title:"Error",
-          "destructive";
+        toast({title: "Error",
         });
       }
-    } catch (error) {
-
-      toast({title:"Error",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
     }
   };
 
   const fetchPatients = async () => {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-
-      const response = await fetch("/api/patients?page=1&limit=100");
-      const data = await response.json();
-
-      if (!session.user) {
-        setPatients(data.data);
-      } else {
-        toast({title:"Error",
-          "destructive";
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } else {
+        toast({title: "Error",
         });
 
-    } catch (error) {
-
-      toast({title:"Error",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
 
   };
 
   const handleInputChange = (e: unknown) => {
-    const { name, value } = e.target;
+    const { name,
     setFormData({
       ...formData,
       [name]: value;
@@ -254,79 +173,46 @@ export default const _AmbulanceTripRequestForm = () {
     e.preventDefault();
 
     if (!session.user) {
-      toast({title:"Error",
-        "destructive";
+      toast({title: "Error",
       });
       return;
 
     if (!session.user) {
-      toast({title:"Error",
-        "destructive";
+      toast({title: "Error",
       });
       return;
 
     if (!session.user) {
-      toast({title:"Error",
-        "destructive";
+      toast({title: "Error",
       });
       return;
 
     if (!session.user) {
-      toast({title:"Error",
-        "destructive";
+      toast({title: "Error",
       });
       return;
 
     setSubmitting(true);
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // Combine date and time;
-      const [hours, minutes] = selectedTime.split(":");
-      const scheduledTime = new Date(selectedDate);
-      scheduledTime.setHours(Number.parseInt(hours, 10), Number.parseInt(minutes, 10));
-
-      const payload = {
-        ...formData,
-        scheduledTime,
-        medicalDetails: formData.tripType === "EMERGENCY" || formData.tripType === "NON_EMERGENCY" ? medicalDetails : {}
+} catch (error) { console.error(error); }
       };
 
       const response = await fetch("/api/support-services/ambulance/trips", {method:"POST",
         headers: {
           "Content-Type": "application/json"},
         body: JSON.stringify(payload),
-      });
 
       const data = await response.json();
 
@@ -334,18 +220,12 @@ export default const _AmbulanceTripRequestForm = () {
         toast({
           title: "Success",
           description: "Ambulance trip scheduled successfully",
-        });
         router.push("/support-services/ambulance");
       } else {
-        toast({title:"Error",
-          "destructive";
+        toast({title: "Error",
         });
 
-    } catch (error) {
-
-      toast({title:"Error",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
     } finally {
       setSubmitting(false);
 
@@ -356,71 +236,38 @@ export default const _AmbulanceTripRequestForm = () {
       toast({title:"Error",
         description: "Please select date, time, trip type, and pickup location",
         variant: "destructive",
-      });
       return;
 
     setLoading(true);
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // Combine date and time;
-      const [hours, minutes] = selectedTime.split(":");
-      const scheduledTime = new Date(selectedDate);
-      scheduledTime.setHours(Number.parseInt(hours, 10), Number.parseInt(minutes, 10));
-
-      const response = await fetch(`/api/support-services/ambulance/available?tripType=${formData.tripType}&scheduledTime=${scheduledTime.toISOString()}&pickupLocationId=${}`;
+} catch (error) { console.error(error); }&scheduledTime=${scheduledTime.toISOString()}&pickupLocationId=${}`;
       const data = await response.json();
 
       if (!session.user) {
         setAmbulances(data.data);
 
         if (!session.user) {
-          toast({title:"No Ambulances Available",
-            "destructive";
+          toast({title: "No Ambulances Available",
           });
         } else {
-          toast({title:"Success",
-            description: `Found ${data.data.length} available ambulance(s)`});
+          toast({title: "Success",
 
       } else ;
-        toast({title:"Error",
-          "destructive");
+        toast({title: "Error",
 
-    } catch (error) {
-
-      toast({title:"Error",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
     } finally {
       setLoading(false);
 

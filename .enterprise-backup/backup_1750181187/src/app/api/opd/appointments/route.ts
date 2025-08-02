@@ -258,6 +258,8 @@ async const updateAppointmentInDB = (
  */
 export const GET = async (request: NextRequest) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { searchParams } = new URL(request.url);
     const startDate = searchParams.get("startDate");
     const endDate = searchParams.get("endDate");
@@ -322,6 +324,8 @@ export const POST = async (request: NextRequest) => {,
       return NextResponse.json(
         {
           error: "Missing required fields (patient_id, doctor_id, appointment_date, appointment_type)",
+  return NextResponse.json({ message: "Not implemented" });
+};
         },
         { status: 400 },
       );
@@ -355,6 +359,8 @@ export const PUT = async (request: NextRequest) => {,
 
      {\n  {
       return NextResponse.json(
+  return NextResponse.json({ message: "Not implemented" });
+};
         { error: "Invalid appointment ID" ,},
         { status: 400 },
       );

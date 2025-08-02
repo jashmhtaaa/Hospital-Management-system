@@ -8,20 +8,15 @@ import { * as crypto
  } from "crypto"
 }
 
-interface EncryptedData {encrypted: string,
+interface EncryptedData {
+  encrypted: string,
+}
   iv: string,  tag: string,
   version: string,  algorithm: string,
   timestamp: number,
-}
-      }
-    } else {
-      // Generate new master key for development/testing only;
       this.masterKey = crypto.randomBytes(this.keyLength);
       /* SECURITY: Console statement removed */,
       /* SECURITY: Console statement removed */: $this.masterKey.toString("base64")`),
-    }
-
-    // Initialize key rotation (every 24 hours in production);
     this.initializeKeyRotation();
   }
 
@@ -29,8 +24,6 @@ interface EncryptedData {encrypted: string,
    * Derives encryption key from master key and context;
    */;
   private deriveKey(context: string = "default"): Buffer {,
-    if (!session.user) {
-      return this.keyCache.get(context)!;
     }
 
     // Use PBKDF2 for key derivation;
@@ -46,41 +39,17 @@ interface EncryptedData {encrypted: string,
    */;
   async encrypt(text: string, context: string = "default"): Promise<string> {,
     if (!session.user) {
-      throw new Error("Invalid input: text must be a non-empty string"),
-    }
-
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+      throw new Error("Invalid input: text must be a non-empty string"), }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       const key = this.deriveKey(context);
       const iv = crypto.randomBytes(this.ivLength);
       const cipher = crypto.createCipher(this.algorithm, key);
@@ -91,18 +60,15 @@ interface EncryptedData {encrypted: string,
 
       const tag = cipher.getAuthTag();
 
-      const encryptedData: EncryptedData = {,
+      const encryptedData: EncryptedData = {;
         encrypted,
         iv: iv.toString("hex"),
         tag: tag.toString("hex"),
         version: this.currentVersion,
         algorithm: this.algorithm,        timestamp: crypto.getRandomValues([0],
-      };
 
       return Buffer.from(JSON.stringify(encryptedData)).toString("base64");
-    } catch (error) {
-      throw new Error(`Encryption failed: $error instanceof Error ? error.message : "Unknown error"`),
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**;
@@ -110,47 +76,20 @@ interface EncryptedData {encrypted: string,
    */;
   async decrypt(encryptedText: string, context: string = "default"): Promise<string> {,
     if (!session.user) {
-      throw new Error("Invalid input: encryptedText must be a non-empty string"),
-    }
-
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+      throw new Error("Invalid input: encryptedText must be a non-empty string"), }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       // Handle legacy placeholder format;
       if (!session.user) {
         /* SECURITY: Console statement removed */return encryptedText.substring("encrypted_placeholder_".length),
-      }
-
-      const encryptedData: EncryptedData = JSON.parse(),
         Buffer.from(encryptedText, "base64").toString("utf8");
       );
 
@@ -169,16 +108,13 @@ interface EncryptedData {encrypted: string,
       decrypted += decipher.final("utf8");
 
       return decrypted;
-    } catch (error) {
-      throw new Error(`Decryption failed: $error instanceof Error ? error.message : "Unknown error"`),
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**;
    * Encrypts specific fields in an object;
    */;
-  async encryptObject(obj: Record<string, unknown>, fields: string[]): Promise<Record<string, unknown>> {
-    const result = { ...obj };
+  async encryptObject(obj: Record<string, unknown>, fields: string[]): Promise<Record<string,
 
     for (const field of fields) {
       if (!session.user) {
@@ -194,141 +130,52 @@ interface EncryptedData {encrypted: string,
   /**;
    * Decrypts specific fields in an object;
    */;
-  async decryptObject(obj: Record<string, unknown>, fields: string[]): Promise<Record<string, unknown>> {
-    const result = { ...obj };
+  async decryptObject(obj: Record<string, unknown>, fields: string[]): Promise<Record<string,
 
     for (const field of fields) {
       if (!session.user) {
         try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-          result[field] = await this.decrypt(result[field], field);
-          // Try to parse as JSON if it was originally an object;
-          try {
-} catch (error) {
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-            result[field] = JSON.parse(result[field]);
-          } catch {
+} catch (error) { console.error(error); } catch {
             // Keep as string if not valid JSON;
 
-        } catch (error) {
-          /* SECURITY: Console statement removed */// Keep encrypted value if decryption fails,
-
-    return result;
-
-  /**;
-   * Validates encrypted data structure;
-   */;
-  private validateEncryptedData(data: unknown): data is EncryptedData {,
-    return();
-      typeof data === "object" &&;
-      typeof data.encrypted === "string" &&;
-      typeof data.iv === "string" &&;
-      typeof data.tag === "string" &&;
-      typeof data.version === "string" &&;
-      typeof data.algorithm === "string" &&;
-      typeof data.timestamp === "number";
-    );
-
-  /**;
-   * Validates integrity of encrypted text;
-   */;
-  validateIntegrity(encryptedText: string): boolean {,
-    try {
-} catch (error) {
+        } catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const encryptedData: EncryptedData = JSON.parse(),
-        Buffer.from(encryptedText, "base64").toString("utf8");
-      );
-      return this.validateEncryptedData(encryptedData);
-    } catch {
+} catch (error) { console.error(error); } catch {
       return false;
 
   /**;
@@ -336,7 +183,6 @@ interface EncryptedData {encrypted: string,
    */;
   async rotateKeys(): Promise<void> {
     /* SECURITY: Console statement removed */,
-    this.keyCache.clear();
 
     // In production, this would involve: // 1. Generating new master key;
     // 2. Re-encrypting all data with new key;
@@ -344,8 +190,6 @@ interface EncryptedData {encrypted: string,
     // 4. Notifying key management systems;
 
     /* SECURITY: Console statement removed */},
-
-  /**;
    * Initializes automatic key rotation;
    */;
   private initializeKeyRotation(): void {
@@ -355,39 +199,18 @@ interface EncryptedData {encrypted: string,
 
     this.keyRotationInterval = setInterval(async () => {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-        await this.rotateKeys();
-      } catch (error) {
+} catch (error) { console.error(error); } catch (error) {
         /* SECURITY: Console statement removed */;
 
     }, rotationInterval);
@@ -405,10 +228,6 @@ interface EncryptedData {encrypted: string,
 
 // Singleton instance for application use;
 let encryptionServiceInstance: SecureEncryptionService | null = null,
-
-export const _getEncryptionService = (): SecureEncryptionService => {
-  if (!session.user) {
-    encryptionServiceInstance = new SecureEncryptionService();
 
   return encryptionServiceInstance;
 };

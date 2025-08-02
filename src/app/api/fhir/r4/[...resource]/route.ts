@@ -1,17 +1,19 @@
-import {NextRequest, NextResponse } from "next/server";
-import {FHIRAppointment } from "next/server";
-import {FHIREncounter } from "next/server";
-import {FHIRMedicationRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-// FHIR API endpoint
-export const GET = async (request: NextRequest) => {,
+interface RouteContext {
+  params: { id: string };
+}
+
+export const GET = async (request: NextRequest, context: RouteContext) => {
   try {
-    // Implementation here
-    return NextResponse.json({message: "FHIR endpoint" });
+    const { id } = context.params;
+    
+    // TODO: Implement Fhir R4 [...Resource] logic for ID: {id}
+    return NextResponse.json({ 
+      id,
+      message: "Not implemented" 
+    });
   } catch (error) {
-    return NextResponse.json(
-      {error: "FHIR operation failed" },
-      {status: 500 }
-    );
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 };

@@ -1,52 +1,10 @@
-import "@/lib/hr/integration-service";
-import "next/server";
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import {  integrationService  } from "@/lib/database"
-import {  type
+import { NextRequest, NextResponse } from "next/server";
 
-/**;
- * API route for clinical module integration;
- * Provides staff data to clinical modules;
- */;
-export const _GET = async (request: any) => {,
+export const GET = async (request: NextRequest) => {
   try {
- } from "next/server" catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-    const employees = await integrationService.getEmployeesForClinical();
-
-    return NextResponse.json({success: true,
-      data: employees});
+    // TODO: Implement Integration Clinical Staff logic
+    return NextResponse.json({ message: "Not implemented" });
   } catch (error) {
-    return NextResponse.json({error: "Failed to fetch employees", details: error.message }, {status: 500 });
-
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  }
 };

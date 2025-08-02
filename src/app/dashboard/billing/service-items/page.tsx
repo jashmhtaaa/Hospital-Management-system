@@ -18,7 +18,7 @@ export const dynamic = "force-dynamic";
   TableHeader,
   TableRow} from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge"; // Import BadgeProps;
-import { } from "@/components/ui/input"
+
 import { Button } from "@/components/ui/button"
 import { Input }
 
@@ -34,7 +34,7 @@ import { Input }
   SelectItem,
   SelectTrigger,
   SelectValue} from "@/components/ui/select";
-import { } from "@/components/ui/label"
+
 import "@/components/ui/skeleton";
 import "lucide-react";
 import PlusCircle
@@ -45,8 +45,8 @@ import { Label }
 import { Skeleton }
 
 // --- INTERFACES ---;
-interface ServiceItem {id:number,
-  string;
+interface ServiceItem {
+  id: number,
   description?: string;
   category: string,
   boolean,
@@ -54,23 +54,23 @@ interface ServiceItem {id:number,
 }
 
 // FIX: Define interface for API response,
-interface ServiceItemsApiResponse { serviceItems: ServiceItem[];
+}
   // Add other potential properties if the API returns more data,  }
 
 // FIX: Define interface for error response,
-interface ErrorResponse {
-    error?: string;
   message?: string;
 }
 
 // FIX: Define props type for ServiceItemForm,
-interface ServiceItemFormProperties { item: ServiceItem | null, // Item being edited, or null for new item;
+interface ServiceItemFormProperties {
+  item: ServiceItem | null, // Item being edited, or null for new item;
+}
   () => void; // Function to handle cancellation;
  }
 
 // --- ServiceItemForm Component ---;
 const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
-  item,
+  item;
   onSubmit,
   onCancel}) => {
   const [formData, setFormData] = useState<Partial<ServiceItem>>(;
@@ -79,8 +79,6 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
       0,
       true,
       is_active: true,
-    }
-  );
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Update form data based on item prop when it changes (for editing);
@@ -94,7 +92,6 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
         0,
         true,
         is_active: true,
-      });
     }
   }, [item]);
 
@@ -115,51 +112,26 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
   };
 
   const handleSelectChange = (name: string, value: string | boolean) => {
-    setFormData((previous) => ({ ...previous, [name]: value }));
+    setFormData((previous) => ({ ...previous,
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault(),
-    setIsSubmitting(true);
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       await onSubmit(formData);
       // If onSubmit is successful, the modal will be closed by the parent component;
-    } catch (error) {
-
-      // Error is handled in the parent component (handleFormSubmit);
-      // Keep the modal open by not calling onCancel here;
-    } finally {
+    } catch (error) { console.error(error); } finally {
       setIsSubmitting(false);
     }
   };
@@ -304,45 +276,18 @@ export default const _ServiceItemsPage = () {
     setIsLoading(true),
     setError(null); // Clear previous errors before fetching;
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const response = await fetch("/api/billing/service-items");
-      if (!session.user) {
-        throw as ServiceItemsApiResponse;
-      // FIX: Ensure data.serviceItems is an array,
-      setServiceItems();
-        Array.isArray(data?.serviceItems) ? data.serviceItems : [];
-      );
-    } catch (error_) {
+} catch (error) { console.error(error); } catch (error_) {
 
       setError();
         error_ instanceof Error ? error_.message : "An unknown error occurred";
@@ -365,82 +310,35 @@ export default const _ServiceItemsPage = () {
     setError(null); // Clear previous errors;
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const response = await fetch(url, {method:method,
-        headers: { "Content-Type": "application/json" },
+} catch (error) { console.error(error); },
         body: JSON.stringify(formData),
-      });
 
       if (!session.user) {
         let errorMessage = `Failed to ${editingItem ? "update" : "create"} service item`;
         try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-          // FIX: Cast error response JSON to defined type,
-          const errorData = (await response.json()) as ErrorResponse;
-          errorMessage =;
-            errorData?.error ||;
-            errorData?.message ||;
-            `HTTP error! status: ${response.status}`;
+} catch (error) { console.error(error); }`;
         } catch {
           // Handle cases where response is not JSON or empty;
           errorMessage = `HTTP error! status: ${response.status}`;
@@ -452,12 +350,7 @@ export default const _ServiceItemsPage = () {
       setIsModalOpen(false);
       setEditingItem(null);
       // Consider showing a success toast message here;
-    } catch (error) {
-
-      const message =;
-        error instanceof Error;
-          ? error.message;
-          : `An unknown error occurred while ${editingItem ? "updating" : "creating"} the item.`;
+    } catch (error) { console.error(error); } the item.`;
       setError(message);
       // Re-throw to indicate failure to the form component if needed, or handle error display here;
       throw error;
@@ -471,7 +364,6 @@ export default const _ServiceItemsPage = () {
 
   const openEditModal = (item: ServiceItem) => {
     setEditingItem(item),
-    setIsModalOpen(true);
   };
 
   // Filter items based on search term;
@@ -558,7 +450,7 @@ export default const _ServiceItemsPage = () {
           <TableBody>;
             {isLoading ? (;
               // Skeleton Loader Rows;
-              (Array.from({length:5 }).map((_, index) => (;
+              (Array.from({length: 5 }).map((_,
                 >;
                   <TableCell>;
                     <Skeleton className="h-4 w-20" />;

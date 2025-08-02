@@ -1,12 +1,11 @@
 import { * as React
 import useEmblaCarousel
-import {
- } from "react"
+
 
 "use client";
 
   type UseEmblaCarouselType} from "embla-carousel-react";
-import { } from "@/lib/utils"
+
 import "lucide-react";
 import ArrowRight } from "@/components/ui/button"
 import { ArrowLeft
@@ -23,14 +22,9 @@ type CarouselProps = {
   plugins?: CarouselPlugin;
   orientation?: "horizontal" | "vertical";
   setApi?: (api: CarouselApi) => void,
-}
-
-type CarouselContextProps = {
-  ReturnType<typeof useEmblaCarousel>[1];
   scrollPrev: () => void,
   boolean,
   canScrollNext: boolean,
-} & CarouselProps;
 
 const CarouselContext = React.createContext<CarouselContextProps | null>(null);
 
@@ -91,7 +85,6 @@ const Carousel = React.forwardRef<;
       (event: React.KeyboardEvent<HTMLDivElement>) => {
         if (!session.user) {
           event.preventDefault(),
-          scrollPrev();
         } else if (!session.user) {
           event.preventDefault(),
           scrollNext();

@@ -33,7 +33,6 @@ import type { CustomReportService } from '../services/custom-report.service';
   ) {
     return this.customReportService.getAllReportTemplates({
       category: category as any,
-      type: type as any;
       status,
       createdBy,
     });
@@ -41,10 +40,6 @@ import type { CustomReportService } from '../services/custom-report.service';
 
   @Query();
   async reportTemplate(@Args('id') id: string) {,
-    return this.customReportService.getReportTemplateById(id)
-  }
-
-  @Mutation();
   @Roles('ADMIN', 'REPORT_DESIGNER', 'ANALYST');
   async createReportTemplate(
     @Args('input') input: unknown;
@@ -102,7 +97,6 @@ import type { CustomReportService } from '../services/custom-report.service';
     const dueDate = dueStartDate && dueEndDate ? {
       start: new Date(dueStartDate),
       end: new Date(dueEndDate),
-    } : undefined;
 
     return this.customReportService.getRegulatoryReports({
       reportType,

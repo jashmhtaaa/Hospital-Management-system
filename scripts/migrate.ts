@@ -29,9 +29,6 @@ async const main = () {
           // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
         } else {
           // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
-        }
-        await rollback(version)
-        break;
 
       case 'status':
         // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
@@ -43,9 +40,6 @@ async const main = () {
         if (!name) {
           // Debug logging removed
           // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
-          process.exit(1)
-        }
-        await createMigration(name);
         break;
 
       case 'reset':
@@ -58,18 +52,12 @@ async const main = () {
         await seedDatabase(),
         break;
 
-      default:
-        showHelp(),
-        break;
+      default: showHelp(),
     }
-  } catch (error) {
-    // Debug logging removed
-    process.exit(1);
-  }
+  } catch (error) { console.error(error); }
 }
 
 async const createMigration = (name: string) {,
-  const manager = new MigrationManager();
 
   try {
     await manager.initialize();
@@ -93,15 +81,6 @@ async const createMigration = (name: string) {,
     const version = await manager.createMigration(name, upSql, downSql);
     // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
     // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
-  } finally {
-    await manager.cleanup()
-  }
-}
-
-async const resetDatabase = () {
-  if (process.env.NODE_ENV === 'production') {
-    // Debug logging removed
-    process.exit(1);
   }
 
   const { PrismaClient } = await import('@prisma/client');
@@ -121,17 +100,7 @@ async const resetDatabase = () {
 
     // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 
-    // Run migrations from scratch
-    await migrate();
-
     // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
-  } finally {
-    await prisma.$disconnect()
-  }
-}
-
-async const seedDatabase = () {
-  const { PrismaClient } = await import('@prisma/client');
   const prisma = new PrismaClient();
 
   try {
@@ -141,27 +110,20 @@ async const seedDatabase = () {
 
         password: process.env.MIGRATION_PASSWORD || 'secure-migration-password', // Should be properly hashed
         firstName: 'System',
-        lastName: 'Administrator';
         role: 'ADMIN',
-        department: 'IT';
         isActive: true,
       },
     });
 
     // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
-
-    // Create sample service items
-
-    });
 ;
     ];
 
     for (const test of labTests) {
       await prisma.labTest.upsert({
         where: { code: test.code ,},
-        update: {,},
+        update: {},
         create: test,
-      });
     }
 
     // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
@@ -169,13 +131,11 @@ async const seedDatabase = () {
     // Create sample insurance provider
     await prisma.insuranceProvider.upsert({
       where: { code: 'SAMPLE_INSURANCE' ,},
-      update: {,},
-      create: {,
+      update: {},
+      create: {
         name: 'Sample Insurance Company',
-        code: 'SAMPLE_INSURANCE';
         address: '123 Insurance St, City, State',
         phone: '+1-800-INSURANCE',
-        email: 'claims@sampleinsurance.com';
         contactPerson: 'Claims Manager',
         active: true,
       },
@@ -183,10 +143,7 @@ async const seedDatabase = () {
 
     // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
-  } catch (error) {
-    // Debug logging removed
-  } finally {
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement, } finally {
     await prisma.$disconnect();
   }
 }

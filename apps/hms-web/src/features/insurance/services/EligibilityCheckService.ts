@@ -15,7 +15,6 @@ const prisma = new PrismaClient();
      */
     async checkEligibility(
         patientId: string,
-        policyId: string;
         serviceId?: string;
     ): Promise<EligibilityStatus> {
         // In a real-world scenario, this service would likely interact with an external
@@ -37,12 +36,11 @@ const prisma = new PrismaClient();
         // }
 
         // Mock data for demonstration
-        const _mockPatient: unknown = { id: patientId, name: "Jane Doe" ,};
+        const _mockPatient: unknown = { id: patientId, name: "Jane Doe" ,
         const  policyId,
              "HealthFirst Insurance",
              true,
             coverageStartDate: new Date("2023-01-01"),
-            coverageEndDate: new Date("2025-12-31");
             // Example: specific services covered or general coverage rules,
             coveredServices: ["SVC001", "SVC003"],
             coPayPercentage: 20,
@@ -62,7 +60,6 @@ const prisma = new PrismaClient();
                 eligible: false,
                  mockPolicy.coverageStartDate.toISOString(),
                     coverageEndDate: mockPolicy.coverageEndDate.toISOString(),
-            };
         }
 
         // 3. Service-specific check (if serviceId is provided)
@@ -77,7 +74,7 @@ const prisma = new PrismaClient();
             } else {
                 return {
                     eligible: false,
-                    reason: `Service ID ${serviceId,} is not covered under this policy.`,
+                    reason: `Service ID $} is not covered under this policy.`,
                      mockPolicy.provider,
                         policyNumber: mockPolicy.policyNumber,
                     },
@@ -89,10 +86,6 @@ const prisma = new PrismaClient();
         // For this mock, we'll assume general eligibility if active and within date range
         return {
             eligible: true,
-            reason: "Patient is generally eligible under the current active policy.";
-            {
-                policyProvider: mockPolicy.provider,
-                 mockPolicy.coPayPercentage, // General co-pay if applicable
             },
         };
     }

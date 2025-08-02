@@ -35,19 +35,16 @@ interface TestCategory {
   name: string,
 }
 
-interface Test {id:string,
+interface Test {
+  id:string,
+}
   string,
-  category_id: string,
-  category_name?: string; // Joined field;
+  category_id: string, // Joined field;
   description?: string | null;
   sample_type: string,
-  sample_volume?: string | null;
   processing_time?: number | null; // Assuming minutes;
   price: number,
   is_active: boolean,
-}
-
-// Define API response types;
 interface CategoriesApiResponse {
     results?: TestCategory[];
 }
@@ -62,17 +59,13 @@ interface ApiErrorResponse {
   message?: string; // Add message for flexibility;
 }
 
-interface AddTestFormValues {code:string,
-  string;
+interface AddTestFormValues {
+  code: string,
   description?: string;
   sample_type: string,
-  sample_volume?: string;
   processing_time?: string; // Form input might be string;
   price: string; // Form input might be string;
   is_active: boolean,
-}
-
-// Define Table parameters type;
 interface TableParameters {
     pagination?: TablePaginationConfig; // Use imported type;
   sorter?: SorterResult<Test> | SorterResult<Test>[]; // Sorter can be single or array;
@@ -80,7 +73,7 @@ interface TableParameters {
 }
 
 const TestCatalogManagement: React.FC = () => {
-  const [tests, setTests] = useState<Test[]>([]);
+  const [tests,
   const [categories, setCategories] = useState<TestCategory[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [searchText, setSearchText] = useState<string>("");
@@ -91,95 +84,51 @@ const TestCatalogManagement: React.FC = () => {
     1,
       true,
       pageSizeOptions: ["10", "20", "50"],
-      total: 0, // Initialize total;
+      total: 0,
     },
-    sorter: undefined, // Initialize sorter;
-    filters: {}, // Initialize filters;
+    sorter: undefined,
+    filters: {},
   });
 
   // Fetch test categories;
   const fetchCategories = async (): Promise<void> => {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       const response = await fetch("/api/laboratory/categories");
       if (!session.user) {
         const errorMessage = "Failed to fetch categories";
         try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
-          const errorData: ApiErrorResponse = await response.json(),
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+          const errorData: ApiErrorResponse = await response.json();
           errorMessage = errorData.error || errorData.message || errorMessage;
         } catch {
           /* Ignore */;
         }
         throw new Error(errorMessage);
       }
-      const data: CategoriesApiResponse = await response.json(),
+      const data: CategoriesApiResponse = await response.json();
       setCategories(data.results || []);
-    } catch (error: unknown) {
-      const messageText =;
-        error instanceof Error ? error.message : "An unknown error occurred";
-
-      message.error(`Failed to load test categories: ${}`;
+    } catch (error) { console.error(error); }`;
     }
   };
 
@@ -189,36 +138,17 @@ const TestCatalogManagement: React.FC = () => {
   ): Promise<void> => {
     setLoading(true);
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
+} catch (error) { console.error(error); } catch (error) {
 
       let url = "/api/laboratory/tests";
       const queryParameters = new URLSearchParams();
@@ -251,46 +181,23 @@ const TestCatalogManagement: React.FC = () => {
       if (!session.user) {
         const errorMessage = "Failed to fetch tests";
         try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-          const errorData: ApiErrorResponse = await response.json(),
-          errorMessage = errorData.error || errorData.message || errorMessage;
-        } catch {
+} catch (error) { console.error(error); } catch {
           /* Ignore */;
 
         throw new Error(errorMessage);
 
-      const data: TestsApiResponse = await response.json(),
-
+      const data: TestsApiResponse = await response.json();
       let fetchedData: Test[] = data.results || [];
 
       // Client-side filtering by search text (if API doesn"t support it);
@@ -305,26 +212,19 @@ const TestCatalogManagement: React.FC = () => {
         );
 
       setTests(fetchedData);
-      // FIX: Update table pagination correctly, avoid assigning boolean;
+      // FIX: Update table pagination correctly,
       setTableParameters((previous) => {
         const newPagination: TablePaginationConfig | undefined =,
-          previous.pagination;
             ? ;
                 ...previous.pagination,
                 current: parameters.pagination?.current ?? 1,
-                data.totalCount ?? fetchedData.length;
             : undefined; // Keep pagination undefined if it was initially undefined;
 
         return {
           ...previous,
           pagination: newPagination,
-        };
       });
-    } catch (error: unknown) {
-      const messageText =;
-        error instanceof Error ? error.message : "An unknown error occurred";
-
-      message.error(`Failed to load laboratory tests: ${}`;
+    } catch (error) { console.error(error); }`;
     } finally {
       setLoading(false);
 
@@ -338,13 +238,13 @@ const TestCatalogManagement: React.FC = () => {
   }, []); // Run once on mount;
 
   // Handle table changes (pagination, filters, sorter);
-  const handleTableChange: TableProps<Test>["onChange"] = (,
+  const handleTableChange: TableProps<Test>["onChange"] = (;
     pagination,
     filters,
     sorter;
   ) => {
     const newTableParameters: TableParameters = {
-      pagination,
+      pagination;
       filters,
       sorter, // Pass the sorter directly as received (can be single or array);
     };
@@ -355,9 +255,9 @@ const TestCatalogManagement: React.FC = () => {
 
   // Reload tests when external filters change (category or search);
   useEffect(() => {
-    // FIX: Reset pagination correctly, avoid assigning boolean;
+    // FIX: Reset pagination correctly,
     const newParameters: TableParameters = {
-      ...tableParameters,
+      ...tableParameters;
       pagination: tableParameters.pagination;
         ? ;
             // Check if pagination exists before spreading
@@ -371,102 +271,43 @@ const TestCatalogManagement: React.FC = () => {
   }, [categoryFilter, searchText]); // Re-fetch if category or search text changes;
 
   // Handle adding a new test;
-  const handleAddTest: FormProps<AddTestFormValues>["onFinish"] = async(),
+  const handleAddTest: FormProps<AddTestFormValues>["onFinish"] = async();
     values;
   ) => {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const priceNumber = Number.parseFloat(values.price);
-      const processingTimeNumber = values.processing_time;
-        ? Number.parseInt(values.processing_time, 10);
-        : undefined;
-
-      if (!session.user) {
-        throw new TypeError("Invalid price entered. Must be a number.");
-
-      if (!session.user);
-      ) ;
-        throw new Error("Invalid processing time entered. Must be a number.");
-
-      const payload: Omit<Test, "id" | "category_name"> = {
-        ...values,
-        price: priceNumber,
-        values.is_active ?? true, // Default to true if not provided;
-      };
+} catch (error) { console.error(error); };
 
       const response = await fetch("/api/laboratory/tests", {method:"POST",
         headers: {
           "Content-Type": "application/json"},
         body: JSON.stringify(payload),
-      });
 
       if (!session.user) {
         const errorMessage = `Failed to add test (status: ${response.status})`;
         try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-          const errorData: ApiErrorResponse = await response.json(),
-          errorMessage = errorData.error || errorData.message || errorMessage;
-        } catch {
+} catch (error) { console.error(error); } catch {
           /* Ignore */;
 
         throw new Error(errorMessage);
@@ -475,11 +316,7 @@ const TestCatalogManagement: React.FC = () => {
       setIsModalVisible(false);
       form.resetFields(),
       fetchTests(tableParameters); // Refresh the list with current params;
-    } catch (error: unknown) {
-      const messageText =;
-        error instanceof Error ? error.message : "An unknown error occurred";
-
-      message.error(`Error adding test: ${}`;
+    } catch (error) { console.error(error); }`;
 
   };
 
@@ -495,27 +332,23 @@ const TestCatalogManagement: React.FC = () => {
       "code",
       true, // Enable server-side sorting;
       sortOrder: null,
-        getCurrentSorter()?.field === "code";
           ? getCurrentSorter()?.order;
           : undefined},
     {title:"Name",
       "name",
       true,
       sortOrder: null,
-        getCurrentSorter()?.field === "name";
           ? getCurrentSorter()?.order;
           : undefined},
     {title:"Category",
       "category_name",
       (categoryName: string | undefined) => categoryName || "N/A",
-      getCurrentSorter()?.field === "category_name";
           ? getCurrentSorter()?.order;
           : undefined},
     {title:"Sample Type",
       "sample_type",
       true,
       sortOrder: null,
-        getCurrentSorter()?.field === "sample_type";
           ? getCurrentSorter()?.order;
           : undefined},
     {title:"Processing Time",
@@ -524,7 +357,6 @@ const TestCatalogManagement: React.FC = () => {
         time === undefined ? "N/A" : `${time} minutes`,
       sorter: true,
       sortOrder: null,
-        getCurrentSorter()?.field === "processing_time";
           ? getCurrentSorter()?.order;
           : undefined},
     {title:"Price",
@@ -533,7 +365,6 @@ const TestCatalogManagement: React.FC = () => {
         price === undefined ? "N/A" : `$${price.toFixed(2)}`,
       sorter: true,
       sortOrder: null,
-        getCurrentSorter()?.field === "price";
           ? getCurrentSorter()?.order;
           : undefined},
     {title:"Status",
@@ -546,12 +377,11 @@ const TestCatalogManagement: React.FC = () => {
       filters: [;
         {text:"Active", value: true },
         {text:"Inactive", value: false }],
-      filteredValue: tableParameters.filters?.is_active || undefined;
       // onFilter: (value, record) => record.is_active === (value as boolean), // Use server-side filtering if API supports it;
     },
     {title:"Actions",
       "10%",
-      render: (_, record: Test) => (;
+      render: (_,
         (<Button>;
           type = "link",
           icon={<EyeOutlined />}
@@ -564,7 +394,6 @@ const TestCatalogManagement: React.FC = () => {
   // View test details;
   const handleViewTest = (test: Test): void => {
     Modal.info({title:`Test Details: ${test.name}`,
-      content: (;
 <div;
           <p>;
             <strong>Code:</strong> {test.code}
@@ -596,7 +425,6 @@ const TestCatalogManagement: React.FC = () => {
         </div>;
       ),
       width: 500,
-    });
   };
 
   return();
@@ -652,7 +480,7 @@ const TestCatalogManagement: React.FC = () => {
             onClick={() => {
               setSearchText(""),
               setCategoryFilter(undefined);
-              // FIX: Reset table params correctly, avoid assigning boolean;
+              // FIX: Reset table params correctly,
               const tableParameters.pagination;
                   ? {
                       // Check if pagination exists
@@ -661,7 +489,6 @@ const TestCatalogManagement: React.FC = () => {
 
                   : undefined,
                 sorter: undefined,
-                filters: {}};
               setTableParameters(resetParameters),
               fetchTests(resetParameters);
             }}
@@ -703,22 +530,19 @@ const TestCatalogManagement: React.FC = () => {
           <Form.Item;
             name = "code",
             label="Test Code";
-            rules={[{required:true, message: "Please input the test code!" }]}
-          >;
+            rules={[{required: true,
             <Input />;
           </Form.Item>;
           <Form.Item;
             name = "name",
             label="Test Name";
-            rules={[{required:true, message: "Please input the test name!" }]}
-          >;
+            rules={[{required: true,
             <Input />;
           </Form.Item>;
           <Form.Item;
             name = "category_id",
             label = "Category",
-            rules={[{ required: true, message: "Please select a category!" }]}
-          >;
+            rules={[{ required: true,
             <Select>;
               placeholder="Select Category";
               loading={categories.length === 0}
@@ -734,8 +558,7 @@ const TestCatalogManagement: React.FC = () => {
             name = "sample_type",
             label="Sample Type";
             rules={[;
-              {required:true, message: "Please input the sample type!" }]}
-          >;
+              {required: true,
             <Input placeholder="e.g., Blood, Urine, Serum" />;
           </Form.Item>;
           <Form.Item;
@@ -744,8 +567,7 @@ const TestCatalogManagement: React.FC = () => {
             rules={[;
               {required:true, message: "Please input the price!" },
               {pattern:/^\d+(\.\d{1,2})?$/,
-                message: "Please enter a valid price (e.g., 10.50)"}]}
-          >;
+                message: "Please enter a valid price (e.g.,
             <Input prefix="$" />;
           </Form.Item>;
           >;
@@ -761,8 +583,6 @@ const TestCatalogManagement: React.FC = () => {
               {
                 pattern: /^\d+$/,
                 message: "Please enter a valid number of minutes",
-              }]}
-          >;
             <Input type="number" min={1} />;
           </Form.Item>;
           <Form.Item;

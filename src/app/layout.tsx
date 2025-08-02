@@ -1,4 +1,4 @@
-import { } from "next"
+
 import "next/font/google";
 import Geist_Mono } from "./globals.css"
 import { Geist
@@ -9,23 +9,18 @@ import { Toaster } from "@/components/ui/sonner"; // Added Toaster for notificat
 const _geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
-});
 
 const _geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
-});
 
 // Use metadata from HEAD;
 export const "Hospital Management System",
   description: "Comprehensive HMS",
-};
 
 export default const _RootLayout = ({
   children}: Readonly<{
   children: React.ReactNode,
-}>) {
-  return();
     // Keep lang="en" and dark class from origin/master;
     >;
       {/* Use Geist fonts and antialiased from origin/master */}

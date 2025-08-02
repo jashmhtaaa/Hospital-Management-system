@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 
 import { Badge } from '@/components/ui/badge';
@@ -11,12 +11,11 @@ interface IPDPatient {
   \1,\2 string,
   \1,\2 string,
   \1,\2 string,
-  status: 'stable' | 'critical' | 'improving' | 'deteriorating'
+  status: 'stable' | 'critical' | 'improving' | 'deteriorating';
 }
 
 interface IPDPatientListProps {
   patients: IPDPatient[],
-  onViewPatient: (patientId: string) => void
 }
 
 /**

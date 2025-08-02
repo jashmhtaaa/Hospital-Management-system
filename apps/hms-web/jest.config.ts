@@ -21,13 +21,13 @@ import type { Config } from "jest";
  * @compliance Healthcare Testing Standards, HIPAA Testing Guidelines
  */
 
-const jestConfig: Config = {,
+const jestConfig: Config = {;
 	// Test environment and setup
 	preset: "ts-jest",
 	testEnvironment: "jsdom", // Changed to jsdom for React component testing
 
 	// TypeScript and JavaScript transformation
-	transform: {,
+	transform: {
 		"^.+\\.(ts|tsx)$": [
 			"ts-jest",
 			{
@@ -62,7 +62,7 @@ const jestConfig: Config = {,
 	],
 
 	// Module name mapping for absolute imports and aliases
-	moduleNameMapping: {,
+	moduleNameMapping: {
 		"^@/(.*)$": "<rootDir>/src/$1",
 		"^@components/(.*)$": "<rootDir>/src/components/$1",
 		"^@lib/(.*)$": "<rootDir>/src/lib/$1",
@@ -171,7 +171,7 @@ const jestConfig: Config = {,
 	},
 
 	// Global test configuration
-	globals: {,
+	globals: {
 		"ts-jest": {
 			useESM: true,
 			isolatedModules: true,

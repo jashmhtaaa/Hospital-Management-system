@@ -1,4 +1,4 @@
-import { } from "react"
+
 import React
 import type
 import useEffect } from "next/navigation"
@@ -28,7 +28,7 @@ import { useState
   CardHeader,
   CardTitle;
 } from "../ui/card";
-import { } from "../ui/input"
+
 import { Button } from "../ui/button"
 import { Input }
 
@@ -38,8 +38,8 @@ import { Input }
   SelectTrigger,
   SelectValue;
 } from "../ui/select";
-import { } from "../../hooks/use-toast"
-import { } from "date-fns"
+
+
 import "lucide-react";
 import Filter, RefreshCw
 import UserPlus
@@ -49,19 +49,19 @@ import { Search
 import { useToast }
 
 // Define patient status colors;
-const statusColors: Record<string, string> = {Active:"success",
+const statusColors: Record<string,
   "destructive";
   "On Hold": "warning";
 };
 
 // Patient interface;
-interface Patient {id:string,
+interface Patient {
+  id:string,
+}
   string,
   string,
   string,
   createdAt: string,
-  contact?: {
-    phoneMobile?: string;
     email?: string;
   };
   addresses?: {
@@ -93,7 +93,6 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
     "",
     "",
     status: "",
-  });
 
   // Advanced filter visibility;
   const [showAdvancedFilters, setShowAdvancedFilters] = useState<boolean>(false);
@@ -110,52 +109,17 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
     setLoading(true);
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-
-      // Build query parameters;
-      const params = new URLSearchParams();
-      params.append("page", page.toString());
-      params.append("limit", limit.toString());
-
-      // Add filters if they have values;
-      if (!session.user)arams.append("mrn", searchFilters.mrn);
-      if (!session.user)arams.append("firstName", searchFilters.firstName);
-      if (!session.user)arams.append("lastName", searchFilters.lastName);
-      if (!session.user)arams.append("dateOfBirth", searchFilters.dateOfBirth);
-      if (!session.user)arams.append("phone", searchFilters.phone);
-      if (!session.user)arams.append("status", searchFilters.status);
-
-      // Fetch patients;
-      const response = await fetch(`/api/patients?${}`;
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }`;
 
       if (!session.user) {
         throw new Error("Failed to fetch patients");
@@ -168,11 +132,7 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
       setPage(data.page),
       setLimit(data.limit);
       setTotalPages(data.totalPages);
-    } catch (error) {
-
-      toast({title:"Error",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
     } finally {
       setLoading(false);
 
@@ -180,7 +140,7 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
 
   // Handle filter change;
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+    const { name,
     setSearchFilters((prev) => ({
       ...prev,
       [name]: value;
@@ -192,20 +152,17 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
     setSearchFilters((prev) => ({
       ...prev,
       status: value,
-    }));
   };
 
   // Handle search form submission;
   const handleSearchSubmit = (e: React.FormEvent) => {
-    e.preventDefault(),
-    setPage(1); // Reset to first page;
+    e.preventDefault(), // Reset to first page;
     searchPatients();
   };
 
   // Handle page change;
   const handlePageChange = (newPage: number) => {
     setPage(newPage),
-    searchPatients();
   };
 
   // Handle limit change;
@@ -233,39 +190,18 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
   // Format date function;
   const formatDate = (date: string) => {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      return format(new Date(date), "MMM d, yyyy");
-    } catch (error) {
+} catch (error) { console.error(error); } catch (error) {
       return "Invalid date";
 
   };
@@ -273,47 +209,18 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
   // Calculate age from date of birth;
   const calculateAge = (dateOfBirth: string) => {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const birthDate = new Date(dateOfBirth);
-      const today = new Date();
-      let age = today.getFullYear() - birthDate.getFullYear();
-      const m = today.getMonth() - birthDate.getMonth();
-
-      if (!session.user) birthDate.getDate())) {
-        age--;
-
-      return age;
-    } catch (error) {
+} catch (error) { console.error(error); } catch (error) {
       return "Unknown";
 
   };
@@ -437,7 +344,6 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
                       "",
                       "",
                       status: "",
-                    });
                   }}
                 >;
                   Clear Filters;
@@ -485,9 +391,7 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
                 patients.map((patient) => (;
                   <TableRow>;
                     key={patient.id}
-                    className="cursor-pointer hover:bg-muted/50",
-                    onClick={() => handlePatientSelect(patient.id)}
-                  >;
+                    className="cursor-pointer hover: bg-muted/50",
                     <TableCell className="font-medium">{patient.mrn}>;
                     <TableCell>{`${patient.lastName}, ${patient.firstName}`}</TableCell>;
                     <TableCell>;

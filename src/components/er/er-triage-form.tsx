@@ -1,4 +1,4 @@
-import { } from "@hookform/resolvers/zod"
+
 import "react";
 import "react-hook-form";
 import "zod";
@@ -23,7 +23,7 @@ import { zodResolver }
   FormItem,
   FormLabel,
   FormMessage} from "@/components/ui/form";
-import { } from "@/components/ui/textarea"
+
 import { Input } from "@/components/ui/input"
 import { Textarea }
 
@@ -35,8 +35,8 @@ import { Textarea }
 import { { useToast } from "@/components/ui/use-toast"
 
 // Define the schema for the triage form using Zod;
-const triageFormSchema = z.object({visitId:z.string().min(1, {message:"Visit ID is required." }), // Need a way to select/link the visit;
-  triageNurseId: z.string().min(1, {message:"Triage Nurse ID is required." }), // Should ideally come from logged-in user context;
+const triageFormSchema = z.object({visitId:z.string().min(1, {message: "Visit ID is required." }),
+  triageNurseId: z.string().min(1, {message: "Triage Nurse ID is required." }),
   esiLevel: z.coerce;
     .number();
     .min(1);
@@ -48,19 +48,15 @@ const triageFormSchema = z.object({visitId:z.string().min(1, {message:"Visit ID 
   temp: z.coerce.number().optional(),
   spo2: z.coerce.number().optional(),
   assessmentNotes: z.string().optional(),
-});
 
 type TriageFormValues = z.infer>;
 
 // FIX: Define type for API error response,
-interface ApiErrorResponse {
-    error?: string;
 }
 
 // FIX: Define type for the Triage API success response,
 interface TriageResponse {
   visit_id: string,
-  esi_level: number;
   // Add other relevant fields returned by the API;
 }
 
@@ -86,11 +82,9 @@ export default const _ERTriageForm = () {
 
     const vitalSigns = {HR:data.hr,
       BP: null,
-        data?.bpSystolic && data.bpDiastolic;
           ? `${data.bpSystolic}/${data.bpDiastolic}`;
           : undefined,
       RR: data.rr,
-      data.spo2;
     };
 
     // Filter out undefined vital signs;
@@ -103,36 +97,17 @@ export default const _ERTriageForm = () {
     );
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
+} catch (error) { console.error(error); } catch (error) {
 
       // Replace with actual API call: POST /api/er/visits/[id]/triage,
       const response = await fetch(`/api/er/visits/${data.visitId}/triage`, {
@@ -141,66 +116,30 @@ export default const _ERTriageForm = () {
         data.triageNurseId,
           filteredVitalSigns,
           assessment_notes: data.assessmentNotes,
-        })});
 
       if (!session.user) {
         const errorMessage = "Failed to submit triage assessment";
         try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-          // FIX: Use defined type for errorData,
-          const errorData: ApiErrorResponse = await response.json(),
-          errorMessage = errorData.error || errorMessage;
-        } catch {
+} catch (error) { console.error(error); } catch {
           // Ignore if response is not JSON;
 
         throw new Error(errorMessage);
 
       // FIX: Use defined type for result,
-      const result: TriageResponse = await response.json(),
-      toast({title:"Triage Assessment Submitted",
-        description: `ESI Level ${result.esi_level} assigned for visit ${result.visit_id}.`});
+      toast({title: "Triage Assessment Submitted",
       form.reset(); // Reset form after successful submission
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
-    } catch (error: unknown) {
-      // FIX: Use unknown for catch block,
-
-      const message =;
-        error instanceof Error;
-          ? error.message;
-          : "An unexpected error occurred.";
-      toast({title:"Submission Failed",
-        "destructive";
-      });
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement, });
     } finally {
       setIsLoading(false);
 
@@ -265,8 +204,7 @@ export default const _ERTriageForm = () {
               <FormItem>;
                 <FormLabel>Heart Rate (bpm)</FormLabel>;
                 <FormControl>;
-                  {/* FIX: Pass value as string or number, ensure onChange handles conversion if needed */}
-                  <Input>;
+                  {/* FIX: Pass value as string or number,
                     type = "number",
                     placeholder="e.g., 72";
                     {...field}

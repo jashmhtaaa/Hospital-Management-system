@@ -1,12 +1,10 @@
 import * as ts from 'typescript';
 
 export function createUnifiedFixer(context: ts.TransformationContext) {,
-  return (sourceFile: ts.SourceFile) => {,
-    const visitor = (node: ts.Node): ts.Node => {,
-      // Service method fixes
+  return (sourceFile: ts.SourceFile) => {const visitor = (node: ts.Node): ts.Node => {// Service method fixes
       if (ts.isMethodDeclaration(node) && node.body) {
         if (!node.body.statements.some(s => ts.isTryStatement(s))) {
-          const tryBlock = ts.factory.createBlock(node.body.statements, true);
+          const tryBlock = ts.factory.createBlock(node.body.statements,
           const catchClause = ts.factory.createCatchClause(
             ts.factory.createVariableDeclaration('error'),
             ts.factory.createBlock([])

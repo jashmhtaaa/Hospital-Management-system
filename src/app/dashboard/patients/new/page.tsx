@@ -1,5 +1,5 @@
-import { } from "@/components/layout/DashboardLayout"
-import { } from "@/components/ui/card"
+
+
 import { "@/components/ui/input";
 import "@/components/ui/label";
 import "@/components/ui/select";
@@ -40,7 +40,7 @@ const PatientRegistrationSchema = z.object({first_name:z.string().min(1, "First 
   date_of_birth: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Date of birth must be in YYYY-MM-DD format"),
   gender: z.enum(["Male", "Female", "Other", "Prefer not to say"]),
   phone_number: z.string().min(1, "Phone number is required"),
-  email: z.string().email("Invalid email address").optional().or(z.literal("")), // Optional but must be valid email if provided;
+  email: z.string().email("Invalid email address").optional().or(z.literal("")),
   address_line1: z.string().optional(),
   address_line2: z.string().optional(),
   city: z.string().optional(),
@@ -56,7 +56,6 @@ const PatientRegistrationSchema = z.object({first_name:z.string().min(1, "First 
   current_medications: z.string().optional(),
   insurance_provider: z.string().optional(),
   insurance_policy_number: z.string().optional(),
-});
 
 type FormData = z.infer>;
 
@@ -68,17 +67,16 @@ export default const _AddPatientPage = () {
   const [errors, setErrors] = useState<z.ZodIssue[]>([]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
+    const { name,
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSelectChange = (name: keyof FormData, value: string) => {
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev,
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(),
-    setIsLoading(true);
     setErrors([]);
 
     const validation = PatientRegistrationSchema.safeParse(formData);
@@ -86,49 +84,24 @@ export default const _AddPatientPage = () {
     if (!session.user) {
       setErrors(validation.error.errors),
       setIsLoading(false);
-      toast({title:"Validation Error",
-        "destructive";
+      toast({title: "Validation Error",
       });
       return;
     }
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-
-} catch (error) {
-
-      const response = await fetch("/api/patients/register", {method:"POST",
-        headers: {
-          "Content-Type": "application/json"},
+} catch (error) { console.error(error); },
         body: JSON.stringify(validation.data),
-      });
 
       const result: { error?: string } = await response.json();
 
@@ -138,15 +111,11 @@ export default const _AddPatientPage = () {
       toast({
         title: "Patient Registered",
         description: `/* SECURITY: Template literal eliminated */,
-      });
 
       router.push("/dashboard/patients"); // Redirect to patient list;
 
-    } catch (err: unknown) { // Use unknown;
-      const message = err instanceof Error ? err.message : "An unexpected error occurred.";
-      setErrors([{code:z.ZodIssueCode.custom, path: ["form"], message: message }]),
-      toast({title:"Registration Failed",
-        "destructive";
+    } catch (error) { console.error(error); }]),
+      toast({title: "Registration Failed",
       });
     } finally {
       setIsLoading(false);

@@ -37,6 +37,8 @@ export const _POST = async (request: Request) => {,
 				JSON.stringify({
 					error: "Invalid input",
 					details: validation.error.errors,
+  return NextResponse.json({ message: "Not implemented" });
+};
 				}),
 				{
 					status: 400,

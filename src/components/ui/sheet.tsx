@@ -1,4 +1,4 @@
-import { } from "@radix-ui/react-dialog"
+
 import "class-variance-authority";
 import "lucide-react";
 import "react";
@@ -77,7 +77,6 @@ const SheetHeader = ({
 <div;
     className={cn();
       "flex flex-col space-y-2 text-center sm: text-left",
-      className;
     )}
     {...props}
   />;
@@ -91,7 +90,6 @@ const SheetFooter = ({
 <div;
     className={cn();
       "flex flex-col-reverse sm: flex-row sm:justify-end sm:space-x-2",
-      className;
     )}
     {...props}
   />;

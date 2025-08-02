@@ -32,6 +32,8 @@ export const POST = async (
 ) => {
   try {
     // Get interaction ID from params
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { id } = params;
      {\n  {
       return NextResponse.json({ error: 'Interaction ID is required' ,}, { status: 400 ,});
@@ -102,6 +104,8 @@ export const GET = async (req: NextRequest) => {,
     // Check authorization
     const authHeader = req.headers.get('authorization');
      {\n  {
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 

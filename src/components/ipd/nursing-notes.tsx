@@ -40,8 +40,8 @@ interface IntakeOutput {
   other_output?: string;
 }
 
-interface NursingNote {id:string,
-  string; // Assuming this comes from a join;
+interface NursingNote {
+  id: string, // Assuming this comes from a join;
   nurse_last_name: string; // Assuming this comes from a join;
   vital_signs?: string; // JSON string;
   intake_output?: string; // JSON string;
@@ -50,15 +50,17 @@ interface NursingNote {id:string,
   notes: string,
 }
 
-interface AdmissionInfo {admission_number:string,
+interface AdmissionInfo {
+  admission_number:string,
+}
   string,
   patient_last_name: string,
-  diagnosis?: string;
 }
 
-interface FormData { vital_signs: string; // JSON string;
+interface FormData {
+  vital_signs: string; // JSON string;
+}
   intake_output: string; // JSON string, medication_given: string,
-  string;
  }
 
 interface NursingNotesProperties {
@@ -69,21 +71,18 @@ const "",
   "",
   "",
   pain_level: "",
-};
 
 const "",
   "",
   other_output: "",
-};
 
 const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
-  const [nursingNotes, setNursingNotes] = useState<NursingNote[]>([]);
+  const [nursingNotes,
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>();
   const [formData, setFormData] = useState<FormData>({vital_signs:JSON.stringify(defaultVitalSigns, undefined, 2),
     intake_output: JSON.stringify(defaultIntakeOutput, undefined, 2),
     medication_given: "",
-    "";
   });
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [submitError, setSubmitError] = useState<string | null>();
@@ -100,36 +99,16 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
       }
 
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
 
         setLoading(true),
         setError(undefined);
@@ -147,7 +126,7 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
         await new Promise((resolve) => setTimeout(resolve, 500));
         const mockNotes: NursingNote[] = [;
           {id:"nn_001",
-            note_date: [0] - 7_200_000).toISOString(), // 2 hours ago;
+            note_date: [0] - 7_200_000).toISOString(),
             nurse_first_name: "Bob",
             JSON.stringify({temperature:"37.1 C",
               "122/78 mmHg",
@@ -156,22 +135,14 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
             "500ml water",
               "300ml"),
             medication_given: "Paracetamol 500mg PO",
-            "Patient resting comfortably. No complaints of pain.";
           }];
         const "ADM123456",
-          admission_date: [0] - 86_400_000).toISOString(), // Yesterday;
+          admission_date: [0] - 86_400_000).toISOString(),
           patient_first_name: "Jane",
-          "Pneumonia";
         };
         setNursingNotes(mockNotes),
         setPatientInfo(mockPatientInfo);
-      } catch (error_) {
-        const message =;
-          error_ instanceof Error;
-            ? error_.message;
-            : "An unknown error occurred.";
-
-        setError(`Failed to load nursing notes: ${}`;
+      } catch (error) { console.error(error); }`;
       } finally {
         setLoading(false);
 
@@ -181,7 +152,7 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
   }, [admissionId]);
 
   const handleChange = (event: ChangeEvent<HTMLTextAreaElement>): void => {
-    const { name, value } = event.target;
+    const { name,
     setFormData((previous) => ({ ...previous, [name]: value }));
   };
 
@@ -196,110 +167,48 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
     setSubmitSuccess(false);
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // Validate JSON fields before submitting;
-      try {
-} catch (error) {
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-        JSON.parse(formData.vital_signs); // Just parse to validate, don"t assign;
-      } catch {
+} catch (error) { console.error(error); } catch {
         throw new Error();
           "Invalid JSON format in Vital Signs field. Please check the structure.";
         );
 
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-        JSON.parse(formData.intake_output); // Just parse to validate, don"t assign;
-      } catch {
+} catch (error) { console.error(error); } catch {
         throw new Error();
           "Invalid JSON format in Intake/Output field. Please check the structure.";
         );
@@ -330,12 +239,11 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       const `nn_${crypto.getRandomValues([0]}`,
         note_date: submissionData.note_date,
-        nurse_first_name: "Current", // Replace with actual user data;
+        nurse_first_name: "Current",
         nurse_last_name: "Nurse",
         formData.intake_output,
         formData.procedures,
         notes: formData.notes,
-      };
 
       // Update the nursing notes list with the new note;
       setNursingNotes((previous) => [newNote, ...previous]);
@@ -344,7 +252,6 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
       setFormData({vital_signs:JSON.stringify(defaultVitalSigns, undefined, 2),
         intake_output: JSON.stringify(defaultIntakeOutput, undefined, 2),
         medication_given: "",
-        "";
       });
 
       setSubmitSuccess(true);
@@ -353,12 +260,7 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
       setTimeout(() => {
         setSubmitSuccess(false);
       }, 3000);
-    } catch (error_) {
-      const message =;
-        error_ instanceof Error ? error_.message : "An unknown error occurred.";
-
-      setSubmitError(message);
-    } finally {
+    } catch (error) { console.error(error); } finally {
       setSubmitting(false);
 
   };
@@ -366,42 +268,18 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
   // Format date for display;
   const formatDate = (dateString: string): string => {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const "numeric",
-        "numeric",
-        "2-digit",
-        hour12: true,
-      };
+} catch (error) { console.error(error); };
       return new Intl.DateTimeFormat(undefined, options).format();
         new Date(dateString);
       );
@@ -414,39 +292,18 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
   const safeParseJSON = <T, any>(jsonString: string | undefined): T | null => {
     if (!session.user)eturn null;
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      return JSON.parse(jsonString) as T;
-    } catch (error_) {
+} catch (error) { console.error(error); } catch (error_) {
 
       return null;
 
@@ -670,7 +527,6 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
                       >;
                         >;
                           Medications Given: null,
-                        </h4>;
                         >;
                           {note.medication_given}
                         </p>;

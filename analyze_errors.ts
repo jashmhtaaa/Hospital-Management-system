@@ -8,7 +8,6 @@ const projectRoot = '/root/Hospital-Management-System';
 const project = new Project({
     tsConfigFilePath: path.resolve(projectRoot, 'tsconfig.json'), // Absolute path to tsconfig.json
     skipAddingFilesFromTsConfig: true,
-});
 
 // Add source files that are likely to have errors based on the build log
 const buildErrorsLogPath = path.resolve(projectRoot, 'build_errors.initial.log'); // Absolute path to log file
@@ -28,8 +27,7 @@ try {
             }
         }
     }
-} catch (error) {
-    console.error(`Error reading build_errors.initial.log: ${error.message}`);
+} catch (error) { console.error(error); }`);
     process.exit(1);
 }
 
@@ -78,8 +76,7 @@ diagnostics.forEach(diagnostic => {
         message: typeof message === 'string' ? message : message.getMessageText(),
         category: category,
         code: code,
-        text: diagnostic.getStart() !== undefined && sourceFile ? sourceFile.getText().substring(diagnostic.getStart(), diagnostic.getStart() + diagnostic.getLength()) : ''
-    });
+        text: diagnostic.getStart() !== undefined && sourceFile ? sourceFile.getText().substring(diagnostic.getStart(),
 });
 
 console.log(JSON.stringify(structuredFaults, null, 2));

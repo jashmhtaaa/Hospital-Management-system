@@ -27,7 +27,7 @@ import { { Button } from "@/components/ui/button"
   DialogHeader,
   DialogTitle,
   DialogTrigger} from "@/components/ui/dialog";
-import { } from "@/components/ui/label"
+
 import { Input } from "@/components/ui/input"
 import { Label }
 
@@ -37,8 +37,8 @@ import { Label }
   SelectTrigger,
   SelectValue;
 } from "@/components/ui/select";
-import { } from "@/components/ui/alert"
-import { } from "@/components/ui/data-table"
+
+
 import "@/components/ui/date-picker";
 import "@/components/ui/spinner";
 import "@/lib/formatters";
@@ -66,37 +66,17 @@ export default const _BillingDashboard = () {
     setError(null);
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       // In a real implementation, this would fetch data from the API;
       // For now, we"ll simulate the data;
 
@@ -114,20 +94,14 @@ export default const _BillingDashboard = () {
           data = generateDiscountsData(),
           break;
         default: data = generateInvoicesData(),
-      }
-
-      setBillingData(data);
-    } catch (err) {
-      setError("Failed to load billing data. Please try again.");
-
-    } finally {
+    } catch (error) { console.error(error); } finally {
       setLoading(false);
     }
   };
 
   // Simulated data generators;
   const generateInvoicesData = () => {
-    return { invoices: [, { id: "INV-2025-000123", patientId: "P-001", patientName: "John Smith", visitType: "OPD", billDate: "2025-05-25", totalAmount: 1250, paidAmount: 1250, outstandingAmount: 0, status: "paid"  },
+    return { invoices: [, },
         { id: "INV-2025-000124", patientId: "P-002", patientName: "Sarah Johnson", visitType: "IPD", billDate: "2025-05-24", totalAmount: 2340, paidAmount: 1500, outstandingAmount: 840, status: "partial" },
         { id: "INV-2025-000125", patientId: "P-003", patientName: "Michael Brown", visitType: "OPD", billDate: "2025-05-23", totalAmount: 890, paidAmount: 0, outstandingAmount: 890, status: "pending" },
         { id: "INV-2025-000126", patientId: "P-004", patientName: "Emily Davis", visitType: "ER", billDate: "2025-05-22", totalAmount: 1780, paidAmount: 0, outstandingAmount: 1780, status: "overdue" },
@@ -139,26 +113,24 @@ export default const _BillingDashboard = () {
         { id: "INV-2025-000132", patientId: "P-010", patientName: "James Brown", visitType: "ER", billDate: "2025-05-23", totalAmount: 2780, paidAmount: 0, outstandingAmount: 2780, status: "sent" },
         { id: "INV-2025-000133", patientId: "P-011", patientName: "Patricia Davis", visitType: "OPD", billDate: "2025-05-23", totalAmount: 1950, paidAmount: 1950, outstandingAmount: 0, status: "paid" },
         { id: "INV-2025-000134", patientId: "P-012", patientName: "Robert Johnson", visitType: "IPD", billDate: "2025-05-22", totalAmount: 3250, paidAmount: 2000, outstandingAmount: 1250, status: "partial" },
-        { id: "INV-2025-000135", patientId: "P-013", patientName: "Linda Wilson", visitType: "OPD", billDate: "2025-05-21", totalAmount: 1650, paidAmount: 0, outstandingAmount: 1650, status: "overdue" }
-      ];
+        { id: "INV-2025-000135", patientId: "P-013", patientName: "Linda Wilson", visitType: "OPD", billDate: "2025-05-21", totalAmount: 1650, paidAmount: 0, outstandingAmount: 1650,
     }
   };
 
   const generatePaymentsData = () => {
-    return { payments: [, { id: "PAY-2025-000089", invoiceId: "INV-2025-000123", patientId: "P-001", patientName: "John Smith", paymentDate: "2025-05-25", amount: 1250, paymentMethod: "Credit Card", status: "completed", referenceNumber: "REF123456"  },
+    return { payments: [, },
         { id: "PAY-2025-000090", invoiceId: "INV-2025-000124", patientId: "P-002", patientName: "Sarah Johnson", paymentDate: "2025-05-24", amount: 1500, paymentMethod: "Insurance", status: "completed", referenceNumber: "INS789012" },
         { id: "PAY-2025-000091", invoiceId: "INV-2025-000127", patientId: "P-005", patientName: "Robert Wilson", paymentDate: "2025-05-21", amount: 3450, paymentMethod: "Bank Transfer", status: "completed", referenceNumber: "BT345678" },
         { id: "PAY-2025-000092", invoiceId: "INV-2025-000133", patientId: "P-011", patientName: "Patricia Davis", paymentDate: "2025-05-23", amount: 1950, paymentMethod: "Cash", status: "completed", referenceNumber: "CSH901234" },
         { id: "PAY-2025-000093", invoiceId: "INV-2025-000134", patientId: "P-012", patientName: "Robert Johnson", paymentDate: "2025-05-22", amount: 2000, paymentMethod: "Online Payment", status: "completed", referenceNumber: "ONL567890" },
         { id: "PAY-2025-000094", invoiceId: "INV-2025-000125", patientId: "P-003", patientName: "Michael Brown", paymentDate: "2025-05-26", amount: 890, paymentMethod: "Credit Card", status: "processing", referenceNumber: "REF234567" },
         { id: "PAY-2025-000095", invoiceId: "INV-2025-000126", patientId: "P-004", patientName: "Emily Davis", paymentDate: "2025-05-26", amount: 1780, paymentMethod: "Mobile Payment", status: "failed", referenceNumber: "MOB890123" },
-        { id: "PAY-2025-000096", invoiceId: "INV-2025-000128", patientId: "P-006", patientName: "Thomas Anderson", paymentDate: "2025-05-26", amount: 2150, paymentMethod: "Insurance", status: "pending", referenceNumber: "INS456789" }
-      ];
+        { id: "PAY-2025-000096", invoiceId: "INV-2025-000128", patientId: "P-006", patientName: "Thomas Anderson", paymentDate: "2025-05-26", amount: 2150, paymentMethod: "Insurance", status: "pending",
     }
   };
 
   const generateServiceItemsData = () => {
-    return { serviceItems: [, { id: "SVC-001", code: "CONS-GEN", name: "General Consultation", category: "Consultation", unitPrice: 500, taxRate: 5, active: true  },
+    return { serviceItems: [, },
         { id: "SVC-002", code: "CONS-SPE", name: "Specialist Consultation", category: "Consultation", unitPrice: 1000, taxRate: 5, active: true },
         { id: "SVC-003", code: "LAB-CBC", name: "Complete Blood Count", category: "Laboratory", unitPrice: 350, taxRate: 5, active: true },
         { id: "SVC-004", code: "LAB-LFT", name: "Liver Function Test", category: "Laboratory", unitPrice: 450, taxRate: 5, active: true },
@@ -172,13 +144,12 @@ export default const _BillingDashboard = () {
         { id: "SVC-012", code: "ROOM-GEN", name: "General Ward Bed Charges (per day)", category: "Room", unitPrice: 1500, taxRate: 5, active: true },
         { id: "SVC-013", code: "ROOM-PVT", name: "Private Room Charges (per day)", category: "Room", unitPrice: 3000, taxRate: 5, active: true },
         { id: "SVC-014", code: "ROOM-ICU", name: "ICU Charges (per day)", category: "Room", unitPrice: 5000, taxRate: 5, active: true },
-        { id: "SVC-015", code: "PHYS-REG", name: "Physiotherapy Session", category: "Physiotherapy", unitPrice: 600, taxRate: 5, active: true }
-      ];
+        { id: "SVC-015", code: "PHYS-REG", name: "Physiotherapy Session", category: "Physiotherapy", unitPrice: 600, taxRate: 5,
     }
   };
 
   const generatePackagesData = () => {
-    return { packages: [, { id: "PKG-001", code: "HEALTH-BASIC", name: "Basic Health Checkup", description: "Includes general consultation, CBC, urine routine", totalPrice: 1200, discountPercentage: 10, active: true  },
+    return { packages: [, },
         { id: "PKG-002", code: "HEALTH-COMP", name: "Comprehensive Health Checkup", description: "Includes specialist consultation, CBC, LFT, KFT, lipid profile, chest X-ray", totalPrice: 3500, discountPercentage: 15, active: true },
         { id: "PKG-003", code: "HEALTH-EXEC", name: "Executive Health Checkup", description: "Includes specialist consultation, all blood tests, X-ray, ultrasound, ECG, stress test", totalPrice: 7500, discountPercentage: 20, active: true },
         { id: "PKG-004", code: "MATERNITY-BASIC", name: "Basic Maternity Package", description: "Includes all consultations, basic tests, normal delivery", totalPrice: 25000, discountPercentage: 10, active: true },
@@ -187,13 +158,12 @@ export default const _BillingDashboard = () {
         { id: "PKG-007", code: "CARDIAC-BASIC", name: "Basic Cardiac Checkup", description: "Includes cardiologist consultation, ECG, echo", totalPrice: 5000, discountPercentage: 10, active: true },
         { id: "PKG-008", code: "CARDIAC-COMP", name: "Comprehensive Cardiac Checkup", description: "Includes cardiologist consultation, ECG, echo, stress test, Holter monitoring", totalPrice: 12000, discountPercentage: 15, active: true },
         { id: "PKG-009", code: "SURGERY-HERNIA", name: "Hernia Surgery Package", description: "Includes consultations, surgery, 3 days stay, medications", totalPrice: 35000, discountPercentage: 10, active: true },
-        { id: "PKG-010", code: "SURGERY-GALL", name: "Gallbladder Surgery Package", description: "Includes consultations, laparoscopic surgery, 3 days stay, medications", totalPrice: 45000, discountPercentage: 10, active: true }
-      ];
+        { id: "PKG-010", code: "SURGERY-GALL", name: "Gallbladder Surgery Package", description: "Includes consultations, laparoscopic surgery, 3 days stay, medications", totalPrice: 45000, discountPercentage: 10,
 
   };
 
   const generateDiscountsData = () => {
-    return { discounts: [, { id: "DISC-001", code: "SENIOR", name: "Senior Citizen Discount", description: "Discount for patients above 60 years", discountType: "percentage", discountValue: 10, minBillAmount: 0, maxDiscountAmount: 5000, active: true  },
+    return { discounts: [, },
         { id: "DISC-002", code: "STAFF", name: "Staff Discount", description: "Discount for hospital staff and their family", discountType: "percentage", discountValue: 20, minBillAmount: 0, maxDiscountAmount: 10000, active: true },
         { id: "DISC-003", code: "COVID", name: "COVID Relief Discount", description: "Special discount for COVID patients", discountType: "percentage", discountValue: 15, minBillAmount: 0, maxDiscountAmount: 7500, active: true },
         { id: "DISC-004", code: "FESTIVE", name: "Festive Season Discount", description: "Special discount during festive season", discountType: "percentage", discountValue: 5, minBillAmount: 5000, maxDiscountAmount: 2500, active: true },
@@ -202,8 +172,7 @@ export default const _BillingDashboard = () {
         { id: "DISC-007", code: "CHARITY", name: "Charity Discount", description: "Discount for patients from economically weaker sections", discountType: "percentage", discountValue: 50, minBillAmount: 0, maxDiscountAmount: 25000, active: true },
         { id: "DISC-008", code: "STUDENT", name: "Student Discount", description: "Discount for students with valid ID", discountType: "percentage", discountValue: 10, minBillAmount: 0, maxDiscountAmount: 3000, active: true },
         { id: "DISC-009", code: "FIRST-VISIT", name: "First Visit Discount", description: "Discount for first-time patients", discountType: "fixed", discountValue: 500, minBillAmount: 2000, maxDiscountAmount: 500, active: true },
-        { id: "DISC-010", code: "REFERRAL", name: "Referral Discount", description: "Discount for patients referred by existing patients", discountType: "fixed", discountValue: 300, minBillAmount: 1000, maxDiscountAmount: 300, active: true }
-      ];
+        { id: "DISC-010", code: "REFERRAL", name: "Referral Discount", description: "Discount for patients referred by existing patients", discountType: "fixed", discountValue: 300, minBillAmount: 1000, maxDiscountAmount: 300,
 
   };
 
@@ -580,27 +549,20 @@ export default const _BillingDashboard = () {
                     {header:"Patient ID", accessorKey: "patientId" },
                     {header:"Patient Name", accessorKey: "patientName" },
                     {header:"Visit Type", accessorKey: "visitType" },
-                    {header:"Bill Date",
-                      ({ row }) => formatDate(row.original.billDate);
+                    {header: "Bill Date",
                     },
-                    {header:"Total Amount",
-                      ({ row }) => formatCurrency(row.original.totalAmount);
+                    {header: "Total Amount",
                     },
-                    {header:"Paid Amount",
-                      ({ row }) => formatCurrency(row.original.paidAmount);
+                    {header: "Paid Amount",
                     },
-                    {header:"Outstanding",
-                      ({ row }) => formatCurrency(row.original.outstandingAmount);
+                    {header: "Outstanding",
                     },
-                    {header:"Status",
-                      ({ row }) => {
-                        const status = row.original.status;
-                        const statusColors: Record<string, string> = {draft:"bg-gray-100 text-gray-800",
+                    {header: "Status",
+                        const statusColors: Record<string,
                           "bg-blue-100 text-blue-800",
                           "bg-pink-100 text-pink-800",
                           "bg-green-100 text-green-800",
                           overdue: "bg-red-100 text-red-800",
-                        };
 
                         return();
                           >;
@@ -609,8 +571,7 @@ export default const _BillingDashboard = () {
                         );
 
                     },
-                    {header:"Actions",
-                      cell: ({ row }) => (;
+                    {header: "Actions",
                         >;
                           <Button variant="outline" size="sm">View>;
                           <Button variant="outline" size="sm">Edit>;
@@ -640,18 +601,14 @@ export default const _BillingDashboard = () {
                     {header:"Invoice ID", accessorKey: "invoiceId" },
                     {header:"Patient ID", accessorKey: "patientId" },
                     {header:"Patient Name", accessorKey: "patientName" },
-                    {header:"Payment Date",
-                      ({ row }) => formatDate(row.original.paymentDate);
+                    {header: "Payment Date",
                     },
-                    {header:"Amount",
-                      ({ row }) => formatCurrency(row.original.amount);
+                    {header: "Amount",
                     },
                     {header:"Method", accessorKey: "paymentMethod" },
                     {header:"Reference", accessorKey: "referenceNumber" },
-                    {header:"Status",
-                      ({ row }) => {
-                        const status = row.original.status;
-                        const statusColors: Record<string, string> = {pending:"bg-yellow-100 text-yellow-800",
+                    {header: "Status",
+                        const statusColors: Record<string,
                           "bg-green-100 text-green-800",
                           "bg-purple-100 text-purple-800",
                           "bg-gray-100 text-gray-800";
@@ -664,8 +621,7 @@ export default const _BillingDashboard = () {
                         );
 
                     },
-                    {header:"Actions",
-                      cell: ({ row }) => (;
+                    {header: "Actions",
                         >;
                           <Button variant="outline" size="sm">View>;
                           <Button variant="outline" size="sm">Receipt>;
@@ -696,21 +652,17 @@ export default const _BillingDashboard = () {
                     {header:"Code", accessorKey: "code" },
                     {header:"Name", accessorKey: "name" },
                     {header:"Category", accessorKey: "category" },
-                    {header:"Unit Price",
-                      ({ row }) => formatCurrency(row.original.unitPrice);
+                    {header: "Unit Price",
                     },
-                    {header:"Tax Rate",
-                      ({ row }) => `${row.original.taxRate}%`;
+                    {header: "Tax Rate",
                     },
-                    {header:"Status",
-                      ({ row }) => (;
+                    {header: "Status",
                         >;
                           {row.original.active ? "Active" : "Inactive"}
                         </Badge>;
                       );
                     },
-                    {header:"Actions",
-                      cell: ({ row }) => (;
+                    {header: "Actions",
                         >;
                           <Button variant="outline" size="sm">Edit>;
                           >;
@@ -740,27 +692,21 @@ export default const _BillingDashboard = () {
                     {header:"Code", accessorKey: "code" },
                     {header:"Name", accessorKey: "name" },
                     {header:"Description", accessorKey: "description" },
-                    {header:"Total Price",
-                      ({ row }) => formatCurrency(row.original.totalPrice);
+                    {header: "Total Price",
                     },
-                    {header:"Discount",
-                      ({ row }) => `${row.original.discountPercentage}%`;
+                    {header: "Discount",
                     },
-                    {header:"Final Price",
-                      ({ row }) => {
-                        const finalPrice = row.original.totalPrice * (1 - row.original.discountPercentage / 100);
+                    {header: "Final Price",
                         return formatCurrency(finalPrice);
 
                     },
-                    {header:"Status",
-                      ({ row }) => (;
+                    {header: "Status",
                         >;
                           {row.original.active ? "Active" : "Inactive"}
                         </Badge>;
                       );
                     },
-                    {header:"Actions",
-                      cell: ({ row }) => (;
+                    {header: "Actions",
                         >;
                           <Button variant="outline" size="sm">View>;
                           <Button variant="outline" size="sm">Edit>;
@@ -791,28 +737,22 @@ export default const _BillingDashboard = () {
                     {header:"Code", accessorKey: "code" },
                     {header:"Name", accessorKey: "name" },
                     {header:"Description", accessorKey: "description" },
-                    {header:"Type",
-                      ({ row }) => row.original.discountType === "percentage" ? "Percentage" : "Fixed Amount";
+                    {header: "Type",
                     },
-                    {header:"Value",
-                      ({ row }) => row.original.discountType === "percentage" ?;
+                    {header: "Value",
                         `${row.original.discountValue}%` : any;
                         formatCurrency(row.original.discountValue)},
-                    {header:"Min Bill Amount",
-                      ({ row }) => row.original.minBillAmount ? formatCurrency(row.original.minBillAmount) : "None";
+                    {header: "Min Bill Amount",
                     },
-                    {header:"Max Discount",
-                      ({ row }) => row.original.maxDiscountAmount ? formatCurrency(row.original.maxDiscountAmount) : "None";
+                    {header: "Max Discount",
                     },
-                    {header:"Status",
-                      ({ row }) => (;
+                    {header: "Status",
                         >;
                           {row.original.active ? "Active" : "Inactive"}
                         </Badge>;
                       );
                     },
-                    {header:"Actions",
-                      cell: ({ row }) => (;
+                    {header: "Actions",
                         >;
                           <Button variant="outline" size="sm">Edit>;
                           >;

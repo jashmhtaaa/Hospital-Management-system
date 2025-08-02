@@ -2,8 +2,7 @@ import { Project } from 'ts-morph';
 import path from 'path';
 
 const project = new Project({
-    tsConfigFilePath: path.join(__dirname, '../../tsconfig.json')
-});
+    tsConfigFilePath: path.join(__dirname,
 
 project.getSourceFiles().forEach(file => {
     // Fix common syntax errors

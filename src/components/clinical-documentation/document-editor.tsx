@@ -1,4 +1,4 @@
-import { } from "react"
+
 import React
 import useEffect } from "next/navigation"
 import {
@@ -23,7 +23,7 @@ import { useState
   SelectItem,
   SelectTrigger,
   SelectValue} from "../ui/select";
-import { } from "../ui/button"
+
 import "../ui/input";
 import "../ui/switch";
 import "../ui/tabs";
@@ -56,17 +56,16 @@ const documentFormSchema = z.object({documentTitle:z.string().min(1, "Document t
       sectionType: z.string().min(1, "Section type is required"),
       content: z.string().min(1, "Section content is required"),
       sectionOrder: z.number().optional(),
-    });
   ).optional(),
   tags: z.array(z.string()).optional(),
   attachmentUrls: z.array(z.string()).optional(),
-});
 
 // Type for document templates;
-interface DocumentTemplate {id:string,
+interface DocumentTemplate {
+  id:string,
+}
   string,
   templateType: string,
-  specialtyType?: string;
   content: string,
   string,
     string,
@@ -77,7 +76,6 @@ interface DocumentTemplate {id:string,
 
 interface DocumentEditorProps {
   patientId: string,
-  encounterId?: string;
   documentId?: string;
   onSuccess?: () => void;
 export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }: DocumentEditorProps) => {
@@ -105,37 +103,17 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
     setLoading(true);
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       const response = await fetch("/api/clinical-documentation/templates");
 
       if (!session.user) {
@@ -144,11 +122,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
 
       const data = await response.json(),
       setTemplates(data.data);
-    } catch (error) {
-
-      toast({title:"Error",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
     } finally {
       setLoading(false);
     }
@@ -161,36 +135,16 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
     setLoading(true);
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
 
       const response = await fetch(`/api/clinical-documentation/${}`;
 
@@ -205,11 +159,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
         data.sections,
         data.attachmentUrls;
       });
-    } catch (error) {
-
-      toast({title:"Error",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
     } finally {
       setLoading(false);
 
@@ -241,7 +191,6 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
         const formattedSections = template.sections.map(section => ({sectionTitle:section.sectionTitle,
           section.content,
           sectionOrder: section.sectionOrder,
-        }));
 
         form.setValue("sections", formattedSections);
 
@@ -252,43 +201,18 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
     setSubmitLoading(true);
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const payload = {
-        ...values,
-        patientId,
-        encounterId,
-        templateId: selectedTemplate || undefined,
-      };
+} catch (error) { console.error(error); };
 
       let response;
 
@@ -298,14 +222,12 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
           headers: {
             "Content-Type": "application/json"},
           body: JSON.stringify(payload),
-        });
       } else {
         // Create document;
         response = await fetch("/api/clinical-documentation", {method:"POST",
           headers: {
             "Content-Type": "application/json"},
           body: JSON.stringify(payload),
-        });
 
       if (!session.user) {
         const errorData = await response.json();
@@ -315,7 +237,6 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
       toast({
         title: "Success",
         description: isEditing ? "Document updated successfully" : "Document created successfully",
-      });
 
       if (!session.user) {
         onSuccess();
@@ -323,11 +244,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
         // Navigate to document view;
         router.push(`/clinical-documentation/${}`;
 
-    } catch (error) {
-
-      toast({title:"Error",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
     } finally {
       setSubmitLoading(false);
 
@@ -355,7 +272,6 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
     const reorderedSections = updatedSections.map((section, i) => ({
       ...section,
       sectionOrder: i + 1,
-    }));
 
     form.setValue("sections", reorderedSections)
   };
@@ -369,7 +285,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
     {value:"Operative Report", label: "Operative Report" },
     {value:"Procedure Note", label: "Procedure Note" },
     {value:"History and Physical", label: "History and Physical" },
-    {value:"Care Plan", label: "Care Plan" }];
+    {value: "Care Plan",
 
   // Section type options;
   const sectionTypeOptions = [;
@@ -386,7 +302,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
     {value:"Procedures", label: "Procedures" },
     {value:"Vital Signs", label: "Vital Signs" },
     {value:"Diagnosis", label: "Diagnosis" },
-    {value:"Follow Up", label: "Follow Up" }];
+    {value: "Follow Up",
 
   return();
     >;

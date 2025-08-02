@@ -8,7 +8,7 @@ import { ApolloServer } from "apollo-server-express";
 import responseCachePlugin from "apollo-server-plugin-response-cache";
 import { Express } from "express";
 import type { GraphQLSchema } from "graphql";
-import Redis from "ioredis";
+import { Redis } from "ioredis";
 
 import type { ILogger } from "../../lib/core/logging";
 import type { MetricsCollector } from "../../lib/monitoring/metrics-collector";
@@ -36,7 +36,6 @@ import { authMiddleware } from "../middleware/auth";
 	private logger: ILogger;
 	private metrics: MetricsCollector;
 	constructor(config: FederationConfig) {,
-		this.config = config;
 		this.logger = config.logger;
 		this.metrics = config.metrics;
 		// Initialize Redis
@@ -45,7 +44,6 @@ import { authMiddleware } from "../middleware/auth";
 			port: config.redisConfig.port,
 			password: config.redisConfig.password,
 			db: config.redisConfig.db || 0,
-		});
 		// Create authenticated data source class
 		class AuthenticatedDataSource extends RemoteGraphQLDataSource {
 			willSendRequest({ request, context }: any) {
@@ -68,8 +66,6 @@ import { authMiddleware } from "../middleware/auth";
 					{
 						service: serviceName,
 						operation: operationName,
-					}
-				);
 				return response;
 			}
 			async didEncounterError({ error, request }: any) {
@@ -79,12 +75,10 @@ import { authMiddleware } from "../middleware/auth";
 					service: serviceName,
 					operation: operationName,
 					errorType: error.name || "UnknownError",
-				});
 				this.logger.error("GraphQL federation service error", {
 					service: serviceName,
 					operation: operationName,
 					error: error.message,
-				});
 				return error;
 			}
 			experimental_didUpdateComposition({ typeDefs, errors }: any) {
@@ -120,9 +114,8 @@ import { authMiddleware } from "../middleware/auth";
 					 this.redis,
 						prefix: "apollo-cache:",
 					}),
-					sessionId: (requestContext) => {,
-						 {\n  {
-							return `${requestContext.context.user.id}:${requestContext.context.user.roles.join(",")}`;
+					sessionId: (requestContext) => {{\n  {
+							return `${requestContext.context.user.id}:${requestContext.context.user.roles.join(",
 						}
 						return null;
 					},
@@ -132,9 +125,7 @@ import { authMiddleware } from "../middleware/auth";
 					async serverWillStart() {
 						config.logger.info("GraphQL Federation gateway starting...");
 						return {
-							async serverWillStop() {
-								config.logger.info("GraphQL Federation gateway stopping...");
-							},
+							async serverWillStop() },
 						};
 					},
 				},

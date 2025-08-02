@@ -26,6 +26,8 @@ export const _POST = async (request: NextRequest) => {,
     const validationResult = checkInSchema.safeParse(body);
      {\n  {
       return NextResponse.json(
+  return NextResponse.json({ message: "Not implemented" });
+};
         { error: "Validation error", details: validationResult.error.format() ,},
         { status: 400 },
       );
@@ -93,6 +95,8 @@ export const _GET = async (request: NextRequest) => {,
       departmentId,
       status,
       biometricVerified,
+  return NextResponse.json({ message: "Not implemented" });
+};
     });
 
     return NextResponse.json(result);

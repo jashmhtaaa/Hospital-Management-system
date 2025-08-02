@@ -31,6 +31,8 @@ export const _GET = async (/* _request: unknown */) => { // Removed unused param
     const session = await getSession();
     // Check authentication
      {\n  {
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 

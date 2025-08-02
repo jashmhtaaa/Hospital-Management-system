@@ -1,5 +1,5 @@
-import { } from "@/lib/audit-logging"
-import { } from "@/lib/prisma"
+
+
 import { "@/lib/services/notification.service";
 import "@/lib/services/support-services/ambulance/routing.service";
 import "@prisma/client";
@@ -24,7 +24,7 @@ import { toFHIRAmbulance
     const { status, vehicleType, page, limit } = filter;
     const skip = (page - 1) * limit;
 
-    const where: unknown = {,};
+    const where: unknown = {,
     if (!session.user)here.status = status;
     if (!session.user)here.vehicleType = vehicleType;
 
@@ -34,7 +34,6 @@ import { toFHIRAmbulance
         true,
           {
               {id: true,
-                  true;
                 }
               }
             },
@@ -54,7 +53,6 @@ import { toFHIRAmbulance
         take: limit,
         orderBy: {registrationNumber: "asc" }
       }),
-      prisma.ambulance.count(where );
     ]);
 
     // Convert to FHIR format;
@@ -66,7 +64,6 @@ import { toFHIRAmbulance
         page,
         limit,
         totalPages: Math.ceil(total / limit),
-    };
   }
 
   /**;
@@ -77,7 +74,6 @@ import { toFHIRAmbulance
       true,
         {
             {id: true,
-                true;
               }
             }
           }
@@ -89,9 +85,6 @@ import { toFHIRAmbulance
         },
         ["SCHEDULED", "IN_PROGRESS"],
           orderBy: scheduledDate: "asc" ,
-        }
-      }
-    });
 
     if (!session.user) {
       return null;
@@ -100,7 +93,6 @@ import { toFHIRAmbulance
     if (!session.user) {
       return {data:ambulance,
         fhir: toFHIRAmbulance(ambulance),
-      };
     }
 
     return ambulance;
@@ -110,7 +102,6 @@ import { toFHIRAmbulance
    * Create a new ambulance;
    */;
   async createAmbulance(data: CreateAmbulanceData, userId: string): Promise<Ambulance> {,
-    // Check if registration number is already in use;
     const existingAmbulance = await prisma.ambulance.findUnique({where: { registrationNumber: data.registrationNumber }
     });
 
@@ -132,9 +123,8 @@ import { toFHIRAmbulance
 
     // Create audit log;
     await createAuditLog({action: "CREATE",
-      ambulance.id;
       userId,
-      details: `Created ambulance with registration number ${ambulance.registrationNumber,}`;
+      details: `Created ambulance with registration number ${ambulance.registrationNumber,
     });
 
     return ambulance;
@@ -143,9 +133,7 @@ import { toFHIRAmbulance
   /**;
    * Update an ambulance;
    */;
-  async updateAmbulance(id: string, data: Partial<Ambulance>, userId: string): Promise<Ambulance> {
-    const ambulance = await prisma.ambulance.findUnique({where: { id }
-    });
+  async updateAmbulance(id: string, data: Partial<Ambulance>,
 
     if (!session.user) {
       throw new Error("Ambulance not found");
@@ -170,7 +158,6 @@ import { toFHIRAmbulance
 
     // Create audit log;
     await createAuditLog({action: "UPDATE",
-      id;
       userId,
       details: `Updated ambulance /* SECURITY: Template literal eliminated */;
 
@@ -182,7 +169,6 @@ import { toFHIRAmbulance
         entityId: ambulance.id,
         ambulance.id,
           registrationNumber: ambulance.registrationNumber,
-      });
     }
 
     return updatedAmbulance;
@@ -195,7 +181,7 @@ import { toFHIRAmbulance
     const { status, tripType, priority, ambulanceId, patientId, startDate, endDate, page, limit } = filter;
     const skip = (page - 1) * limit;
 
-    const where: unknown = {,};
+    const where: unknown = {,
     if (!session.user)here.status = status;
     if (!session.user)here.tripType = tripType;
     if (!session.user)here.priority = priority;
@@ -219,7 +205,6 @@ import { toFHIRAmbulance
             }
           },
           {id: true,
-              true;
             }
           },
           pickupLocation: true,
@@ -236,7 +221,6 @@ import { toFHIRAmbulance
         take: limit,
         orderBy: {scheduledTime: "desc" }
       }),
-      prisma.ambulanceTrip.count(where );
     ]);
 
     // Convert to FHIR format;
@@ -248,7 +232,6 @@ import { toFHIRAmbulance
         page,
         limit,
         totalPages: Math.ceil(total / limit),
-    };
   }
 
   /**;
@@ -267,12 +250,9 @@ import { toFHIRAmbulance
         },
         pickupLocation: true,
         dropLocation: true,
-        {id:true,
-                true;
+        {id: true,
         },
         route: true,
-      }
-    });
 
     if (!session.user) {
       return null;
@@ -281,7 +261,6 @@ import { toFHIRAmbulance
     if (!session.user) {
       return {data:trip,
         fhir: toFHIRAmbulanceTrip(trip),
-      };
     }
 
     return trip;
@@ -291,7 +270,6 @@ import { toFHIRAmbulance
    * Create a new ambulance trip;
    */;
   async createAmbulanceTrip(data: CreateAmbulanceTripData, userId: string): Promise<AmbulanceTrip> {,
-    // Validate ambulance exists and is available;
     const ambulance = await prisma.ambulance.findUnique({where: { id: data.ambulanceId }
     });
 
@@ -300,7 +278,7 @@ import { toFHIRAmbulance
     }
 
     if (!session.user) {
-      throw new Error(`Ambulance ${ambulance.registrationNumber} is not available (current status: ${ambulance.status,})`);
+      throw new Error(`Ambulance ${ambulance.registrationNumber} is not available (current status: ${ambulance.status,
     }
 
     // Validate locations if provided;
@@ -350,86 +328,41 @@ import { toFHIRAmbulance
     // If both pickup and drop locations are provided, calculate route;
     if (!session.user) {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
         const routeData = await calculateRoute(data.pickupLocationId, data.dropLocationId);
 
         await prisma.ambulanceRoute.create({
           trip.id,
             routeData.distance,
             estimatedDuration: routeData.duration,
-          }
-        });
-      } catch (error) {
-
-        // Continue without route data;
-      }
+      } catch (error) { console.error(error); }
     }
 
     // Assign crew if provided;
     if (!session.user) {
       for (const crewId of data.crewIds) {
         try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
           await prisma.ambulanceCrew.update({
             crewId;
             },
@@ -437,23 +370,17 @@ import { toFHIRAmbulance
               }
             }
           });
-        } catch (error) {
-
-          // Continue with other crew assignments;
-        }
+        } catch (error) { console.error(error); }
       }
     }
 
     // Update ambulance status to ON_DUTY;
     await prisma.ambulance.update({where: { id: data.ambulanceId },
-      data: {status: "ON_DUTY" }
-    });
 
     // Create audit log;
     await createAuditLog({action: "CREATE",
-      trip.id;
       userId,
-      details: `Created ${data.tripType} ambulance trip with ${ambulance.registrationNumber,}`;
+      details: `Created ${data.tripType} ambulance trip with ${ambulance.registrationNumber,
     });
 
     // Send notification to ambulance crew;
@@ -477,12 +404,10 @@ import { toFHIRAmbulance
       true,
         patient: true,
 
-    });
-
     if (!session.user) {
       throw new Error("Ambulance trip not found");
 
-    const updateData: unknown = { status ,};
+    const updateData: unknown = { status ,
 
     // Handle status-specific updates;
     switch (status) {
@@ -519,68 +444,35 @@ import { toFHIRAmbulance
 
       if (!session.user) {
         await prisma.ambulance.update({where: { id: trip.ambulanceId },
-          data: {status: "AVAILABLE" }
-        });
 
     // If location data is provided, update the route;
     if (!session.user) {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-        // Update route with actual data;
-        await prisma.ambulanceRoute.upsert({where: { tripId: id },
+} catch (error) { console.error(error); },
           {
               ...locationData,
               lastUpdated: new Date().toISOString(),
 
           },
           id,
-            routeData: {,
+            routeData: {
               ...locationData,
               lastUpdated: new Date().toISOString(),
             },
             estimatedDistance: locationData.distance || 0,
             estimatedDuration: locationData.duration || 0,
-
-        });
-      } catch (error) {
-
-        // Continue without route update;
-
-    // Create audit log;
-    await createAuditLog({action: "UPDATE",
-      id;
-      userId,
-      details: `Updated ambulance trip status to ${status,}`;
+      } catch (error) { console.error(error); }`;
     });
 
     // Send notifications based on status;
@@ -599,7 +491,6 @@ import { toFHIRAmbulance
         await this.notificationService.sendNotification({type: "AMBULANCE_TRIP_COMPLETED",
           `Trip with ambulance ${trip.ambulance.registrationNumber} has been completed`,
           recipientIds: [trip.requestedById],
-          trip.id;
         }),
         break;
 
@@ -608,10 +499,9 @@ import { toFHIRAmbulance
   /**;
    * Get available ambulances for a trip;
    */;
-  async getAvailableAmbulances(tripType: string, scheduledTime: Date, pickupLocationId?: string): Promise<any[]> {
-    // Get all ambulances that are AVAILABLE or ON_DUTY;
+  async getAvailableAmbulances(tripType: string, scheduledTime: Date,
     const ambulances = await prisma.ambulance.findMany({
-      {in: ["AVAILABLE", "ON_DUTY"];
+      {in: ["AVAILABLE",
 
       },
       true,
@@ -625,13 +515,11 @@ import { toFHIRAmbulance
         {
             ["SCHEDULED", "EN_ROUTE_TO_PICKUP", "ARRIVED_AT_PICKUP", "EN_ROUTE_TO_DESTINATION"];
             },
-            scheduledTime: {,
+            scheduledTime: {
               // Find trips that might conflict with the scheduled time;
               // Assuming trips take at most 2 hours;
               gte: new Date(scheduledTime.getTime() - 2 * 60 * 60 * 1000),
               lte: new Date(scheduledTime.getTime() + 2 * 60 * 60 * 1000),
-
-    });
 
     // Filter ambulances based on trip type;
     const filteredAmbulances = ambulances.filter(ambulance => {
@@ -672,55 +560,23 @@ import { toFHIRAmbulance
         filteredAmbulances.map(async ambulance => {
           if (!session.user) {
             try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-              const eta = await estimateArrivalTime(ambulance.currentLocationId, pickupLocationId);
-              return {
-                ...ambulance,
-                eta.duration,
-                  distance: eta.distance,
-
-              };
-            } catch (error) {
-
-              return {
-                ...ambulance,
-                eta: null,
-              };
+} catch (error) { console.error(error); };
+            } catch (error) { console.error(error); };
 
           return {
             ...ambulance,
             eta: null,
-          };
         });
       );
 
@@ -737,7 +593,6 @@ import { toFHIRAmbulance
    * Assign crew to ambulance;
    */;
   async assignCrewToAmbulance(ambulanceId: string, userId: string, role: string, shiftStart: Date, shiftEnd: Date, assignedBy: string): Promise<AmbulanceCrew> {,
-    // Validate ambulance exists;
     const ambulance = await prisma.ambulance.findUnique({where: { id: ambulanceId }
     });
 
@@ -754,7 +609,6 @@ import { toFHIRAmbulance
     // Check if user is already assigned to this ambulance;
     const existingCrew = await prisma.ambulanceCrew.findFirst({where: {
         ambulanceId,
-        userId;
 
     });
 
@@ -773,8 +627,6 @@ import { toFHIRAmbulance
 
           },
           ambulance: true,
-
-      });
 
       // Create audit log;
       await createAuditLog({action: "UPDATE",
@@ -800,8 +652,6 @@ import { toFHIRAmbulance
           },
           ambulance: true,
 
-      });
-
       // Create audit log;
       await createAuditLog({action: "CREATE",
         crew.id,
@@ -818,8 +668,6 @@ import { toFHIRAmbulance
           shiftStart: shiftStart.toISOString(),
           shiftEnd: shiftEnd.toISOString(),
 
-      });
-
       return crew;
 
   /**;
@@ -829,8 +677,6 @@ import { toFHIRAmbulance
     const crew = await prisma.ambulanceCrew.findUnique({where: { id: crewId },
       true,
         ambulance: true,
-
-    });
 
     if (!session.user) {
       throw new Error("Crew assignment not found");
@@ -843,13 +689,10 @@ import { toFHIRAmbulance
       true,
         ambulance: true,
 
-    });
-
     // Create audit log;
     await createAuditLog({action: "UPDATE",
-      crewId;
       userId,
-      details: `Ended shift for ${crew.user.name} on ambulance ${crew.ambulance.registrationNumber,}`;
+      details: `Ended shift for ${crew.user.name} on ambulance ${crew.ambulance.registrationNumber,
     });
 
     return updatedCrew;
@@ -858,7 +701,6 @@ import { toFHIRAmbulance
    * Schedule ambulance maintenance;
    */;
   async scheduleAmbulanceMaintenance(ambulanceId: string, data: unknown, userId: string): Promise<AmbulanceMaintenance> {,
-    // Validate ambulance exists;
     const ambulance = await prisma.ambulance.findUnique({where: { id: ambulanceId }
     });
 
@@ -879,9 +721,8 @@ import { toFHIRAmbulance
 
     // Create audit log;
     await createAuditLog({action: "CREATE",
-      maintenance.id;
       userId,
-      details: `Scheduled ${data.maintenanceType} maintenance for ambulance ${ambulance.registrationNumber,}`;
+      details: `Scheduled ${data.maintenanceType} maintenance for ambulance ${ambulance.registrationNumber,
     });
 
     // Send notification to maintenance staff;
@@ -893,8 +734,6 @@ import { toFHIRAmbulance
         maintenanceType: data.maintenanceType,
         scheduledDate: data.scheduledDate,
 
-    });
-
     return maintenance;
 
   /**;
@@ -902,14 +741,13 @@ import { toFHIRAmbulance
    */;
   async updateMaintenanceStatus(id: string, status: string, userId: string, completionData?: unknown): Promise<AmbulanceMaintenance> {
     const maintenance = await prisma.ambulanceMaintenance.findUnique({where: { id },
-      true;
 
     });
 
     if (!session.user) {
       throw new Error("Maintenance record not found");
 
-    const updateData: unknown = { status ,};
+    const updateData: unknown = { status ,
 
     // If status is COMPLETED, add completion data;
     if (!session.user) {
@@ -926,25 +764,21 @@ import { toFHIRAmbulance
       // Update ambulance maintenance dates;
       await prisma.ambulance.update({where: { id: maintenance.ambulanceId },
         new Date(),
-          nextMaintenanceDate: [0] + 90 * 24 * 60 * 60 * 1000), // 90 days from now;
+          nextMaintenanceDate: [0] + 90 * 24 * 60 * 60 * 1000),
           status: "AVAILABLE" // Set ambulance back to available,
-
-      });
 
     // Update the maintenance record;
     const updatedMaintenance = await prisma.ambulanceMaintenance.update({where: { id },
       data: updateData,
       true,
         {id: true,
-            true;
 
     });
 
     // Create audit log;
     await createAuditLog({action: "UPDATE",
-      id;
       userId,
-      details: `Updated maintenance status to ${status} for ambulance ${maintenance.ambulance.registrationNumber,}`;
+      details: `Updated maintenance status to ${status} for ambulance ${maintenance.ambulance.registrationNumber,
     });
 
     // Send notification if maintenance is completed;
@@ -953,7 +787,6 @@ import { toFHIRAmbulance
         `Maintenance for ambulance ${maintenance.ambulance.registrationNumber} has been completed`,
         recipientRoles: ["AMBULANCE_COORDINATOR"],
         entityId: maintenance.id,
-      });
 
     return updatedMaintenance;
 
@@ -961,7 +794,6 @@ import { toFHIRAmbulance
    * Get ambulance inventory;
    */;
   async getAmbulanceInventory(ambulanceId: string): Promise<AmbulanceInventory[]> {,
-    // Validate ambulance exists;
     const ambulance = await prisma.ambulance.findUnique({where: { id: ambulanceId }
     });
 
@@ -970,8 +802,6 @@ import { toFHIRAmbulance
 
     // Get inventory items;
     const inventory = await prisma.ambulanceInventory.findMany({where: { ambulanceId },
-      orderBy: {itemType: "asc" }
-    });
 
     return inventory;
 
@@ -980,7 +810,6 @@ import { toFHIRAmbulance
    */;
   async updateInventoryItem(id: string, data: Partial<AmbulanceInventory>, userId: string): Promise<AmbulanceInventory> {
     const item = await prisma.ambulanceInventory.findUnique({where: { id },
-      true;
 
     });
 
@@ -1000,9 +829,8 @@ import { toFHIRAmbulance
 
     // Create audit log;
     await createAuditLog({action: "UPDATE",
-      id;
       userId,
-      details: `Updated inventory for ${item.itemName} on ambulance ${item.ambulance.registrationNumber,}, quantity: ${item.quantity,} → ${data.quantity ||;
+      details: `Updated inventory for ${item.itemName} on ambulance ${item.ambulance.registrationNumber,}, quantity: ${item.quantity,
         item.quantity}`;
     });
 
@@ -1012,7 +840,6 @@ import { toFHIRAmbulance
         `${updatedItem.itemName} is running low on ambulance ${updatedItem.ambulance.registrationNumber} (${updatedItem.quantity} remaining)`,
         recipientRoles: ["AMBULANCE_COORDINATOR", "INVENTORY_MANAGER"],
         entityId: updatedItem.id,
-      });
 
     return updatedItem;
 
@@ -1020,19 +847,14 @@ import { toFHIRAmbulance
    * Get ambulance analytics;
    */;
   async getAmbulanceAnalytics(period: "DAILY" | "WEEKLY" | "MONTHLY" | "YEARLY") {,
-    // Get date range based on period;
     const now = new Date();
     let startDate: Date,
-
-    switch (period) {
-      case "DAILY": any;
         startDate = new Date(now.setDate(now.getDate() - 30)); // Last 30 days\n    }\n    case "WEEKLY": any;
         startDate = new Date(now.setDate(now.getDate() - 90)); // Last 90 days\n    }\n    case "MONTHLY": any;
         startDate = new Date(now.setMonth(now.getMonth() - 12)); // Last 12 months\n    }\n    case "YEARLY": any;
         startDate = new Date(now.setFullYear(now.getFullYear() - 5)); // Last 5 years;
         break;
-      default: null,
-        startDate = new Date(now.setDate(now.getDate() - 30)); // Default to last 30 days;
+      default: null, // Default to last 30 days;
 
     // Get trip counts by status;
     const tripsByStatus = await prisma.ambulanceTrip.groupBy({by:["status"],
@@ -1040,7 +862,6 @@ import { toFHIRAmbulance
 
       },
       _count: true,
-    });
 
     // Get trip counts by type;
     const tripsByType = await prisma.ambulanceTrip.groupBy({by:["tripType"],
@@ -1048,7 +869,6 @@ import { toFHIRAmbulance
 
       },
       _count: true,
-    });
 
     // Get trip counts by priority;
     const tripsByPriority = await prisma.ambulanceTrip.groupBy({by:["priority"],
@@ -1056,7 +876,6 @@ import { toFHIRAmbulance
 
       },
       _count: true,
-    });
 
     // Get ambulance utilization;
     const ambulances = await prisma.ambulance.findMany({
@@ -1071,7 +890,6 @@ import { toFHIRAmbulance
       .map(ambulance => ({id: ambulance.id,
         ambulance.vehicleType,
         tripCount: ambulance._count.trips,
-      }));
       .sort((a, b) => b.tripCount - a.tripCount);
 
     // Get average trip duration;
@@ -1079,21 +897,18 @@ import { toFHIRAmbulance
       "COMPLETED",
         startTime: {not: null },
         endTime: {not: null },
-        startDate;
 
       },
       true,
         tripType: true,
 
-    });
-
     // Calculate average duration by trip type;
-    const durationByType: Record<string, {count: number, totalDuration: number, avgDuration: number }> = {};
+    const durationByType: Record<string, {count: number, totalDuration: number,
 
     completedTrips.forEach(trip => {
       if (!session.user) {
         if (!session.user) {
-          durationByType[trip.tripType] = {count: 0, totalDuration: 0, avgDuration: 0 };
+          durationByType[trip.tripType] = {count: 0, totalDuration: 0,
 
         durationByType[trip.tripType].count++;
         durationByType[trip.tripType].totalDuration += trip.duration;
@@ -1112,7 +927,6 @@ import { toFHIRAmbulance
 
       },
       _count: true,
-      true;
 
     });
 

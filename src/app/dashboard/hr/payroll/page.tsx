@@ -3,7 +3,7 @@ import { useState } from "react"
 
 "use client";
 
-import { } from "react"
+
 import useEffect } from "next/navigation"
 import {
 import { useRouter }
@@ -43,7 +43,7 @@ import { { Button } from "@/components/ui/button"
   PaginationNext,
   PaginationPrevious;
 } from "@/components/ui/pagination";
-import { } from "@/components/ui/calendar"
+
 import "@/components/ui/popover";
 import PopoverContent
 import PopoverTrigger } from "@/components/ui/badge"
@@ -62,7 +62,7 @@ import { Popover
   Clock,
   AlertCircle;
 } from "lucide-react";
-import { } from "date-fns"
+
 import { format } from "@/components/ui/use-toast"
 import { toast }
 
@@ -75,9 +75,7 @@ export default const _PayrollManagement = () {
   const [dateRange, setDateRange] = useState({
     from: null,
     to: null,
-  });
-  const [pagination, setPagination] = useState({skip:0,
-    0;
+  const [pagination, setPagination] = useState({skip: 0,
   });
   const [activeTab, setActiveTab] = useState("periods");
 
@@ -85,42 +83,21 @@ export default const _PayrollManagement = () {
   useEffect(() => {
     const fetchPayrollPeriods = async () => {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
         setLoading(true);
         const queryParams = new URLSearchParams({
           skip: pagination.skip.toString(),
           take: pagination.take.toString(),
-        });
 
         if (!session.user)ueryParams.append("status", statusFilter);
 
@@ -140,12 +117,7 @@ export default const _PayrollManagement = () {
         setPagination(prev => ({
           ...prev,
           total: data.total || 0,
-        }));
-      } catch (err) {
-        setError(err.message),
-        toast({title:"Error",
-          "destructive";
-        });
+      } catch (error) { console.error(error); });
       } finally ;
         setLoading(false);
     };
@@ -161,7 +133,6 @@ export default const _PayrollManagement = () {
       setPagination(prev => ({
         ...prev,
         skip: prev.skip - prev.take,
-      }));
 
   };
 
@@ -170,7 +141,6 @@ export default const _PayrollManagement = () {
       setPagination(prev => ({
         ...prev,
         skip: prev.skip + prev.take,
-      }));
 
   };
 
@@ -181,7 +151,6 @@ export default const _PayrollManagement = () {
     setPagination(prev => ({
       ...prev,
       skip: 0,
-    }));
   };
 
   // Create new payroll period;
@@ -192,54 +161,26 @@ export default const _PayrollManagement = () {
   // Export payroll data;
   const handleExport = async () => {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // In a real implementation, this would call an API endpoint to generate a CSV/Excel file;
-      toast({
-        title: "Export Started",
-        description: "Your payroll report is being generated and will download shortly.",
-      });
+} catch (error) { console.error(error); });
 
       // Simulate download delay;
       setTimeout(() => {
         toast({
           title: "Export Complete",
           description: "Payroll report has been downloaded.",
-        });
       }, 2000);
-    } catch (error) {
-      toast({title:"Export Failed",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
 
   };
 
@@ -256,14 +197,11 @@ export default const _PayrollManagement = () {
         return "success";
       default: return "default",
 
-  };
-
   // Format currency;
   const _formatCurrency = (amount: unknown) => {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
       currency: "USD",
-    }).format(amount);
   };
 
   return();

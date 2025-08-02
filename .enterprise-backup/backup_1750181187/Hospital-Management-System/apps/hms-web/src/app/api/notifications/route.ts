@@ -260,6 +260,8 @@ export const POST = async (request: NextRequest) => {,
   try {
     const notification = await request.json();
 
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { user } = await authService.verifyToken(request);
     if (!user || !['Admin', 'Doctor', 'Nurse'].includes(user.role)) {
       return NextResponse.json({ error: 'Unauthorized' ,}, { status: 403 ,});
@@ -277,6 +279,8 @@ export const POST = async (request: NextRequest) => {,
 // POST /api/notifications/bulk
 export const POST = async (request: NextRequest) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { notifications } = await request.json();
 
     const { user } = await authService.verifyToken(request);

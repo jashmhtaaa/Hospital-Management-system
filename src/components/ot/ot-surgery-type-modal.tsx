@@ -15,7 +15,7 @@ import { useEffect
   DialogHeader,
   DialogTitle,
   DialogTrigger} from "@/components/ui/dialog";
-import { } from "@/components/ui/input"
+
 import "@/components/ui/label";
 import "@/components/ui/textarea";
 import "@/components/ui/use-toast";
@@ -37,7 +37,9 @@ interface SurgeryType {
 }
 
 // Define the type for data passed to onSave;
-interface SurgeryTypeSaveData {name:string,
+interface SurgeryTypeSaveData {
+  name:string,
+}
   string | null,
   unknown | null; // Parsed JSON;
   required_equipment: unknown | null; // Parsed JSON;
@@ -45,8 +47,7 @@ interface SurgeryTypeSaveData {name:string,
 
 // Props for the modal - use defined types;
 interface OTSurgeryTypeModalProperties {
-  trigger: React.ReactNode,
-  surgeryType?: SurgeryType; // Use SurgeryType type;
+  trigger: React.ReactNode, // Use SurgeryType type;
   onSave: (surgeryTypeData: SurgeryTypeSaveData) => Promise> // Use SurgeryTypeSaveData type,
 export default const _OTSurgeryTypeModal = ({
   trigger,
@@ -81,7 +82,7 @@ export default const _OTSurgeryTypeModal = ({
           : ""});
     } else {
       // Optionally clear form when closed;
-      // setFormData({name:"", ... });
+      // setFormData({name: "",
     }
   }, [surgeryType, isOpen]);
 
@@ -94,120 +95,51 @@ export default const _OTSurgeryTypeModal = ({
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault(),
-    setIsSaving(true);
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       // Parse JSON fields before sending;
       let parsedStaff: unknown | null,
-      let parsedEquipment: unknown | null,
-      try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+      let parsedEquipment: unknown | null, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-        if (!session.user)
-          parsedStaff = JSON.parse(formData.required_staff);
-      } catch {
-        toast({title:"Error",
-          "destructive";
+} catch (error) { console.error(error); } catch {
+        toast({title: "Error",
         }),
         setIsSaving(false);
         return;
 
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-        if (!session.user)
-          parsedEquipment = JSON.parse(formData.required_equipment);
-      } catch {
-        toast({title:"Error",
-          "destructive";
+} catch (error) { console.error(error); } catch {
+        toast({title: "Error",
         }),
         setIsSaving(false);
         return;
@@ -217,8 +149,7 @@ export default const _OTSurgeryTypeModal = ({
         : undefined;
       if (!session.user)| (duration as number) < 0);
       ) {
-        toast({title:"Error",
-          "destructive";
+        toast({title: "Error",
         }),
         setIsSaving(false);
         return;
@@ -227,7 +158,6 @@ export default const _OTSurgeryTypeModal = ({
         formData.specialty || null,
         parsedStaff,
         required_equipment: parsedEquipment,
-      };
 
       // Replace with actual API call;
       // const _url = surgeryType?.id ? `/api/ot/surgery-types/${surgeryType.id}` : `/api/ot/surgery-types`;
@@ -235,7 +165,6 @@ export default const _OTSurgeryTypeModal = ({
       // const _response = await fetch(url, {
       //   _method: method;
       //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(apiData);
       // });
       // if (!session.user) {
       //   const _errorData = await response.json();
@@ -244,23 +173,11 @@ export default const _OTSurgeryTypeModal = ({
 
       // Simulate API call;
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
-
-      await onSave(apiData); // Call parent callback to refresh list;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement, // Call parent callback to refresh list;
 
       toast({title:"Success",
         description: `Surgery Type ${surgeryType ? "updated" : "created"} successfully.`}),
-      setIsOpen(false);
-    } catch (error: unknown) {
-      // Use unknown for error type;
-
-      let errorMessage = "Failed to save surgery type.";
-      if (!session.user) {
-        errorMessage = error.message;
-
-      toast({title:"Error",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
     } finally {
       setIsSaving(false);
 

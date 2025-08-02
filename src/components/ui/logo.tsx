@@ -1,4 +1,4 @@
-import { } from "react"
+
 import Image
 import React
 import type
@@ -10,14 +10,14 @@ interface LogoProperties {
   className?: string; } from "next/image"
 
 const Logo: React.FC<LogoProperties> = ({
-  variant = "default",
+  variant = "default";
   showText = true,
   size = "md",
   className = ""}) => {
   // Size mapping;
   const sizeMap = {sm:{ logo: 30, text: "text-lg" },
     md: {logo:40, text: "text-xl" },
-    lg: {logo:50, text: "text-2xl" }};
+// TODO: Fix orphaned property: lg: {logo:50,
 
   // Variant mapping for text color;
   const _textColorClass = variant === "light" ? "text-white" : "text-secondary";
@@ -39,7 +39,6 @@ const Logo: React.FC<LogoProperties> = ({
         >;
 <span;
             className={`font-bold /* SECURITY: Template literal eliminated */,
-};
 
 export default Logo;
 

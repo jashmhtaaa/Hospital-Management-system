@@ -14,6 +14,8 @@ interface TheatreCreateBody {
 // GET /api/ot/theatres - List all operation theatres
 export const _GET = async (request: NextRequest) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { searchParams } = new URL(request.url);
     const status = searchParams.get("status");
     // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
@@ -50,6 +52,8 @@ export const _GET = async (request: NextRequest) => {,
 export const _POST = async (request: NextRequest) => {,
   try {
     const body = (await request.json()) as TheatreCreateBody;
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { name, location, specialty, equipment } = body;
 
      {\n  {

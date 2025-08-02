@@ -22,6 +22,8 @@ interface SpecimenTrackingCreateBody {
 // GET /api/diagnostics/lab/specimen-tracking - Get tracking history for specimens;
 export const _GET = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -178,6 +180,8 @@ export const _GET = async (request: any) => {,
 // POST /api/diagnostics/lab/specimen-tracking - Create a new tracking entry;
 export const _POST = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -379,6 +383,8 @@ export const _POST = async (request: any) => {,
 // GET /api/diagnostics/lab/specimen-tracking/locations - Get all specimen storage locations;
 export const _GET_LOCATIONS = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -442,6 +448,8 @@ export const _GET_LOCATIONS = async (request: any) => {,
 // POST /api/diagnostics/lab/specimen-tracking/scan - Process a barcode/RFID scan;
 export const _POST_SCAN = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -659,6 +667,8 @@ export const _POST_SCAN = async (request: any) => {,
 // POST /api/diagnostics/lab/specimen-tracking/batch - Process a batch of specimens;
 export const _POST_BATCH = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }

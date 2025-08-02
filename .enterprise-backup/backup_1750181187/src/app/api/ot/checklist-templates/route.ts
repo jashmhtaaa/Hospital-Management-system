@@ -21,6 +21,8 @@ interface ChecklistTemplateCreateBody {
 // GET /api/ot/checklist-templates - List all checklist templates
 export const _GET = async (request: NextRequest) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { searchParams } = new URL(request.url);
     const phase = searchParams.get("phase");
 
@@ -54,6 +56,8 @@ export const _GET = async (request: NextRequest) => {,
 export const _POST = async (request: NextRequest) => {,
   try {
     const body = (await request.json()) as ChecklistTemplateCreateBody;
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { name, phase, items } = body;
 
      {\n  |

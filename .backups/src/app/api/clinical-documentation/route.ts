@@ -20,6 +20,8 @@ import {  type
  */;
 export const GET = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
  } from "@/lib/database" catch (error) {
   console.error(error);
 }
@@ -106,6 +108,8 @@ export const GET = async (request: any) => {,
  */;
 export const POST = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }

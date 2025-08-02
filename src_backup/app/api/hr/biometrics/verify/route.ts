@@ -17,6 +17,8 @@ const biometricVerificationSchema = z.object({
 // POST handler for verifying biometric data;
 export const _POST = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }

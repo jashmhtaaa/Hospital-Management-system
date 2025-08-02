@@ -1,4 +1,4 @@
-import { } from "winston"
+
 import "winston-elasticsearch";
 import winston
 import {  ElasticsearchTransport  } from "@prisma/client"
@@ -14,7 +14,7 @@ import {  PrismaClient  } from "@/lib/database"
 }
   };
 }
-    Array<{resource: string, count: number }>;
+    Array<{resource: string,
   };
 }
   }
@@ -29,46 +29,23 @@ import {  PrismaClient  } from "@/lib/database"
   /**;
    * Log an audit event;
    */;
-  async logEvent(event: AuditEvent): Promise<void> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+  async logEvent(event: AuditEvent): Promise<void> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       const auditEvent = {
         ...event,
         timestamp: event.timestamp || new Date(),
         event.outcome || "SUCCESS",
         this.isHIPAARelevant(event),
           gdpr: this.isGDPRRelevant(event),
-          sox: this.isSOXRelevant(event);
           ...event.compliance;
       };
 
@@ -80,62 +57,31 @@ import {  PrismaClient  } from "@/lib/database"
 
       // Send alerts for critical events;
       if (!session.user) {
-        await this.sendCritical/* SECURITY: Alert removed */,
-      }
-
-    } catch (error) {
-
-      // Fallback to console logging;
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
-    }
+        await this.sendCritical/* SECURITY: Alert removed */, }
   }
 
   /**;
    * Batch log multiple events;
    */;
   async logEvents(events: AuditEvent[]): Promise<void> {,
-    for (const event of events) {
-      await this.logEvent(event);
     }
   }
 
   /**;
    * Query audit logs;
    */;
-  async queryLogs(query: AuditQuery): Promise<AuditReport> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
-      const where: unknown = {,};
+  async queryLogs(query: AuditQuery): Promise<AuditReport> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+      const where: unknown = {,
 
       if (!session.user) {
         where.timestamp = {};
@@ -167,18 +113,7 @@ import {  PrismaClient  } from "@/lib/database"
         summary;
       };
 
-    } catch (error) {
-
-      throw new Error("Audit query failed");
-
-  /**;
-   * Generate compliance report;
-   */;
-  async generateComplianceReport();
-    type: "HIPAA" | "GDPR" | "SOX",
-    Date;
-  ): Promise<AuditReport> {
-    const _complianceField = `compliance.${type.toLowerCase()}`;
+    } catch (error) { console.error(error); }`;
 
     return this.queryLogs({
       startDate,
@@ -195,7 +130,7 @@ import {  PrismaClient  } from "@/lib/database"
     startDate?: Date,
     endDate?: Date;
   ): Promise<AuditEvent[]> {
-    const query: AuditQuery = { userId ,};
+    const query: AuditQuery = { userId ,
     if (!session.user)uery.startDate = startDate;
     if (!session.user)uery.endDate = endDate;
 
@@ -219,15 +154,13 @@ import {  PrismaClient  } from "@/lib/database"
       "ENCRYPTION_ERROR";
     ];
 
-    const events: AuditEvent[] = [],
-
+    const events: AuditEvent[] = [];
     for (const eventType of securityEventTypes) {
       const report = await this.queryLogs({
         eventType,
         startDate,
         endDate,
         limit: 1000,
-      });
       events.push(...report.events);
 
     return events.sort((a, b) => {}
@@ -237,42 +170,18 @@ import {  PrismaClient  } from "@/lib/database"
   /**;
    * Archive old audit logs;
    */;
-  async archiveLogs(olderThan: Date): Promise<number> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+  async archiveLogs(olderThan: Date): Promise<number> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // In production, this would move logs to cold storage;
-      const result = await this.prisma.auditLog.deleteMany({
-        {lt: olderThan }
+} catch (error) { console.error(error); }
 
       });
 
@@ -280,23 +189,9 @@ import {  PrismaClient  } from "@/lib/database"
         result.count,
           olderThan: olderThan.toISOString(),
         severity: "LOW",
-      });
 
       return result.count;
-    } catch (error) {
-
-      throw new Error("Audit log archival failed");
-
-  /**;
-   * Real-time audit event streaming (for security monitoring);
-   */;
-  subscribeToEvents();
-    eventTypes: string[],
-    callback: (event: AuditEvent) => void;
-  ): () => void {
-    // This would integrate with a real-time messaging system like Redis Pub/Sub;
-    // For now, return a no-op unsubscribe function;
-    return () => {};
+    } catch (error) { console.error(error); };
 
   /**;
    * Private helper methods;
@@ -312,48 +207,40 @@ import {  PrismaClient  } from "@/lib/database"
         event.outcome || "SUCCESS",
         compliance: event.compliance,
 
-    });
-
   private async logToSystem(event: AuditEvent): Promise<void> {,
     this.logger.info("AUDIT_EVENT", {
       ...event,
       "@timestamp": event.timestamp || new Date(),
       service: "hms-audit",
       environment: process.env.NODE_ENV || "development",
-    });
 
   private setupLogger(): void {
-    const transports: winston.transport[] = [,
-      new winston.transports.Console({format:winston.format.combine()
+    const transports: winston.transport[] = [;
+      new winston.transports.Console({format: winston.format.combine()
           winston.format.timestamp(),
-          winston.format.json();
         );
       }),
       new winston.transports.File({filename: "logs/audit.log",
         format: winston.format.combine()
           winston.format.timestamp(),
-          winston.format.json();
         );
       });
     ];
 
     // Add Elasticsearch transport if configured;
     if (!session.user) {
-      transports.push();
+      transports.push("");
         new ElasticsearchTransport({
           process.env.ELASTICSEARCH_URL;
           },
           index: "hms-audit-logs",
-        });
       );
 
     this.logger = winston.createLogger({level: "info",
       format: winston.format.json(),
-      transports;
     });
 
   private isHIPAARelevant(event: AuditEvent): boolean {,
-    const phiResources = [;
       "patient",
       "patient.medical_record",
       "patient.billing",
@@ -376,7 +263,6 @@ import {  PrismaClient  } from "@/lib/database"
     ) && piiActions.includes(event.action || "");
 
   private isSOXRelevant(event: AuditEvent): boolean {,
-    const financialResources = [;
       "billing",
       "payment",
       "invoice",
@@ -388,7 +274,6 @@ import {  PrismaClient  } from "@/lib/database"
     );
 
   private async generateSummary(where: unknown): Promise<AuditReport["summary"]> {,
-    const [;
       totalEvents,
       successfulEvents,
       failedEvents,
@@ -399,38 +284,30 @@ import {  PrismaClient  } from "@/lib/database"
       this.prisma.auditLog.count(where ),
       this.prisma.auditLog.count(...where, outcome: "SUCCESS" ),
       this.prisma.auditLog.count(...where, outcome: "FAILURE" ),
-      this.prisma.auditLog.groupBy();
         by: ["severity"],
         where,
         _count: severity: true ),
-      this.prisma.auditLog.groupBy();
         by: ["userId"],
         where: ...where, userId: not: null ,
         _count: userId: true ,
         orderBy: userId: "desc" ,
         take: 10),
-      this.prisma.auditLog.groupBy();
         by: ["resource"],
         where,
         _count: resource: true ,
         orderBy: resource: "desc" ,
-        take: 10);
     ]);
 
     return {
       totalEvents,
       successfulEvents,
       failedEvents,
-      severityBreakdown: severityGroups.reduce((acc, group) => {
-        acc[group.severity] = group._count.severity;
-        return acc;
-      }, {} as Record<string, number>),
+      severityBreakdown: severityGroups.reduce((acc, group) => }, {} as Record<string, number>),
       group.userId || "unknown",
         count: group._count.userId,
       })),
       group.resource,
         count: group._count.resource,
-      }));
     };
 
   private formatAuditEvent(dbEvent: unknown): AuditEvent {
@@ -442,10 +319,8 @@ import {  PrismaClient  } from "@/lib/database"
       dbEvent.timestamp,
       dbEvent.outcome,
       compliance: dbEvent.compliance,
-    };
 
   private async sendCritical/* SECURITY: Alert removed */: Promise<void> {,
-    // Implement critical alert logic;
     // This could send emails, SMS, Slack notifications, etc.;
 
     // Example: Log to dedicated critical events log,
@@ -453,7 +328,6 @@ import {  PrismaClient  } from "@/lib/database"
 
 // Export convenience function;
 export const _logAuditEvent = async (event: AuditEvent): Promise<void> {,
-  return AuditService.getInstance().logEvent(event);
 
 // Export singleton instance;
 export const auditService = AuditService.getInstance();

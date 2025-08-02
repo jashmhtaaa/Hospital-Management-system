@@ -24,6 +24,8 @@ const _updateDepartmentSchema = z.object({
 // GET /api/hr/departments;
 export const _GET = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -83,6 +85,8 @@ export const _GET = async (request: any) => {,
 // POST /api/hr/departments;
 export const _POST = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }

@@ -33,8 +33,8 @@ import { { DatePicker } from "@/components/ui/date-picker"
   PieChart,
   DonutChart;
 } from "@/components/ui/charts";
-import { } from "@/components/ui/alert"
-import { } from "@/components/ui/data-table"
+
+
 import "@/components/ui/spinner";
 import "@/lib/formatters";
 import AlertDescription, formatDate
@@ -50,7 +50,6 @@ export default const _FinancialDashboard = () {
   const [dateRange, setDateRange] = useState({
     startDate: new Date(new Date().setMonth(new Date().getMonth() - 1)),
     endDate: new Date(),
-  });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [dashboardData, setDashboardData] = useState<unknown>(null);
@@ -64,37 +63,17 @@ export default const _FinancialDashboard = () {
     setError(null);
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       // In a real implementation, this would fetch data from the API;
       // For now, we"ll simulate the data;
 
@@ -112,20 +91,14 @@ export default const _FinancialDashboard = () {
           data = generateReportsData(),
           break;
         default: data = generateOverviewData(),
-      }
-
-      setDashboardData(data);
-    } catch (err) {
-      setError("Failed to load dashboard data. Please try again.");
-
-    } finally {
+    } catch (error) { console.error(error); } finally {
       setLoading(false);
 
   };
 
   // Simulated data generators;
   const generateOverviewData = () => {
-    return { kpis: [, { title: "Total Revenue", value: 1250000, change: 5.2, changeType: "increase"  },
+    return { kpis: [, },
         { title: "Outstanding Amount", value: 320000, change: -2.1, changeType: "decrease" },
         { title: "Average Collection Period", value: 32, unit: "days", change: -3, changeType: "decrease" },
         { title: "Claim Approval Rate", value: 87.5, unit: "%", change: 1.5, changeType: "increase" }
@@ -156,8 +129,7 @@ export default const _FinancialDashboard = () {
         {id:"INV-2025-000124", patient: "Sarah Johnson", date: "2025-05-24", amount: 2340, status: "partial" },
         {id:"INV-2025-000125", patient: "Michael Brown", date: "2025-05-23", amount: 890, status: "pending" },
         {id:"INV-2025-000126", patient: "Emily Davis", date: "2025-05-22", amount: 1780, status: "overdue" },
-        {id:"INV-2025-000127", patient: "Robert Wilson", date: "2025-05-21", amount: 3450, status: "paid" }
-      ];
+        {id:"INV-2025-000127", patient: "Robert Wilson", date: "2025-05-21", amount: 3450,
 
   };
 
@@ -165,10 +137,7 @@ export default const _FinancialDashboard = () {
     return {
       ["Week 1", "Week 2", "Week 3", "Week 4"],
         datasets: [;
-          {label:"Revenue",
-            data: [65000, 72000, 68000, 78000],
-            backgroundColor: "rgba(34, 197, 94, 0.2)",
-            borderColor: "rgb(34, 197, 94)"}
+          }
         ];
       },
       ["OPD", "IPD", "Emergency", "Laboratory", "Radiology", "Pharmacy"],
@@ -242,13 +211,11 @@ export default const _FinancialDashboard = () {
         {id:"INV-2025-000134", patient: "Robert Johnson", date: "2025-05-22", amount: 3250, status: "partial" },
         {id:"INV-2025-000135", patient: "Linda Wilson", date: "2025-05-21", amount: 1650, status: "overdue" }
       ],
-      recentPayments: [;
         {id:"PAY-2025-000089", invoice: "INV-2025-000123", patient: "John Smith", date: "2025-05-25", amount: 1250, method: "Credit Card" },
         {id:"PAY-2025-000090", invoice: "INV-2025-000124", patient: "Sarah Johnson", date: "2025-05-24", amount: 1500, method: "Insurance" },
         {id:"PAY-2025-000091", invoice: "INV-2025-000127", patient: "Robert Wilson", date: "2025-05-21", amount: 3450, method: "Bank Transfer" },
         {id:"PAY-2025-000092", invoice: "INV-2025-000133", patient: "Patricia Davis", date: "2025-05-23", amount: 1950, method: "Cash" },
-        {id:"PAY-2025-000093", invoice: "INV-2025-000134", patient: "Robert Johnson", date: "2025-05-22", amount: 2000, method: "Online Payment" }
-      ];
+        {id:"PAY-2025-000093", invoice: "INV-2025-000134", patient: "Robert Johnson", date: "2025-05-22", amount: 2000,
 
   };
 
@@ -285,7 +252,6 @@ export default const _FinancialDashboard = () {
         {provider:"Cigna", claimsCount: 76, approvalRate: 90, averageProcessingDays: 13 },
         {provider:"Humana", claimsCount: 65, approvalRate: 87, averageProcessingDays: 16 }
       ],
-      recentClaims: [;
         {id:"CLM-2025-000056", invoice: "INV-2025-000123", patient: "John Smith", provider: "Blue Cross Blue Shield", amount: 1250, status: "approved" },
         {id:"CLM-2025-000057", invoice: "INV-2025-000124", patient: "Sarah Johnson", provider: "UnitedHealthcare", amount: 2340, status: "in_progress" },
         {id:"CLM-2025-000058", invoice: "INV-2025-000127", patient: "Robert Wilson", provider: "Aetna", amount: 3450, status: "submitted" },
@@ -306,7 +272,7 @@ export default const _FinancialDashboard = () {
   };
 
   const generateReportsData = () => {
-    return { availableReports: [, { id: "REP-001", name: "Revenue Report", description: "Detailed breakdown of revenue by department, service, and time period", lastRun: "2025-05-20"  },
+    return { availableReports: [, },
         { id: "REP-002", name: "Expenses Report", description: "Analysis of expenses by category and department", lastRun: "2025-05-19" },
         { id: "REP-003", name: "Profit & Loss Statement", description: "Financial performance summary with revenue, expenses, and profit", lastRun: "2025-05-18" },
         { id: "REP-004", name: "Accounts Receivable Aging", description: "Outstanding invoices categorized by age", lastRun: "2025-05-25" },
@@ -315,12 +281,10 @@ export default const _FinancialDashboard = () {
         { id: "REP-007", name: "Department Revenue Report", description: "Revenue breakdown by department with patient volume", lastRun: "2025-05-22" },
         { id: "REP-008", name: "Service Revenue Report", description: "Revenue analysis by service type and volume", lastRun: "2025-05-21" }
       ],
-      scheduledReports: [;
         {id:"SCH-001", report: "Revenue Report", frequency: "Weekly", nextRun: "2025-05-27", recipients: "Finance Team" },
         {id:"SCH-002", report: "Profit & Loss Statement", frequency: "Monthly", nextRun: "2025-06-01", recipients: "Management Team" },
         {id:"SCH-003", report: "Accounts Receivable Aging", frequency: "Weekly", nextRun: "2025-06-01", recipients: "Billing Team" },
-        {id:"SCH-004", report: "Insurance Claims Analysis", frequency: "Weekly", nextRun: "2025-05-31", recipients: "Insurance Team" }
-      ];
+        {id:"SCH-004", report: "Insurance Claims Analysis", frequency: "Weekly", nextRun: "2025-05-31",
 
   };
 
@@ -440,19 +404,14 @@ export default const _FinancialDashboard = () {
                     columns={[;
                       {header:"Invoice ID", accessorKey: "id" },
                       {header:"Patient", accessorKey: "patient" },
-                      {header:"Date",
-                        ({ row }) => formatDate(row.original.date);
+                      {header: "Date",
                       },
-                      {header:"Amount",
-                        ({ row }) => formatCurrency(row.original.amount);
+                      {header: "Amount",
                       },
-                      {header:"Status",
-                        ({ row }) => {
-                          const status = row.original.status;
+                      {header: "Status",
                           const statusColors = {paid:"bg-green-100 text-green-800",
                             "bg-yellow-100 text-yellow-800",
                             overdue: "bg-red-100 text-red-800",
-                          };
 
                           return();
                             >;
@@ -510,11 +469,9 @@ export default const _FinancialDashboard = () {
                       data={dashboardData.revenueByService}
                       columns={[;
                         {header:"Service", accessorKey: "service" },
-                        {header:"Revenue",
-                          ({ row }) => formatCurrency(row.original.revenue);
+                        {header: "Revenue",
                         },
-                        {header:"Percentage",
-                          ({ row }) => `${row.original.percentage}%`;
+                        {header: "Percentage",
 
                       ]}
                     />;
@@ -569,9 +526,6 @@ export default const _FinancialDashboard = () {
                       data={{
                         labels: dashboardData.agingAnalysis.labels,
                         datasets: dashboardData.agingAnalysis.datasets,
-                      }}
-                      height={300}
-                    />;
                   </CardContent>;
                 </Card>;
               </div>;
@@ -588,21 +542,16 @@ export default const _FinancialDashboard = () {
                       columns={[;
                         {header:"Invoice ID", accessorKey: "id" },
                         {header:"Patient", accessorKey: "patient" },
-                        {header:"Date",
-                          ({ row }) => formatDate(row.original.date);
+                        {header: "Date",
                         },
-                        {header:"Amount",
-                          ({ row }) => formatCurrency(row.original.amount);
+                        {header: "Amount",
                         },
-                        {header:"Status",
-                          ({ row }) => {
-                            const status = row.original.status;
-                            const statusColors: Record<string, string> = {draft:"bg-gray-100 text-gray-800",
+                        {header: "Status",
+                            const statusColors: Record<string,
                               "bg-blue-100 text-blue-800",
                               "bg-pink-100 text-pink-800",
                               "bg-green-100 text-green-800",
                               overdue: "bg-red-100 text-red-800",
-                            };
 
                             return();
                               >;
@@ -611,8 +560,7 @@ export default const _FinancialDashboard = () {
                             );
 
                         },
-                        {header:"Actions",
-                          cell: () => (;
+                        {header: "Actions",
                             >;
                               <Button variant="outline" size="sm">View>;
                               <Button variant="outline" size="sm">Edit</Button>;
@@ -635,15 +583,12 @@ export default const _FinancialDashboard = () {
                       {header:"Payment ID", accessorKey: "id" },
                       {header:"Invoice", accessorKey: "invoice" },
                       {header:"Patient", accessorKey: "patient" },
-                      {header:"Date",
-                        ({ row }) => formatDate(row.original.date);
+                      {header: "Date",
                       },
-                      {header:"Amount",
-                        ({ row }) => formatCurrency(row.original.amount);
+                      {header: "Amount",
                       },
                       {header:"Method", accessorKey: "method" },
-                      {header:"Actions",
-                        cell: () => (;
+                      {header: "Actions",
                           >;
                             <Button variant="outline" size="sm">View>;
                             <Button variant="outline" size="sm">Receipt</Button>;
@@ -698,14 +643,11 @@ export default const _FinancialDashboard = () {
                       data={dashboardData.topInsuranceProviders}
                       columns={[;
                         {header:"Provider", accessorKey: "provider" },
-                        {header:"Claims Count",
-                          ({ row }) => formatNumber(row.original.claimsCount);
+                        {header: "Claims Count",
                         },
-                        {header:"Approval Rate",
-                          ({ row }) => `${row.original.approvalRate}%`;
+                        {header: "Approval Rate",
                         },
-                        {header:"Avg. Processing Days",
-                          ({ row }) => `${row.original.averageProcessingDays} days`;
+                        {header: "Avg. Processing Days",
 
                       ]}
                     />;
@@ -726,18 +668,14 @@ export default const _FinancialDashboard = () {
                         {header:"Claim ID", accessorKey: "id" },
                         {header:"Patient", accessorKey: "patient" },
                         {header:"Provider", accessorKey: "provider" },
-                        {header:"Amount",
-                          ({ row }) => formatCurrency(row.original.amount);
+                        {header: "Amount",
                         },
-                        {header:"Status",
-                          ({ row }) => {
-                            const status = row.original.status;
-                            const statusColors: Record<string, string> = {draft:"bg-gray-100 text-gray-800",
+                        {header: "Status",
+                            const statusColors: Record<string,
                               "bg-yellow-100 text-yellow-800",
                               "bg-green-100 text-green-800",
                               "bg-red-100 text-red-800",
                               appealed: "bg-pink-100 text-pink-800",
-                            };
 
                             return();
                               >;
@@ -783,11 +721,9 @@ export default const _FinancialDashboard = () {
                         {header:"Report ID", accessorKey: "id" },
                         {header:"Name", accessorKey: "name" },
                         {header:"Description", accessorKey: "description" },
-                        {header:"Last Run",
-                          ({ row }) => formatDate(row.original.lastRun);
+                        {header: "Last Run",
                         },
-                        {header:"Actions",
-                          cell: () => (;
+                        {header: "Actions",
                             >;
                               <Button variant="outline" size="sm">Generate>;
                               <Button variant="outline" size="sm">Schedule</Button>;
@@ -810,12 +746,10 @@ export default const _FinancialDashboard = () {
                       {header:"Schedule ID", accessorKey: "id" },
                       {header:"Report", accessorKey: "report" },
                       {header:"Frequency", accessorKey: "frequency" },
-                      {header:"Next Run",
-                        ({ row }) => formatDate(row.original.nextRun);
+                      {header: "Next Run",
                       },
                       {header:"Recipients", accessorKey: "recipients" },
-                      {header:"Actions',
-                        cell: () => (;
+                      {header: "Actions',
                           >;
                             <Button variant="outline" size="sm">Edit>;
                             <Button variant="outline" size="sm">Delete</Button>;

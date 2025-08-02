@@ -13,7 +13,7 @@ import { useState
   TableHead,
   TableHeader,
   TableRow} from "@/components/ui/table";
-import { } from "@/components/ui/button"
+
 import "lucide-react";
 import Edit
 import Trash2
@@ -26,7 +26,9 @@ import { Card, CardContent } from "@/components/ui/card"; // FIX: Add missing im
 
 
 // Mock data structure - replace with actual API response type;
-interface Theatre {id:string,
+interface Theatre {
+  id:string,
+}
   string | null,
   string,
   updated_at: string,
@@ -38,37 +40,17 @@ export default const _OTTheatreList = () {
   useEffect(() => {
     const fetchTheatres = async () => {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
         setLoading(true),
         setError(undefined);
 
@@ -101,14 +83,10 @@ export default const _OTTheatreList = () {
           {id:"theatre-4",
             "Floor 3, Wing C",
             specialty: "Neurosurgery",
-            "2025-04-28T11:00:00Z",
-          }];
+            "2025-04-28T11: 00:00Z",
         setTheatres(mockData),
         setLoading(false);
-      } catch (error_: unknown) {
-        if (!session.user) {
-          setError(error_.message);
-        } else {
+      } catch (error) { console.error(error); } else {
           setError("An unknown error occurred while fetching theatres");
         }
         setLoading(false);

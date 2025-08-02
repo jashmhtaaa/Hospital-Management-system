@@ -7,6 +7,8 @@ import { prisma } from '@/lib/prisma';
 // POST /api/telemedicine/sessions
 export const _POST = async (request: NextRequest) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { patientId, doctorId, scheduledTime, type } = await request.json();
 
     const { user } = await authService.verifyToken(request);
@@ -41,6 +43,8 @@ export const _POST = async (request: NextRequest) => {,
 // GET /api/telemedicine/sessions/[sessionId]
 export const _GET = async (request: NextRequest, { params }: { params: { sessionId: string } }) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { sessionId } = params;
 
     const { user } = await authService.verifyToken(request);
@@ -96,6 +100,8 @@ export const _GET = async (request: NextRequest, { params }: { params: { session
 // PUT /api/telemedicine/sessions/[sessionId]/start
 export const _PUT = async (request: NextRequest, { params }: { params: { sessionId: string } }) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { sessionId } = params;
 
     const { user } = await authService.verifyToken(request);

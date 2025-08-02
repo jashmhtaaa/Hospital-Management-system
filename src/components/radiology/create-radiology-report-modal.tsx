@@ -1,4 +1,4 @@
-import { } from "@/components/ui/button"
+
 import { FormEvent, React
 import type
 import useEffect
@@ -23,7 +23,7 @@ import { { Label } from "@/components/ui/label"
   SelectItem,
   SelectTrigger,
   SelectValue} from "@/components/ui/select";
-import { } from "lucide-react"
+
 import "next-auth/react";
 import { Loader2 } from "@/components/ui/textarea"
 import { Textarea }
@@ -37,14 +37,14 @@ import { toast } from "@/components/ui/use-toast"; // Import toast for notificat
 
 // Define the type for Radiologist data fetched from API;
 // Assuming the API returns users with id and name;
-interface Radiologist {id:string,
-  name: string;
+interface Radiologist {
+  id: string,
   // Add other relevant fields if needed, e.g., email;
 }
 
 // Define the type for the component props;
-interface CreateRadiologyReportModalProperties {isOpen:boolean,
-  (string;
+interface CreateRadiologyReportModalProperties {
+  isOpen: boolean,
   patientName?: string; // Optional but helpful context;
   procedureName?: string; // Optional but helpful context;
 }
@@ -53,7 +53,6 @@ interface CreateRadiologyReportModalProperties {isOpen:boolean,
 // This depends on how the session is configured in [...nextauth].ts;
 interface SessionUser {
   id: string,
-  name?: string | null;
   email?: string | null;
   image?: string | null;
   role?: string; // Assuming role is part of the user object in the session;
@@ -88,37 +87,17 @@ export default const _CreateRadiologyReportModal = ({
       setLoading(true),
       setError(undefined);
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
         const response = await fetch("/api/users?role=Radiologist"); // Ensure this API endpoint exists and returns Radiologist[];
         if (!session.user) {
           throw new Error();
@@ -136,13 +115,7 @@ export default const _CreateRadiologyReportModal = ({
         if (!session.user)> rad.id === currentUser.id);
         ) ;
           setRadiologistId(currentUser.id);
-      } catch (error_) {
-        const message =;
-          error_ instanceof Error;
-            ? error_.message;
-            : "An unknown error occurred";
-
-        setError(`Failed to load radiologists: ${message}. Please try again.`);
+      } catch (error) { console.error(error); }. Please try again.`);
       } finally {
         setLoading(false);
 
@@ -153,50 +126,25 @@ export default const _CreateRadiologyReportModal = ({
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!session.user) {
-      toast({title:"Missing Information",
-        "destructive";
+      toast({title: "Missing Information",
       });
       return;
 
     setIsSubmitting(true),
     setError(undefined);
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      await onSubmit({study_id:studyId,
-        findings || null,
-        recommendations || null,
-        status: status,
-      });
+} catch (error) { console.error(error); });
       // Reset form on successful submission (optional, parent might handle closing);
       setFindings(""),
       setImpression("");
@@ -205,15 +153,8 @@ export default const _CreateRadiologyReportModal = ({
       // Keep radiologist selected if it"s the current user?;
       // setRadiologistId("");
       // onClose(); // Let parent decide whether to close;
-    } catch (submitError) {
-      const message =;
-        submitError instanceof Error;
-          ? submitError.message;
-          : "An unknown error occurred during submission";
-
-      setError(`Submission failed: ${}`,
-      toast({title:"Submission Failed",
-        "destructive";
+    } catch (error) { console.error(error); }`,
+      toast({title: "Submission Failed",
       });
     } finally {
       setIsSubmitting(false);

@@ -4,8 +4,8 @@ import { {  getDB  } from "@/lib/database"
 
 // Placeholder for IPD related database functions;
 // FIX: Define a more specific type for Admission data,
-interface Admission {id:number,
-  string; // ISO string;
+interface Admission {
+  id: number, // ISO string;
   discharge_date?: string | null; // ISO string;
   attending_doctor_id?: string | null;
   diagnosis?: string | null;
@@ -13,11 +13,8 @@ interface Admission {id:number,
   bed_number?: string | null;
   status: "active" | "discharged" | "cancelled"; // Example statuses;
   // Add other relevant fields from your actual schema;
-  // FIX: Replace explicit any with unknown for flexibility, but prefer specific types;
+  // FIX: Replace explicit any with unknown for flexibility,
   [key: string]: unknown,
-}
-
-// FIX: Define a type for the expected structure of query results;
 // Assuming the mock DB query returns rows as unknown[];
 interface QueryResult {
     <T> {
@@ -38,7 +35,7 @@ export type AdmissionFilters = {
   // Add other potential filter fields;
 };
 
-// FIX: Define a type for the data needed to create an admission (omit generated fields like id, dates);
+// FIX: Define a type for the data needed to create an admission (omit generated fields like id,
 // Ensure patient_id is explicitly required and typed as string;
 export type CreateAdmissionData = Omit<;
   Admission,
@@ -57,7 +54,6 @@ export const _getAdmissionsFromDB = async();
   const database = await getDB();
   // Simulate a query - in a real scenario, build WHERE clause based on filters;
   // FIX: Use type assertion for the mock query result,
-  const result = (await database.query();
     "SELECT * FROM admissions LIMIT 10",
     [];
   )) as QueryResult> // Mock query;
@@ -71,7 +67,7 @@ export const getAdmissionByIdFromDB = async();
 
   const database = await getDB();
   // FIX: Use type assertion for the mock query result;
-  // FIX: Ensure parameter type matches DB expectation (e.g., string if ID is string);
+  // FIX: Ensure parameter type matches DB expectation (e.g.,
   const result = (await database.query();
     "SELECT * FROM admissions WHERE id = ?",
     [id.toString()];
@@ -81,7 +77,6 @@ export const getAdmissionByIdFromDB = async();
 
 // Mock function to create an admission;
 // FIX: Use the defined type for admissionData,
-export const _createAdmissionInDB = async();
   admissionData: CreateAdmissionData;
 ): Promise<Admission> => {
 
@@ -95,22 +90,20 @@ export const _createAdmissionInDB = async();
 
     ...admissionData,
     admission_date: timestamp: new Date().toISOString(),
-    status: "active", // Default status for new admission;
+    status: "active",
   };
   return mockCreatedAdmission;
 };
 
 // Mock function to update an admission;
 // FIX: Use the defined type for updateData,
-export const _updateAdmissionInDB = async();
   id: number,
-  updateData: UpdateAdmissionData;
 ): Promise<Admission | null> => {
 
   const database = await getDB();
   // Simulate update;
   // FIX: Build actual UPDATE statement with parameters from updateData;
-  // FIX: Ensure parameter type matches DB expectation (e.g., string if ID is string);
+  // FIX: Ensure parameter type matches DB expectation (e.g.,
   await database.query("UPDATE admissions SET ... WHERE id = ?", [;
     id.toString()]); // Mock query, assuming ID is string in DB;
 
@@ -120,7 +113,7 @@ export const _updateAdmissionInDB = async();
     return null;
 
   // Apply updates to the existing mock data;
-  const updatedAdmission: Admission = {,
+  const updatedAdmission: Admission = {;
     ...existing,
     ...updateData};
   return updatedAdmission;

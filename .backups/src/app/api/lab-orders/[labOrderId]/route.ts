@@ -47,6 +47,8 @@ export const _GET = async (_request: Request, { params }: { params: Promise<{ la
     // Pass cookies() directly;
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { labOrderId: labOrderIdString ,} = await params;
     const labOrderId = Number.parseInt(labOrderIdString, 10);
 
@@ -187,6 +189,8 @@ export const _PUT = async (request: Request, { params }: { params: Promise<{ lab
     // Pass cookies() directly;
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { labOrderId: labOrderIdString ,} = await params;
     const labOrderId = Number.parseInt(labOrderIdString, 10);
 

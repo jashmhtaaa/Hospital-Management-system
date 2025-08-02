@@ -19,7 +19,6 @@ describe("ChargeCaptureService", () => {
          100.00,
         dateOfService: new Date(),
         providerId: "provider-789",
-      };
       // Mock the repository or other dependencies to return expected values
 
       // Act: Call the method being tested,

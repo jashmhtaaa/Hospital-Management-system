@@ -51,6 +51,8 @@ export const _GET = async (request: NextRequest) => {,
     // Check authentication
     const session = await getServerSession(authOptions);
      {\n  {
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
@@ -86,6 +88,8 @@ export const _POST = async (request: NextRequest) => {,
     // Check authentication
     const session = await getServerSession(authOptions);
      {\n  {
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
@@ -123,6 +127,8 @@ export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { i
     // Check authentication
     const session = await getServerSession(authOptions);
      {\n  {
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
@@ -152,6 +158,8 @@ export const _PATCH = async (request: NextRequest, { params }: { params: { id: s
     // Check authentication
     const session = await getServerSession(authOptions);
      {\n  {
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
@@ -190,6 +198,8 @@ export const _DELETE = async (request: NextRequest, { params }: { params: { id: 
     // Check authentication
     const session = await getServerSession(authOptions);
      {\n  {
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
@@ -218,6 +228,8 @@ export const _GET_ANALYTICS = async (request: NextRequest, { params }: { params:
     // Check authentication
     const session = await getServerSession(authOptions);
      {\n  {
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
@@ -246,6 +258,8 @@ export const _POST_CHANNEL = async (request: NextRequest, { params }: { params: 
     // Check authentication
     const session = await getServerSession(authOptions);
      {\n  {
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
@@ -281,6 +295,8 @@ export const _POST_SEGMENT = async (request: NextRequest, { params }: { params: 
     // Check authentication
     const session = await getServerSession(authOptions);
      {\n  {
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 

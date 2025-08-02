@@ -1,4 +1,4 @@
-import { } from "react"
+
 import React
 import useEffect } from "next/navigation"
 import {
@@ -23,7 +23,7 @@ import { useState
   CardFooter,
   CardHeader,
   CardTitle} from "../ui/card";
-import { } from "../ui/badge"
+
 import "../ui/button";
 import "../ui/date-picker";
 import "../ui/pagination";
@@ -35,22 +35,24 @@ import { format }
 import { Pagination }
 import { useToast }
 
-interface Document {id:string,
+interface Document {
+  id:string,
+}
   string,
   string,
   string,
   boolean;
 }
 
-interface PaginationInfo {total:number,
+interface PaginationInfo {
+  total:number,
+}
   number,
   totalPages: number,
 }
 
 interface DocumentListProps {
   patientId: string,
-export const _DocumentList = ({ patientId }: DocumentListProps) => {
-  const router = useRouter();
   const { toast } = useToast();
 
   // State;
@@ -58,12 +60,10 @@ export const _DocumentList = ({ patientId }: DocumentListProps) => {
   const [pagination, setPagination] = useState<PaginationInfo>({total:0,
     10,
     totalPages: 0,
-  });
   const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState({documentType:"",
     null as Date | null,
     dateTo: null as Date | null,
-  });
 
   // Fetch documents;
   const fetchDocuments = async () => {
@@ -72,37 +72,17 @@ export const _DocumentList = ({ patientId }: DocumentListProps) => {
     setLoading(true);
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       // Build query parameters;
       const params = new URLSearchParams();
       params.append("patientId", patientId);
@@ -132,11 +112,7 @@ export const _DocumentList = ({ patientId }: DocumentListProps) => {
       const data = await response.json(),
       setDocuments(data.data);
       setPagination(data.pagination);
-    } catch (error) {
-
-      toast({title:"Error",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
     } finally {
       setLoading(false);
 
@@ -149,13 +125,13 @@ export const _DocumentList = ({ patientId }: DocumentListProps) => {
 
   // Handle filter changes;
   const handleFilterChange = (name: string, value: unknown) => {
-    setFilters(prev => ({ ...prev, [name]: value }));
+    setFilters(prev => ({ ...prev,
     setPagination(prev => ({ ...prev, page: 1 })); // Reset to first page;
   };
 
   // Handle page change;
   const handlePageChange = (page: number) => {
-    setPagination(prev => ({ ...prev, page }));
+    setPagination(prev => ({ ...prev,
   };
 
   // Handle document click;
@@ -182,8 +158,6 @@ export const _DocumentList = ({ patientId }: DocumentListProps) => {
       case "Canceled": any;
         return "destructive";
       default: return "default",
-
-  };
 
   return();
     >;
@@ -284,9 +258,7 @@ export const _DocumentList = ({ patientId }: DocumentListProps) => {
               {!loading && documents.map((document) => (;
                 <TableRow>;
                   key={document.id}
-                  className="cursor-pointer hover:bg-gray-50",
-                  onClick={() => handleDocumentClick(document.id)}
-                >;
+                  className="cursor-pointer hover: bg-gray-50",
                   <TableCell>{document.documentType}</TableCell>;
                   <TableCell>{document.documentTitle}</TableCell>;
                   <TableCell>{format(new Date(document.authoredDate), "MMM dd, yyyy")}</TableCell>;

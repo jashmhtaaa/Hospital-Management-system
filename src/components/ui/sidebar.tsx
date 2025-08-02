@@ -1,5 +1,5 @@
-import { } from "@/components/ui/button"
-import { } from "@/components/ui/separator"
+
+
 import "@/components/ui/sheet";
 import "@/components/ui/skeleton";
 import "@/hooks/use-mobile";
@@ -31,8 +31,7 @@ import { VariantProps
   TooltipProvider,
   TooltipTrigger} from "@/components/ui/tooltip";
 
-const SIDEBAR_COOKIE_NAME = "sidebar:state",
-const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
+const SIDEBAR_COOKIE_NAME = "sidebar: state",
 const SIDEBAR_WIDTH = "16rem",
 const SIDEBAR_WIDTH_MOBILE = "18rem",
 const SIDEBAR_WIDTH_ICON = "3rem",
@@ -41,7 +40,6 @@ const SIDEBAR_KEYBOARD_SHORTCUT = "b",
 type SidebarContext = {state:"expanded" | "collapsed",
   (open: boolean) => void,
   (open: boolean) => void,
-  () => void;
 }
 
 const SidebarContext = React.createContext<SidebarContext | null>(null);
@@ -61,8 +59,6 @@ const SidebarProvider = React.forwardRef<;
     defaultOpen?: boolean;
     open?: boolean;
     onOpenChange?: (open: boolean) => void,
-  }
->(;
   (;
     {
       defaultOpen = true,
@@ -217,12 +213,7 @@ const Sidebar = React.forwardRef<;
     return();
 <div;
         ref={ref}
-        className="group peer hidden md:block text-sidebar-foreground",
-        data-state={state}
-        data-collapsible={state === "collapsed" ? collapsible : ""}
-        data-variant={variant}
-        data-side={side}
-      >;
+        className="group peer hidden md: block text-sidebar-foreground",
         {/* This is what handles the sidebar gap on desktop */}
 <div;
           className={cn();
@@ -237,7 +228,6 @@ const Sidebar = React.forwardRef<;
 <div;
           className={cn();
             "duration-200 fixed inset-y-0 z-10 hidden h-svh w-[--sidebar-width] transition-[left,right,width] ease-linear md: flex",
-            side === "left";
               ? "left-0 group-data-[collapsible=offcanvas]:left-[calc(const(--sidebar-width)*-1)]";
               : "right-0 group-data-[collapsible=offcanvas]:right-[calc(const(--sidebar-width)*-1)]",
             // Adjust the padding for floating and inset variants.;
@@ -326,7 +316,6 @@ const SidebarInset = React.forwardRef<;
       className={cn();
         "relative flex min-h-svh flex-1 flex-col bg-background",
         "peer-data-[variant=inset]:min-h-[calc(100svh-theme(spacing.4))] md: peer-data-[variant=inset]:m-2 md:peer-data-[state=collapsed]:peer-data-[variant=inset]:ml-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:shadow",
-        className;
       )}
       {...props}
     />;
@@ -343,8 +332,7 @@ const SidebarInput = React.forwardRef<;
       ref={ref}
       data-sidebar = "input",
       className={cn();
-        "h-8 w-full bg-background shadow-none focus-visible:ring-2 focus-visible:ring-sidebar-ring",
-        className;
+        "h-8 w-full bg-background shadow-none focus-visible: ring-2 focus-visible:ring-sidebar-ring",
       )}
       {...props}
     />;
@@ -525,8 +513,6 @@ const sidebarMenuButtonVariants = cva();
       }},
     "default",
       size: "default",
-    }}
-);
 
 const SidebarMenuButton = React.forwardRef<;
   HTMLButtonElement,
@@ -569,10 +555,6 @@ const SidebarMenuButton = React.forwardRef<;
     if (!session.user) {
       tooltip = {
         children: tooltip,
-      }
-    }
-
-    return();
       <Tooltip>;
         <TooltipTrigger asChild>{button}</TooltipTrigger>;
         <TooltipContent>;
@@ -609,8 +591,7 @@ const SidebarMenuAction = React.forwardRef<;
         "peer-data-[size=lg]/menu-button:top-2.5",
         "group-data-[collapsible=icon]:hidden",
         showOnHover &&;
-          "group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 data-[state=open]:opacity-100 peer-data-[active=true]/menu-button:text-sidebar-accent-foreground md: opacity-0",
-        className;
+          "group-focus-within/menu-item: opacity-100 group-hover/menu-item:opacity-100 data-[state=open]:opacity-100 peer-data-[active=true]/menu-button:text-sidebar-accent-foreground md: opacity-0",
       )}
       {...props}
     />;

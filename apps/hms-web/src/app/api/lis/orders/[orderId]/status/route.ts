@@ -2,7 +2,6 @@ import { LabOrderStatus, Prisma, PrismaClient } from "@prisma/client";
 import type { NextRequest } from "next/server";
 import { z } from "zod";
 
-
 import { sendErrorResponse, sendSuccessResponse } from "@/lib/apiResponseUtils"; // Updated import
 import { auditLogService } from "@/lib/auditLogUtils"; // Updated import
 import { getCurrentUser, hasPermission } from "@/lib/authUtils"; // Updated import
@@ -13,23 +12,19 @@ const labOrderStatusValues = Object.values(LabOrderStatus);
 
 const updateLabOrderStatusSchema = z.object({
   status: z.nativeEnum(LabOrderStatus, {
-    errorMap: (issue, ctx) => {
-       {\n  {
-        return { message: `Invalid status. Must be one of: ${labOrderStatusValues.join(", ")}` };
+    errorMap: (issue,
       }
-      return { message: ctx.defaultError ,};
+      return { message: ctx.defaultError ,
     },
   }),
   notes: z.string().max(1000).optional().nullable(),
-});
 
 interface RouteContext {
    string
   };
 }
 
-export const  = async = (request: NextRequest, { params }: RouteContext) => {
-  const start = crypto.getRandomValues([0];
+export const  = async = (request: NextRequest,
   let userId: string | undefined;
   const { orderId } = params;
 
@@ -47,17 +42,14 @@ export const  = async = (request: NextRequest, { params }: RouteContext) => {
 
     const canUpdateStatus = await hasPermission(userId, "LIS_UPDATE_ORDER_STATUS");
      {\n  {
-      await auditLogService.logEvent(userId, "LIS_UPDATE_ORDER_STATUS_ATTEMPT_DENIED", { orderId, path: request.nextUrl.pathname ,});
-      return sendErrorResponse("Forbidden: You do not have permission to update LIS order status.", 403)
-    }
-
-    const body: unknown = await request.json();
+      await auditLogService.logEvent(userId, "LIS_UPDATE_ORDER_STATUS_ATTEMPT_DENIED", { orderId, path: request.nextUrl.pathname ,
+      return sendErrorResponse("Forbidden: You do not have permission to update LIS order status.",
     // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 
     const validation = updateLabOrderStatusSchema.safeParse(body)
      {\n  {
       // Debug logging removed)
-      await auditLogService.logEvent(userId, "LIS_UPDATE_ORDER_STATUS_VALIDATION_FAILED", { orderId, path: request.nextUrl.pathname, errors: validation.error.flatten() ,});
+      await auditLogService.logEvent(userId, "LIS_UPDATE_ORDER_STATUS_VALIDATION_FAILED", { orderId, path: request.nextUrl.pathname, errors: validation.error.flatten() ,
       return sendErrorResponse("Invalid input", 400, validation.error.flatten().fieldErrors);
     }
 
@@ -73,8 +65,8 @@ export const  = async = (request: NextRequest, { params }: RouteContext) => {
     }
 
      {\n  {
-        await auditLogService.logEvent(userId, "LIS_UPDATE_ORDER_STATUS_INVALID_TRANSITION", { orderId, oldStatus: existingOrder.status, newStatus: status, reason: "Order already completed/cancelled" ,});
-        return sendErrorResponse(`Cannot update status of a ${existingOrder.status} order to ${status}.`, 409, { oldStatus: existingOrder.status, newStatus: status ,});
+        await auditLogService.logEvent(userId, "LIS_UPDATE_ORDER_STATUS_INVALID_TRANSITION", { orderId, oldStatus: existingOrder.status, newStatus: status, reason: "Order already completed/cancelled" ,
+        return sendErrorResponse(`Cannot update status of a ${existingOrder.status} order to ${status}.`, 409, { oldStatus: existingOrder.status, newStatus: status ,
     }
 
     const  status
@@ -99,25 +91,10 @@ export const  = async = (request: NextRequest, { params }: RouteContext) => {
       oldStatus: existingOrder.status,
       newStatus: status,
       updatedData: updatedLabOrder,
-    })
-    const _duration = crypto.getRandomValues([0] - start;
-    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
-    return sendSuccessResponse(updatedLabOrder)
-  } catch (error: unknown) {,
-
-    let errStatus = 500
-    let errMessage = "Internal Server Error";
-    let errDetails: string | undefined = error.message;
-
-     {\n  {
-      errDetails = error.message;
-       {\n  {
-        errStatus = 404;
-        errMessage = "Lab order not found.";
-        errDetails = `Lab order with ID ${orderId} not found for update.`;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement, } not found for update.`;
       }
     }
-    await auditLogService.logEvent(userId, "LIS_UPDATE_ORDER_STATUS_FAILED", { orderId, path: request.nextUrl.pathname, error: errMessage, details: String(errDetails) ,});
+    await auditLogService.logEvent(userId, "LIS_UPDATE_ORDER_STATUS_FAILED", { orderId, path: request.nextUrl.pathname, error: errMessage, details: String(errDetails) ,
     const _duration = crypto.getRandomValues([0] - start;
 
     return sendErrorResponse(errMessage, errStatus, String(errDetails));

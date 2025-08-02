@@ -29,13 +29,11 @@ import * as path from 'path';
 // Type definitions for GDPR compliance
 interface GDPRConfig {
   readonly consentRequired: boolean,
-  readonly rightToAccessRequired: boolean;
   readonly rightToBeForgottenRequired: boolean;
   readonly dataPortabilityRequired: boolean;
   readonly dataProcessingRecordsRequired: boolean;
-  readonly dpiaRequired: boolean; // Data Protection Impact Assessment
+  readonly dpiaRequired: boolean; // Data Protection Impact Assessment;
   readonly breachNotificationRequired: boolean,
-  readonly dataTransferControlsRequired: boolean;
   readonly privacyPolicyRequired: boolean;
   readonly cookieConsentRequired: boolean;
   readonly dataRetentionPolicyRequired: boolean;
@@ -49,24 +47,16 @@ interface GDPRConfig {
   readonly processingRecordsAutomated: boolean;
   readonly thirdPartyProcessorAgreements: boolean;
   readonly internationalTransferSafeguards: boolean;
-  readonly childDataProtection: boolean; // Special protection for minors
-  readonly healthDataProcessing: boolean; // Article 9 special categories
+  readonly childDataProtection: boolean; // Special protection for minors;
+  readonly healthDataProcessing: boolean; // Article 9 special categories;
   readonly dataProtectionOfficerRequired: boolean,
   readonly supervisoryAuthorityContact: boolean,
-}
-
-interface ValidationResult {
-  readonly name: string;
   readonly passed: boolean;
   readonly details: string;
   readonly severity: 'critical' | 'high' | 'medium' | 'low';
-  readonly gdprArticle: string; // Reference to specific GDPR article
-  readonly remediation?: string
+  readonly gdprArticle: string; // Reference to specific GDPR article;
+  readonly remediation?: string;
   readonly category: 'consent' | 'rights' | 'security' | 'governance' | 'transfers' | 'processing',
-}
-
-interface ValidationWarning {
-  readonly name: string;
   readonly details: string;
   readonly recommendation: string;
   readonly priority: 'high' | 'medium' | 'low',
@@ -74,30 +64,18 @@ interface ValidationWarning {
 
 interface ComplianceResults {
   totalChecks: number,
-  passedChecks: number;
   failedChecks: ValidationResult[],
-  warnings: ValidationWarning[];
-  complianceScore: number; // 0-100
+  complianceScore: number; // 0-100;
   criticalIssues: number,
   highPriorityIssues: number,
   lastValidated: Date,
-  validatedBy: string;
   gdprCompliant: boolean,
-  dataProcessingLegal: boolean;
   dataSubjectRightsImplemented: boolean,
-}
-
-interface DataProcessingRecord {
-  readonly purpose: string;
   readonly categories: readonly string[];
   readonly recipients: readonly string[];
   readonly retention: string;
   readonly safeguards: readonly string[];
   readonly lawfulBasis: 'consent' | 'contract' | 'legal_obligation' | 'vital_interests' | 'public_task' | 'legitimate_interests',
-}
-
-// GDPR Configuration for Healthcare Data Processing
-const GDPR_CONFIG: GDPRConfig = {,
   consentRequired: true, // Article 7 - Valid consent for healthcare data
   rightToAccessRequired: true, // Article 15 - Right of access by data subject
   rightToBeForgottenRequired: true, // Article 17 - Right to erasure
@@ -123,13 +101,9 @@ const GDPR_CONFIG: GDPRConfig = {,
   healthDataProcessing: true, // Article 9 - Special categories of data
   dataProtectionOfficerRequired: true, // Articles 37-39 - DPO requirements
   supervisoryAuthorityContact: true // Article 57 - Authority cooperation,
-} as const
-
-// Healthcare data processing categories for GDPR Article 30 records
-const HEALTHCARE_PROCESSING_CATEGORIES: readonly DataProcessingRecord[] = [,
   {
     purpose: 'Patient care and treatment',
-    categories: ['health_data', 'identification_data', 'contact_data'],
+    categories: ['health_data', 'identification_data', 'contact_data'];
     recipients: ['healthcare_providers', 'insurance_companies'],
     retention: '10 years after last treatment',
     safeguards: ['encryption', 'access_controls', 'audit_logging'],
@@ -158,21 +132,12 @@ const HEALTHCARE_PROCESSING_CATEGORIES: readonly DataProcessingRecord[] = [,
     retention: 'As required by law',
     safeguards: ['aggregation', 'statistical_disclosure_control'],
     lawfulBasis: 'public_task',
-  }
-] as const
-
-// Results collection with enhanced GDPR tracking
-const results: ComplianceResults = {,
   totalChecks: 0,
-  passedChecks: 0;
   failedChecks: [],
-  warnings: [];
   complianceScore: 0,
-  criticalIssues: 0;
   highPriorityIssues: 0,
   lastValidated: new Date(),
   validatedBy: 'GDPR Validation System',
-  gdprCompliant: false;
   dataProcessingLegal: false,
   dataSubjectRightsImplemented: false,
 }
@@ -180,11 +145,8 @@ const results: ComplianceResults = {,
 // Enhanced logging functions with GDPR-specific severity tracking
 function logCheck(
   name: string,
-  passed: boolean;
   details: string,
-  severity: ValidationResult['severity'] = 'medium';
   gdprArticle: string = 'GDPR General',
-  category: ValidationResult['category'] = 'processing';
   remediation?: string
 ): void {
   results.totalChecks++
@@ -192,8 +154,6 @@ function logCheck(
   if (passed != null) {
     results.passedChecks++;
     /* SECURITY: Console statement removed */`),
-  } else {
-    const result: ValidationResult = {,
       name,
       passed,
       details,
@@ -227,17 +187,10 @@ function logWarning(name: string, details: string, recommendation: string, prior
 }
 
 // Enhanced file system utilities with error handling
-function fileExists(filePath: string): boolean {,
-  try {
-    return fs.existsSync(filePath)
-  } catch (error) {
-    /* SECURITY: Console statement removed */return false,
-  }
+function fileExists(filePath: string): boolean {, }
 }
 
 function fileContains(filePath: string, searchString: string | RegExp): boolean {,
-  try {
-    if (!fs.existsSync(filePath)) return false;
 
     const content = fs.readFileSync(filePath, 'utf8');
 
@@ -246,14 +199,10 @@ function fileContains(filePath: string, searchString: string | RegExp): boolean 
     } else {
       return searchString.test(content);
     }
-  } catch (error) {
-    /* SECURITY: Console statement removed */,
-    return false
-  }
+  } catch (error) { console.error(error); }
 }
 
 function findFilesWithPattern(startPath: string, pattern: RegExp): string[] {,
-  let fileResults: string[] = [];
 
   if (!fs.existsSync(startPath)) {
     return fileResults;
@@ -272,9 +221,7 @@ function findFilesWithPattern(startPath: string, pattern: RegExp): string[] {,
         fileResults.push(filename);
       }
     }
-  } catch (error) {
-    /* SECURITY: Console statement removed */,
-  }
+  } catch (error) { console.error(error); }
 
   return fileResults;
 }
@@ -282,9 +229,7 @@ function findFilesWithPattern(startPath: string, pattern: RegExp): string[] {,
 function getFileContent(filePath: string): string | null {,
   try {
     return fs.readFileSync(filePath, 'utf8');
-  } catch (error) {
-    return null;
-  }
+  } catch (error) { console.error(error); }
 }
 
 // Main GDPR validation functions
@@ -739,7 +684,6 @@ function generateGDPRComplianceReport(): void {
 
   /* SECURITY: Console statement removed */);
   /* SECURITY: Console statement removed */,
-  /* SECURITY: Console statement removed */);
   /* SECURITY: Console statement removed */,
   /* SECURITY: Console statement removed */,
   /* SECURITY: Console statement removed */,
@@ -747,7 +691,7 @@ function generateGDPRComplianceReport(): void {
   /* SECURITY: Console statement removed */,
   /* SECURITY: Console statement removed */,
   /* SECURITY: Console statement removed */,
-  /* SECURITY: Console statement removed */,}`);
+  /* SECURITY: Console statement removed */,
 
   // Compliance status
   let _status = '🔴 NON-COMPLIANT'
@@ -769,16 +713,12 @@ function generateGDPRComplianceReport(): void {
   /* SECURITY: Console statement removed */,
   /* SECURITY: Console statement removed */,
 
-  // Failed checks by category
-  if (results.failedChecks.length > 0) {
-    /* SECURITY: Console statement removed *//* SECURITY: Console statement removed */);
-
     const categories = ['consent', 'rights', 'security', 'governance', 'transfers', 'processing'] as const;
 
     for (const category of categories) {
       const categoryFailures = results.failedChecks.filter(f => f.category === category);
       if (categoryFailures.length > 0) {
-        /* SECURITY: Console statement removed */,}:`);
+        /* SECURITY: Console statement removed */,
         categoryFailures.forEach((check, index) => {
           const _severityIcon = check.severity === 'critical' ? '🚨' :
                               check.severity === 'high' ? '⚠️' : '⚡';
@@ -789,7 +729,6 @@ function generateGDPRComplianceReport(): void {
             /* SECURITY: Console statement removed */,
           }
           /* SECURITY: Console statement removed */,
-        });
       }
     }
   }
@@ -804,7 +743,6 @@ function generateGDPRComplianceReport(): void {
       /* SECURITY: Console statement removed */,
       /* SECURITY: Console statement removed */,
       /* SECURITY: Console statement removed */,
-    });
   }
 
   // Healthcare-specific GDPR notes
@@ -822,14 +760,11 @@ function generateGDPRComplianceReport(): void {
     // Ensure directory exists
     const dir = path.dirname(reportPath)
     if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true ,});
+      fs.mkdirSync(dir, { recursive: true ,
     }
 
     fs.writeFileSync(reportPath, JSON.stringify(results, null, 2));
-    /* SECURITY: Console statement removed */,
-  } catch (error) {
-    /* SECURITY: Console statement removed */,
-  }
+    /* SECURITY: Console statement removed */, }
 
   /* SECURITY: Console statement removed */);
 
@@ -854,10 +789,7 @@ function main(): void {
     validateDPIA();
     validateDataProtectionOfficer(),
     generateGDPRComplianceReport();
-  } catch (error) {
-    /* SECURITY: Console statement removed */,
-    process.exit(1)
-  }
+  } catch (error) { console.error(error); }
 }
 
 // Execute if run directly

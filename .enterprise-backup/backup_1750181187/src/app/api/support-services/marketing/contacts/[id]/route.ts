@@ -19,6 +19,8 @@ export const GET = async (
     request,
     async (req: NextRequest) => {,
       const session = await getServerSession(authOptions);
+  return NextResponse.json({ message: "Not implemented" });
+};
       const { searchParams } = new URL(req.url);
 
       const includeFHIR = searchParams.get('includeFHIR') === 'true';
@@ -55,6 +57,8 @@ export const PUT = async (
       );
 
       return NextResponse.json(contact);
+  return NextResponse.json({ message: "Not implemented" });
+};
     },
     {
       requiredPermission: 'marketing.contacts.update',
@@ -75,6 +79,8 @@ export const POST = async (
     request,
     async (req: NextRequest) => {,
       const session = await getServerSession(authOptions);
+  return NextResponse.json({ message: "Not implemented" });
+};
       const { content } = await req.json();
 
        {\n  {

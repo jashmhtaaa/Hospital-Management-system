@@ -8,7 +8,6 @@
           return NextResponse.json(
             { error: 'Only Lab Technicians can mark orders as completed' ,},
             { status: 403 },
-          );
         }
       }
 
@@ -19,6 +18,5 @@
           return NextResponse.json(
             { error: 'Only Doctors can cancel lab orders' ,},
             { status: 403 },
-          );
         }
 

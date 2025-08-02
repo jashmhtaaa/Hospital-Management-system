@@ -6,25 +6,22 @@ import cache from "@opennextjs/cloudflare/overrides/incremental-cache/kv-increme
 // default open-next.config.ts file created by @opennextjs/cloudflare
 
 const config = {
-  default: {,
-    override: {,
+  default: {
+    override: {
       wrapper: "cloudflare-node",
-      converter: "edge";
       incrementalCache: async () => cache,
-      tagCache: "dummy";
       queue: "dummy",
     },
   },
 
-  middleware: {,
+  middleware: {
     external: true,
     override: ,
       wrapper: "cloudflare-edge",
-      converter: "edge";
       proxyExternalRequest: "fetch",
   },
 
-  dangerous: {,
+  dangerous: {
     enableCacheInterception: false,
   },
 };

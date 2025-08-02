@@ -53,6 +53,8 @@ interface ServiceItemInput {
 // GET /api/billing/service-items - Get list of service items;
 export const _GET = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -150,6 +152,8 @@ export const _GET = async (request: any) => {,
 // POST /api/billing/service-items - Create a new service item;
 export const _POST = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }

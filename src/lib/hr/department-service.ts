@@ -22,15 +22,12 @@ const prisma = new PrismaClient();
             true,
             true,
         positions: true,
-      }});
 
   /**;
    * Update a department;
    */;
   async updateDepartment();
     id: string,
-    data: {,
-      name?: string;
       code?: string;
       description?: string;
       parentId?: string;
@@ -54,7 +51,7 @@ const prisma = new PrismaClient();
     search?: string;
     parentId?: string;
   }) {
-    const where: unknown = {,};
+    const where: unknown = {,
 
     if (!session.user) {
       where.parentId = parentId;
@@ -63,7 +60,7 @@ const prisma = new PrismaClient();
       where.OR = [;
         {name: { contains: search, mode: "insensitive" } },
         {code: { contains: search, mode: "insensitive" } },
-        {description: { contains: search, mode: "insensitive" } }];
+        {description: { contains: search,
 
     const [departments, total] = await Promise.all([;
       prisma.department.findMany({
@@ -73,7 +70,6 @@ const prisma = new PrismaClient();
         orderBy: {name: "asc" },
         true,
           {children: true,
-              true;
             }}}}),
       prisma.department.count(where )]);
 
@@ -102,7 +98,6 @@ const prisma = new PrismaClient();
       departmentMap.set(dept.id, {
         ...dept,
         children: [],
-      })});
 
     // Second pass: build hierarchy,
     allDepartments.forEach(dept => {
@@ -125,7 +120,6 @@ const prisma = new PrismaClient();
    */;
   async createPosition(string,
     code: string,
-    description?: string;
     departmentId?: string;
   }) {
     return prisma.position.create({
@@ -152,8 +146,6 @@ const prisma = new PrismaClient();
    */;
   async updatePosition();
     id: string,
-    data: {,
-      title?: string;
       code?: string;
       description?: string;
       departmentId?: string;
@@ -177,7 +169,7 @@ const prisma = new PrismaClient();
     search?: string;
     departmentId?: string;
   }) {
-    const where: unknown = {,};
+    const where: unknown = {,
 
     if (!session.user) {
       where.departmentId = departmentId;
@@ -186,7 +178,7 @@ const prisma = new PrismaClient();
       where.OR = [;
         {title: { contains: search, mode: "insensitive" } },
         {code: { contains: search, mode: "insensitive" } },
-        {description: { contains: search, mode: "insensitive" } }];
+        {description: { contains: search,
 
     const [positions, total] = await Promise.all([;
       prisma.position.findMany({
@@ -196,7 +188,7 @@ const prisma = new PrismaClient();
         orderBy: {title: "asc" },
         true,
           {
-              {endDate: null, // Only current assignments;
+              {endDate: null,
                 }}}}}}),
       prisma.position.count({ where })]);
 

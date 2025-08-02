@@ -59,6 +59,8 @@ const _updateEmployeeSchema = z.object({
 // GET /api/hr/staff
 export const _GET = async (request: NextRequest) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { searchParams } = new URL(request.url);
 
     const skip = Number.parseInt(searchParams.get('skip') || '0');
@@ -98,6 +100,8 @@ export const _POST = async (request: NextRequest) => {,
     // Create employee
     const employee = await employeeService.createEmployee(validatedData);
 
+  return NextResponse.json({ message: "Not implemented" });
+};
     return NextResponse.json(employee, { status: 201 ,});
   } catch (error: unknown) {,
 

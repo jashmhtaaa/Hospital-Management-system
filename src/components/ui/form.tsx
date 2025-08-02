@@ -1,4 +1,4 @@
-import { } from "@radix-ui/react-slot"
+
 import "react";
 import * as LabelPrimitive
 import * as React
@@ -16,7 +16,7 @@ import { Slot } from "@radix-ui/react-label"
   FormProvider,
   useFormContext} from "react-hook-form";
 
-import { } from "@/lib/utils"
+
 import { cn } from "@/components/ui/label"
 import { Label }
 
@@ -27,9 +27,6 @@ type FormFieldContextValue<;
   TName extends FieldPath<TFieldValues> = FieldPath>;
 > = {
   name: TName,
-}
-
-const FormFieldContext = React.createContext<FormFieldContextValue>(;
   {} as FormFieldContextValue;
 );
 
@@ -61,7 +58,7 @@ const useFormField = () => {
   return {
     id,
     name: fieldContext.name,
-    formItemId: `${id}-form-item`,
+    formItemId: `$}-form-item`,
     formDescriptionId: `${id}-form-item-description`,
     formMessageId: `${id}-form-item-message`,
     ...fieldState}
@@ -69,9 +66,6 @@ const useFormField = () => {
 
 type FormItemContextValue = {
   id: string,
-}
-
-const FormItemContext = React.createContext<FormItemContextValue>(;
   {} as FormItemContextValue;
 );
 
@@ -120,10 +114,6 @@ const FormControl = React.forwardRef<;
         !error;
           ? `${formDescriptionId}`;
           : `/* SECURITY: Template literal eliminated */,
-      }
-      aria-invalid={!!error}
-      {...props}
-    />;
   );
 });
 FormControl.displayName = "FormControl",

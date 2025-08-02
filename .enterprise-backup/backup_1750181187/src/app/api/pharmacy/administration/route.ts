@@ -65,6 +65,8 @@ export const POST = async (req: NextRequest) => {,
     const validationResult = validateAdministrationRequest(data);
      {\n  {
       return NextResponse.json(
+  return NextResponse.json({ message: "Not implemented" });
+};
         { error: 'Validation failed', details: validationResult.errors ,},
         { status: 400 },
       );
@@ -130,6 +132,8 @@ export const GET = async (req: NextRequest, { params }: { params: { patientId: s
     // Check authorization
     const authHeader = req.headers.get('authorization');
      {\n  {
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
@@ -172,6 +176,8 @@ export const verifyAdministration = async (req: NextRequest) => {,
     const validationResult = validateBarcodeVerificationRequest(data);
      {\n  {
       return NextResponse.json(
+  return NextResponse.json({ message: "Not implemented" });
+};
         { error: 'Validation failed', details: validationResult.errors ,},
         { status: 400 },
       );
@@ -219,6 +225,8 @@ export const recordMissedDose = async (req: NextRequest) => {,
     const data = await req.json();
      {\n  {
       return NextResponse.json(
+  return NextResponse.json({ message: "Not implemented" });
+};
         { error: 'Missing required fields' ,},
         { status: 400 },
       );
@@ -284,6 +292,8 @@ export const getAdministrationSchedule = async (req: NextRequest, { params }: { 
     // Check authorization
     const authHeader = req.headers.get('authorization');
      {\n  {
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
@@ -452,6 +462,8 @@ export const recordPRNAdministration = async (req: NextRequest) => {,
     const data = await req.json();
      {\n  {
       return NextResponse.json(
+  return NextResponse.json({ message: "Not implemented" });
+};
         { error: 'Missing required fields' ,},
         { status: 400 },
       );
@@ -531,6 +543,8 @@ export const recordPatientEducation = async (req: NextRequest) => {,
     const data = await req.json();
      {\n  {
       return NextResponse.json(
+  return NextResponse.json({ message: "Not implemented" });
+};
         { error: 'Missing required fields' ,},
         { status: 400 },
       );
@@ -591,6 +605,8 @@ export const recordAdverseReaction = async (req: NextRequest) => {,
     const data = await req.json();
      {\n  {
       return NextResponse.json(
+  return NextResponse.json({ message: "Not implemented" });
+};
         { error: 'Missing required fields' ,},
         { status: 400 },
       );
@@ -659,6 +675,8 @@ export const getDueMedications = async (req: NextRequest) => {,
     // Check authorization
     const authHeader = req.headers.get('authorization');
      {\n  {
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
@@ -721,6 +739,8 @@ export const getOverdueMedications = async (req: NextRequest) => {,
     // Check authorization
     const authHeader = req.headers.get('authorization');
      {\n  {
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
@@ -785,6 +805,8 @@ export const generateAdministrationReports = async (req: NextRequest) => {,
     // Check authorization
     const authHeader = req.headers.get('authorization');
      {\n  {
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 

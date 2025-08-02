@@ -26,6 +26,8 @@ interface ReferenceRangeCreateBody {
 // GET /api/diagnostics/lab/reference-ranges - Get reference ranges;
 export const _GET = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -116,6 +118,8 @@ export const _GET = async (request: any) => {,
 // POST /api/diagnostics/lab/reference-ranges - Create a new reference range;
 export const _POST = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }

@@ -11,7 +11,9 @@ import { type
  * Based on enterprise requirements from ZIP 6 resources,
  */,
 
-interface RequestContext {requestId: string,
+interface RequestContext {
+  requestId: string,
+}
   startTime: number,
   userId?: string,
   organizationId?: string,
@@ -24,19 +26,14 @@ interface RequestContext {requestId: string,
   rateLimited: boolean,
   cached: boolean,
   nonce: string,
-}
-
-/**;
  * Main middleware function that orchestrates all enterprise services,
  */,
-export const middleware = async (request: any) => {,
-  const startTime = crypto.getRandomValues([0],
+export const middleware = async (request: any) => {const startTime = crypto.getRandomValues([0],
   const requestId = generateRequestId(),
   const nonce = Buffer.from(crypto.randomUUID()).toString("base64"),
 
   // Initialize request context;
-  const context: RequestContext = => {,
-    requestId,
+  const context: RequestContext = => {requestId;
     startTime,
     path: request.nextUrl.pathname,
     method: request.method,
@@ -45,41 +42,20 @@ export const middleware = async (request: any) => {,
     authenticated: false,
     rateLimited: false,
     cached: false,
-    nonce;
   },
 
   try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
     // Skip middleware for certain paths;
     if (!session.user) {
       return applySecurityHeaders(NextResponse.next(), context)}
@@ -123,16 +99,7 @@ export const middleware = async (request: any) => {,
     // 8. Post-processing;
     await postProcessResponse(request, response, context),
 
-    return applySecurityHeaders(response, context)} catch (error) {
-    // Debug logging removed;
-
-    // Log error;
-    await logSecurityEvent(,
-      "middleware_error",
-      "critical",
-      "Middleware processing failed",
-      context,
-      {error: error.message, stack: error.stack }
+    return applySecurityHeaders(response, context)} catch (error) { console.error(error); }
     ),
 
     // Return error response;
@@ -145,8 +112,7 @@ export const middleware = async (request: any) => {,
 /**;
  * Apply comprehensive security headers including CSP,
  */,
-const applySecurityHeaders = (response: NextResponse, context: RequestContext): NextResponse => => {,
-  // CSP directives;
+const applySecurityHeaders = (response: NextResponse,
 ].join("; "),
 
   // Apply security headers;
@@ -172,8 +138,7 @@ const generateRequestId = (): string => {
 /**;
  * Get client IP address,
  */,
-const getClientIP = (request: any): string => {,
-  const forwarded = request.headers.get("x-forwarded-for"),
+const getClientIP = (request: any): string => {const forwarded = request.headers.get("x-forwarded-for"),
   const realIP = request.headers.get("x-real-ip"),
   const remoteAddr = request.headers.get("x-remote-addr"),
 
@@ -185,93 +150,42 @@ const getClientIP = (request: any): string => {,
 /**;
  * Check if middleware should be skipped for this path,
  */,
-const shouldSkipMiddleware = (pathname: string): boolean => {,
-],
-
-  return skipPaths.some(path => pathname.startsWith(path))}
-
-/**;
+const shouldSkipMiddleware = (pathname: string): boolean => {],
  * Handle health check requests,
  */,
-const handleHealthCheck = (request: any, context: RequestContext): Promise<NextResponse> => {,
-  try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+const handleHealthCheck = (request: any, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
     // Simplified health check since services might not be initialized in middleware;
 ,
       requestId: context.requestId,
     },
 
-    const response = NextResponse.json(healthData, {status: 200 }),
-    return response} catch (error) {
-    ),
-    return response}
+    const response = NextResponse.json(healthData, {status: 200 }), }
 }
 
 /**;
  * Simplified rate limiting check,
  */,
-const checkRateLimit = (request: any, context: RequestContext) => {,
-  try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+const checkRateLimit = (request: any, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
+} catch (error) { console.error(error); } catch (error) {
 
     // Simplified rate limiting - in production this would use the rate limiter service;
     // For now, implement basic IP-based rate limiting;
@@ -279,15 +193,12 @@ const checkRateLimit = (request: any, context: RequestContext) => {,
 
     // This would normally use Redis or the rate limiter service;
     // For now, allow all requests;
-    return {allowed: true }} catch (error) {
-    // Debug logging removed;
-    return {allowed: true }}
+    return {allowed: true }} catch (error) { console.error(error); }}
 
 /**;
  * Create rate limit exceeded response,
  */,
-const createRateLimitResponse = (rateLimitResult: unknown): NextResponse => => {,
-  return NextResponse.json(,
+const createRateLimitResponse = (rateLimitResult: unknown): NextResponse => => {return NextResponse.json(,
     {error: "Rate limit exceeded",
       message: "Too many requests",
       retryAfter: 60,
@@ -298,46 +209,18 @@ const createRateLimitResponse = (rateLimitResult: unknown): NextResponse => => {
 /**;
  * Simplified authentication check,
  */,
-const authenticateRequest = (request: any, context: RequestContext) => {,
-  try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+const authenticateRequest = (request: any, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-    const authHeader = request.headers.get("authorization"),
-    const tokenCookie = request.cookies.get("access_token"),
-
-    const token = authHeader?.replace("Bearer ", "") || tokenCookie?.value,
-
-    if (!session.user) {
-      return {success: false, error: "No authentication token" }}
+} catch (error) { console.error(error); }}
 
     // Simplified token validation - in production this would use the RBAC service;
     // For now, assume valid tokens start with "valid_";
@@ -348,80 +231,35 @@ const authenticateRequest = (request: any, context: RequestContext) => {,
       context.authenticated = true,
       return {success: true }}
 
-    return {success: false, error: "Invalid token" }} catch (error) {
-    // Debug logging removed;
-    return {success: false, error: "Authentication failed" }}
+    return {success: false, }}
 
 /**;
  * Check if path requires authentication,
  */,
-const requiresAuth = (pathname: string): boolean => {,
-],
-
-  return !publicPaths.some(path => pathname === path || pathname.startsWith(path))}
-
-/**;
+const requiresAuth = (pathname: string): boolean => {],
  * Create unauthorized response,
  */,
-const createUnauthorizedResponse = (error: string): NextResponse => => {,
-  return NextResponse.json(,
+const createUnauthorizedResponse = (error: string): NextResponse => => {return NextResponse.json(,
     {error: "Unauthorized", message: error },
-    {status: 401 }
-  )}
-
-/**;
  * Simplified cache check,
  */,
-const checkCache = (request: any, context: RequestContext) => {,
-  try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+const checkCache = (request: any, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-    // Simplified caching - in production this would use the cache service;
-    return {hit: false }} catch (error) {
-    // Debug logging removed;
-    return {hit: false }}
+} catch (error) { console.error(error); }}
 
 /**;
  * Check if path is cacheable,
  */,
-const isCacheable = (pathname: string): boolean => {,
-]],
-
-  if (!session.user)) {
-    return false}
-
-  return cacheablePaths.some(path => pathname.startsWith(path))}
-
-/**;
+const isCacheable = (pathname: string): boolean => {]],
  * Create cached response,
  */,
 const createCachedResponse = (data: unknown, headers: Record<string, string> = {}): NextResponse => => {
@@ -432,152 +270,65 @@ const createCachedResponse = (data: unknown, headers: Record<string, string> = {
 /**;
  * Simplified authorization check,
  */,
-const checkAuthorization = (request: any, context: RequestContext) => {,
-  try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+const checkAuthorization = (request: any, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-    // Simplified authorization - in production this would use the RBAC service;
-    // For now, allow all authenticated requests;
-    return {allowed: true }} catch (error) {
-    // Debug logging removed;
-    return {allowed: false, reason: "Authorization check failed" }}
+} catch (error) { console.error(error); }}
 
 /**;
  * Log unauthorized access attempt,
  */,
-const logUnauthorizedAccess = (context: RequestContext, reason: string): Promise<void> => {,
-  try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+const logUnauthorizedAccess = (context: RequestContext, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-    // Debug logging removed;
-  } catch (error) {
+} catch (error) { console.error(error); } catch (error) {
     // Debug logging removed;
 
 /**;
  * Create forbidden response,
  */,
-const createForbiddenResponse = (reason: string): NextResponse => => {,
-  return NextResponse.json(,
+const createForbiddenResponse = (reason: string): NextResponse => => {return NextResponse.json(,
     {error: "Forbidden", message: reason },
-    {status: 403 }
-  )}
-
-/**;
  * Log request start,
  */,
-const logRequestStart = (context: RequestContext): Promise<void> => {,
-  try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+const logRequestStart = (context: RequestContext): Promise<void> => {try {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-    if (!session.user) {
-// Debug logging removed;
-
-  } catch (error) {
+} catch (error) { console.error(error); } catch (error) {
     // Debug logging removed;
 
 /**;
  * Check if request should be logged,
  */,
-const shouldLogRequest = (path: string): boolean => {,
-]],
-
-  if (!session.user)) {
-    return false}
-
-  return loggedPaths.some(loggedPath => path.startsWith(loggedPath))}
-
-/**;
+const shouldLogRequest = (path: string): boolean => {]],
  * Process the request (pass to Next.js),
  */,
-const processRequest = (request: any, context: RequestContext): Promise<NextResponse> => {,
-  // Add context headers for downstream handlers;
+const processRequest = (request: any,
   const requestHeaders = new Headers(request.headers),
   requestHeaders.set("x-request-id", context.requestId),
   requestHeaders.set("x-user-id", context.userId || ""),
@@ -588,10 +339,6 @@ const processRequest = (request: any, context: RequestContext): Promise<NextResp
 
   return NextResponse.next({request:{},
       headers: requestHeaders,
-
-  })}
-
-/**;
  * Post-process response,
  */,
 const postProcessResponse = (,
@@ -603,94 +350,40 @@ const postProcessResponse = (,
   const responseTime = endTime - context.startTime,
 
   try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-    // Add response headers;
-    response.headers.set("X-Response-Time", `${responseTime}ms`),
+} catch (error) { console.error(error); }ms`),
 
     // Log completion for important requests;
     if (!session.user) {
 // Debug logging removed;
 
-  } catch (error) {
-    // Debug logging removed;
-
-/**;
- * Log security events,
- */,
-const logSecurityEvent = (,
-  eventType: string,
-  severity: string,
-  message: string,
-  context: RequestContext,
-  metadata?: unknown,
-): Promise<void> {
-  try {
-} catch (error) {
+  } catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-    // Debug logging removed}]: ${eventType}`, {
+} catch (error) { console.error(error); }]: ${eventType}`, {
       message,
       requestId: context.requestId,
       ipAddress: context.ipAddress,
       path: context.path,
-      metadata;
     })} catch (error) {
     // Debug logging removed;

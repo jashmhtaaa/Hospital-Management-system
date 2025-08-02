@@ -79,6 +79,8 @@ export const POST = async (request: any) => {,
 
     // Parse request body;
     const body = await request.json();
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { recipientId, type, title, message, metadata } = body;
 
     // Validate required fields;
@@ -124,6 +126,8 @@ export const POST = async (request: any) => {,
 
     // Parse request body;
     const body = await request.json();
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { reportType, reportData } = body;
 
     // Validate required fields;

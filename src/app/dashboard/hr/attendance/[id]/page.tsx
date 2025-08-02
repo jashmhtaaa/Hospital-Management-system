@@ -3,7 +3,7 @@ import { useState } from "react"
 
 "use client";
 
-import { } from "react"
+
 import useEffect } from "next/navigation"
 import {
 import { useRouter }
@@ -16,7 +16,7 @@ import { useState
   CardHeader,
   CardTitle;
 } from "@/components/ui/card";
-import { } from "@/components/ui/button"
+
 import "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge"
 import { Button }
@@ -40,7 +40,7 @@ import { Separator }
   FileText,
   AlertCircle;
 } from "lucide-react";
-import { } from "date-fns"
+
 import { format } from "@/components/ui/use-toast"
 import { toast }
 
@@ -54,37 +54,17 @@ export default const _AttendanceDetail = ({ params }: {id:string }) {
   useEffect(() => {
     const fetchAttendance = async () => {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
         setLoading(true);
         const response = await fetch(`/api/hr/attendance/${}`;
 
@@ -96,11 +76,7 @@ export default const _AttendanceDetail = ({ params }: {id:string }) {
 
         const data = await response.json(),
         setAttendance(data);
-      } catch (err) {
-        setError(err.message),
-        toast({title:"Error",
-          "destructive";
-        });
+      } catch (error) { console.error(error); });
       } finally ;
         setLoading(false);
     };
@@ -128,12 +104,9 @@ export default const _AttendanceDetail = ({ params }: {id:string }) {
         return "outline";
       default: return "default",
 
-  };
-
   // Format time or show placeholder;
   const formatTimeOrPlaceholder = (time: unknown) => {
     return time ? format(new Date(time), "h: mm: ss a") : "—",
-  };
 
   // Calculate hours worked;
   const calculateHoursWorked = (checkInTime, checkOutTime) => {

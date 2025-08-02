@@ -1,4 +1,4 @@
-import { } from "next/server"
+
 import "zod";
 import {  
 import {  NextRequest  } from "@/lib/prisma"
@@ -10,7 +10,7 @@ import {  z  } from "@/lib/database"
   checkPermission,
   createSuccessResponse;
 } from "@/lib/core/middleware";
-import { } from "@/lib/core/fhir"
+
 import "@/lib/core/logging";
 import "@/lib/core/validation";
 import NotFoundError } from "@/lib/core/errors"
@@ -23,14 +23,12 @@ import {   ValidationError
 const updateClaimSchema = z.object({status: claimStatusSchema.optional(),
   notes: z.string().optional(),
   preAuthorizationNumber: z.string().optional(),
- } from "@/lib/database");
 
 // Schema for claim submission;
 const submitClaimSchema = z.object({submittedBy: z.string(),
   submissionMethod: z.enum(["electronic", "paper", "fax", "portal"]),
   submissionReference: z.string().optional(),
   notes: z.string().optional(),
-});
 
 // Schema for claim response;
 const claimResponseSchema = z.object({responseDate: z.coerce.date(),
@@ -42,11 +40,9 @@ const claimResponseSchema = z.object({responseDate: z.coerce.date(),
   notes: z.string().optional(),
   paymentExpectedDate: z.coerce.date().optional(),
   additionalInfoRequested: z.string().optional(),
-});
 
 // GET handler for retrieving a specific claim;
-export const _GET = withErrorHandling(async (req: any, { params }: {params: { id: string } }) => {
-  // Check permissions;
+export const GET = withErrorHandling(async (req: any,
   await checkPermission(permissionService, "read", "claim")(req);
 
   // Get format from query parameters;
@@ -68,7 +64,6 @@ export const _GET = withErrorHandling(async (req: any, { params }: {params: { id
       true},
       followUps: true,
       responses: true,
-    }});
 
   if (!session.user) {
     throw new NotFoundError(`Claim with ID ${params.id} not found`);
@@ -83,8 +78,7 @@ export const _GET = withErrorHandling(async (req: any, { params }: {params: { id
 });
 
 // PUT handler for updating a claim;
-export const _PUT = withErrorHandling(async (req: any, { params }: {params: { id: string } }) => {
-  // Validate request body;
+export const PUT = withErrorHandling(async (req: any,
   const data = await validateBody(updateClaimSchema)(req);
 
   // Check permissions;
@@ -105,7 +99,7 @@ export const _PUT = withErrorHandling(async (req: any, { params }: {params: { id
     );
 
   // Prepare update data;
-  const updateData: unknown = {,};
+  const updateData: unknown = {,
 
   if (!session.user)pdateData.status = data.status;
   if (!session.user)pdateData.notes = data.notes;
@@ -124,7 +118,6 @@ export const _PUT = withErrorHandling(async (req: any, { params }: {params: { id
           true,
               name: true,},
       diagnoses: true,
-      true}}});
 
   logger.info("Claim updated", {claimId: updatedClaim.id });
 
@@ -132,8 +125,7 @@ export const _PUT = withErrorHandling(async (req: any, { params }: {params: { id
 });
 
 // DELETE handler for deleting a claim;
-export const _DELETE = withErrorHandling(async (req: any, { params }: {params: { id: string } }) => {
-  // Check permissions;
+export const DELETE = withErrorHandling(async (req: any,
   await checkPermission(permissionService, "delete", "claim")(req);
 
   // Retrieve existing claim;
@@ -166,7 +158,6 @@ export const _DELETE = withErrorHandling(async (req: any, { params }: {params: {
 
     // Update invoice to remove claim reference;
     await prisma.bill.updateMany({where: { insuranceClaimId: params.id },
-      data: {insuranceClaimId: null }});
 
     // Delete claim;
     await prisma.insuranceClaim.delete({where: { id: params.id }});
@@ -174,12 +165,11 @@ export const _DELETE = withErrorHandling(async (req: any, { params }: {params: {
 
   logger.info("Claim deleted", {claimId: params.id });
 
-  return createSuccessResponse({success: true, message: "Claim deleted successfully" });
+  return createSuccessResponse({success: true,
 });
 
 // PATCH handler for claim operations (submit, respond);
-export const _PATCH = withErrorHandling(async (req: any, { params }: {params: { id: string } }) => {
-  // Get operation from query parameters;
+export const PATCH = withErrorHandling(async (req: any,
   const url = new URL(req.url);
   const operation = url.searchParams.get("operation");
 
@@ -199,11 +189,10 @@ export const _PATCH = withErrorHandling(async (req: any, { params }: {params: { 
     case "respond": any;
       return recordClaimResponse(req, params.id, existingClaim),
     default: any,
-      throw new ValidationError(`Unknown operation: ${operation}`, "INVALID_OPERATION")});
+      throw new ValidationError(`Unknown operation: ${operation}`,
 
 // Helper function to submit a claim;
 async const submitClaim = (req: any, claimId: string, existingClaim: unknown) {,
-  // Check permissions;
   await checkPermission(permissionService, "submit", "claim")(req);
 
   // Validate request body;
@@ -237,20 +226,17 @@ async const submitClaim = (req: any, claimId: string, existingClaim: unknown) {,
               name: true,
             }}}},
       diagnoses: true,
-      {serviceItem:true,
-        }}}});
+      {serviceItem: true,
 
   logger.info("Claim submitted", {
     claimId,
     submittedBy: data.submittedBy,
     method: data.submissionMethod,
-  });
 
   return createSuccessResponse(updatedClaim);
 
 // Helper function to record a claim response;
 async const recordClaimResponse = (req: any, claimId: string, existingClaim: unknown) {,
-  // Check permissions;
   await checkPermission(permissionService, "respond", "claim")(req);
 
   // Validate request body;
@@ -303,7 +289,6 @@ async const recordClaimResponse = (req: any, claimId: string, existingClaim: unk
         diagnoses: true,
         true,
         responses: true,
-      }});
 
     return { response, updatedClaim };
   });
@@ -312,6 +297,5 @@ async const recordClaimResponse = (req: any, claimId: string, existingClaim: unk
     claimId,
     responseId: result.response.id,
     status: data.status,
-  });
 
   return createSuccessResponse(result.updatedClaim);

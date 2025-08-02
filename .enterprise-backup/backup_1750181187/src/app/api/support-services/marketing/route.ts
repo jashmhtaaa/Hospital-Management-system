@@ -61,6 +61,8 @@ export const _GET = async (request: NextRequest) => {,
       const result = await marketingService.getCampaigns(validatedParams);
 
       return NextResponse.json(result);
+  return NextResponse.json({ message: "Not implemented" });
+};
     },
     {
       requiredPermission: 'marketing:read',
@@ -93,6 +95,8 @@ export const _POST = async (request: NextRequest) => {,
         userId;
       );
 
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json(campaign, { status: 201 ,});
     },
     {
@@ -112,6 +116,8 @@ export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { i
       const campaign = await marketingService.getCampaignById(params.id, includeFHIR);
 
       return NextResponse.json(campaign);
+  return NextResponse.json({ message: "Not implemented" });
+};
     },
     {
       requiredPermission: 'marketing:read',
@@ -146,6 +152,8 @@ export const _PATCH = async (request: NextRequest, { params }: { params: { id: s
       );
 
       return NextResponse.json(campaign);
+  return NextResponse.json({ message: "Not implemented" });
+};
     },
     {
       requiredPermission: 'marketing:update',
@@ -166,6 +174,8 @@ export const _DELETE = async (request: NextRequest, { params }: { params: { id: 
       // Delete campaign
       await marketingService.deleteCampaign(params.id, userId);
 
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ success: true ,});
     },
     {
@@ -184,6 +194,8 @@ export const _GET_ANALYTICS = async (request: NextRequest, { params }: { params:
       const analytics = await marketingService.getCampaignAnalytics(params.id);
 
       return NextResponse.json(analytics);
+  return NextResponse.json({ message: "Not implemented" });
+};
     },
     {
       requiredPermission: 'marketing:analytics',
@@ -214,6 +226,8 @@ export const _POST_CHANNEL = async (request: NextRequest, { params }: { params: 
         userId;
       );
 
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json(channel, { status: 201 ,});
     },
     {
@@ -239,6 +253,8 @@ export const _POST_SEGMENT = async (request: NextRequest, { params }: { params: 
         userId;
       );
 
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json(result, { status: 201 ,});
     },
     {
@@ -260,6 +276,8 @@ export const _GET_CONTACTS = async (request: NextRequest) => {,
          searchParams.get('segmentId') || undefined,
          Number.parseInt(searchParams.get('page') || '1'),
         limit: parseInt(searchParams.get('limit') || '10'),
+  return NextResponse.json({ message: "Not implemented" });
+};
       };
 
       // Get marketing contacts with filters
@@ -288,6 +306,8 @@ export const _GET_OVERVIEW_ANALYTICS = async (request: NextRequest) => {,
       const result = await marketingService.getMarketingOverviewAnalytics(fromDate, toDate);
 
       return NextResponse.json(result);
+  return NextResponse.json({ message: "Not implemented" });
+};
     },
     {
       requiredPermission: 'marketing:analytics',

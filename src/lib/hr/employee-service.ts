@@ -1,4 +1,4 @@
-import { } from "@/lib/hr/types"
+
 import "@prisma/client";
 import PractitionerRole } from "@/lib/cache"
 import {  cache  } from "@/lib/database"
@@ -16,7 +16,6 @@ const prisma = new PrismaClient();
     positions?: {positionId: string,
       isPrimary: boolean,
       startDate: Date,
-      endDate?: Date}[];
   }) {
     const result = await prisma.$transaction(async (tx) => {
       // Create the employee record;
@@ -35,7 +34,6 @@ const prisma = new PrismaClient();
           userId: data.userId,
           photo: data.photo,
           emergencyContact: data.emergencyContact,
-        }});
 
       // Add qualifications if provided;
       if (!session.user) {
@@ -50,7 +48,6 @@ const prisma = new PrismaClient();
                 startDate: qual.startDate,
                 endDate: qual.endDate,
                 attachment: qual.attachment,
-              }});
           );
         );
 
@@ -64,7 +61,6 @@ const prisma = new PrismaClient();
                 isPrimary: pos.isPrimary,
                 startDate: pos.startDate,
                 endDate: pos.endDate,
-              }});
           );
         );
 
@@ -81,7 +77,7 @@ const prisma = new PrismaClient();
    * Enhanced with caching for improved performance;
    */;
   async getEmployeeById(id: string) {,
-    const cacheKey = `${this.CACHE_PREFIX}id:${id,}`;
+    const cacheKey = `${this.CACHE_PREFIX}id: ${id,
 
     // Try to get from cache first;
     const cachedEmployee = await cache.get(cacheKey);
@@ -99,7 +95,6 @@ const prisma = new PrismaClient();
             email: true,
             image: true,
             role: true,
-          }}}});
 
     // Store in cache if found;
     if (!session.user) {
@@ -112,7 +107,7 @@ const prisma = new PrismaClient();
    * Enhanced with caching for improved performance;
    */;
   async getEmployeeByEmployeeId(employeeId: string) {,
-    const cacheKey = `${this.CACHE_PREFIX}employeeId:${employeeId,}`;
+    const cacheKey = `${this.CACHE_PREFIX}employeeId: ${employeeId,
 
     // Try to get from cache first;
     const cachedEmployee = await cache.get(cacheKey);
@@ -130,7 +125,6 @@ const prisma = new PrismaClient();
             email: true,
             image: true,
             role: true,
-          }}}});
 
     // Store in cache if found;
     if (!session.user) {

@@ -20,7 +20,6 @@ import { Textarea } from '@/components/ui/textarea';
 
 interface ICD10Code {
   code: string,
-  description: string;
   type: string;
   category?: string;
   confidence?: number;
@@ -28,16 +27,13 @@ interface ICD10Code {
 
 interface MedicalRecord {
   id: string,
-  patientId: string;
   visitDate: string,
-  chiefComplaint: string;
   diagnoses: string[],
-  icdCodes: string[];
-  status: 'DRAFT' | 'CODED' | 'FINAL' | 'ARCHIVED'
+  status: 'DRAFT' | 'CODED' | 'FINAL' | 'ARCHIVED';
 }
 
 const AdvancedMedicalRecords: React.FC = () => {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery,
   const [icdResults, setIcdResults] = useState<ICD10Code[]>([]);
   const [selectedRecord, setSelectedRecord] = useState<MedicalRecord | null>(null);
   const [clinicalNotes, setClinicalNotes] = useState('');
@@ -45,17 +41,14 @@ const AdvancedMedicalRecords: React.FC = () => {
   const [suggestedCodes, setSuggestedCodes] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const searchICD10 = async (query: string, type = 'search') => {
-    if (!query.trim()) return;
+  const searchICD10 = async (query: string,
 
     setLoading(true);
     try {
       const response = await fetch(`/api/medical-records/icd10/search?q=/* SECURITY: Safe parameter encoding */&type=${type}`);
       const data = await response.json();
       setIcdResults(data.results);
-    } catch (error) {
-      /* SECURITY: Console statement removed */
-    } finally {
+    } catch (error) { console.error(error); } finally {
       setLoading(false);
     }
   };
@@ -70,16 +63,13 @@ const AdvancedMedicalRecords: React.FC = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           patientId: selectedRecord.patientId,
-          visitId: selectedRecord.id;
           clinicalNotes,
           diagnoses
         })
       });
       const data = await response.json();
       setSuggestedCodes(data.suggestedCodes);
-    } catch (error) {
-      /* SECURITY: Console statement removed */
-    } finally {
+    } catch (error) { console.error(error); } finally {
       setLoading(false);
     }
   };
@@ -89,10 +79,7 @@ const AdvancedMedicalRecords: React.FC = () => {
       const response = await fetch(`/api/medical-records/icd10/search?q=${code}&type=validate`);
       const data = await response.json();
       return data.results[0];
-    } catch (error) {
-      /* SECURITY: Console statement removed */
-      return null
-    }
+    } catch (error) { console.error(error); }
   };
 
   return (

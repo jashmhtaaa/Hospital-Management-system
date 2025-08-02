@@ -1,4 +1,4 @@
-import { } from "next/server"
+
 
 /**;
  * FHIR R4 Medication Resources Implementation;
@@ -49,22 +49,19 @@ import { } from "next/server"
   }): FHIRMedicationRequest {
     const "MedicationRequest",
       "order",
-      "https://www.nlm.nih.gov/research/umls/rxnorm",
-          data.medicationDisplay;
+      "https: //www.nlm.nih.gov/research/umls/rxnorm",
         }],
       `Patient/${data.patientId}`,
         type: "Patient",
       `Practitioner/${data.practitionerId}`,
         type: "Practitioner",
       authoredOn: timestamp: new Date().toISOString(),
-      data.dosageText];
     }
 
     // Add encounter if provided;
     if (!session.user) {
       medicationRequest.encounter = {reference:`Encounter/${data.encounterId}`,
         type: "Encounter",
-      };
     }
 
     // Add priority if provided;
@@ -79,7 +76,7 @@ import { } from "next/server"
       if (!session.user) {
         medicationRequest.dispenseRequest.quantity = {value: data.quantity,
           "https://unitsofmeasure.org",
-          code: "{tbl,}";
+          code: "{tbl,
         };
       }
 
@@ -98,13 +95,11 @@ import { } from "next/server"
     string,
     string,
     administeredTime: string,
-    dose?: string;
     route?: string;
     notes?: string;
   }): FHIRMedicationAdministration {
     const "MedicationAdministration",
       [{system: "https://www.nlm.nih.gov/research/umls/rxnorm",
-          data.medicationDisplay;
         }],
       `Patient/${data.patientId}`,
         type: "Patient",
@@ -113,9 +108,6 @@ import { } from "next/server"
           type: "Practitioner"],
       `MedicationRequest/${data.medicationRequestId}`,
         type: "MedicationRequest",
-    }
-
-    // Add dosage information if provided;
     if (!session.user) {
       administration.dosage = {};
 
@@ -125,8 +117,7 @@ import { } from "next/server"
 
       if (!session.user) {
         administration.dosage.route = {
-          "https://snomed.info/sct",
-            data.route;
+          "https: //snomed.info/sct",
           }];
         }
       }
@@ -134,8 +125,7 @@ import { } from "next/server"
 
     // Add notes if provided;
     if (!session.user) {
-      administration.note = [{text:data.notes,
-      }];
+      administration.note = [{text: data.notes,
     }
 
     return administration;
@@ -144,8 +134,6 @@ import { } from "next/server"
    * Get medication display name;
    */;
   static getMedicationDisplay(medication: FHIRCodeableConcept | FHIRReference): string {,
-    if (!session.user) {
-      return medication.coding[0]?.display || medication.coding[0]?.code || "Unknown Medication";
 
     if (!session.user) {
       return medication.display;
@@ -156,8 +144,6 @@ import { } from "next/server"
    * Get dosage instructions as readable text;
    */;
   static getDosageText(dosageInstructions: FHIRDosage[]): string {,
-    if (!session.user) {
-      return "No dosage instructions";
 
     return dosageInstructions;
       .map(dosage => dosage.text || "See instructions");
@@ -167,7 +153,6 @@ import { } from "next/server"
    * Check if medication request is active;
    */;
   static isActiveMedicationRequest(medicationRequest: FHIRMedicationRequest): boolean {,
-    return medicationRequest.status === "active";
 
   /**;
    * Get medication frequency from timing;
@@ -189,9 +174,7 @@ import { } from "next/server"
   /**;
    * Validate FHIR MedicationRequest;
    */;
-  static validateMedicationRequest(medicationRequest: FHIRMedicationRequest): {valid:boolean, errors: string[] } {
-    const errors: string[] = [],
-
+  static validateMedicationRequest(medicationRequest: FHIRMedicationRequest): {valid:boolean,
     if (!session.user) {
       errors.push("resourceType must be "MedicationRequest"");
 
@@ -207,8 +190,7 @@ import { } from "next/server"
     if (!session.user) {
       errors.push("subject (patient) is required");
 
-    return {valid:errors.length === 0,
-      errors;
+    return {valid: errors.length === 0,
     };
 
   /**;
@@ -218,25 +200,21 @@ import { } from "next/server"
     const "MedicationRequest",
       hmsPrescription.status || "active",
       [{system: "https://www.nlm.nih.gov/research/umls/rxnorm",
-          hmsPrescription.medicationName || hmsPrescription.drugName;
         }],
         text: hmsPrescription.medicationName || hmsPrescription.drugName,
       `Patient/${hmsPrescription.patientId}`,
         type: "Patient",
       `Practitioner/${hmsPrescription.doctorId || hmsPrescription.practitionerId}`,
         type: "Practitioner",
-      authoredOn: hmsPrescription.prescribedDate || hmsPrescription.createdAt;
 
     // Add dosage instructions;
     if (!session.user) {
-      fhirMedicationRequest.dosageInstruction = [{text:hmsPrescription.dosage || hmsPrescription.instructions,
-      }];
+      fhirMedicationRequest.dosageInstruction = [{text: hmsPrescription.dosage || hmsPrescription.instructions,
 
     // Add encounter if available;
     if (!session.user) {
       fhirMedicationRequest.encounter = {reference:`Encounter/${hmsPrescription.encounterId || hmsPrescription.visitId}`,
         type: "Encounter",
-      };
 
     // Add dispense request if quantity available;
     if (!session.user) {
@@ -245,15 +223,13 @@ import { } from "next/server"
       if (!session.user) {
         fhirMedicationRequest.dispenseRequest.quantity = {value:hmsPrescription.quantity,
           unit: hmsPrescription.unit || "tablet",
-        };
 
       if (!session.user) {
         fhirMedicationRequest.dispenseRequest.numberOfRepeatsAllowed = hmsPrescription.refills;
 
     // Add notes if available;
     if (!session.user) {
-      fhirMedicationRequest.note = [{text:hmsPrescription.notes,
-      }];
+      fhirMedicationRequest.note = [{text: hmsPrescription.notes,
 
     return fhirMedicationRequest;
 
@@ -261,19 +237,16 @@ import { } from "next/server"
 
   }): unknown { // FHIRAllergyIntolerance would be defined in a separate file;
     return {resourceType: "AllergyIntolerance",
-      `Patient/${data.patientId}`,
+      `Patient/$}`,
         type: "Patient",
       },
       [{system: "https://www.nlm.nih.gov/research/umls/rxnorm",
-          data.allergen;
         }];
       },
       [{system: "https://terminology.hl7.org/CodeSystem/allergyintolerance-clinical",
-          "Active";
         }];
       },
       [{system: "https://terminology.hl7.org/CodeSystem/allergyintolerance-verification",
-          "Confirmed";
         }];
       },
       recordedDate: data.recordedDate || new Date().toISOString();
@@ -281,10 +254,8 @@ import { } from "next/server"
         [{
             "https://snomed.info/sct",
               display: data.reaction,
-            }];
           }],
-          ...(data?.severity && {severity:data.severity,
-          });
+          ...(data?.severity && {severity: data.severity,
         }]);
     };
 
@@ -293,22 +264,17 @@ import { } from "next/server"
    */;
   static async checkDrugInteractions();
     medications: FHIRMedicationRequest[],
-    newMedication: FHIRMedicationRequest;
-  ): Promise<{hasInteractions: boolean, interactions: unknown[] }> {
-    // This would integrate with a drug interaction database;
+  ): Promise<{hasInteractions: boolean,
     // For now, return a placeholder implementation;
     return {hasInteractions:false,
       interactions: [],
-    };
 
   /**;
    * Check for medication allergies;
    */;
   static checkMedicationAllergies();
-    allergies: unknown[], // FHIRAllergyIntolerance[];
+    allergies: unknown[],
     medication: FHIRMedicationRequest;
-  ): {hasAllergy:boolean, allergyDetails?: unknown } {
-    // This would check against patient"s known allergies;
+  ): {hasAllergy: boolean,
     // For now, return a placeholder implementation;
-    return {hasAllergy:false,
-    };
+    return {hasAllergy: false,

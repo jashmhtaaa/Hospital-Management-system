@@ -32,6 +32,8 @@ interface RouteParams {
  */;
 export const GET = async (request: any, { params }: RouteParams) => {
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -135,6 +137,8 @@ export const GET = async (request: any, { params }: RouteParams) => {
  */;
 export const POST = async (request: any, { params }: RouteParams) => {
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -240,6 +244,8 @@ export const POST = async (request: any, { params }: RouteParams) => {
  */;
 export const PUT = async (request: any, { params }: RouteParams) => {
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -354,6 +360,8 @@ export const PUT = async (request: any, { params }: RouteParams) => {
  */;
 export const DELETE = async (request: any, { params }: RouteParams) => {
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -438,6 +446,8 @@ export const DELETE = async (request: any, { params }: RouteParams) => {
  */;
 export const PATCH = async (request: any, { params }: RouteParams) => {
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }

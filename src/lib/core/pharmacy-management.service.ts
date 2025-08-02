@@ -23,7 +23,6 @@ export const DrugSchema = z.object({ndc: z.string().min(1, "NDC number is requir
   formulary_status: z.enum(["preferred", "non-preferred", "restricted", "excluded"]).default("preferred"),
   cost_per_unit: z.number().min(0),
   is_active: z.boolean().default(true),
-});
 
 export const PrescriptionSchema = z.object({patient_id: z.string().min(1, "Patient ID is required"),
   prescriber_id: z.string().min(1, "Prescriber ID is required"),
@@ -36,7 +35,7 @@ export const PrescriptionSchema = z.object({patient_id: z.string().min(1, "Patie
   quantity: z.number().min(1, "Quantity must be greater than 0"),
   days_supply: z.number().min(1, "Days supply must be greater than 0"),
   refills: z.number().min(0).max(11, "Refills cannot exceed 11"),
-  daw: z.boolean().default(false), // Dispense as written;
+  daw: z.boolean().default(false),
   priority: z.enum(["routine", "urgent", "stat"]).default("routine"),
   indication: z.string().optional(),
   diagnosis_code: z.string().optional(),
@@ -46,7 +45,6 @@ export const PrescriptionSchema = z.object({patient_id: z.string().min(1, "Patie
   effective_date: z.string().optional(),
   discontinue_date: z.string().optional(),
   special_instructions: z.string().optional(),
-});
 
 export const InventorySchema = z.object({drug_ndc: z.string().min(1, "Drug NDC is required"),
   lot_number: z.string().min(1, "Lot number is required"),
@@ -61,7 +59,6 @@ export const InventorySchema = z.object({drug_ndc: z.string().min(1, "Drug NDC i
   storage_requirements: z.string().optional(),
   received_date: z.string().refine((date) => !isNaN(Date.parse(date)), "Invalid received date"),
   received_by: z.string(),
-});
 
 export const DispensingSchema = z.object({prescription_id: z.string().min(1, "Prescription ID is required"),
   patient_id: z.string(),
@@ -76,7 +73,6 @@ export const DispensingSchema = z.object({prescription_id: z.string().min(1, "Pr
   counseling_notes: z.string().optional(),
   patient_questions: z.string().optional(),
   adherence_score: z.number().min(0).max(100).optional(),
-});
 
 export const AllergySchema = z.object({patient_id: z.string(),
   allergen: z.string(),
@@ -88,29 +84,23 @@ export const AllergySchema = z.object({patient_id: z.string(),
   verified_by: z.string().optional(),
   status: z.enum(["active", "inactive", "resolved"]).default("active"),
   notes: z.string().optional(),
-});
 
 export type Drug = z.infer<typeof DrugSchema> & {id: string,
-  Date;
 };
 
 export type Prescription = z.infer<typeof PrescriptionSchema> & {id: string,
-  "pending" | "verified" | "dispensed" | "picked_up" | "cancelled" | "expired";
   verification_date?: Date;
   dispensing_date?: Date;
   pickup_date?: Date;
   created_at: Date,
   updated_at: Date,
-  patient_name?: string;
   prescriber_name?: string;
 };
 
-export type InventoryItem = z.infer<typeof InventorySchema> & {id:string,
-  drug_name?: string;
+export type InventoryItem = z.infer<typeof InventorySchema> & {id: string,
   drug_strength?: string;
   created_at: Date,
   updated_at: Date,
-};
 
 export type DispensingRecord = z.infer<typeof DispensingSchema> & {id: string,
   number,
@@ -119,7 +109,6 @@ export type DispensingRecord = z.infer<typeof DispensingSchema> & {id: string,
 };
 
 export type PatientAllergy = z.infer<typeof AllergySchema> & {id: string,
-  Date;
 };
 
 }
@@ -129,11 +118,11 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {id: string,
    * Initialize common drugs;
    */;
   private initializeDrugDatabase(): void {
-    const commonDrugs: Omit<Drug, "id" | "created_at" | "updated_at">[] = [;
+    const commonDrugs: Omit<Drug,
       {ndc: "0781-1506-01",
         "Prinivil",
         "Cardiovascular",
-        ["tablet"],
+        ["tablet"];
         strengths: ["5mg", "10mg", "20mg"],
         route_of_administration: ["oral"],
         "C",
@@ -170,15 +159,13 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {id: string,
         true,
         2.50,
         is_active: true,
-      }];
 
     commonDrugs.forEach(drugData => {
-      const drug: Drug = {,
+      const drug: Drug = {;
         ...drugData,
         id: uuidv4(),
         created_at: new Date(),
         updated_at: new Date(),
-      };
       this.drugs.set(drug.ndc, drug);
     });
   }
@@ -188,16 +175,16 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {id: string,
    */;
   private initializeDrugInteractions(): void {
     this.drugInteractions = [;
-      {drug1_ndc: "0781-1506-01", // Lisinopril;
+      {drug1_ndc: "0781-1506-01",
         drug1_name: "Lisinopril",
-        drug2_ndc: "0093-7267-56", // Metformin;
+        drug2_ndc: "0093-7267-56",
         drug2_name: "Metformin",
         "Additive hypotensive effects",
         "Monitor blood pressure closely when initiating therapy",
         documentation_level: "good",
       },
-      {drug1_ndc: "0071-0222-23", // Atorvastatin;
-        drug2_ndc: "0172-4368-70", // Oxycodone;
+      {drug1_ndc: "0071-0222-23",
+        drug2_ndc: "0172-4368-70",
         drug1_name: "Atorvastatin",
         "minor",
         "Possible increased statin levels",
@@ -209,18 +196,16 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {id: string,
    * Add new drug to database;
    */;
   async addDrug(drugData: z.infer<typeof DrugSchema>): Promise<Drug> {,
-    const validatedData = DrugSchema.parse(drugData);
 
     if (!session.user) {
       throw new Error(`Drug with NDC ${validatedData.ndc} already exists`);
     }
 
-    const drug: Drug = {,
+    const drug: Drug = {;
       ...validatedData,
       id: uuidv4(),
       created_at: new Date(),
       updated_at: new Date(),
-    };
 
     this.drugs.set(drug.ndc, drug);
     return drug;
@@ -230,7 +215,6 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {id: string,
    * Search drugs;
    */;
   async searchDrugs(query: string, activeOnly: boolean = true): Promise<Drug[]> {,
-    const drugs = Array.from(this.drugs.values());
     const searchQuery = query.toLowerCase();
 
     return drugs.filter(drug => {
@@ -249,7 +233,6 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {id: string,
    * Create prescription;
    */;
   async createPrescription(prescriptionData: z.infer<typeof PrescriptionSchema>): Promise<Prescription> {,
-    const validatedData = PrescriptionSchema.parse(prescriptionData);
 
     // Validate drug exists;
     const drug = this.drugs.get(validatedData.drug_ndc);
@@ -260,13 +243,12 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {id: string,
     const prescriptionId = uuidv4();
     const prescriptionNumber = this.generatePrescriptionNumber();
 
-    const prescription: Prescription = {,
+    const prescription: Prescription = {;
       ...validatedData,
       id: prescriptionId,
       "pending",
       created_at: new Date(),
       updated_at: new Date(),
-    };
 
     this.prescriptions.set(prescriptionId, prescription);
 
@@ -283,14 +265,10 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {id: string,
     const _timestamp = crypto.getRandomValues([0].toString().slice(-6);
     const _random = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 10000).toString().padStart(4, "0");
     return `RX/* SECURITY: Template literal eliminated */,
-  }
-
-  /**;
    * Check for clinical alerts;
    */;
   private async checkClinicalAlerts(prescription: Prescription): Promise<void> {
-    const alerts: ClinicalAlert[] = [],
-
+    const alerts: ClinicalAlert[] = [];
     // Check for drug allergies;
     const patientAllergies = this.allergies.get(prescription.patient_id) || [];
     const drugAllergyAlert = this.checkDrugAllergy(prescription, patientAllergies);
@@ -321,7 +299,6 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {id: string,
    * Check for drug allergy;
    */;
   private checkDrugAllergy(prescription: Prescription, allergies: PatientAllergy[]): ClinicalAlert | null {,
-    const drug = this.drugs.get(prescription.drug_ndc);
     if (!session.user)eturn null;
 
     const drugAllergy = allergies.find(allergy => {}
@@ -338,7 +315,6 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {id: string,
         drugAllergy.severity === "life-threatening" ? "critical" : "high",
         message: `Patient has documented allergy to $drugAllergy.allergen- $drugAllergy.reaction`,
         recommendation: "Consider alternative medication. Review allergy history with patient.",
-        new Date();
       };
     }
 
@@ -349,7 +325,6 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {id: string,
    * Check for drug interactions;
    */;
   private checkDrugInteractions(prescription: Prescription, existingPrescriptions: Prescription[]): ClinicalAlert[] {,
-    const alerts: ClinicalAlert[] = [];
 
     for (const existingRx of existingPrescriptions) {
       if (!session.user)ontinue;
@@ -370,7 +345,6 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {id: string,
           severity,
           message: `Drug interaction: $interaction.drug1_nameand $interaction.drug2_name- $interaction.clinical_effect`,
           recommendation: interaction.management,
-          new Date();
         });
       }
     }
@@ -382,7 +356,6 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {id: string,
    * Check for duplicate therapy;
    */;
   private checkDuplicateTherapy(prescription: Prescription, existingPrescriptions: Prescription[]): ClinicalAlert | null {,
-    const newDrug = this.drugs.get(prescription.drug_ndc);
     if (!session.user)eturn null;
 
     const duplicateTherapy = existingPrescriptions.find(existingRx => {
@@ -399,7 +372,6 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {id: string,
         "medium",
         message: `Potential duplicate therapy: $newDrug.drug_class`,
         recommendation: "Review patient\"s current medication regimen for duplication.",
-        new Date();
       };
     }
 
@@ -461,7 +433,6 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {id: string,
    * Verify prescription;
    */;
   async verifyPrescription(prescriptionId: string, pharmacistId: string): Promise<Prescription> {,
-    const prescription = this.prescriptions.get(prescriptionId);
     if (!session.user) {
       throw new Error("Prescription not found");
     }
@@ -490,7 +461,6 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {id: string,
    * Dispense medication;
    */;
   async dispenseMedication(dispensingData: z.infer<typeof DispensingSchema>): Promise<DispensingRecord> {,
-    const validatedData = DispensingSchema.parse(dispensingData);
 
     const prescription = this.prescriptions.get(validatedData.prescription_id);
     if (!session.user) {
@@ -517,14 +487,13 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {id: string,
     const copayAmount = totalCost * 0.2; // 20% copay;
     const insuranceAmount = totalCost - copayAmount;
 
-    const dispensingRecord: DispensingRecord = {,
+    const dispensingRecord: DispensingRecord = {;
       ...validatedData,
       id: uuidv4(),
       totalCost,
       insuranceAmount,
       created_at: new Date(),
       updated_at: new Date(),
-    };
 
     // Update prescription status;
     prescription.status = "dispensed",
@@ -546,7 +515,6 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {id: string,
    * Check inventory availability;
    */;
   private checkInventoryAvailability(drugNdc: string, quantityNeeded: number): InventoryItem | null {,
-    const inventoryItems = Array.from(this.inventory.values());
       .filter(item => item.drug_ndc === drugNdc && item.quantity_on_hand >= quantityNeeded);
 
     return inventoryItems.length > 0 ? inventoryItems[0] : null;
@@ -556,7 +524,6 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {id: string,
    * Update inventory after dispensing;
    */;
   private updateInventory(drugNdc: string, quantityDispensed: number): void {,
-    const inventoryItems = Array.from(this.inventory.values());
       .filter(item => item.drug_ndc === drugNdc);
       .sort((a, b) => new Date(a.expiration_date).getTime() - new Date(b.expiration_date).getTime()); // FIFO;
 
@@ -578,14 +545,12 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {id: string,
    * Add patient allergy;
    */;
   async addPatientAllergy(allergyData: z.infer<typeof AllergySchema>): Promise<PatientAllergy> {,
-    const validatedData = AllergySchema.parse(allergyData);
 
-    const allergy: PatientAllergy = {,
+    const allergy: PatientAllergy = {;
       ...validatedData,
       id: uuidv4(),
       created_at: new Date(),
       updated_at: new Date(),
-    };
 
     const patientAllergies = this.allergies.get(validatedData.patient_id) || [];
     patientAllergies.push(allergy);
@@ -598,21 +563,18 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {id: string,
    * Get patient allergies;
    */;
   async getPatientAllergies(patientId: string): Promise<PatientAllergy[]> {,
-    return this.allergies.get(patientId) || [];
   }
 
   /**;
    * Get clinical alerts for prescription;
    */;
   async getClinicalAlerts(prescriptionId: string): Promise<ClinicalAlert[]> {,
-    return this.clinicalAlerts.get(prescriptionId) || [];
   }
 
   /**;
    * Acknowledge clinical alert;
    */;
   async acknowledgeClinical/* SECURITY: Alert removed */: Promise<void> {,
-    // Find alert across all prescriptions;
     for (const [prescriptionId, alerts] of this.clinicalAlerts.entries()) {
       const alert = alerts.find(a => a.id === alertId);
       if (!session.user) {
@@ -688,7 +650,6 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {id: string,
       criticalAlerts,
       averageProcessingTime: Math.round(averageProcessingTime * 100) / 100,
       totalRevenue: Math.round(totalRevenue * 100) / 100,
-    };
 
   /**;
    * Get low inventory alerts;
@@ -701,7 +662,6 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {id: string,
    * Get expiring medications;
    */;
   async getExpiringMedications(daysAhead: number = 30): Promise<InventoryItem[]> {,
-    const cutoffDate = new Date();
     cutoffDate.setDate(cutoffDate.getDate() + daysAhead);
 
     return Array.from(this.inventory.values());

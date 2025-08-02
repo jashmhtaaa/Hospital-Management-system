@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 
 import { Badge } from '@/components/ui/badge';
@@ -15,7 +15,6 @@ interface RadiologyReport {
 
 interface RadiologyReportsListProps {
   reports: RadiologyReport[],
-  onViewReport: (reportId: string) => void
 }
 
 /**

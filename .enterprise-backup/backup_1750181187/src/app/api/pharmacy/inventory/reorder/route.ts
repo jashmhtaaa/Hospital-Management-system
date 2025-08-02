@@ -65,6 +65,8 @@ export const GET = async (req: NextRequest) => {,
     // Check authorization
     const authHeader = req.headers.get('authorization');
      {\n  {
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
@@ -189,6 +191,8 @@ export const POST = async (req: NextRequest) => {,
     const validationResult = validateReorderRequest(data);
      {\n  {
       return NextResponse.json(
+  return NextResponse.json({ message: "Not implemented" });
+};
         { error: 'Validation failed', details: validationResult.errors ,},
         { status: 400 },
       );

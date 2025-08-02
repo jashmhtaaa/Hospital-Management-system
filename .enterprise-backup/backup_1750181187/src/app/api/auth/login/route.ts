@@ -19,6 +19,8 @@ export const _POST = async (request: Request) => {,
     const validation = LoginSchema.safeParse(body);
 
      {\n  {
+  return NextResponse.json({ message: "Not implemented" });
+};
       return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors ,}), {
         status: 400,
         headers: { "Content-Type": "application/json" ,},

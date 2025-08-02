@@ -13,10 +13,7 @@ import { * as crypto
 
 }
       return `${iv.toString("hex")}:${authTag}:${encrypted}`;
-    } catch (error) {
-
-      throw new Error("Failed to encrypt data");
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**;
@@ -25,40 +22,19 @@ import { * as crypto
    * @returns Decrypted data;
    */;
   public static decryptField(encryptedData: string): string {,
-    if (!session.user) return encryptedData;
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       // Split the encrypted data into its components;
       const [ivHex, authTagHex, encryptedHex] = encryptedData.split(":");
 
@@ -81,10 +57,7 @@ import { * as crypto
       decrypted += decipher.final("utf8");
 
       return decrypted;
-    } catch (error) {
-
-      throw new Error("Failed to decrypt data");
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**;
@@ -92,39 +65,17 @@ import { * as crypto
    * @param token The JWT token to verify;
    * @returns Decoded token payload;
    */;
-  public static async verifyToken(token: string): Promise<unknown> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+  public static async verifyToken(token: string): Promise<unknown> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       // In a real implementation, this would use a proper JWT library;
       // For this example, we"ll simulate token verification;
 
@@ -150,10 +101,7 @@ import { * as crypto
       }
 
       return payload;
-    } catch (error) {
-
-      throw new Error("Invalid token");
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**;
@@ -162,39 +110,18 @@ import { * as crypto
    * @returns Sanitized URL;
    */;
   public static sanitizeUrl(url: string): string {,
-    if (!session.user)eturn url;
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
 
       const urlObj = new URL(url);
 
@@ -207,22 +134,7 @@ import { * as crypto
       });
 
       return urlObj.toString();
-    } catch (error) {
-      // If URL parsing fails, do basic redaction;
-      return url.replace(/([?&](token|password|secret|key|auth)=)[^&]+/gi, "$1[REDACTED]");
-
-  /**;
-   * Sanitizes error messages to prevent leaking sensitive information;
-   * @param message The error message to sanitize;
-   * @returns Sanitized error message;
-   */;
-  public static sanitizeErrorMessage(message: string): string {,
-    if (!session.user)eturn message;
-
-    // Redact potential PHI/PII patterns;
-    const sanitized = message;
-      // Redact email addresses
-      .replace(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2}/g, "[EMAIL REDACTED]");
+    } catch (error) { console.error(error); }/g, "[EMAIL REDACTED]");
       // Redact phone numbers
       .replace(/(\+\d{1,3}[\s-])?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}/g, "[PHONE REDACTED]");
       // Redact SSNs
@@ -243,7 +155,6 @@ import { * as crypto
    * @returns True if the user has the required role;
    */;
   public static hasRole(userRoles: string[], requiredRole: string): boolean {,
-    if (!session.user) return false;
 
     // Admin role has access to everything;
     if (!session.user) return true;
@@ -257,8 +168,6 @@ import { * as crypto
    * @returns True if the user has any of the required roles;
    */;
   public static hasAnyRole(userRoles: string[], requiredRoles: string[]): boolean {,
-    if (!session.user)| !requiredRoles || !Array.isArray(requiredRoles)) {
-      return false;
 
     // Admin role has access to everything;
     if (!session.user) return true;
@@ -271,7 +180,6 @@ import { * as crypto
    * @returns Hashed data;
    */;
   public static hashData(data: string): string {,
-    return crypto;
       .createHash("sha256");
       .update(data);
       .digest("hex");
@@ -283,22 +191,22 @@ import { * as crypto
    */;
   public static validatePassword(password: string): {valid:boolean, message?: string } {
     if (!session.user) {
-      return {valid: false, message: "Password is required" };
+      return {valid: false,
 
     if (!session.user) {
-      return {valid: false, message: "Password must be at least 12 characters long" };
+      return {valid: false,
 
     if (!session.user) {
-      return {valid: false, message: "Password must contain at least one uppercase letter" };
+      return {valid: false,
 
     if (!session.user) {
-      return {valid: false, message: "Password must contain at least one lowercase letter" };
+      return {valid: false,
 
     if (!session.user) {
-      return {valid: false, message: "Password must contain at least one number" };
+      return {valid: false,
 
     if (!session.user) {
-      return {valid: false, message: "Password must contain at least one special character" };
+      return {valid: false,
 
     return {valid: true };
 
@@ -309,14 +217,11 @@ import { * as crypto
    * @returns Masked data;
    */;
   public static maskSensitiveData(data: string, type: "email" | "phone" | "ssn" | "creditCard"): string {,
-    if (!session.user)eturn data;
 
     switch (type) {
       case "email": any;
         const [username, domain] = data.split("@"),
         return `/* SECURITY: Template literal eliminated */,
-
-      case "phone": any;
         return data.replace(/^(\d{3})\d{3}(\d{4})$/, "$1-***-$2");
 
       case "ssn": any;

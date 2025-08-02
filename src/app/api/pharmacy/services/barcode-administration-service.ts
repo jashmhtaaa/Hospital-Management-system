@@ -1,4 +1,4 @@
-import { } from "inversify"
+
 import injectable } from "../models/domain-models"
 import {   inject
 import {  PharmacyDomain  } from "@/lib/database"
@@ -13,7 +13,9 @@ import {  PharmacyDomain  } from "@/lib/database"
  * It provides comprehensive verification of the "five rights" of medication administration.;
  */;
 
-interface BarcodeVerificationResult {success:boolean,
+interface BarcodeVerificationResult {
+  success:boolean,
+}
   message: string,
   details?: {rightPatient:boolean,
     boolean,
@@ -47,37 +49,17 @@ interface BarcodeVerificationResult {success:boolean,
     string;
   ): Promise<BarcodeVerificationResult> {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       // 1. Decode barcodes;
       const patientId = this.decodePatientBarcode(patientBarcode);
       const medicationInfo = this.decodeMedicationBarcode(medicationBarcode);
@@ -85,7 +67,6 @@ interface BarcodeVerificationResult {success:boolean,
       if (!session.user) {
         return {success:false,
           message: "Invalid barcode format",
-        };
       }
 
       // 2. Get prescription;
@@ -93,7 +74,6 @@ interface BarcodeVerificationResult {success:boolean,
       if (!session.user) {
         return {success:false,
           message: "Prescription not found",
-        };
       }
 
       // 3. Get medication;
@@ -101,7 +81,6 @@ interface BarcodeVerificationResult {success:boolean,
       if (!session.user) {
         return {success:false,
           message: "Medication not found",
-        };
       }
 
       // 4. Verify the "five rights";
@@ -135,7 +114,7 @@ interface BarcodeVerificationResult {success:boolean,
 
         if (!session.user) {
           return {success: false,
-            message: `WARNING: Severe drug interaction detected: ${severeInteractions[0].description}`,
+            message: `WARNING: Severe drug interaction detected: $}`,
             details: {
               rightPatient,
               rightMedication,
@@ -148,21 +127,11 @@ interface BarcodeVerificationResult {success:boolean,
       }
 
       return {success: allRightsVerified,
-        message: allRightsVerified;
           ? "All verification checks passed";
           : "One or more verification checks failed",
-        details: {,
-          rightPatient,
-          rightMedication,
-          rightDose,
-          rightRoute,
-          rightTime;
-        }
+        details: }
       };
-    } catch (error) {
-
-      return {success: false,
-        message: `Verification error: ${error.message}`;
+    } catch (error) { console.error(error); }`;
       };
     }
   }
@@ -218,7 +187,6 @@ interface BarcodeVerificationResult {success:boolean,
       await this.prescriptionRepository.update({
         ...prescription,
         status: "completed",
-      });
     }
 
     return savedAdministration;
@@ -279,7 +247,6 @@ interface BarcodeVerificationResult {success:boolean,
    */;
   async getAdministrationHistory();
     patientId: string,
-    days: number = 7;
   ): Promise<PharmacyDomain.MedicationAdministration[]> {
     const administrations = await this.administrationRepository.findByPatientId(patientId);
 
@@ -297,7 +264,6 @@ interface BarcodeVerificationResult {success:boolean,
    * @returns Array of prescriptions due for administration;
    */;
   async getDueMedications(patientId: string): Promise<PharmacyDomain.Prescription[]> {,
-    const prescriptions = await this.prescriptionRepository.findByPatientId(patientId);
 
     // Filter active prescriptions;
     const activePrescriptions = prescriptions.filter(p => p.isActive());
@@ -315,12 +281,11 @@ interface BarcodeVerificationResult {success:boolean,
    */;
   async generateAdministrationSchedule();
     patientId: string,
-    days: number = 1;
   ): Promise<unknown> {
     const prescriptions = await this.prescriptionRepository.findByPatientId(patientId);
     const activePrescriptions = prescriptions.filter(p => p.isActive());
 
-    const schedule: unknown = {,};
+    const schedule: unknown = {,
     const now = new Date();
 
     // Generate schedule for specified number of days;
@@ -350,7 +315,6 @@ interface BarcodeVerificationResult {success:boolean,
             medication ? medication.name : "Unknown Medication",
             dosage: prescription.dosage.toString(),
             priority: prescription.priority,
-          });
         }
       }
     }
@@ -365,7 +329,6 @@ interface BarcodeVerificationResult {success:boolean,
    * @returns Boolean indicating if medication is due;
    */;
   private isWithinAdministrationWindow(prescription: PharmacyDomain.Prescription): boolean {,
-    // This is a simplified implementation;
     // In a real system, this would check the scheduled administration times;
     // and determine if the current time is within an acceptable window;
 
@@ -383,9 +346,8 @@ interface BarcodeVerificationResult {success:boolean,
    */;
   private calculateAdministrationTimes();
     prescription: PharmacyDomain.Prescription,
-    date: Date;
   ): Date[] {
-    const times: Date[] = [],
+    const times: Date[] = [];
     const frequency = prescription.dosage.frequency.toLowerCase();
 
     // Parse the date string to ensure we"re working with the correct date;
@@ -484,7 +446,6 @@ interface BarcodeVerificationResult {success:boolean,
    * @returns Boolean indicating if prescription should be completed;
    */;
   private async shouldCompletePrescription(prescription: PharmacyDomain.Prescription): Promise<boolean> {,
-    // Get administration history for this prescription;
     const administrations = await this.administrationRepository.findByPrescriptionId(prescription.id);
 
     // Count completed administrations;
@@ -528,47 +489,25 @@ interface BarcodeVerificationResult {success:boolean,
       const string;
         batchNumber?: string;
         expirationDate?: Date;
-      } = {medicationId:parts[1],
-      };
+      } = {medicationId: parts[1],
 
       if (!session.user) {
         result.batchNumber = parts[2];
 
       if (!session.user) {
         try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-          result.expirationDate = new Date(parts[3]);
-        } catch (e) {
+} catch (error) { console.error(error); } catch (e) {
           // Invalid date format, ignore;
 
       return result;

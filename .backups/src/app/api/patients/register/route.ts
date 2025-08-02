@@ -69,6 +69,8 @@ export const _POST = async (request: any) => {,
     // Add authentication/authorization if this is an internal endpoint;
 
     try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }

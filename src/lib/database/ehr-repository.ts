@@ -1,4 +1,4 @@
-import { } from "@prisma/client"
+
 import {  getEncryptionService  } from "../../services/encryption_service_secure"
 import {  PrismaClient  } from "@/lib/database"
 
@@ -21,20 +21,15 @@ import {  PrismaClient  } from "@/lib/database"
   created_at?: Date;
   updated_at?: Date;
   created_by: string,
-  updated_by?: string;
   status: "draft" | "final" | "amended" | "corrected",
   version: number,
-}
-  }[];
 
   // Activities;
   string,
     title: string,
     description?: string,
     status: "not_started" | "scheduled" | "in_progress" | "on_hold" | "completed" | "cancelled",
-    scheduled_date?: Date;
     category: "medication" | "procedure" | "encounter" | "observation" | "other",
-  }[];
 
   // Care team;
   string,
@@ -49,9 +44,7 @@ import {  PrismaClient  } from "@/lib/database"
   created_at?: Date;
   updated_at?: Date;
   created_by: string,
-  updated_by?: string;
   period_start: Date,
-  period_end?: Date;
 }
   }[];
 
@@ -59,46 +52,23 @@ import {  PrismaClient  } from "@/lib/database"
   created_at?: Date;
   updated_at?: Date;
   created_by: string,
-  updated_by?: string;
   published_date?: Date;
   review_date?: Date;
 }
   }
 
   // Clinical Notes Operations;
-  async createClinicalNote(note: ClinicalNote): Promise<ClinicalNote> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+  async createClinicalNote(note: ClinicalNote): Promise<ClinicalNote> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       // Encrypt sensitive fields;
       const encryptedNote = await this.encryptionService.encryptObject();
         note,
@@ -112,133 +82,60 @@ import {  PrismaClient  } from "@/lib/database"
           new Date(),
           updated_at: new Date(),
           version: 1,
-        }
-      });
 
       return this.decryptClinicalNote(created);
-    } catch (error) {
-      throw new Error(`Failed to create clinical note: ${,}`;
+    } catch (error) { console.error(error); }`;
     }
   }
 
-  async getClinicalNote(id: string): Promise<ClinicalNote | null> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+  async getClinicalNote(id: string): Promise<ClinicalNote | null> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       const note = await this.prisma.clinicalNote.findUnique({where: { id }
       });
 
       if (!session.user)eturn null;
       return this.decryptClinicalNote(note);
-    } catch (error) {
-      throw new Error(`Failed to get clinical note: ${,}`;
+    } catch (error) { console.error(error); }`;
     }
   }
 
-  async getClinicalNotesByPatient(patientId: string): Promise<ClinicalNote[]> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+  async getClinicalNotesByPatient(patientId: string): Promise<ClinicalNote[]> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       const notes = await this.prisma.clinicalNote.findMany({where: { patient_id: patientId },
-        orderBy: {created_at: "desc" }
-      });
 
       return Promise.all(notes.map(note => this.decryptClinicalNote(note)));
-    } catch (error) {
-      throw new Error(`Failed to get clinical notes for patient: ${,}`;
+    } catch (error) { console.error(error); }`;
     }
   }
 
-  async updateClinicalNote(id: string, updates: Partial<ClinicalNote>): Promise<ClinicalNote> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-
-} catch (error) {
+  async updateClinicalNote(id: string, updates: Partial<ClinicalNote>): Promise<ClinicalNote> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
 
       // Encrypt sensitive fields in updates;
       const encryptedUpdates = await this.encryptionService.encryptObject();
@@ -254,357 +151,146 @@ import {  PrismaClient  } from "@/lib/database"
           new Date(),
           version: increment: 1 ,
 
-      });
-
       return this.decryptClinicalNote(updated);
-    } catch (error) {
-      throw new Error(`Failed to update clinical note: ${,}`;
+    } catch (error) { console.error(error); }`;
 
-  async deleteClinicalNote(id: string): Promise<void> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+  async deleteClinicalNote(id: string): Promise<void> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      await this.prisma.clinicalNote.delete({where: { id }
+} catch (error) { console.error(error); }
       });
-    } catch (error) {
-      throw new Error(`Failed to delete clinical note: ${,}`;
+    } catch (error) { console.error(error); }`;
 
   // Care Plans Operations;
-  async createCarePlan(carePlan: CarePlan): Promise<CarePlan> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+  async createCarePlan(carePlan: CarePlan): Promise<CarePlan> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const created = await this.prisma.carePlan.create({data: {
-          ...carePlan,
-          goals: JSON.stringify(carePlan.goals),
-          activities: JSON.stringify(carePlan.activities),
-          care_team: JSON.stringify(carePlan.care_team),
-          carePlan.snomed_codes ? JSON.stringify(carePlan.snomed_codes) : null,
-          created_at: new Date(),
-          updated_at: new Date(),
-
-      });
+} catch (error) { console.error(error); });
 
       return this.deserializeCarePlan(created);
-    } catch (error) {
-      throw new Error(`Failed to create care plan: ${,}`;
+    } catch (error) { console.error(error); }`;
 
-  async getCarePlan(id: string): Promise<CarePlan | null> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+  async getCarePlan(id: string): Promise<CarePlan | null> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const carePlan = await this.prisma.carePlan.findUnique({where: { id }
+} catch (error) { console.error(error); }
       });
 
       if (!session.user)eturn null;
       return this.deserializeCarePlan(carePlan);
-    } catch (error) {
-      throw new Error(`Failed to get care plan: ${,}`;
+    } catch (error) { console.error(error); }`;
 
-  async getCarePlansByPatient(patientId: string): Promise<CarePlan[]> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+  async getCarePlansByPatient(patientId: string): Promise<CarePlan[]> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const carePlans = await this.prisma.carePlan.findMany({where: { patient_id: patientId },
+} catch (error) { console.error(error); },
         orderBy: {created_at: "desc" }
       });
 
       return carePlans.map(cp => this.deserializeCarePlan(cp));
-    } catch (error) {
-      throw new Error(`Failed to get care plans for patient: ${,}`;
+    } catch (error) { console.error(error); }`;
 
   // Problem List Operations;
-  async createProblemListItem(item: ProblemListItem): Promise<ProblemListItem> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+  async createProblemListItem(item: ProblemListItem): Promise<ProblemListItem> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // Encrypt sensitive fields;
-      const encryptedItem = await this.encryptionService.encryptObject();
-        item,
-        this.encryptedFields;
-      );
-
-      const created = await this.prisma.problemListItem.create({data: {
-          ...encryptedItem,
-          created_at: new Date(),
-          updated_at: new Date(),
-
-      });
+} catch (error) { console.error(error); });
 
       return this.decryptProblemListItem(created);
-    } catch (error) {
-      throw new Error(`Failed to create problem list item: ${,}`;
+    } catch (error) { console.error(error); }`;
 
-  async getProblemListByPatient(patientId: string): Promise<ProblemListItem[]> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+  async getProblemListByPatient(patientId: string): Promise<ProblemListItem[]> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const items = await this.prisma.problemListItem.findMany({where: { patient_id: patientId },
+} catch (error) { console.error(error); },
         orderBy: {created_at: "desc" }
       });
 
       return Promise.all(items.map(item => this.decryptProblemListItem(item)));
-    } catch (error) {
-      throw new Error(`Failed to get problem list for patient: ${,}`;
+    } catch (error) { console.error(error); }`;
 
   // Clinical Guidelines Operations;
-  async createClinicalGuideline(guideline: ClinicalGuideline): Promise<ClinicalGuideline> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+  async createClinicalGuideline(guideline: ClinicalGuideline): Promise<ClinicalGuideline> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const created = await this.prisma.clinicalGuideline.create({data: {
-          ...guideline,
-          icd10_codes: guideline.icd10_codes ? JSON.stringify(guideline.icd10_codes) : null,
-          JSON.stringify(guideline.decision_support_rules),
-          created_at: new Date(),
-          updated_at: new Date(),
-
-      });
+} catch (error) { console.error(error); });
 
       return this.deserializeClinicalGuideline(created);
-    } catch (error) {
-      throw new Error(`Failed to create clinical guideline: ${,}`;
+    } catch (error) { console.error(error); }`;
 
   async getClinicalGuidelines(filters?: {
     status?: string;
     icd10_codes?: string[];
   }): Promise<ClinicalGuideline[]> {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const where: unknown = {,};
+} catch (error) { console.error(error); };
 
       if (!session.user) {
         where.status = filters.status;
@@ -615,8 +301,7 @@ import {  PrismaClient  } from "@/lib/database"
       });
 
       return guidelines.map(g => this.deserializeClinicalGuideline(g));
-    } catch (error) {
-      throw new Error(`Failed to get clinical guidelines: ${,}`;
+    } catch (error) { console.error(error); }`;
 
   // Helper methods for decryption and deserialization;
   private async decryptClinicalNote(note: unknown): Promise<ClinicalNote> {,
@@ -627,7 +312,6 @@ import {  PrismaClient  } from "@/lib/database"
       vital_signs: note.vital_signs ? JSON.parse(note.vital_signs) : undefined,
       note.snomed_codes ? JSON.parse(note.snomed_codes) : undefined,
       cpt_codes: note.cpt_codes ? JSON.parse(note.cpt_codes) : undefined,
-    };
 
   private async decryptProblemListItem(item: unknown): Promise<ProblemListItem> {,
     return this.encryptionService.decryptObject(item, this.encryptedFields);
@@ -638,14 +322,12 @@ import {  PrismaClient  } from "@/lib/database"
       goals: JSON.parse(carePlan.goals),
       activities: JSON.parse(carePlan.activities),
       care_team: JSON.parse(carePlan.care_team),
-      carePlan.snomed_codes ? JSON.parse(carePlan.snomed_codes) : undefined;
     };
 
   private deserializeClinicalGuideline(guideline: unknown): ClinicalGuideline {,
     return {
       ...guideline,
       icd10_codes: guideline.icd10_codes ? JSON.parse(guideline.icd10_codes) : undefined,
-      JSON.parse(guideline.decision_support_rules);
     };
 
   // Cleanup;

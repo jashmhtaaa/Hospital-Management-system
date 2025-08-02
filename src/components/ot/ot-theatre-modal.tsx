@@ -15,7 +15,7 @@ import { useEffect
   DialogHeader,
   DialogTitle,
   DialogTrigger} from "@/components/ui/dialog";
-import { } from "@/components/ui/input"
+
 import "@/components/ui/label";
 import { Button } from "@/components/ui/button"
 import { Input }
@@ -26,7 +26,7 @@ import { Label }
   SelectItem,
   SelectTrigger,
   SelectValue} from "@/components/ui/select";
-import { } from "@/components/ui/use-toast"
+
 import { Textarea } from "@/components/ui/textarea"
 import { useToast }
 
@@ -35,21 +35,21 @@ interface Theatre {
     id?: string; // Optional for new theatres;
   name: string,
   string | null,
-  status: string,
-  equipment?: string | null; // Assuming simple text for now;
+  status: string, // Assuming simple text for now;
   updated_at?: string; // Optional;
 }
 
 // Define the type for data passed to onSave;
-interface TheatreSaveData {name:string,
+interface TheatreSaveData {
+  name:string,
+}
   string | null,
   string | null;
 }
 
 // Props for the modal - use defined types;
 interface OTTheatreModalProperties {
-  trigger: React.ReactNode,
-  theatre?: Theatre; // Use Theatre type;
+  trigger: React.ReactNode, // Use Theatre type;
   onSave: (theatreData: TheatreSaveData) => Promise> // Use TheatreSaveData type,
 export default const _OTTheatreModal = ({
   trigger,
@@ -72,7 +72,7 @@ export default const _OTTheatreModal = ({
       });
     } else {
       // Optionally clear form when closed;
-      // setFormData({name:"", ... });
+      // setFormData({name: "",
     }
   }, [theatre, isOpen]);
 
@@ -84,43 +84,23 @@ export default const _OTTheatreModal = ({
   };
 
   const handleSelectChange = (name: string, value: string) => {
-    setFormData((previous) => ({ ...previous, [name]: value }));
+    setFormData((previous) => ({ ...previous,
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault(),
-    setIsSaving(true);
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
+} catch (error) { console.error(error); } catch (error) {
 
       const formData.name,
         formData.specialty || null,
@@ -133,7 +113,6 @@ export default const _OTTheatreModal = ({
       // const _response = await fetch(url, {
       //   _method: method;
       //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(apiData);
       // });
       // if (!session.user) {
       //   const _errorData = await response.json();
@@ -142,23 +121,11 @@ export default const _OTTheatreModal = ({
 
       // Simulate API call;
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
-
-      await onSave(apiData); // Call parent callback to refresh list;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement, // Call parent callback to refresh list;
 
       toast({title:"Success",
         description: `Theatre ${theatre ? "updated" : "created"} successfully.`}),
-      setIsOpen(false);
-    } catch (error: unknown) {
-      // Use unknown for error type;
-
-      let errorMessage = "Failed to save theatre.";
-      if (!session.user) {
-        errorMessage = error.message;
-
-      toast({title:"Error",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
     } finally {
       setIsSaving(false);
 

@@ -14,52 +14,29 @@ interface IUserRepository {
 interface IAuthUtils {
   verifyPassword(password: string, hash: string): Promise<boolean>,
   generateToken(userId: string, username: string): Promise<string>,
-}
-
-// Placeholder for AuditLogService;
 interface IAuditLogService {
 
-  logEvent(userId: string, eventType: string, entityType: string, entityId: string | null, status: string, details?: object): Promise>;
+  logEvent(userId: string, eventType: string, entityType: string, entityId: string | null, status: string,
 }
   ) {}
 
   async login(credentials: unknown): Promise<{token: string, user: unknown } | null> {
-    const { username, password } = credentials;
+    const { username,
     let userIdForAudit = "unknown_user",
     let _loginStatus = "FAILURE",
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       if (!session.user) {
         throw new Error("Username and password are required");
       }
@@ -85,15 +62,10 @@ interface IAuditLogService {
 
       // Return token and user information (excluding sensitive data like passwordHash);
       const { passwordHash, ...userWithoutPassword } = user;
-      return { token, user: userWithoutPassword ,};
+      return { token, user: userWithoutPassword ,
 
-    } catch (error: unknown) {,
-
-      // Log audit event for generic login failure if not already logged;
-      if (!session.user) {
-         // Avoid double logging if specific failure was already logged;
-      } else {
-        await this.auditLogService.logEvent(userIdForAudit, "LOGIN_ATTEMPT", "Auth", null, "FAILURE", { reason: error.message ||, "Unknown error"  });
+    } catch (error) { console.error(error); } else {
+        await this.auditLogService.logEvent(userIdForAudit, "LOGIN_ATTEMPT", "Auth", null, "FAILURE", { reason: error.message ||,
 
       // Depending on requirements, might re-throw or return null/specific error structure;
       return null;
@@ -103,42 +75,18 @@ interface IAuditLogService {
     // For a simple JWT setup, logout is often client-side (clearing the token).;
     // Server-side logout might involve logging the event.;
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error: unknown) {,
 
-} catch (error) {
-
-} catch (error) {
-
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
-      // Placeholder: In a real system, you might add the token to a blacklist here.;
-      await this.auditLogService.logEvent(userId, "LOGOUT_SUCCESS", "Auth", userId, "SUCCESS");
-      return Promise.resolve();
-    } catch (error: unknown) {,
-
-      await this.auditLogService.logEvent(userId, "LOGOUT_ATTEMPT", "Auth", userId, "FAILURE", { reason: error.message ||, "Unknown error during logout"  });
+      await this.auditLogService.logEvent(userId, "LOGOUT_ATTEMPT", "Auth", userId, "FAILURE", { reason: error.message ||,
       throw error; // Or handle more gracefully;

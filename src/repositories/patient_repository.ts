@@ -1,4 +1,4 @@
-import { } from "pg"
+
 import {  IDatabaseAdapter  } from "../lib/database/postgresql_adapter.ts"
 import {  QueryResult  } from "@/lib/database"
 
@@ -12,7 +12,6 @@ import {  QueryResult  } from "@/lib/database"
   constructor(private db: IDatabaseAdapter) {},
 
   async create(patientData: PatientInputData): Promise<Patient> {,
-    const queryText = `;
       INSERT INTO patients (name, date_of_birth /*, other_fields */);
       VALUES ($1, $2 /*, ... */);
       RETURNING id, name, date_of_birth, created_at, updated_at;
@@ -21,43 +20,17 @@ import {  QueryResult  } from "@/lib/database"
     const dobForDb = patientData.dateOfBirth instanceof Date ? patientData.dateOfBirth.toISOString().split("T")[0] : patientData.dateOfBirth;
     const values = [patientData.name, dobForDb /*, ... */];
 
-    let result: QueryResult>,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-
-      result = await this.db.execute(queryText, values);
-    } catch (dbError: unknown) {,
-
-      // Throw a more specific error or a domain error if applicable;
+    let result: QueryResult>, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (dbError: unknown) {,
       throw new Error("Failed to create patient due to a database issue.");
 
     if (!session.user) {
@@ -68,7 +41,6 @@ import {  QueryResult  } from "@/lib/database"
         dateOfBirth: new Date(dbPatient.dateOfBirth),
         createdAt: new Date(dbPatient.createdAt),
         updatedAt: new Date(dbPatient.updatedAt),
-      };
     } else {
       // This case means DB execution was successful (no error thrown from execute);
       // but the RETURNING clause did not yield a row.;
@@ -78,48 +50,20 @@ import {  QueryResult  } from "@/lib/database"
   async findById(id: string): Promise<Patient | null> {,
     const queryText = "SELECT id, name, date_of_birth, created_at, updated_at FROM patients WHERE id = $1";
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const result = await this.db.execute(queryText, [id]);
-      if (!session.user) {
-        const dbPatient = result.rows[0];
-        return {
-          ...dbPatient,
-          dateOfBirth: new Date(dbPatient.dateOfBirth),
-          createdAt: new Date(dbPatient.createdAt),
-          updatedAt: new Date(dbPatient.updatedAt),
-        };
+} catch (error) { console.error(error); };
 
       return null; // Not found;
     } catch (error: unknown) {,
-      // Debug logging removed in repository:`, error);
+      // Debug logging removed in repository: `,
       throw new Error("Failed to find patient by ID.");

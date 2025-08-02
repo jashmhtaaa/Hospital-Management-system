@@ -30,6 +30,8 @@ interface RecentAdmission {
 // FIX: Renamed request to _request as it"s unused;
 export const _GET = async (/* _request: unknown */) => { // Removed unused parameter;
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }

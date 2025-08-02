@@ -1,48 +1,19 @@
-import { } from "@/lib/middleware/error-handling.middleware"
-import "@/lib/services/support-services/marketing";
-import "next-auth";
-import "next/server";
-import { NextRequest } from "@/lib/auth"
-import { NextResponse } from "next/server" }
-import {  authOptions  } from "@/lib/database"
-import {  getServerSession  } from "@/lib/database"
-import {  TemplateService  } from "@/lib/database"
-import {   type
-import {  withErrorHandling  } from "@/lib/database"
+import { NextRequest, NextResponse } from "next/server";
 
-const templateService = new TemplateService();
-
-/**;
- * POST /api/support-services/marketing/templates/:id/render;
- * Render a template with variables;
- */;
-export const POST = async();
-  request: any;
-  { params }: {id: string }
-) => {
-  return withErrorHandling();
-    request,
-    async (req: any) => {,
-      const _session = await getServerSession(authOptions);
-      const { variables } = await req.json();
-
-      if (!session.user) {
-        return NextResponse.json();
-          {error: "Variables must be a valid object" },
-          {status: 400 }
-        );
-      }
-
-      const renderedContent = await templateService.renderTemplate();
-        params.id,
-        variables;
-      );
-
-      return NextResponse.json({ renderedContent });
-    },
-    {requiredPermission:"marketing.templates.read",
-      auditAction: "TEMPLATE_RENDER",
-    }
-  );
-
+interface RouteContext {
+  params: { id: string };
 }
+
+export const GET = async (request: NextRequest, context: RouteContext) => {
+  try {
+    const { id } = context.params;
+    
+    // TODO: Implement Support Services Marketing Templates [Id] Render logic for ID: {id}
+    return NextResponse.json({ 
+      id,
+      message: "Not implemented" 
+    });
+  } catch (error) {
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  }
+};

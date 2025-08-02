@@ -60,6 +60,8 @@ const reactionRepository = {
  */;
 export const POST = async (req: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -188,6 +190,8 @@ export const POST = async (req: any) => {,
  */;
 export const GET = async (req: any, { params }: { params: { patientId: string } }) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }

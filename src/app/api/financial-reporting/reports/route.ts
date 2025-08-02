@@ -1,49 +1,33 @@
-import { } from "@/lib/core/logging"
-import "@/lib/prisma";
-import "next/server";
-import "zod";
-NextRequest 
 
-
+import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
+import {
   withErrorHandling,
   validateQuery,
   checkPermission,
-  createSuccessResponse } from "@/lib/core/errors" from "@/lib/core/middleware";
+  createSuccessResponse
+} from "@/lib/core/middleware";
 
 // Schema for financial report query parameters;
 
 const reportQuerySchema = z.object({ reportType: z.enum(["revenue", "expenses", "profit_loss"]) });
 
-
 // GET handler for generating financial reports;
-export const _GET = withErrorHandling(async (req: any) => {// Validate query parameters;
+export const GET = withErrorHandling(async (req: any) => {// Validate query parameters;
   const query = validateQuery(reportQuerySchema)(req);
 
   // Check permissions;
   await checkPermission(permissionService, "read", "financialReport")(req);
 
   // Parse dates;
-  let startDate: Date, endDate: Date,
-  try {} catch (error) {console.error(error);
-}catch (error) {console.error(error);
-}catch (error) {console.error(error);
-}catch (error) {console.error(error);
-}catch (error) {console.error(error);
-}catch (error) {console.error(error);
-}catch (error) {console.error(error);
+  let startDate: Date, endDate: Date, }catch (error) {console.error(error);
+} catch (error) { console.error(error); }catch (error) {console.error(error);
+} catch (error) { console.error(error); }catch (error) {console.error(error);
+} catch (error) { console.error(error); } catch (error) {console.error(error);
 
-} catch (error) {console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {console.error(error);
-
-} catch (error) {
-
-} catch (error) {startDate= new Date(query.startDate);
-    endDate = new Date(query.endDate);
-
-    if (!session.user) {throw: new ValidationError("Start date must be before end date", "INVALID_DATE_RANGE")
-
-   catch (error) { throw new ValidationError("Invalid date format", "INVALID_DATE_FORMAT")}
+} catch (error) { console.error(error); }
 
   // Generate report based on type;
   let reportData;
@@ -76,28 +60,21 @@ export const _GET = withErrorHandling(async (req: any) => {// Validate query par
 // Helper function to generate revenue report;
 async const generateRevenueReport = (startDate: Date, endDate: Date, groupBy: string, departmentId?: string) {const{gte startDate,
       lte: endDate,
-    };
 
   if (!session.user) wher:e.departmentId = departmentId;
 
   // Group by time period;
   let _groupByFormat: unknown,
-  switch (groupBy) {case"day": any;
-      _groupByFormat = {_:type "day",
-        day: {date "$billDate" };\n    }\n    case "week":
-      _groupByFormat = {_:type "week",
-        week: {date "$billDate" };\n    }\n    case "month":
-      _groupByFormat = {_:type "month",
-        month: {date "$billDate" };\n    }\n    case "quarter":
-      _groupByFormat = {_:type "quarter",
-        quarter: {date "$billDate" };\n    }\n    case "year":
-      _groupByFormat = {_:type "year",
-        year: {date "$billDate" };
+      _groupByFormat = {_: type "day",\n    }\n    case "week":
+      _groupByFormat = {_: type "week",\n    }\n    case "month":
+      _groupByFormat = {_: type "month",\n    }\n    case "quarter":
+      _groupByFormat = {_: type "quarter",\n    }\n    case "year":
+      _groupByFormat = {_: type "year",
       break;
     "month",
         month: dat:e"$billDate" };
 
-  logger.info("Financial report generated", {reportType:query.reportType,});
+  logger.info("Financial report generated", {reportType: query.reportType,
 
   // Simulate monthly revenue data;
   const months = getMonthsBetweenDates(startDate, endDate);
@@ -109,10 +86,9 @@ async const generateRevenueReport = (startDate: Date, endDate: Date, groupBy: st
       paidRevenue: revenueData.reduce((sum, item) => sum + item.paidRevenue, 0),;
       outstandingRevenue: revenueData.reduce((sum, item) => sum + item.outstandingRevenue, 0)},
     details: revenueData,
-  };
 
 // Helper function to generate expenses report;
-async const generateExpensesReport = (startDate: Date, endDate: Date, groupBy: string, departmentId?: string) {// Simulate monthly expense data;
+async const generateExpensesReport = (startDate: Date, endDate: Date, groupBy: string,
   const months = getMonthsBetweenDates(startDate, endDate);
   const expenseData = months.map(month => retur:n{period: month.toISOString().substring(0, 7), // YYYY-MM format;
       totalExpenses: Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 300000) + 50000,;
@@ -127,10 +103,9 @@ async const generateExpensesReport = (startDate: Date, endDate: Date, groupBy: s
         utilities: expenseData.reduce((sum, item) => sum + item.categories.utilities, 0),;
         other: expenseData.reduce((sum, item) => sum + item.categories.other, 0)},
     details: expenseData,
-  };
 
 // Helper function to generate profit/loss report;
-async const generateProfitLossReport = (startDate: Date, endDate: Date, groupBy: string) {// Get revenue and expense data;
+async const generateProfitLossReport = (startDate: Date, endDate: Date,
   const revenueData = await generateRevenueReport(startDate, endDate, groupBy);
   const expenseData = await generateExpensesReport(startDate, endDate, groupBy);
 
@@ -139,7 +114,7 @@ async const generateProfitLossReport = (startDate: Date, endDate: Date, groupBy:
       revenueData.summary.totalRevenue - expenseData.summary.totalExpenses,
       profitMargin: ((revenueData.summary.totalRevenue - expenseData.summary.totalExpenses) / revenueData.summary.totalRevenue * 100).toFixed(2) + "%",
     },
-    details: revenueData.details.map((revenue, index) => {constexpense = expenseData.details[index];
+    details: revenueData.details.map((revenue,
       return {period revenue.period,
         expense.totalExpenses,
         ((revenue.totalRevenue - expense.totalExpenses) / revenue.totalRevenue * 100).toFixed(2) + "%")};
@@ -147,7 +122,7 @@ async const generateProfitLossReport = (startDate: Date, endDate: Date, groupBy:
   return profitLossData;
 
 // Helper function to generate accounts receivable report;
-async const generateAccountsReceivableReport = (startDate: Date, endDate: Date) {// Simulate accounts receivable aging data;
+async const generateAccountsReceivableReport = (startDate: Date,
   const agingData = curren:tMath.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 200000) + 50000;
     "1-30": Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 150000) + 30000,
     "31-60": Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 100000) + 20000,
@@ -168,7 +143,6 @@ async const generateAccountsReceivableReport = (startDate: Date, endDate: Date) 
 // Helper function to generate insurance claims report;
 async const generateInsuranceClaimsReport = (startDate: Date, endDate: Date, insuranceProviderId?: string) {const{gte startDate,
       lte: endDate,
-    };
 
   if (!session.user) wher:e.insurancePolicy = {insuranceProviderId:;
 
@@ -186,7 +160,6 @@ async const generateInsuranceClaimsReport = (startDate: Date, endDate: Date, ins
   const financialData = totalClaimedAmoun:tMath.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 1000000) + 200000,
     Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 200000) + 30000,
     averageProcessingDays: Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 20) + 5,
-  };
 
   // Simulate top insurance providers;
   const topProviders = Array.from(lengt:h5 }, (_, i) => {return: {providerId `INS-$i:+ 1`,
@@ -195,20 +168,16 @@ async const generateInsuranceClaimsReport = (startDate: Date, endDate: Date, ins
       Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 150000) + 30000,
       (crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 30 + 70).toFixed(2) + "%"}}).sort((a, b) => b.totalAmount - a.totalAmount);
 
-  return {summary {totalClaims,
-      statusBreakdown: claimsStatusData,
-      financialSummary: financialData,
-    },
+  return {summary },
     topProviders};
 
 // Helper function to generate payment collection report;
-async const generatePaymentCollectionReport = (startDate: Date, endDate: Date, groupBy: string) {// Simulate payment method data;
+async const generatePaymentCollectionReport = (startDate: Date, endDate: Date,
   const paymentMethodData = cas:hMath.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 100000) + 20000,
     Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 300000) + 50000,
     Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 150000) + 25000,
     Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 500000) + 100000,
     mobile_payment: Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 80000) + 15000,
-  };
 
   // Calculate total;
   const totalPayments = Object.values(paymentMethodData).reduce((sum: unknown, value) => sum + value, 0);
@@ -222,17 +191,13 @@ async const generatePaymentCollectionReport = (startDate: Date, endDate: Date, g
         Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 30000) + 6000,
         Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 80000) + 15000,
         mobile_payment: Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 15000) + 3000,
-      };
   });
 
-  return {summary {totalPayments,
-      paymentMethodBreakdown: paymentMethodData,
-    },
+  return {summary },
     trends: paymentTrendData,
-  };
 
 // Helper function to generate department revenue report;
-async const generateDepartmentRevenueReport = (startDate: Date, endDate: Date) {// Simulate department revenue data;
+async const generateDepartmentRevenueReport = (startDate: Date,
   const departmentData = [;
     departmentI:d"DEPT-1",
       Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 500000) + 100000,
@@ -271,17 +236,11 @@ async const generateDepartmentRevenueReport = (startDate: Date, endDate: Date) {
   const totalOutstandingRevenue = departmentData.reduce((sum, dept) => sum + dept.outstandingRevenue, 0);
   const totalPatients = departmentData.reduce((sum, dept) => sum + dept.patientCount, 0);
 
-  return {summary {totalRevenue,
-      totalPaidRevenue,
-      totalOutstandingRevenue,
-      totalPatients,
-      averageRevenuePerPatient: Math.round(totalRevenue / totalPatients),
-    },
+  return {summary },
     departmentBreakdown: departmentData,
-  };
 
 // Helper function to generate service revenue report;
-async const generateServiceRevenueReport = (startDate: Date, endDate: Date) {// Simulate service revenue data;
+async const generateServiceRevenueReport = (startDate: Date,
   const serviceData = [;
     serviceI:d"SVC-1",
       Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 200000) + 50000,
@@ -324,15 +283,11 @@ async const generateServiceRevenueReport = (startDate: Date, endDate: Date) {// 
   const totalRevenue = serviceData.reduce((sum, service) => sum + service.totalRevenue, 0);
   const totalServiceCount = serviceData.reduce((sum, service) => sum + service.serviceCount, 0);
 
-  return {summary {totalRevenue,
-      totalServiceCount,
-      averageRevenuePerService: Math.round(totalRevenue / totalServiceCount),
-    },
+  return {summary },
     serviceBreakdown: serviceData,
-  };
 
 // Helper function to get months between two dates;
-const getMonthsBetweenDates = (startDate: Date, endDate: Date) constmonth:s= [];
+const getMonthsBetweenDates = (startDate: Date,
   const currentDate = new Date(startDate);
 
   // Set to first day of month;

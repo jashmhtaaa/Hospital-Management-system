@@ -19,6 +19,8 @@ export const POST = async (
     request,
     async (req: NextRequest) => {,
       const session = await getServerSession(authOptions);
+  return NextResponse.json({ message: "Not implemented" });
+};
       const { contactId } = await req.json();
 
        {\n  {
@@ -63,6 +65,8 @@ export const DELETE = async (
       );
 
       return NextResponse.json(member);
+  return NextResponse.json({ message: "Not implemented" });
+};
     },
     {
       requiredPermission: 'marketing.segments.update',

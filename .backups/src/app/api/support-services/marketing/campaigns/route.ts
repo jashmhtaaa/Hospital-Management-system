@@ -55,6 +55,8 @@ const updateCampaignSchema = z.object({
 // GET /api/support-services/marketing/campaigns;
 export const _GET = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -121,6 +123,8 @@ export const _GET = async (request: any) => {,
 // POST /api/support-services/marketing/campaigns;
 export const _POST = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -189,6 +193,8 @@ export const _POST = async (request: any) => {,
 // GET /api/support-services/marketing/campaigns/:id;
 export const _GET_BY_ID = async (request: any, { params }: { params: { id: string } }) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -249,6 +255,8 @@ export const _GET_BY_ID = async (request: any, { params }: { params: { id: strin
 // PATCH /api/support-services/marketing/campaigns/:id;
 export const _PATCH = async (request: any, { params }: { params: { id: string } }) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -314,6 +322,8 @@ export const _PATCH = async (request: any, { params }: { params: { id: string } 
 // DELETE /api/support-services/marketing/campaigns/:id;
 export const _DELETE = async (request: any, { params }: { params: { id: string } }) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -369,6 +379,8 @@ export const _DELETE = async (request: any, { params }: { params: { id: string }
 // GET /api/support-services/marketing/campaigns/:id/analytics;
 export const _GET_ANALYTICS = async (request: any, { params }: { params: { id: string } }) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -424,6 +436,8 @@ export const _GET_ANALYTICS = async (request: any, { params }: { params: { id: s
 // POST /api/support-services/marketing/campaigns/:id/channels;
 export const _POST_CHANNEL = async (request: any, { params }: { params: { id: string } }) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -486,6 +500,8 @@ export const _POST_CHANNEL = async (request: any, { params }: { params: { id: st
 // POST /api/support-services/marketing/campaigns/:id/segments/:segmentId;
 export const _POST_SEGMENT = async (request: any, { params }: { params: { id: string, segmentId: string } }) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }

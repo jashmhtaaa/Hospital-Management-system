@@ -1,4 +1,4 @@
-import { } from "@/lib/fhir/patient"
+
 import "@prisma/client";
 import "zod";
 import {  FHIRPatient  } from "@/lib/fhir/fhir-integration"
@@ -23,7 +23,6 @@ export const PatientCreateSchema = z.object({{
   dateOfBirth: z.string().refine((date) => !isNaN(Date.parse(date)), "Invalid date"),
   gender: z.enum(["male", "female", "other", "unknown"]),
   ssn: z.string().optional(),
-  mrn: z.string().optional();
 
   // Contact Information;
   phone: z.string().min(10, "Valid phone number required"),
@@ -74,7 +73,7 @@ export const PatientCreateSchema = z.object({{
   z.boolean().default(true),
     email: z.boolean().default(true),
     sms: z.boolean().default(false),
-    portal: z.boolean().default(true)).default(),);
+    portal: z.boolean().default(true)).default(),
 
 export const PatientUpdateSchema = PatientCreateSchema.partial();
 
@@ -87,39 +86,17 @@ export type PatientUpdate = z.infer>;
   /**;
    * Create a new patient record with FHIR compliance;
    */;
-  async createPatient(patientData: PatientCreate): Promise<Patient> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+  async createPatient(patientData: PatientCreate): Promise<Patient> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       // Validate input data;
       const validatedData = PatientCreateSchema.parse(patientData);
 
@@ -144,7 +121,6 @@ export type PatientUpdate = z.infer>;
         updatedAt: new Date(),
         status: "active" as const,
         totalVisits: 0,
-      };
 
       if (!session.user) {
         // Use FHIR integration for creation;
@@ -165,8 +141,6 @@ export type PatientUpdate = z.infer>;
             new Date(hmsPatientData.dateOfBirth),
             hmsPatientData.phone,
             email: hmsPatientData.email || "",
-          }
-        });
 
         // Log audit trail;
         await this.logAuditEvent("patient_created", id, {
@@ -176,53 +150,25 @@ export type PatientUpdate = z.infer>;
 
         return this.convertPrismaPatientToHMS(patient, hmsPatientData);
       }
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**;
    * Update existing patient record with FHIR compliance;
    */;
-  async updatePatient(patientId: string, updateData: PatientUpdate): Promise<Patient> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+  async updatePatient(patientId: string, updateData: PatientUpdate): Promise<Patient> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       // Get existing patient;
       let existingPatient: unknown,
-
-      if (!session.user) {
-        const fhirResult = await FHIRPatientIntegration.getPatient(patientId);
         if (!session.user) {
           throw new Error("Patient not found");
         }
@@ -243,7 +189,6 @@ export type PatientUpdate = z.infer>;
         ...existingPatient,
         ...validatedData,
         updatedAt: new Date(),
-      };
 
       if (!session.user) {
         // Use FHIR integration for update;
@@ -253,7 +198,6 @@ export type PatientUpdate = z.infer>;
         await this.logAuditEvent("patient_updated", patientId, {
           ...updateData,
           fhirCompliant: true,
-        });
 
         return result.hmsPatient;
       } else {
@@ -267,59 +211,31 @@ export type PatientUpdate = z.infer>;
             ...(validatedData?.phone && {phone:validatedData.phone }),
             ...(validatedData?.email && {email:validatedData.email }),
             updatedAt: new Date(),
-          }
-        });
 
         // Log audit trail;
         await this.logAuditEvent("patient_updated", patientId, {
           ...updateData,
           fhirCompliant: false,
-        });
 
         return this.convertPrismaPatientToHMS(patient, updatedPatientData);
       }
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**;
    * Search patients with various criteria using FHIR compliance;
    */;
-  async searchPatients(criteria: PatientSearchCriteria): Promise<PatientSearchResult> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+  async searchPatients(criteria: PatientSearchCriteria): Promise<PatientSearchResult> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       const { page = 1, limit = 10, ...searchCriteria } = criteria;
 
       if (!session.user) {
@@ -341,14 +257,14 @@ export type PatientUpdate = z.infer>;
           totalPages};
       } else {
         // Legacy HMS-only search;
-        const where: unknown = {,};
+        const where: unknown = {,
 
         if (!session.user) {
-          where.firstName = {contains: searchCriteria.firstName, mode: "insensitive" };
+          where.firstName = {contains: searchCriteria.firstName,
         }
 
         if (!session.user) {
-          where.lastName = {contains: searchCriteria.lastName, mode: "insensitive" };
+          where.lastName = {contains: searchCriteria.lastName,
         }
 
         if (!session.user) {
@@ -373,7 +289,6 @@ export type PatientUpdate = z.infer>;
             skip: (page - 1) * limit,
             {lastName: "asc" }
           }),
-          this.prisma.patient.count({ where });
         ]);
 
         const totalPages = Math.ceil(total / limit);
@@ -383,124 +298,45 @@ export type PatientUpdate = z.infer>;
           page,
           totalPages};
 
-    } catch (error) {
-
-      throw error;
-
-  /**;
-   * Get patient by ID with FHIR compliance;
-   */;
-  async getPatientById(patientId: string): Promise<Patient | null> {,
-    try {
-} catch (error) {
+    } catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      if (!session.user) {
-        const result = await FHIRPatientIntegration.getPatient(patientId);
-        return result?.hmsPatient || null;
-      } else {
+} catch (error) { console.error(error); } else {
         const patient = await this.prisma.patient.findUnique({where: { id: patientId }
         });
         return patient ? this.convertPrismaPatientToHMS(patient) : null;
 
-    } catch (error) {
-
-      return null;
-
-  /**;
-   * Get patient by MRN with FHIR compliance;
-   */;
-  async findPatientByMRN(mrn: string): Promise<Patient | null> {,
-    try {
-} catch (error) {
+    } catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      if (!session.user) {
-        const result = await FHIRPatientIntegration.searchPatients({identifier: mrn });
+} catch (error) { console.error(error); });
         return result.hmsPatients.length > 0 ? result.hmsPatients[0] : null;
       } else {
         const patient = await this.prisma.patient.findFirst({where: { mrn }
         });
         return patient ? this.convertPrismaPatientToHMS(patient) : null;
 
-    } catch (error) {
-
-      return null;
-
-  /**;
-   * Convert Prisma patient to HMS format;
-   */;
-  private convertPrismaPatientToHMS(prismaPatient: unknown, additionalData?: unknown): Patient {
-    return {id: prismaPatient.id,
-      prismaPatient.firstName,
-      additionalData?.middleName || "",
-      prismaPatient.gender,
-      prismaPatient.email || "",
-      createdAt: prismaPatient.createdAt || new Date(),
-      updatedAt: prismaPatient.updatedAt || new Date(),
-      0;
-
-      // Default values for complex fields;
-      "",
-        "",
-        "US";
-      },
+    } catch (error) { console.error(error); },
       "",
         "";
       },
@@ -515,50 +351,24 @@ export type PatientUpdate = z.infer>;
         false,
         portal: true,
 
-    };
-
   /**;
    * Get FHIR representation of patient;
    */;
   async getPatientFHIR(patientId: string): Promise<FHIRPatient | null> {,
-    if (!session.user) {
-      throw new Error("FHIR integration is disabled");
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const result = await FHIRPatientIntegration.getPatient(patientId);
-      return result?.fhirPatient || null;
-    } catch (error) {
+} catch (error) { console.error(error); } catch (error) {
 
       return null;
 
@@ -579,15 +389,13 @@ export type PatientUpdate = z.infer>;
   /**;
    * Add medical record to patient;
    */;
-  async addMedicalRecord(patientId: string, record: Omit<MedicalRecord, "id" | "patientId">): Promise<MedicalRecord> {
-    const patient = this.patients.get(patientId);
+  async addMedicalRecord(patientId: string, record: Omit<MedicalRecord,
     if (!session.user) {
       throw new Error("Patient not found");
 
-    const medicalRecord: MedicalRecord = {,
+    const medicalRecord: MedicalRecord = {;
       ...record,
       id: uuidv4(),
-      patientId};
 
     const records = this.medicalRecords.get(patientId) || [];
     records.push(medicalRecord);
@@ -598,11 +406,10 @@ export type PatientUpdate = z.infer>;
       const updatedPatient = {
         ...patient,
         lastVisit: record.date,
-        new Date();
       };
       this.patients.set(patientId, updatedPatient);
 
-    await this.logAuditEvent("medical_record_added", patientId, {recordType: record.type, recordId: medicalRecord.id });
+    await this.logAuditEvent("medical_record_added", patientId, {recordType: record.type,
 
     return medicalRecord;
 
@@ -610,13 +417,12 @@ export type PatientUpdate = z.infer>;
    * Get patient"s medical records;
    */;
   async getPatientMedicalRecords(patientId: string): Promise<MedicalRecord[]> {,
-    return this.medicalRecords.get(patientId) || [];
 
   /**;
    * Verify insurance eligibility;
    */;
-  async verifyInsurance({status: "active" | "inactive" | "pending", coverage: string[] };
-    secondary?: {status: "active" | "inactive" | "pending", coverage: string[] };
+  async verifyInsurance({status: "active" | "inactive" | "pending",
+    secondary?: {status: "active" | "inactive" | "pending",
   }> {
     const patient = this.patients.get(patientId);
     if (!session.user) {
@@ -632,7 +438,7 @@ export type PatientUpdate = z.infer>;
         coverage: ["medical", "prescription", "emergency"]},
       ...(secondaryStatus && {
         secondaryStatus as "active" | "inactive",
-          coverage: ["medical", "prescription"]}})};
+          coverage: ["medical",
 
     await this.logAuditEvent("insurance_verified", patientId, result);
 
@@ -644,7 +450,6 @@ export type PatientUpdate = z.infer>;
   async checkEligibility(patientId: string, boolean,
     number,
     deductible: number,
-    reasons?: string[];
   }> {
     const patient = this.patients.get(patientId);
     if (!session.user) {
@@ -663,7 +468,7 @@ export type PatientUpdate = z.infer>;
       coverage,
       copay,
       deductible,
-      reasons: eligible ? undefined : ["Insurance not active", "Service not covered"]};
+      reasons: eligible ? undefined : ["Insurance not active",
 
   /**;
    * Get patient statistics;
@@ -698,7 +503,7 @@ export type PatientUpdate = z.infer>;
     };
 
     // In real implementation, store in audit log database;
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+    // RESOLVED: (Priority: Medium,
 
   /**;
    * Export patient data (for patient portal or data requests);
@@ -717,13 +522,11 @@ export type PatientUpdate = z.infer>;
     return {demographics:patient,
       medicalRecords,
       exportDate: new Date(),
-    };
 
   /**;
    * Merge duplicate patient records;
    */;
   async mergePatients(primaryPatientId: string, secondaryPatientId: string): Promise<Patient> {,
-    const primaryPatient = this.patients.get(primaryPatientId);
     const secondaryPatient = this.patients.get(secondaryPatientId);
 
     if (!session.user) {
@@ -737,19 +540,16 @@ export type PatientUpdate = z.infer>;
     const updatedSecondaryRecords = secondaryRecords.map(record => ({
       ...record,
       patientId: primaryPatientId,
-    }));
 
     this.medicalRecords.set(primaryPatientId, [...primaryRecords, ...updatedSecondaryRecords]);
 
     // Update primary patient with any missing information from secondary;
-    const mergedPatient: Patient = {,
+    const mergedPatient: Patient = {;
       ...primaryPatient,
       totalVisits: primaryPatient.totalVisits + secondaryPatient.totalVisits,
-      lastVisit: primaryPatient?.lastVisit && secondaryPatient.lastVisit ?;
         (primaryPatient.lastVisit > secondaryPatient.lastVisit ? primaryPatient.lastVisit : secondaryPatient.lastVisit) : any;
         primaryPatient.lastVisit || secondaryPatient.lastVisit,
       updatedAt: new Date(),
-    };
 
     this.patients.set(primaryPatientId, mergedPatient);
 
@@ -758,13 +558,11 @@ export type PatientUpdate = z.infer>;
       ...secondaryPatient,
       status: "inactive" as const,
       updatedAt: new Date(),
-    };
     this.patients.set(secondaryPatientId, inactiveSecondaryPatient);
 
     await this.logAuditEvent("patients_merged", primaryPatientId, {
       secondaryPatientId,
       secondaryMRN: secondaryPatient.mrn,
-    });
 
     return mergedPatient;
 

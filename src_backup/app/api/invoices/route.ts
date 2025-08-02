@@ -47,6 +47,8 @@ async const generateInvoiceNumber = (db: D1Database): Promise<string> {,
 // GET /api/invoices - Fetch list of invoices (with filtering/pagination);
 export const _GET = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -174,6 +176,8 @@ export const _GET = async (request: any) => {,
 export const _POST = async (request: any) => {,
     const session = await getSession();
     if (!session.user) {
+  return NextResponse.json({ message: "Not implemented" });
+};
         return NextResponse.json({ message: "Unauthorized" ,}, { status: 401 ,});
     }
     if (!session.user) { // Ensure user exists if logged in

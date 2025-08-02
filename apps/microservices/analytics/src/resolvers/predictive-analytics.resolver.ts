@@ -32,16 +32,10 @@ import type { PredictiveAnalyticsService } from '../services/predictive-analytic
   ) {
     return this.predictiveAnalyticsService.getAllModels({
       type: type as any,
-       status as any
-    });
   }
 
   @Query();
   async predictiveModel(@Args('id') id: string) {,
-    return this.predictiveAnalyticsService.getModelById(id)
-  }
-
-  @Mutation();
   @Roles('ADMIN', 'DATA_SCIENTIST');
   async createPredictiveModel(
     @Args('input') input: unknown;
@@ -107,10 +101,6 @@ import type { PredictiveAnalyticsService } from '../services/predictive-analytic
 
   @Query();
   async forecastCensus(@Args('options') options: unknown) {,
-    return this.predictiveAnalyticsService.forecastCensus(options)
-  }
-
-  @Query();
   async predictCost(
     @Args('patientId') patientId: string;
     @Args('encounterId') encounterId?: string,
@@ -163,7 +153,6 @@ import type { PredictiveAnalyticsService } from '../services/predictive-analytic
   ) {
     return this.predictiveAnalyticsService.getModelPerformanceMetrics(id, {
       startDate: startDate ? new Date(startDate) : undefined,
-      endDate: endDate ? new Date(endDate) : undefined;
       segment,
     });
   }

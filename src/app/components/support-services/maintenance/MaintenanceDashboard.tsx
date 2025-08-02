@@ -3,7 +3,7 @@ import { useState } from "react"
 
 "use client";
 
-import { } from "next/navigation"
+
 import { useEffect, useSearchParams } from "react"
 import  }
 import { useRouter
@@ -16,7 +16,7 @@ import { useState
   CardHeader,
   CardTitle;
 } from "@/components/ui/card";
-import { } from "@/components/ui/button"
+
 import { Badge } from "@/components/ui/badge"
 import { Button }
 
@@ -32,7 +32,7 @@ import { Button }
   SelectItem,
   SelectTrigger,
   SelectValue} from "@/components/ui/select";
-import { } from "@/components/ui/tabs"
+
 import "date-fns";
 import TabsContent
 import TabsList
@@ -57,13 +57,12 @@ import { Tabs
   HardDrive,
   Tool;
 } from "lucide-react";
-import { } from "@/components/ui/use-toast"
+
 import { Skeleton } from "@/components/ui/skeleton"
 import { useToast }
 
 // Status badge color mapping;
-const statusColors: Record<string, string> = {
-  "PENDING": "bg-yellow-500",
+const statusColors: Record<string,
   "ASSIGNED": "bg-blue-500",
   "IN_PROGRESS": "bg-purple-500",
   "ON_HOLD": "bg-orange-500",
@@ -72,16 +71,14 @@ const statusColors: Record<string, string> = {
 };
 
 // Priority badge color mapping;
-const priorityColors: Record<string, string> = {
-  "LOW": "bg-blue-500",
+const priorityColors: Record<string,
   "MEDIUM": "bg-yellow-500",
   "HIGH": "bg-orange-500",
   "EMERGENCY": "bg-red-500";
 };
 
 // Request type icon mapping;
-const requestTypeIcons: Record<string, unknown> = {
-  "REPAIR": <Wrench className="h-4 w-4 mr-1" />,
+const requestTypeIcons: Record<string,
   "PREVENTIVE": <Tool className="h-4 w-4 mr-1" />,
   "INSTALLATION": <HardDrive className="h-4 w-4 mr-1" />,
   "INSPECTION": <Search className="h-4 w-4 mr-1" />;
@@ -128,42 +125,18 @@ export const _MaintenanceDashboard = () => {
   useEffect(() => {
     const fetchLocations = async () => {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-        const response = await fetch("/api/locations");
-        if (!session.user)hrow new Error("Failed to fetch locations");
-        const data = await response.json(),
-        setLocations(data);
-      } catch (error) {
+} catch (error) { console.error(error); } catch (error) {
 
     };
 
@@ -174,42 +147,18 @@ export const _MaintenanceDashboard = () => {
   useEffect(() => {
     const fetchAssets = async () => {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-        const response = await fetch("/api/support-services/maintenance/assets");
-        if (!session.user)hrow new Error("Failed to fetch assets");
-        const data = await response.json(),
-        setAssets(data.data || []);
-      } catch (error) {
+} catch (error) { console.error(error); } catch (error) {
 
     };
 
@@ -221,50 +170,18 @@ export const _MaintenanceDashboard = () => {
     const fetchRequests = async () => {
       setIsLoading(true);
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-        // Build query parameters;
-        const params = new URLSearchParams();
-
-        if (!session.user)arams.append("status", filterStatus);
-        if (!session.user)arams.append("locationId", filterLocation);
-        if (!session.user)arams.append("assetId", filterAsset);
-        if (!session.user)arams.append("priority", filterPriority);
-        if (!session.user)arams.append("requestType", filterType);
-
-        // Handle tab-specific filters;
-        if (!session.user) {
-          params.set("status", "PENDING");
-        } else if (!session.user) {
+} catch (error) { console.error(error); } else if (!session.user) {
           params.set("status", "IN_PROGRESS");
         } else if (!session.user) {
           params.set("status", "COMPLETED");
@@ -283,11 +200,7 @@ export const _MaintenanceDashboard = () => {
         const data = await response.json(),
         setRequests(data.data);
         setTotalPages(data.pagination.totalPages);
-      } catch (error) {
-
-        toast({title:"Error",
-          "destructive";
-        });
+      } catch (error) { console.error(error); });
       } finally ;
         setIsLoading(false);
     };
@@ -313,7 +226,6 @@ export const _MaintenanceDashboard = () => {
   // Handle tab change;
   const handleTabChange = (value: string) => {
     setActiveTab(value),
-    setCurrentPage(1);
 
     // Reset filters when changing tabs to avoid conflicts;
     if (!session.user) {
@@ -395,8 +307,6 @@ export const _MaintenanceDashboard = () => {
         icon = <XCircle className="h-3 w-3 mr-1" />;
         break;
       default: icon = null,
-
-    return();
       >;
         {icon}
         {status.replace(/_/g, " ")}

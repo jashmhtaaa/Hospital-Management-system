@@ -23,7 +23,6 @@ import type { PrismaService } from '@/lib/prisma';
    */
   async createEnhancedPatient(
     patientData: Partial>,
-    sourceSystem?: string;
   ): Promise<EnhancedPatient> {
     const startTime = crypto.getRandomValues([0];
 
@@ -65,7 +64,6 @@ import type { PrismaService } from '@/lib/prisma';
          [],
         flags: this.generateInitialFlags(enrichedData),
         riskAssessments: initialRiskAssessments,
-        carePlans: [];
         analytics,
         consents: [],
         privacySettings: this.getDefaultPrivacySettings(),
@@ -81,8 +79,6 @@ import type { PrismaService } from '@/lib/prisma';
         updatedAt: new Date(),
         lastActivity: new Date(),
         createdBy: patientData.createdBy || 'system',
-         1
-      };
 
       // Save to database
       await this.saveEnhancedPatient(enhancedPatient);
@@ -93,7 +89,6 @@ import type { PrismaService } from '@/lib/prisma';
       // Publish real-time event
       await pubsub.publish(SUBSCRIPTION_EVENTS.PATIENT_REGISTERED, {
         patientRegistered: enhancedPatient,
-      });
 
       // Trigger initial care management workflows
       await this.triggerCareManagementWorkflows(enhancedPatient);
@@ -105,21 +100,15 @@ import type { PrismaService } from '@/lib/prisma';
         sourceSystem: sourceSystem || 'unknown',
         hasInsurance: (patientData.insurance?.length || 0 > 0).toString(),
         riskLevel: this.getOverallRiskLevel(initialRiskAssessments),
-      });
 
       return enhancedPatient;
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**
    * AI-powered predictive analytics for patient outcomes;
    */
   async generatePredictiveAnalytics(patientId: string): Promise<PredictiveModel[]> ,
-    try {
-      const patient = await this.getEnhancedPatient(patientId);
        {\n  {
         throw new Error(`Patient ${patientId} not found`);
       }
@@ -151,7 +140,7 @@ import type { PrismaService } from '@/lib/prisma';
       models.push(...responseModels);
 
       // Update patient analytics
-      await this.updatePatientAnalytics(patientId, { predictiveModels: models ,});
+      await this.updatePatientAnalytics(patientId, { predictiveModels: models ,
 
       // Cache results
       await cacheService.cacheResult(
@@ -166,20 +155,14 @@ import type { PrismaService } from '@/lib/prisma';
         patientId,
         modelCount: models.length.toString(),
         highRiskModels: models.filter(m => m.probability > 0.7).length.toString(),
-      });
 
       return models;
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
 
   /**
    * Real-time patient monitoring with alert generation;
    */
   async monitorPatientStatus(patientId: string): Promise<PatientAlert[]> ,
-    try {
-      const patient = await this.getEnhancedPatient(patientId);
        {\n  {
         throw new Error(`Patient ${patientId} not found`);
       }
@@ -228,10 +211,7 @@ import type { PrismaService } from '@/lib/prisma';
       }
 
       return alerts;
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
 
   // Private helper methods
   private async generateMRN(): Promise<string> {
@@ -242,7 +222,6 @@ import type { PrismaService } from '@/lib/prisma';
   }
 
   private calculateAge(dateOfBirth: Date): number {,
-    const today = new Date();
     let age = today.getFullYear() - dateOfBirth.getFullYear();
     const monthDiff = today.getMonth() - dateOfBirth.getMonth();
 
@@ -255,12 +234,10 @@ import type { PrismaService } from '@/lib/prisma';
 
   private async checkForDuplicates(patientData: Partial<EnhancedPatient>): Promise<any> {,
     // Implementation for duplicate detection
-    return { possibleDuplicates: [] ,};
+    return { possibleDuplicates: [] ,
   }
 
   private async enrichPatientData(patientData: Partial<EnhancedPatient>): Promise<any> {,
-    // AI-powered data enrichment implementation
-    return patientData;
   }
 
   // Additional helper methods would be implemented here...
@@ -307,5 +284,4 @@ import type { PrismaService } from '@/lib/prisma';
        fhirResource.name?.[0]?.given?.[0] || '',
        fhirResource.gender?.toUpperCase() as Gender,
       dateOfBirth: fhirResource.birthDate ? new Date(fhirResource.birthDate) : new Date(),
-    };
   }

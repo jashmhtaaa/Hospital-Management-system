@@ -3,7 +3,7 @@ import { useState } from "react"
 
 "use client";
 
-import { } from "react"
+
 import useEffect } from "next/navigation"
 import {
 import { useRouter }
@@ -29,8 +29,8 @@ import { useState
   SelectTrigger,
   SelectValue;
 } from "@/components/ui/select";
-import { } from "@/components/ui/button"
-import { } from "@/components/ui/input"
+
+
 import "@/components/ui/popover";
 import "@/components/ui/separator";
 import "@/components/ui/use-toast";
@@ -76,7 +76,6 @@ const employeeFormSchema = z.object({employeeId:z.string().min(1, "Employee ID i
     relationship: z.string().optional(),
     phone: z.string().optional(),
     email: z.string().optional(),
-  }).optional()});
 
 export default const _NewEmployee = () {
   const router = useRouter();
@@ -103,85 +102,34 @@ export default const _NewEmployee = () {
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-
-        const response = await fetch("/api/hr/departments");
-        if (!session.user) {
-          const data = await response.json(),
-          setDepartments(data.departments || []);
-
-      } catch (err) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (err) {
 
     };
 
     const fetchUsers = async () => {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-        const response = await fetch("/api/users");
-        if (!session.user) {
-          const data = await response.json(),
-          setUsers(data.users || []);
-
-      } catch (err) {
+} catch (error) { console.error(error); } catch (err) {
 
     };
 
@@ -192,50 +140,23 @@ export default const _NewEmployee = () {
   // Handle form submission;
   const onSubmit = async (data) => {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      setLoading(true);
-
-      // Format dates for API;
-      const formattedData = {
-        ...data,
-        birthDate: data.birthDate ? format(data.birthDate, "yyyy-MM-dd") : undefined,
-        joiningDate: format(data.joiningDate, "yyyy-MM-dd")};
+} catch (error) { console.error(error); };
 
       const response = await fetch("/api/hr/staff", {method:"POST",
         headers: {
           "Content-Type": "application/json"},
         body: JSON.stringify(formattedData),
-      });
 
       if (!session.user) {
         const errorData = await response.json();
@@ -245,14 +166,10 @@ export default const _NewEmployee = () {
       toast({
         title: "Employee Created",
         description: `Successfully created employee record for /* SECURITY: Template literal eliminated */,
-      });
 
       // Navigate back to staff list;
       router.push("/dashboard/hr/staff");
-    } catch (error) {
-      toast({title:"Error",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
     } finally {
       setLoading(false);
 

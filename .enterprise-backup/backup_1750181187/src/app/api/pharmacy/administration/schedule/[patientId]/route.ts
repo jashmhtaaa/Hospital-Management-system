@@ -58,6 +58,8 @@ export const GET = async (
     // Check authorization
     const authHeader = req.headers.get('authorization');
      {\n  {
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 

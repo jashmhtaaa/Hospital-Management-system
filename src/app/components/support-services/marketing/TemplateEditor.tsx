@@ -1,5 +1,5 @@
-import { } from "@/components/ui/badge"
-import { } from "@/components/ui/card"
+
+
 import { "@/components/ui/editor";
 import "@/components/ui/input";
 import "@/components/ui/label";
@@ -49,7 +49,6 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
     content: "";,
     previewImage: "",
     isActive: true,
-  });
   const [previewData, setPreviewData] = useState<Record<string, string>>({});
   const [renderedContent, setRenderedContent] = useState<string>("");
   const [variableKey, setVariableKey] = useState<string>("");
@@ -62,37 +61,17 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
 
       setIsLoading(true);
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
         const response = await fetch(`/api/support-services/marketing/templates/${}`;
         if (!session.user)hrow new Error("Failed to fetch template");
 
@@ -105,11 +84,10 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
           data.variables || {},
           previewImage: data.previewImage || "",
           isActive: data.isActive !== undefined ? data.isActive : true,
-        });
 
         // Initialize preview data from variables;
         if (!session.user) {
-          const initialPreviewData: Record<string, string> = {};
+          const initialPreviewData: Record<string,
           Object.keys(data.variables).forEach(key => {
             initialPreviewData[key] = `[${key}]`;
           }),
@@ -117,8 +95,7 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
         }
       } catch (error) ;
 
-        toast({title:"Error",
-          "destructive");
+        toast({title: "Error",
       } finally {
         setIsLoading(false);
       }
@@ -129,7 +106,7 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
 
   // Handle form input changes;
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
+    const { name,
     setFormData({
       ...formData,
       [name]: value;
@@ -140,7 +117,6 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
   const handleSelectChange = (name: string, value: string) => {
     setFormData({
       ...formData,
-      [name]: value;
     });
   };
 
@@ -149,20 +125,18 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
     setFormData({
       ...formData,
       isActive: checked,
-    });
   };
 
   // Handle content change;
   const handleContentChange = (content: string) => {
     setFormData({
       ...formData,
-      content;
     });
   };
 
   // Handle preview data change;
   const handlePreviewDataChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+    const { name,
     setPreviewData({
       ...previewData,
       [name]: value;
@@ -172,16 +146,14 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
   // Add variable to template;
   const handleAddVariable = () => {
     if (!session.user) {
-      toast({title:"Validation Error",
-        "destructive";
+      toast({title: "Validation Error",
       });
       return;
     }
 
     // Check if variable already exists;
     if (!session.user) {
-      toast({title:"Validation Error",
-        "destructive";
+      toast({title: "Validation Error",
       });
       return;
     }
@@ -194,7 +166,6 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
     setFormData({
       ...formData,
       variables: newVariables,
-    });
 
     // Add to preview data;
     setPreviewData({
@@ -215,7 +186,6 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
     setFormData({
       ...formData,
       variables: newVariables,
-    });
 
     // Remove from preview data;
     const newPreviewData = { ...previewData };
@@ -236,120 +206,59 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
       return;
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const response = await fetch(`/api/support-services/marketing/templates/${templateId}/render`, {method:"POST",
+} catch (error) { console.error(error); }/render`, {method:"POST",
         headers: {
           "Content-Type": "application/json"},
-        body: JSON.stringify({variables:previewData })});
 
       if (!session.user)hrow new Error("Failed to render template");
 
       const data = await response.json(),
       setRenderedContent(data.renderedContent);
-    } catch (error) {
-
-      toast({title:"Error",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
 
   };
 
   // Handle form submission;
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(),
-    setIsLoading(true);
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const url = templateId;
-        ? `/api/support-services/marketing/templates/$templateId`;
-        : "/api/support-services/marketing/templates";
-
-      const method = templateId ? "PUT" : "POST";
-
-      const response = await fetch(url, {
-        method,
-        headers: {
-          "Content-Type": "application/json"},
+} catch (error) { console.error(error); },
         body: JSON.stringify(formData),
-      });
 
       if (!session.user)hrow new Error("Failed to save template");
 
       const savedTemplate = await response.json(),
-      toast({title:"Success",
-        description: `Template $templateId ? "updated" : "created"successfully.`});
+      toast({title: "Success",
 
       if (!session.user) {
         onSuccess(savedTemplate);
       } else if (!session.user) {
         router.push(`/marketing/templates/$savedTemplate.id`);
 
-    } catch (error) {
-
-      toast({title:"Error",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
     } finally {
       setIsLoading(false);
 

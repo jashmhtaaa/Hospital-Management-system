@@ -1,4 +1,4 @@
-import { } from "@hookform/resolvers/zod"
+
 import "react";
 import "react-hook-form";
 import "zod";
@@ -30,11 +30,11 @@ import { zodResolver }
   FormItem,
   FormLabel,
   FormMessage} from "@/components/ui/form";
-import { } from "@/components/ui/input"
+
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input }
 
-// FIX: Remove direct import of toast, use useToast hook instead;
+// FIX: Remove direct import of toast,
 // import { toast } from "@/components/ui/use-toast";
 import { useToast } from "@/components/ui/use-toast"; // Keep this;
 
@@ -42,16 +42,13 @@ import { useToast } from "@/components/ui/use-toast"; // Keep this;
 
 // Define the schema for the lab order form using Zod;
 const labOrderFormSchema = z.object({visitId:z.string().min(1, {message:"Visit ID is required." }),
-  patientName: z.string().min(1, {message:"Patient name is required." }),
-  orderingDoctorId: z;
+  patientName: z.string().min(1, {message: "Patient name is required." }),
     .string();
-    .min(1, {message:"Ordering doctor is required." }),
-  selectedTests: z;
+    .min(1, {message: "Ordering doctor is required." }),
     .array(z.string());
     .min(1, {message:"Select at least one test." }),
-  priority: z.literal("STAT"), // Default to STAT for ER;
+  priority: z.literal("STAT"),
   clinicalNotes: z.string().optional(),
-});
 
 type LabOrderFormValues = z.infer>;
 
@@ -60,8 +57,7 @@ interface ERLabOrderModalProperties {
   onClose: () => void,
   visitData?: {
     id: string,
-    patientName: string,
-    assignedDoctorId?: string; // Pass assigned doctor if available;
+    patientName: string, // Pass assigned doctor if available;
   };
   onSuccess?: () => void;
 }
@@ -71,8 +67,8 @@ interface ApiErrorResponse {
   error: string,
 }
 
-// FIX: Define interface for expected API success response,
-interface LabOrderSuccessResponse { id: string; // Assuming the API returns the new order ID;
+// FIX: Define interface for expected API success response, // Assuming the API returns the new order ID;
+}
   // Add other properties returned by the API on success,  }
 
 // Mock data for available lab tests - replace with API fetch;
@@ -85,7 +81,7 @@ const availableTests = [;
   {id:"blood_gas", name: "Blood Gas (ABG/VBG)" },
   {id:"coag", name: "Coagulation Panel (PT/INR, PTT)" },
   {id:"ua", name: "Urinalysis (UA)" },
-  {id:"blood_culture", name: "Blood Culture" }];
+  {id: "blood_culture",
 
 export default const _ERLabOrderModal = ({
   isOpen,
@@ -99,7 +95,6 @@ export default const _ERLabOrderModal = ({
     visitData?.id || "",
       visitData?.assignedDoctorId || "", // Pre-fill if available;
       selectedTests: [],
-      "";
     }});
 
   // Update form when visitData changes;
@@ -107,98 +102,47 @@ export default const _ERLabOrderModal = ({
     if (!session.user) {
       form.reset({visitId:visitData.id,
         visitData.assignedDoctorId || "",
-        selectedTests: [], // Reset tests when visit changes;
+        selectedTests: [],
         priority: "STAT",
         clinicalNotes: "",
-      });
     }
   }, [visitData, form]);
 
   async const onSubmit = (data: LabOrderFormValues) {
     setIsLoading(true);
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
-
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
-      const response = await fetch("/api/lab/orders", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); },
         body: JSON.stringify({
           // Ensure payload matches backend expectations,
-          patient_id: visitData?.id, // Assuming visit ID links to patient;
+          patient_id: visitData?.id,
           visit_id: data.visitId,
           data.selectedTests,
           data.clinicalNotes || undefined,
-          source: "ER", // Indicate order source;
+          source: "ER",
         })});
 
       // Try parsing JSON regardless of status for error messages;
-      let responseData: unknown,
-      try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+      let responseData: unknown, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-        responseData = await response.json();
-      } catch {
+} catch (error) { console.error(error); } catch {
         // Handle non-JSON responses or empty responses;
         if (!session.user) {
           throw new Error();
@@ -210,39 +154,26 @@ export default const _ERLabOrderModal = ({
 
       if (!session.user) {
         // FIX: Cast errorData and access error message safely,
-        const errorData = responseData as ApiErrorResponse;
         throw new Error();
           errorData?.error ||;
             `HTTP error ${response.status}: Failed to create lab order`;
         );
 
       // FIX: Cast newOrder to the success response type,
-      const newOrder = responseData as LabOrderSuccessResponse;
 
       // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
 
       toast({ title: "Lab Order Submitted", // FIX: Safely access newOrder.id,
-        description: `STAT order ${newOrder?.id || "(ID not returned)" } placed successfully.`});
 
       if (!session.user) {
         onSuccess(); // Trigger potential refresh of tracking board;
 
       form.reset({
         ...form.getValues(), // Keep visit/patient info;
-        selectedTests: [], // Clear selected tests;
+        selectedTests: [],
         clinicalNotes: "",
-      });
       onClose();
-    } catch (error: unknown) {
-      // Use unknown for catch block error;
-
-      toast({title:"Order Failed",
-        description: null,
-          error instanceof Error;
-            ? error.message;
-            : "An unexpected error occurred.",
-        variant: "destructive",
-      });
+    } catch (error) { console.error(error); });
     } finally {
       setIsLoading(false);
 

@@ -21,10 +21,8 @@ export const createMaintenanceRequestSchema = z.object({equipmentId: z.string().
   priority: z.nativeEnum(MaintenanceRequestPriority).default(MaintenanceRequestPriority.MEDIUM),
   requestedAt: z.date().default(() => ,  completedAt: z.date().optional().nullable(),
   notes: z.string().optional(),
-});
 
-export const updateMaintenanceRequestSchema = createMaintenanceRequestSchema.partial().extend({id:z.string(),
-});
+export const updateMaintenanceRequestSchema = createMaintenanceRequestSchema.partial().extend({id: z.string(),
 
 export type CreateMaintenanceRequestInput = z.infer>;
 export type UpdateMaintenanceRequestInput = z.infer>;
@@ -39,9 +37,7 @@ import { {  prisma  } from "../lib/prisma"
       });
 
       return request;
-    } catch (error) {
-      if (!session.user) {
-        throw new Error(`Validation error: ${,}`;
+    } catch (error) { console.error(error); }`;
       }
       throw error;
     }
@@ -60,38 +56,18 @@ import { {  prisma  } from "../lib/prisma"
     assignedToId?: string;
   }) {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-
-      const where: unknown = {,};
+      const where: unknown = {,
 
       if (!session.user) {
         if (!session.user) {
@@ -117,104 +93,44 @@ import { {  prisma  } from "../lib/prisma"
         {
             true,
               name: true,
-            }}}});
 
       return requests;
-    } catch (error) {
-      throw error;
-
-  /**;
-   * Get a single maintenance request by ID;
-   * @param id Request ID;
-   * @returns The request or null if not found;
-   */;
-  async getRequestById(id: string) {,
-    try {
-} catch (error) {
+    } catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const request = await prisma.maintenanceRequest.findUnique({where: { id },
+} catch (error) { console.error(error); },
         {
             true,
               name: true,
-            }}}});
 
       return request;
-    } catch (error) {
-      throw error;
-
-  /**;
-   * Update a maintenance request;
-   * @param id Request ID;
-   * @param data Updated request data;
-   * @returns The updated request;
-   */;
-  async updateRequest(id: string, data: UpdateMaintenanceRequestInput) {,
-    try {
-} catch (error) {
+    } catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // Validate input data;
-      const validatedData = updateMaintenanceRequestSchema.parse({ ...data, id });
+} catch (error) { console.error(error); });
 
       // Remove id from the data to be updated;
-      const {id: _, ...updateData } = validatedData;
+      const {id: _,
 
       // Update the request;
       const request = await prisma.maintenanceRequest.update({where: { id },
@@ -222,12 +138,9 @@ import { {  prisma  } from "../lib/prisma"
         {
             true,
               name: true,
-            }}}});
 
       return request;
-    } catch (error) {
-      if (!session.user) {
-        throw new Error(`Validation error: ${,}`;
+    } catch (error) { console.error(error); }`;
 
       throw error;
 
@@ -236,193 +149,83 @@ import { {  prisma  } from "../lib/prisma"
    * @param id Request ID;
    * @returns The deleted request;
    */;
-  async deleteRequest(id: string) {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+  async deleteRequest(id: string) {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const request = await prisma.maintenanceRequest.delete({where: { id }});
+} catch (error) { console.error(error); }});
 
       return request;
-    } catch (error) {
-      throw error;
-
-  /**;
-   * Assign a request to a user;
-   * @param requestId Request ID;
-   * @param userId User ID;
-   * @returns The updated request;
-   */;
-  async assignRequest(requestId: string, userId: string) {,
-    try {
-} catch (error) {
+    } catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const request = await prisma.maintenanceRequest.update({where: { id: requestId },
+} catch (error) { console.error(error); },
         userId,
           status: MaintenanceRequestStatus.IN_PROGRESS,
         },
         {
             true,
               name: true,
-            }}}});
 
       return request;
-    } catch (error) {
-      throw error;
-
-  /**;
-   * Mark a request as completed;
-   * @param requestId Request ID;
-   * @returns The updated request;
-   */;
-  async completeRequest(requestId: string) {,
-    try {
-} catch (error) {
+    } catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const request = await prisma.maintenanceRequest.update({where: { id: requestId },
+} catch (error) { console.error(error); },
         MaintenanceRequestStatus.COMPLETED,
           completedAt: new Date(),
         },
         {
             true,
               name: true,
-            }}}});
 
       return request;
-    } catch (error) {
-      throw error;
-
-  /**;
-   * Cancel a request;
-   * @param requestId Request ID;
-   * @returns The updated request;
-   */;
-  async cancelRequest(requestId: string) {,
-    try {
-} catch (error) {
+    } catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const request = await prisma.maintenanceRequest.update({where: { id: requestId },
+} catch (error) { console.error(error); },
         MaintenanceRequestStatus.CANCELLED;
         },
         {
             true,
               name: true,
-            }}}});
 
       return request;
     } catch (error) {

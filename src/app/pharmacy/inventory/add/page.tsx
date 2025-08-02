@@ -1,4 +1,4 @@
-import { } from "react"
+
 import ChangeEvent
 import FormEvent
 import React
@@ -17,12 +17,13 @@ export const dynamic = "force-dynamic";
 interface Medication {
   id: string,
   generic_name: string,
-  brand_name?: string;
   strength: string,
   dosage_form: string,
 }
 
-interface InventoryFormData {medication_id:string,
+interface InventoryFormData {
+  medication_id:string,
+}
   string,
   string,
   purchase_price: string; // Keep as string for input;
@@ -31,14 +32,10 @@ interface InventoryFormData {medication_id:string,
   supplier: string,
   string,
   notes: string,
-}
-
-type InventorySubmitData= {};
   extends Omit<;
     InventoryFormData,
     "purchase_price" | "selling_price" | "initial_quantity";
-  > {purchase_price:number,
-  number;
+  > {purchase_price: number,
 }
 
 type FormErrors = Partial<Record<keyof InventoryFormData, string>>;
@@ -54,7 +51,6 @@ const AddInventoryPage: React.FC = () => {
     "",
     "Main Pharmacy",
     notes: "",
-  });
   const [errors, setErrors] = useState<FormErrors>({});
   const [submitError, setSubmitError] = useState<string>("");
   const [submitSuccess, setSubmitSuccess] = useState<boolean>(false);
@@ -62,37 +58,17 @@ const AddInventoryPage: React.FC = () => {
   useEffect(() => {
     const fetchMedications = async (): Promise<void> => {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
         // Simulate fetching medications;
         // const _response = await fetch("/api/pharmacy/medications");
         // if (!session.user) {
@@ -112,10 +88,7 @@ const AddInventoryPage: React.FC = () => {
           // Add more mock medications as needed;
         ];
         setMedications(simulatedMedications);
-      } catch (error) {
-
-        // Handle error appropriately;
-      }
+      } catch (error) { console.error(error); }
     };
 
     fetchMedications();
@@ -193,42 +166,17 @@ const AddInventoryPage: React.FC = () => {
     setSubmitSuccess(false);
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-
-} catch (error) {
-
-      const _submitData: InventorySubmitData = {
-        ...formData,
-        purchase_price: Number.parseFloat(formData.purchase_price),
-        selling_price: Number.parseFloat(formData.selling_price),
-        initial_quantity: Number.parseInt(formData.initial_quantity, 10)};
+} catch (error) { console.error(error); };
 
       // Simulate API call;
       // const _response = await fetch("/api/pharmacy/inventory", {
@@ -257,18 +205,13 @@ const AddInventoryPage: React.FC = () => {
         "",
         "Main Pharmacy",
         notes: "",
-      });
       setErrors({}); // Clear errors on success;
 
       // Redirect after a short delay;
       setTimeout(() => {
         router.push("/pharmacy/inventory");
       }, 2000);
-    } catch (error) {
-      const message =;
-        error instanceof Error ? error.message : "An unknown error occurred.";
-      setSubmitError(message);
-    } finally {
+    } catch (error) { console.error(error); } finally {
       setLoading(false);
 
   };
@@ -280,9 +223,7 @@ const AddInventoryPage: React.FC = () => {
           Add New Inventory Batch;
         </h1>;
         <button>;
-          className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md",
-          onClick={() => router.push("/pharmacy/inventory")}
-        >;
+          className="bg-gray-500 hover: bg-gray-600 text-white px-4 py-2 rounded-md",
           Back to Inventory;
         </button>;
       </div>;
@@ -637,16 +578,12 @@ const AddInventoryPage: React.FC = () => {
             <button>;
               type = "button",
               onClick={() => router.push("/pharmacy/inventory")}
-              className="mr-4 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50",
-              disabled={loading}
-            >;
+              className="mr-4 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover: bg-gray-50",
               Cancel;
             </button>;
             <button>;
               type = "submit",
-              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:opacity-50",
-              disabled={loading}
-            >;
+              className="px-4 py-2 bg-blue-500 text-white rounded-md hover: bg-blue-600 disabled:opacity-50",
               {loading ? "Saving..." : "Save Inventory Batch"}
             </button>;
           </div>;

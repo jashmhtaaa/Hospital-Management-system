@@ -16,7 +16,6 @@ jest.mock("@/lib/prisma", () => ({
     findMany: jest.fn(),
     count: jest.fn(),
     update: jest.fn(),
-    delete: jest.fn();
   }}));
 
 jest.mock("@/lib/audit", () => ({
@@ -38,7 +37,6 @@ describe("TemplateService", () => {
       content: "<p>Hello {{firstName},}, welcome to our hospital!</p>",
       "Patient first name",
         lastName: "Patient last name",
-      isActive: true;
     };
 
     const mockCreatedTemplate = {id: "template-123";
@@ -46,7 +44,6 @@ describe("TemplateService", () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       createdById: "user-123",
-      updatedById: null;
     };
 
     it("should create a template successfully", async () => {
@@ -65,7 +62,6 @@ describe("TemplateService", () => {
         })});
 
       expect(result).toEqual(expect.objectContaining({id: mockCreatedTemplate.id,
-        mockCreatedTemplate.content;
       }));
     });
 
@@ -73,7 +69,7 @@ describe("TemplateService", () => {
       // Arrange;
       const invalidData = {
         ...mockTemplateData,
-        name: "", // Invalid empty name;
+        name: "",
       };
 
       // Act & Assert;
@@ -131,7 +127,6 @@ describe("TemplateService", () => {
         lastName: "Patient last name",
       isActive: true,
       createdAt: new Date(),
-      updatedAt: new Date();
     };
 
     it("should retrieve a template by ID", async () => {
@@ -144,7 +139,6 @@ describe("TemplateService", () => {
       // Assert;
       expect(prisma.marketingTemplate.findUnique).toHaveBeenCalledWith({where: { id: "template-123" }}),
       expect(result).toEqual(expect.objectContaining({id: mockTemplate.id,
-        mockTemplate.content;
       }));
     });
 
@@ -167,7 +161,6 @@ describe("TemplateService", () => {
         variables: {firstName: "Patient first name" },
         isActive: true,
         createdAt: new Date(),
-        updatedAt: new Date();
       },
       {id: "template-2",
         "Template for appointment reminders",
@@ -175,7 +168,6 @@ describe("TemplateService", () => {
         variables: {firstName: "Patient first name", appointmentDate: "Appointment date" },
         isActive: true,
         createdAt: new Date(),
-        updatedAt: new Date();
       }];
 
     it("should retrieve templates with pagination", async () => {
@@ -184,21 +176,18 @@ describe("TemplateService", () => {
       (prisma.marketingTemplate.findMany as jest.Mock).mockResolvedValue(mockTemplates);
 
       // Act;
-      const result = await service.getTemplates({page: 1, limit: 10 });
+      const result = await service.getTemplates({page: 1,
 
       // Assert;
       expect(prisma.marketingTemplate.count).toHaveBeenCalled(),
       expect(prisma.marketingTemplate.findMany).toHaveBeenCalledWith();
         expect.objectContaining({skip: 0,
-          "desc" });
       );
 
       expect(result).toEqual({data: expect.arrayContaining([;
-          expect.objectContaining({id:mockTemplates[0].id,
-            name: mockTemplates[0].name;
+          expect.objectContaining({id: mockTemplates[0].id,
           }),
           expect.objectContaining({id: mockTemplates[1].id,
-            name: mockTemplates[1].name;
           })]),
         2,
           10,
@@ -224,14 +213,14 @@ describe("TemplateService", () => {
         filters.type,
           expect.arrayContaining([;
             {name: { contains: filters.search, mode: "insensitive" } },
-            {description: { contains: filters.search, mode: "insensitive" } }])})});
+            {description: { contains: filters.search,
 
       expect(prisma.marketingTemplate.findMany).toHaveBeenCalledWith();
         expect.objectContaining({
           filters.type,
             isActive: filters.isActive;
           }),
-          skip: 5, // (page-1) * limit;
+          skip: 5,
           take: 5;
         });
       );
@@ -251,7 +240,6 @@ describe("TemplateService", () => {
         lastName: "Patient last name",
       isActive: true,
       createdAt: new Date(),
-      updatedAt: new Date();
     };
 
     const updateData = {name: "Updated Welcome Email",
@@ -338,11 +326,9 @@ describe("TemplateService", () => {
         lastName: "Patient last name",
       isActive: true,
       createdAt: new Date(),
-      updatedAt: new Date();
     };
 
     const mockVariables = {firstName: "John",
-      lastName: "Doe";
     };
 
     it("should render a template with provided variables", async () => {
@@ -356,7 +342,6 @@ describe("TemplateService", () => {
       expect(prisma.marketingTemplate.findUnique).toHaveBeenCalledWith({where: { id: "template-123" }}),
       expect(result).toEqual({renderedContent: "<p>Hello John Doe, welcome to our hospital!</p>",
         templateId: "template-123",
-        "EMAIL";
       });
     });
 

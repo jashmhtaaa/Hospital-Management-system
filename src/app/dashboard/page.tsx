@@ -15,7 +15,7 @@ export const dynamic = "force-dynamic";
   CardTitle,
   CardContent} from "@/components/ui/card";
 import { DashboardLayout } from "@/components/layout/DashboardLayout"; // Use DashboardLayout from origin/master;
-import { } from "@/components/ui/skeleton"
+
 import "next/link";
 import Link
 import { Button } from "@/components/ui/button"
@@ -48,7 +48,9 @@ interface PharmacyStatsResponse {
 }
 
 // Interface for the combined stats state (from HEAD);
-interface DashboardStats {totalPatients:number,
+interface DashboardStats {
+  totalPatients:number,
+}
   number,
   number,
   lowStockItems: number,
@@ -59,65 +61,23 @@ const Dashboard = () {
     0,
     0,
     lowStockItems: 0,
-  });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchDashboardStats = async () => {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-
-} catch (error) {
-
-        setLoading(true),
-        setError(null); // Clear previous errors;
-
-        // Fetch stats from different endpoints (from HEAD);
-        const [opdResponse, ipdResponse, billingResponse, pharmacyResponse] =;
-          await Promise.all([;
-            fetch("/api/dashboard/opd-stats"),
-            fetch("/api/dashboard/ipd-stats"),
-            fetch("/api/dashboard/billing-stats"),
-            fetch("/api/dashboard/pharmacy-stats")]);
-
-        // Check all responses;
-        if (!session.user) {
-          const failedResponse = [;
-            opdResponse,
-            ipdResponse,
-            billingResponse,
-            pharmacyResponse].find((_response_) => !_response_.ok);
-          throw new Error();
-            `Failed to fetch dashboard data: ${failedResponse?.statusText ||;
-              "Unknown error"} (status: ${failedResponse?.status ||, "N/A"})`;
+} catch (error) { console.error(error); } (status: ${failedResponse?.status ||,
           );
 
         const opdData = (await opdResponse.json()) as OpdStatsResponse;
@@ -131,7 +91,6 @@ const Dashboard = () {
           ipdData?.activeAdmissions ?? 0,
           billingData?.pendingBills ?? 0,
           lowStockItems: pharmacyData?.lowStockItems ?? 0,
-        });
       } catch (error_) ;
 
         setError();
@@ -143,7 +102,7 @@ const Dashboard = () {
           totalPatients: 0,
           0,
           0,
-          lowStockItems: 0),finally ;
+          lowStockItems: 0),
         setLoading(false);
     };
 
@@ -151,21 +110,20 @@ const Dashboard = () {
   }, []);
 
   // --- Stat Card Component (from HEAD, adapted for lucide icons) ---;
-  interface StatCardProperties {title:string,
-    React.ElementType; // Use React.ElementType for lucide icons;
+  interface StatCardProperties {
+  title: string, // Use React.ElementType for lucide icons;
     link?: string;
     linkText?: string;
     colorClass?: string; // e.g., "blue", "green";
 
   const StatCard: React.FC<StatCardProperties> = ({
-    title,
+    title;
     value,
-    icon: Icon, // Destructure icon as Icon component;
+    icon: Icon,
     link,
     linkText,
     colorClass = "gray"}) => {
     // Ensure Tailwind safelists or recognizes these dynamic classes: null,
-    // bg-blue-100 text-blue-600;
     // bg-green-100 text-green-600;
     // bg-purple-100 text-purple-600;
     // bg-indigo-100 text-indigo-600;
@@ -211,7 +169,7 @@ const Dashboard = () {
         {loading ? (;
           // Skeleton Loading State (from HEAD);
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">;
-            {Array.from({length:6 }).map((_, index) => (;
+            {Array.from({length: 6 }).map((_,
               >;
                 >;
                   >;
@@ -336,20 +294,17 @@ const Dashboard = () {
                     <ActivityItem>;
                       name="Neha Gupta";
                       detail="General Medicine";
-                      time="10:00 AM",
-                      doctor="Dr. John Smith";
+                      time="10: 00 AM",
                     />;
                     <ActivityItem>;
                       name="Rajesh Kumar";
                       detail = "Orthopedics",
-                      time="11:30 AM",
-                      doctor="Dr. Robert Williams";
+                      time="11: 30 AM",
                     />;
                     <ActivityItem>;
                       name="Ananya Desai";
                       detail = "Pediatrics",
-                      time="2:15 PM",
-                      doctor="Dr. Sarah Johnson";
+                      time="2: 15 PM",
                     />;
                   </div>;
                   >;
@@ -371,12 +326,11 @@ const Dashboard = () {
 Dashboard.displayName = "Dashboard",
 
 // --- Helper Component for Activity Lists (from HEAD) ---;
-interface ActivityItemProperties {name:string,
+interface ActivityItemProperties {
+  name:string,
+}
   string,
   doctor: string,
-
-const ActivityItem: React.FC<ActivityItemProperties> = ({
-  name,
   detail,
   time,
   doctor}) => (;

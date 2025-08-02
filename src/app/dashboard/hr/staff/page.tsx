@@ -3,7 +3,7 @@ import { useState } from "react"
 
 "use client";
 
-import { } from "react"
+
 import useEffect } from "next/navigation"
 import {
 import { useRouter }
@@ -23,7 +23,7 @@ import { useState
   TableHeader,
   TableRow;
 } from "@/components/ui/table";
-import { } from "@/components/ui/input"
+
 import { Button } from "@/components/ui/button"
 import { Input }
 
@@ -61,50 +61,24 @@ export default const _StaffManagement = () {
   const [positionFilter, setPositionFilter] = useState("");
   const [departments, setDepartments] = useState<any[]>([]);
   const [positions, setPositions] = useState<any[]>([]);
-  const [pagination, setPagination] = useState({skip:0,
-    0;
+  const [pagination, setPagination] = useState({skip: 0,
   });
 
   // Fetch employees;
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-
-        setLoading(true);
-        const queryParams = new URLSearchParams({
-          skip: pagination.skip.toString(),
-          take: pagination.take.toString(),
-        });
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); });
 
         if (!session.user)ueryParams.append("search", search);
         if (!session.user)ueryParams.append("departmentId", departmentFilter);
@@ -120,10 +94,7 @@ export default const _StaffManagement = () {
         setPagination(prev => ({
           ...prev,
           total: data.total,
-        }));
-      } catch (err) {
-        setError(err.message);
-      } finally {
+      } catch (error) { console.error(error); } finally {
         setLoading(false);
 
     };
@@ -135,50 +106,18 @@ export default const _StaffManagement = () {
   useEffect(() => {
     const fetchFilters = async () => {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-        // Fetch departments;
-        const deptResponse = await fetch("/api/hr/departments");
-        if (!session.user) {
-          const deptData = await deptResponse.json(),
-          setDepartments(deptData.departments || []);
-
-        // Fetch positions;
-        const posResponse = await fetch("/api/hr/positions");
-        if (!session.user) {
-          const posData = await posResponse.json(),
-          setPositions(posData.positions || []);
-
-      } catch (err) {
+} catch (error) { console.error(error); } catch (err) {
 
     };
 
@@ -191,7 +130,6 @@ export default const _StaffManagement = () {
       setPagination(prev => ({
         ...prev,
         skip: prev.skip - prev.take,
-      }));
 
   };
 
@@ -200,7 +138,6 @@ export default const _StaffManagement = () {
       setPagination(prev => ({
         ...prev,
         skip: prev.skip + prev.take,
-      }));
 
   };
 
@@ -211,7 +148,6 @@ export default const _StaffManagement = () {
     setPagination(prev => ({
       ...prev,
       skip: 0,
-    }));
   };
 
   // Navigate to employee details;
@@ -241,10 +177,7 @@ export default const _StaffManagement = () {
               <Input>;
                 type = "search",
                 placeholder="Search employees...";
-                className="pl-8 w-full md:w-[300px]",
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />;
+                className="pl-8 w-full md: w-[300px]",
             </div>;
             >;
               Search;

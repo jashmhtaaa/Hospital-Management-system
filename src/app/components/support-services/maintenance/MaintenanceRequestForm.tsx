@@ -3,7 +3,7 @@ import { useState } from "react"
 
 "use client";
 
-import { } from "@/components/ui/calendar"
+
 import {
 import { Button } from "@/components/ui/button"
 import { Calendar }
@@ -15,7 +15,7 @@ import { Calendar }
   FormItem,
   FormLabel,
   FormMessage} from "@/components/ui/form";
-import { } from "react"
+
 import "react-hook-form";
 import "zod";
 import * as z
@@ -29,7 +29,7 @@ import { zodResolver }
   SelectItem,
   SelectTrigger,
   SelectValue} from "@/components/ui/select";
-import { } from "@/components/ui/popover"
+
 import "@/components/ui/textarea";
 import "@/components/ui/use-toast";
 import "@/lib/utils";
@@ -52,16 +52,14 @@ const formSchema = z.object({
   "Please select a location";
   }),
   assetId: z.string().optional(),
-  "Please select a request type";
   }),
   description: z.string();
     .min(10, {message:"Description must be at least 10 characters" });
-    .max(500, {message:"Description must not exceed 500 characters" }),
-  "Please select a priority level";
+    .max(500, {message: "Description must not exceed 500 characters" }),
   }),
   scheduledDate: z.date().optional(),
   estimatedHours: z.number().optional(),
-  notes: z.string().max(1000, {message:"Notes must not exceed 1000 characters" }).optional()});
+  notes: z.string().max(1000,
 
 type FormValues = z.infer>;
 
@@ -70,8 +68,8 @@ interface Location {
   name: string,
 }
 
-interface Asset {id:string,
-  string;
+interface Asset {
+  id: string,
 }
 
 interface MaintenanceRequestFormProps {
@@ -100,45 +98,19 @@ export const _MaintenanceRequestForm = ({ onSuccess,
   useEffect(() => {
     const fetchLocations = async () => {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
 
-        const response = await fetch("/api/locations");
-        if (!session.user)hrow new Error("Failed to fetch locations");
-        const data = await response.json(),
-        setLocations(data);
-      } catch (error) {
-
-        toast({title:"Error",
-          "destructive";
+        toast({title: "Error",
         });
 
     };
@@ -150,55 +122,24 @@ export const _MaintenanceRequestForm = ({ onSuccess,
   useEffect(() => {
     const fetchAssets = async () => {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-        const response = await fetch("/api/support-services/maintenance/assets");
-        if (!session.user)hrow new Error("Failed to fetch assets");
-        const data = await response.json(),
-        setAssets(data.data || []);
-
-        // If editing and we have an asset ID, filter assets by location;
-        if (!session.user) {
-          setFilteredAssets(data.data.filter((asset: Asset) => {}
+} catch (error) { console.error(error); }
             asset.locationId === selectedLocation;
           ));
         } else {
           setFilteredAssets(data.data || []);
 
-      } catch (error) {
-
-        toast({title:"Error",
-          "destructive";
-        });
+      } catch (error) { console.error(error); });
 
     };
 
@@ -222,55 +163,24 @@ export const _MaintenanceRequestForm = ({ onSuccess,
   const onSubmit = async (values: FormValues) => {
     setIsLoading(true);
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const url = isEditing;
-        ? `/api/support-services/maintenance/$initialData.id`;
-        : "/api/support-services/maintenance";
-
-      const method = isEditing ? "PUT" : "POST";
-
-      const response = await fetch(url, {
-        method,
-        headers: {
-          "Content-Type": "application/json"},
+} catch (error) { console.error(error); },
         body: JSON.stringify(values),
-      });
 
       if (!session.user) {
         throw new Error("Failed to submit request");
 
-      toast({title:isEditing ? "Request Updated" : "Request Created",
-        description: isEditing;
+      toast({title: isEditing ? "Request Updated" : "Request Created",
           ? "The maintenance request has been updated successfully.";
           : "Your maintenance request has been submitted successfully."});
 
@@ -280,11 +190,7 @@ export const _MaintenanceRequestForm = ({ onSuccess,
         router.push("/support-services/maintenance");
         router.refresh();
 
-    } catch (error) {
-
-      toast({title:"Error",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
     } finally {
       setIsLoading(false);
 

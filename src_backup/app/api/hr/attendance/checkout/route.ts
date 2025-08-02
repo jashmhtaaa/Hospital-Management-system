@@ -20,6 +20,8 @@ const checkOutSchema = z.object({
 // POST handler for check-out;
 export const _POST = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }

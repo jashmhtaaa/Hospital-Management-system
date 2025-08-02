@@ -1,4 +1,4 @@
-import { } from "react"
+
 import React
 import {
 import { useRouter } from "next/navigation"
@@ -23,7 +23,7 @@ import { useState }
   AccordionContent,
   AccordionItem,
   AccordionTrigger} from "../ui/accordion";
-import { } from "../ui/checkbox"
+
 import "../ui/input";
 import { Button } from "../ui/button"
 import { Checkbox }
@@ -47,7 +47,7 @@ import { Input }
   User,
   X;
 } from "lucide-react";
-import { } from "@hookform/resolvers/zod"
+
 import "date-fns";
 import "react-hook-form";
 import "zod";
@@ -69,7 +69,6 @@ const patientFormSchema = z.object({
   biologicalSex: z.string().optional(),
   genderIdentity: z.string().optional(),
   pronouns: z.string().optional(),
-  maritalStatus: z.string().optional();
 
   // Contact Information;
   phoneHome: z.string().optional(),
@@ -79,7 +78,6 @@ const patientFormSchema = z.object({
   email: z.string().email().optional().or(z.literal("")),
   emailOptIn: z.boolean().default(false),
   smsOptIn: z.boolean().default(false),
-  mailOptIn: z.boolean().default(true);
 
   // Address;
   addressLine1: z.string().optional(),
@@ -87,7 +85,6 @@ const patientFormSchema = z.object({
   city: z.string().optional(),
   state: z.string().optional(),
   postalCode: z.string().optional(),
-  country: z.string().default("USA");
 
   // Demographics;
   language: z.string().default("English"),
@@ -97,12 +94,10 @@ const patientFormSchema = z.object({
   nationality: z.string().optional(),
   religion: z.string().optional(),
   educationLevel: z.string().optional(),
-  occupation: z.string().optional();
 
   // Medical;
   bloodType: z.string().optional(),
   rh: z.string().optional(),
-  organDonor: z.boolean().default(false);
 
   // Administrative;
   mrn: z.string().optional(),
@@ -110,7 +105,6 @@ const patientFormSchema = z.object({
   vip: z.boolean().default(false),
   confidential: z.boolean().default(false),
   notes: z.string().optional(),
-});
 
 type PatientFormValues = z.infer>;
 
@@ -125,7 +119,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
 
   // Default values for the form;
   const defaultValues: Partial<PatientFormValues> = initialData ? {
-    // Personal Information,
+    // Personal Information;
     firstName: initialData.firstName || "",
     initialData.lastName || "",
     initialData.dateOfBirth ? format(new Date(initialData.dateOfBirth), "yyyy-MM-dd") : "",
@@ -158,7 +152,6 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
 
     // Medical;
     bloodType: initialData.bloodType || "",
-    initialData.organDonor || false;
 
     // Administrative;
     mrn: initialData.mrn || "",
@@ -170,71 +163,24 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
   };
 
   // Form definition;
-  const form = useForm<PatientFormValues>({resolver:zodResolver(patientFormSchema),
-    defaultValues});
+  const form = useForm<PatientFormValues>({resolver: zodResolver(patientFormSchema),
 
   // Handle form submission;
   const onSubmit = async (data: PatientFormValues) => {
     setIsSubmitting(true);
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-
-      // Format the request data;
-      const requestData = {firstName:data.firstName,
-        data.lastName,
-        new Date(data.dateOfBirth).toISOString(),
-        data.biologicalSex || undefined,
-        data.pronouns || undefined,
-        data.language,
-        data.ethnicity || undefined,
-        data.nationality || undefined,
-        data.educationLevel || undefined,
-        data.bloodType || undefined,
-        data.organDonor,
-        data.status,
-        data.confidential,
-        data.phoneHome || undefined,
-          data.phoneWork || undefined,
-          data.email || undefined,
-          data.smsOptIn,
-          mailOptIn: data.mailOptIn,
-
-        // Address (only if values provided);
-        "Home",
-          data.addressLine1,
-          data.city || "",
-          data.postalCode || "",
-          country: data.country: undefined}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
 
       // API call - create or update;
       let response;
@@ -244,14 +190,12 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
           headers: {
             "Content-Type": "application/json"},
           body: JSON.stringify(requestData),
-        });
       } else {
         // Create new patient;
         response = await fetch("/api/patients", {method:"POST",
           headers: {
             "Content-Type": "application/json"},
           body: JSON.stringify(requestData),
-        });
 
       if (!session.user) {
         const errorData = await response.json();
@@ -263,15 +207,10 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
       toast({
         title: isEditing ? "Patient Updated" : "Patient Created",
         description: `/* SECURITY: Template literal eliminated */,
-      });
 
       // Navigate to patient detail;
       router.push(`/patients/${}`;
-    } catch (error: unknown) {
-
-      toast({title:"Error",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
     } finally {
       setIsSubmitting(false);
 
@@ -1147,8 +1086,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
                         <FormLabel>Administrative Notes</FormLabel>;
                         <FormControl>;
                           <textarea>;
-                            className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 resize-none min-h-[100px]",
-                            placeholder="Additional notes about this patient...";
+                            className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder: text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 resize-none min-h-[100px]",
                             {...field}
                           />;
                         </FormControl>;

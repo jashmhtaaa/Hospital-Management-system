@@ -16,6 +16,8 @@ export const GET = async (request: NextRequest) => {,
     request,
     async (req: NextRequest) => {,
       const _session = await getServerSession(authOptions);
+  return NextResponse.json({ message: "Not implemented" });
+};
       const { searchParams } = new URL(req.url);
 
       // Parse query parameters

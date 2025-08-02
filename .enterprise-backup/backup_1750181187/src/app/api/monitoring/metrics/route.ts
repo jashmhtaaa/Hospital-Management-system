@@ -11,6 +11,8 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector';
 
 export const _GET = async (request: NextRequest) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { searchParams } = new URL(request.url);
     const format = searchParams.get('format') || 'json';
     const metric = searchParams.get('metric');
@@ -66,6 +68,8 @@ export const _GET = async (request: NextRequest) => {,
 export const _POST = async (request: NextRequest) => {,
   try {
     const body = await request.json();
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { action } = body;
 
     switch (action) {

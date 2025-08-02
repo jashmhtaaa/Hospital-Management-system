@@ -30,6 +30,8 @@ const RegisterSchema = z.object({
 
 export const _POST = async (request: Request) => {,
 	try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }

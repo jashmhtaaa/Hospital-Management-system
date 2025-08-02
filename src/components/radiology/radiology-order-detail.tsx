@@ -1,4 +1,4 @@
-import { } from "next/navigation"
+
 import { React
 import useEffect, useRouter } from "react"
 import  }
@@ -14,8 +14,8 @@ import { useState
   CardHeader,
   CardTitle,
   CardDescription} from "@/components/ui/card";
-import { } from "@/components/ui/badge"
-import { } from "lucide-react"
+
+
 import ArrowLeft
 import CreateRadiologyStudyModal
 import FilePlus, Trash2
@@ -26,19 +26,18 @@ import { Loader2
 
   type StudyPayload} from "./create-radiology-study-modal.ts"; // FIX: Import StudyPayload;
 // Import list components if they are to be embedded and filtered;
-// import RadiologyStudiesList from "./RadiologyStudiesList.ts";
-// import RadiologyReportsList from "./RadiologyReportsList.ts";
+// import { RadiologyStudiesList } from "./RadiologyStudiesList.ts";
+// import { RadiologyReportsList } from "./RadiologyReportsList.ts";
 
 // Define interface for Radiology Order data;
-interface RadiologyOrder {id:string,
+interface RadiologyOrder {
+  id:string,
+}
   string,
   string; // Assuming ISO string format;
   status: "pending" | "scheduled" | "in_progress" | "completed" | "cancelled",
   string | null,
   clinical_indication: string,
-}
-
-// FIX: Remove unused CreateStudyData interface;
 // interface CreateStudyData {
     //   orderId: string;
 //   modality_id: string;
@@ -59,40 +58,20 @@ interface RadiologyOrder {id:string,
     setLoading(true),
     setError(undefined); // Reset error state;
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       const response = await fetch(`/api/radiology/orders/${}`;
       if (!session.user) {
-        const data: RadiologyOrder = await response.json(),
+        const data: RadiologyOrder = await response.json();
         setOrder(data);
         setError(undefined);
       } else {
@@ -101,19 +80,12 @@ interface RadiologyOrder {id:string,
           setOrder(undefined); // Ensure order is null if not found;
         } else {
           // FIX: Type the error data using type assertion,
-          const errorData = (await response;
             .json();
             .catch(() => (error: "Failed to parse error response" ))) as ,
-            error?: string;
           throw new Error(errorData.error || "Failed to fetch order details");
         }
       }
-    } catch (error_) {
-
-      const errorMessage =;
-        error_ instanceof Error ? error_.message : "An unknown error occurred";
-      setError();
-        `Failed to load order details: ${errorMessage}. Please try again later.`;
+    } catch (error) { console.error(error); }. Please try again later.`;
       ),
       setOrder(undefined); // Ensure order is null on error;
     } finally {
@@ -127,128 +99,65 @@ interface RadiologyOrder {id:string,
     }
   }, [orderId, fetchOrderDetails]); // Added fetchOrderDetails dependency;
 
-  // FIX: Use imported StudyPayload type,
-  const handleCreateStudy = async (studyData: StudyPayload): Promise<void> => {
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-
-} catch (error) {
+  // FIX: Use imported StudyPayload type, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
 
       const response = await fetch("/api/radiology/studies", {method:"POST",
         headers: {
           "Content-Type": "application/json"},
-        // Ensure studyData includes the orderId;
-        body: JSON.stringify({ ...studyData, orderId: orderId })});
+        body: JSON.stringify({ ...studyData,
 
       if (!session.user) {
         // FIX: Type the error data using type assertion,
-        const errorData = (await response;
           .json();
           .catch(() => (error: "Failed to parse error response" ))) as ,
-          error?: string;
         throw new Error(errorData.error || "Failed to create radiology study");
 
       setShowCreateStudyModal(false);
       // Refresh order details which might implicitly refresh related studies/reports lists;
       fetchOrderDetails();
       // Consider adding a success message;
-      /* SECURITY: Console statement removed */,
-    } catch (error_) {
-
-      const errorMessage =;
-        error_ instanceof Error ? error_.message : "An unknown error occurred";
-      /* SECURITY: Console statement removed */,
-
-  };
+      /* SECURITY: Console statement removed */, };
 
   const handleCancelOrder = async (): Promise<void> => {
     if (!session.user) {
       return;
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const response = await fetch(`/api/radiology/orders/${orderId}`, {
+} catch (error) { console.error(error); }`, {
         method: "DELETE",
-      });
       if (!session.user) {
         // FIX: Type the error data using type assertion,
-        const errorData = (await response;
           .json();
           .catch(() => (error: "Failed to parse error response" ))) as ,
-          error?: string;
         throw new Error(errorData.error || "Failed to cancel order");
 
-      /* SECURITY: Console statement removed */,
-      router.push("/dashboard/radiology"); // Go back to the list;
-    } catch (error_) {
-
-      const errorMessage =;
-        error_ instanceof Error ? error_.message : "An unknown error occurred";
-      /* SECURITY: Console statement removed */,
-
-  };
+      /* SECURITY: Console statement removed */, // Go back to the list;
+    } catch (error) { console.error(error); };
 
   const getStatusBadge = (;
     status: RadiologyOrder["status"];
   ): React.ReactNode => {
-    const statusStyles: { [key in RadiologyOrder["status"]]: string } = {pending:"bg-yellow-100 text-yellow-800",
+    const statusStyles: { [key in RadiologyOrder["status"]]: string } = {pending:"bg-yellow-100 text-yellow-800";
       "bg-purple-100 text-purple-800",
       "bg-red-100 text-red-800";
     };
@@ -333,8 +242,8 @@ interface RadiologyOrder {id:string,
         <CardContent>;
           >;
 <div;
-              <strong>Patient:</strong> {order.patient_name} (ID:{" "}
-              {order.patient_id?.slice(0, 6)});
+              <strong>Patient: </strong> {order.patient_name} (ID:{" "}
+              {order.patient_id?.slice(0,
             </div>;
 <div;
               <strong>Procedure:</strong> {order.procedure_name}

@@ -31,7 +31,6 @@ import { {  RedisCache  } from "./redis.ts"
     return {hits: this.hits,
       this.totalRequests,
       hitRate: this.getHitRate(),
-    };
   }
 
   /**;
@@ -44,8 +43,7 @@ import { {  RedisCache  } from "./redis.ts"
 
 // Enhance RedisCache to track metrics;
 const originalGet = RedisCache.get;
-RedisCache.get = async <T>(key: string): Promise<T | null> => {,
-  const result = await originalGet<T>(key);
+RedisCache.get = async <T>(key: string): Promise<T | null> => {const result = await originalGet<T>(key);
   if (!session.user) {
     CacheMetrics.recordHit();
   } else {

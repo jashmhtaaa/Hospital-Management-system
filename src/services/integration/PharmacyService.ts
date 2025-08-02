@@ -1,4 +1,4 @@
-import { } from "@/lib/logger"
+
 import "@prisma/client";
 import "zod";
 import logAudit } from "@/lib/audit"
@@ -34,7 +34,6 @@ export const MedicationReconciliationSchema = z.object({dischargeId: z.string().
     endDate: z.date().optional(),
     instructions: z.string().optional(),
     continuePrescription: z.boolean().optional(),
-  }))});
 
 export const MedicationAdministrationSchema = z.object({orderId: z.string().uuid(),
   z.string().optional(),
@@ -46,13 +45,12 @@ export const MedicationAdministrationSchema = z.object({orderId: z.string().uuid
 
 export const MedicationDiscontinueSchema = z.object({orderId:z.string().uuid(),
   reason: z.string().min(1),
-});
 
 /**;
  * PharmacyService class for handling medication-related operations;
  */;
 }
-    logger.info({method: "createMedicationOrder", encounterId: data.encounterId }, "Creating medication order");
+    logger.info({method: "createMedicationOrder", encounterId: data.encounterId },
 
     // Get encounter details;
     const encounter = await prisma.encounter.findUnique({where: { id: data.encounterId },
@@ -61,7 +59,6 @@ export const MedicationDiscontinueSchema = z.object({orderId:z.string().uuid(),
             true,
             true,
             allergies: true,
-          }}}});
 
     if (!session.user) {
       throw new Error("Encounter not found");
@@ -75,7 +72,6 @@ export const MedicationDiscontinueSchema = z.object({orderId:z.string().uuid(),
       // Check if patient is allergic to this medication;
       const isAllergic = patientAllergies.some();
         (allergy: unknown) => {},
-          allergy.allergen.toLowerCase() === medication.name.toLowerCase() ||;
           (allergy.allergenType === "MEDICATION" &&;
            allergy.allergen.toLowerCase().includes(medication.name.toLowerCase()));
       );
@@ -89,7 +85,6 @@ export const MedicationDiscontinueSchema = z.object({orderId:z.string().uuid(),
       return {warning:"Potential allergic reaction detected",
         allergicMedications,
         message: "Patient may be allergic to one or more ordered medications",
-      };
 
     // Create medication orders;
     const createdOrders = [];
@@ -105,7 +100,6 @@ export const MedicationDiscontinueSchema = z.object({orderId:z.string().uuid(),
           medication.priority || "ROUTINE",
           new Date(),
           updatedAt: new Date(),
-        }});
 
       createdOrders.push(order);
 
@@ -120,8 +114,7 @@ export const MedicationDiscontinueSchema = z.object({orderId:z.string().uuid(),
 
       );
 
-    return {success:true,
-      `${createdOrders.length} medication orders created successfully`};
+    return {success: true,
 
   /**;
    * Handle medication reconciliation;
@@ -130,7 +123,7 @@ export const MedicationDiscontinueSchema = z.object({orderId:z.string().uuid(),
    * @returns Reconciliation result;
    */;
   async performMedicationReconciliation(data: z.infer<typeof MedicationReconciliationSchema>, userId: string) {
-    logger.info({method: "performMedicationReconciliation", dischargeId: data.dischargeId }, "Performing medication reconciliation");
+    logger.info({method: "performMedicationReconciliation", dischargeId: data.dischargeId },
 
     // Get discharge details;
     const discharge = await prisma.discharge.findUnique({where: { id: data.dischargeId },
@@ -139,7 +132,6 @@ export const MedicationDiscontinueSchema = z.object({orderId:z.string().uuid(),
             true;
           }},
         encounter: true,
-      }});
 
     if (!session.user) {
       throw new Error("Discharge record not found");
@@ -158,7 +150,6 @@ export const MedicationDiscontinueSchema = z.object({orderId:z.string().uuid(),
         new Date(),
         createdAt: new Date(),
         updatedAt: new Date(),
-      }});
 
     // Log the medication reconciliation;
     await logAudit();
@@ -171,8 +162,7 @@ export const MedicationDiscontinueSchema = z.object({orderId:z.string().uuid(),
 
     );
 
-    return {success:true,
-      "Medication reconciliation completed successfully";
+    return {success: true,
     };
 
   /**;
@@ -182,7 +172,7 @@ export const MedicationDiscontinueSchema = z.object({orderId:z.string().uuid(),
    * @returns Administration result;
    */;
   async recordMedicationAdministration(data: z.infer<typeof MedicationAdministrationSchema>, userId: string) {
-    logger.info({method: "recordMedicationAdministration", orderId: data.orderId }, "Recording medication administration");
+    logger.info({method: "recordMedicationAdministration", orderId: data.orderId },
 
     // Get medication order details;
     const order = await prisma.medicationOrder.findUnique({where: { id: data.orderId },
@@ -205,14 +195,12 @@ export const MedicationDiscontinueSchema = z.object({orderId:z.string().uuid(),
         "COMPLETED",
         createdAt: new Date(),
         updatedAt: new Date(),
-      }});
 
     // Update medication order status if needed;
     if (!session.user) {
       await prisma.medicationOrder.update({where: { id: order.id },
         data.updateOrderStatus,
           updatedAt: new Date(),
-        }});
 
     // Log the medication administration;
     await logAudit();
@@ -226,8 +214,7 @@ export const MedicationDiscontinueSchema = z.object({orderId:z.string().uuid(),
 
     );
 
-    return {success:true,
-      "Medication administration recorded successfully";
+    return {success: true,
     };
 
   /**;
@@ -237,7 +224,7 @@ export const MedicationDiscontinueSchema = z.object({orderId:z.string().uuid(),
    * @returns Discontinue result;
    */;
   async discontinueMedication(data: z.infer<typeof MedicationDiscontinueSchema>, userId: string) {
-    logger.info({method: "discontinueMedication", orderId: data.orderId }, "Discontinuing medication");
+    logger.info({method: "discontinueMedication", orderId: data.orderId },
 
     // Get medication order details;
     const order = await prisma.medicationOrder.findUnique({where: { id: data.orderId }});
@@ -247,7 +234,7 @@ export const MedicationDiscontinueSchema = z.object({orderId:z.string().uuid(),
 
     // Check if order can be discontinued;
     if (!session.user) {
-      throw new Error(`Cannot discontinue order with status: ${,}`;
+      throw new Error(`Cannot discontinue order with status: ${,
 
     // Update medication order;
     const updatedOrder = await prisma.medicationOrder.update({where: { id: data.orderId },
@@ -255,7 +242,6 @@ export const MedicationDiscontinueSchema = z.object({orderId:z.string().uuid(),
         userId,
         discontinuedAt: new Date(),
         updatedAt: new Date(),
-      }});
 
     // Log the medication discontinuation;
     await logAudit();
@@ -269,8 +255,7 @@ export const MedicationDiscontinueSchema = z.object({orderId:z.string().uuid(),
 
     );
 
-    return {success:true,
-      "Medication order discontinued successfully";
+    return {success: true,
     };
 
   /**;
@@ -288,13 +273,11 @@ export const MedicationDiscontinueSchema = z.object({orderId:z.string().uuid(),
         OR: [;
           {endDate: null },
           {endDate: { gt: new Date() } }]},
-      orderBy: {createdAt: "desc" }});
 
     return {
       patientId,
       activeMedications,
       count: activeMedications.length,
-    };
 
   /**;
    * Get medication history for a patient;
@@ -311,7 +294,6 @@ export const MedicationDiscontinueSchema = z.object({orderId:z.string().uuid(),
       take: limit,
       {orderBy:{ administeredAt: "desc" },
           take: 5,
-        }}});
 
     // Group by encounter;
     const groupedByEncounter = medicationHistory.reduce((groups, medication) => {
@@ -326,4 +308,3 @@ export const MedicationDiscontinueSchema = z.object({orderId:z.string().uuid(),
       medicationHistory,
       groupedByEncounter,
       count: medicationHistory.length,
-    };

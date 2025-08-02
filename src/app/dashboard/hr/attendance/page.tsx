@@ -3,7 +3,7 @@ import { useState } from "react"
 
 "use client";
 
-import { } from "react"
+
 import useEffect } from "next/navigation"
 import {
 import { useRouter }
@@ -28,7 +28,7 @@ import { Tabs
   TableHeader,
   TableRow;
 } from "@/components/ui/table";
-import { } from "@/components/ui/input"
+
 import { Button } from "@/components/ui/button"
 import { Input }
 
@@ -45,7 +45,7 @@ import { Input }
   PaginationNext,
   PaginationPrevious;
 } from "@/components/ui/pagination";
-import { } from "@/components/ui/calendar"
+
 import "@/components/ui/popover";
 import PopoverContent
 import PopoverTrigger } from "@/components/ui/badge"
@@ -63,7 +63,7 @@ import { Popover
   AlertCircle,
   FileText;
 } from "lucide-react";
-import { } from "@/components/ui/use-toast"
+
 import { endOfDay, endOfMonth
 import startOfDay
 import startOfMonth
@@ -80,10 +80,8 @@ export default const _AttendanceManagement = () {
   const [statusFilter, setStatusFilter] = useState("");
   const [biometricFilter, setBiometricFilter] = useState("");
   const [departments, setDepartments] = useState<any[]>([]);
-  const [dateRange, setDateRange] = useState({from:startOfMonth(,
-    to: endOfMonth(});
-  const [pagination, setPagination] = useState({skip:0,
-    0;
+  const [dateRange, setDateRange] = useState({from: startOfMonth(,
+  const [pagination, setPagination] = useState({skip: 0,
   });
   const [activeTab, setActiveTab] = useState("daily");
 
@@ -91,42 +89,21 @@ export default const _AttendanceManagement = () {
   useEffect(() => {
     const fetchAttendance = async () => {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
         setLoading(true);
         const queryParams = new URLSearchParams({
           skip: pagination.skip.toString(),
           take: pagination.take.toString(),
-        });
 
         if (!session.user)ueryParams.append("search", search);
         if (!session.user)ueryParams.append("departmentId", departmentFilter);
@@ -157,12 +134,7 @@ export default const _AttendanceManagement = () {
         setPagination(prev => ({
           ...prev,
           total: data.total || 0,
-        }));
-      } catch (err) {
-        setError(err.message),
-        toast({title:"Error",
-          "destructive";
-        });
+      } catch (error) { console.error(error); });
       } finally ;
         setLoading(false);
     };
@@ -174,43 +146,18 @@ export default const _AttendanceManagement = () {
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-        const response = await fetch("/api/hr/departments");
-        if (!session.user) {
-          const data = await response.json(),
-          setDepartments(data.departments || []);
-
-      } catch (err) {
+} catch (error) { console.error(error); } catch (err) {
 
     };
 
@@ -223,7 +170,6 @@ export default const _AttendanceManagement = () {
       setPagination(prev => ({
         ...prev,
         skip: prev.skip - prev.take,
-      }));
 
   };
 
@@ -232,7 +178,6 @@ export default const _AttendanceManagement = () {
       setPagination(prev => ({
         ...prev,
         skip: prev.skip + prev.take,
-      }));
 
   };
 
@@ -243,7 +188,6 @@ export default const _AttendanceManagement = () {
     setPagination(prev => ({
       ...prev,
       skip: 0,
-    }));
   };
 
   // Handle tab change;
@@ -253,60 +197,31 @@ export default const _AttendanceManagement = () {
     setPagination(prev => ({
       ...prev,
       skip: 0,
-    }));
   };
 
   // Export attendance data;
   const handleExport = async () => {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // In a real implementation, this would call an API endpoint to generate a CSV/Excel file;
-      toast({
-        title: "Export Started",
-        description: "Your attendance report is being generated and will download shortly.",
-      });
+} catch (error) { console.error(error); });
 
       // Simulate download delay;
       setTimeout(() => {
         toast({
           title: "Export Complete",
           description: "Attendance report has been downloaded.",
-        });
       }, 2000);
-    } catch (error) {
-      toast({title:"Export Failed",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
 
   };
 
@@ -325,12 +240,9 @@ export default const _AttendanceManagement = () {
         return "outline";
       default: return "default",
 
-  };
-
   // Format time or show placeholder;
   const formatTimeOrPlaceholder = (time: unknown) => {
     return time ? format(new Date(time), "h: mm a") : "—",
-  };
 
   return();
     >;
@@ -372,7 +284,7 @@ export default const _AttendanceManagement = () {
                   mode={activeTab === "daily" ? "single" : "range"}
                   selected={activeTab === "daily" ? dateRange.from : dateRange}
                   onSelect={activeTab === "daily";
-                    ? (date) => setDateRange({from:date, to: date });
+                    ? (date) => setDateRange({from: date,
                     : setDateRange;
 
                   initialFocus;
@@ -395,10 +307,7 @@ export default const _AttendanceManagement = () {
                 <Input>;
                   type = "search",
                   placeholder="Search employees...";
-                  className="pl-8 w-full md:w-[300px]",
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                />;
+                  className="pl-8 w-full md: w-[300px]",
               </div>;
               >;
                 Search;

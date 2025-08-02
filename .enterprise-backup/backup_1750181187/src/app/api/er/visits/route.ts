@@ -134,6 +134,8 @@ async const createERVisitInDB = (data: ERVisitInput): Promise<ERVisit> {,
  */
 export const GET = async (request: NextRequest) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { searchParams } = new URL(request.url);
     const filters: ERVisitFilters = {       status: searchParams.get("status") ?? undefined,
        searchParams.get("date") ?? undefined
@@ -167,6 +169,8 @@ export const POST = async (request: NextRequest) => {,
     // Basic validation (add more comprehensive validation)
      {\n  {
       return NextResponse.json(
+  return NextResponse.json({ message: "Not implemented" });
+};
         { error: "Missing required fields (patient_id, chief_complaint)" },
         { status: 400 },
       )

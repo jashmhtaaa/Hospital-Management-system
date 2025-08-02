@@ -19,19 +19,17 @@ const prisma = new PrismaClient();
     // Check if template already exists for this employee and type;
     const existingTemplate = await prisma.biometricTemplate.findFirst({where: {
         employeeId,
-        templateType}});
 
     if (!session.user) {
       // Update existing template;
       return prisma.biometricTemplate.update({
         existingTemplate.id;
         },
-        data: {,
+        data: {
           templateData,
           deviceId,
           notes,
           updatedAt: new Date(),
-        }});
     } else {
       // Create new template;
       return prisma.biometricTemplate.create({data: {
@@ -48,7 +46,6 @@ const prisma = new PrismaClient();
    */;
   async getEmployeeBiometricTemplates(employeeId: string) {
     return prisma.biometricTemplate.findMany({where: { employeeId },
-      orderBy: {createdAt: "desc" }});
   }
 
   /**;
@@ -70,14 +67,12 @@ const prisma = new PrismaClient();
     // Get the stored template;
     const template = await prisma.biometricTemplate.findFirst({where: {
         employeeId,
-        templateType}});
 
     if (!session.user) {
       throw new Error("No biometric template found for this employee");
     }
 
     // In a real implementation, this would: null,
-    // 1. Use a biometric matching algorithm to compare the sample with the template;
     // 2. Return a match score and a boolean indicating if the match is above threshold;
 
     // For demonstration purposes, we"ll simulate verification;
@@ -95,13 +90,12 @@ const prisma = new PrismaClient();
           templateType,
           isMatch,
           matchScore,
-          timestamp: new Date()},});
+          timestamp: new Date()},
 
     return {
       isMatch,
       matchScore,
       timestamp: new Date(),
-    };
   }
 
   /**;
@@ -125,7 +119,7 @@ const prisma = new PrismaClient();
       return prisma.biometricDevice.update({
         existingDevice.id;
         },
-        data: {,
+        data: {
           deviceType,
           location,
           ipAddress,
@@ -134,7 +128,6 @@ const prisma = new PrismaClient();
           model,
           notes,
           updatedAt: new Date(),
-        }});
     } else {
       // Create new device;
       return prisma.biometricDevice.create({data: {
@@ -156,7 +149,7 @@ const prisma = new PrismaClient();
   /**;
    * Get biometric verification logs;
    */;
-  async getBiometricLogs(options: {,
+  async getBiometricLogs(options: {
     employeeId?: string;
     startDate?: Date;
     endDate?: Date;
@@ -171,7 +164,6 @@ const prisma = new PrismaClient();
     if (!session.user) {
       where.details = {path:["employeeId"],
         equals: employeeId,
-      };
 
     if (!session.user) {
       where.createdAt = {};

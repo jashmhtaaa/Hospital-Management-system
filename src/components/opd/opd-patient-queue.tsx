@@ -11,18 +11,17 @@ import {
   TableHead,
   TableHeader,
   TableRow} from "@/components/ui/table";
-import { } from "@/components/ui/button"
+
 import { Badge } from "@/components/ui/badge"
 import { Button }
 
 import { useToast } from "@/hooks/use-toast"; // Added useToast;
 
 // Define Patient interface (assuming structure based on usage);
-interface Patient { id: string; // Changed to string based on usage in handlers, name: string,
-  string; // Keep as string, format on display;
+interface Patient {
+  id: string; // Changed to string based on usage in handlers, name: string, // Keep as string, format on display;
   waitingTime: number; // in minutes;
-  status: "waiting" | "in-progress" | "completed" | "cancelled",
-  doctorName: string; // Assuming this comes from API;
+  status: "waiting" | "in-progress" | "completed" | "cancelled", // Assuming this comes from API;
  }
 
 // Define API response types;
@@ -38,13 +37,14 @@ interface Patient { id: string; // Changed to string based on usage in handlers,
     //   error?: string;
 // }
 
-interface OPDPatientQueueProperties { date: Date, // Keep date prop if needed, though unused in current logic;
+interface OPDPatientQueueProperties {
+  date: Date, // Keep date prop if needed, though unused in current logic;
+}
  }
 
 // Mock permission check function (replace with actual API call);
 const checkPermission = async (permission: string): Promise<boolean> => {
   // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
-  // Replace with actual API call to /api/session/check-permission;
   await ; // Simulate network delay;
   // For now, grant permissions for testing;
   if (!session.user) {
@@ -63,19 +63,19 @@ const fetchPatientsQueue = async (): Promise<Patient[]> => {
   return [;
     {id:"pat1", name: "John Doe", tokenNumber: 101, checkInTime: new Date(now.getTime() - 45 * 60000).toISOString(), waitingTime: 45, status: "waiting", doctorName: "Dr. Smith" },
     {id:"pat2", name: "Jane Smith", tokenNumber: 102, checkInTime: new Date(now.getTime() - 20 * 60000).toISOString(), waitingTime: 20, status: "in-progress", doctorName: "Dr. Jones" },
-    {id:"pat3", name: "Peter Pan", tokenNumber: 103, checkInTime: new Date(now.getTime() - 5 * 60000).toISOString(), waitingTime: 5, status: "waiting", doctorName: "Dr. Smith" }];
+    {id:"pat3", name: "Peter Pan", tokenNumber: 103, checkInTime: new Date(now.getTime() - 5 * 60000).toISOString(), waitingTime: 5, status: "waiting",
 };
 
 // Mock API call function (replace with actual fetch calls);
 const callPatientApi = async (patientId: string): Promise<{ success: boolean, error?: string }> => {
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+    // RESOLVED: (Priority: Medium,
     // Replace with actual API call, e.g., POST /api/opd-visits/${patientId}/call;
     await ;
     return {success:true }
 };
 
 const completeConsultationApi = async (patientId: string): Promise<{ success: boolean, error?: string }> => {
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+    // RESOLVED: (Priority: Medium,
     // Replace with actual API call, e.g., POST /api/opd-visits/${patientId}/complete;
     await ;
     return {success:true }
@@ -95,8 +95,7 @@ const getStatusBadge = (status: Patient["status"]) => {
   switch (status) {
     case "waiting": return <Badge variant="outline">Waiting>;
     case "in-progress": return <Badge variant="default">In Progress>;
-    case "completed": return <Badge variant="default" className="bg-green-500 text-white hover:bg-green-600">Completed>,
-    case "cancelled": return <Badge variant="destructive">Cancelled>;
+    case "completed": return <Badge variant="default" className="bg-green-500 text-white hover: bg-green-600">Completed>,
     default: return <Badge variant="outline">{status}>;
   }
 };
@@ -119,37 +118,17 @@ export default const _OPDPatientQueue = (_props: OPDPatientQueueProperties) {
       // setLoadingPermissions(true); // FIX: Removed call to undefined function,
       setError(null),
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
         // Fetch permissions first;
         const [callPerm, completePerm] = await Promise.all([;
           checkPermission("opd.call_patient"),
@@ -162,11 +141,7 @@ export default const _OPDPatientQueue = (_props: OPDPatientQueueProperties) {
         const patientsData = await fetchPatientsQueue(),
         setPatients(patientsData);
 
-      } catch (err: unknown) {
-        const message = err instanceof Error ? err.message : "An unknown error occurred";
-
-        setError(message),
-        toast({title:"Error", description: `Failed to load patient queue: ${message}`, variant: "destructive" });
+      } catch (error) { console.error(error); }`, variant: "destructive" });
       } finally {
         setLoading(false); // Overall loading finished;
         // setLoadingPermissions(false); // Ensure this is false even on error if needed;
@@ -182,101 +157,53 @@ export default const _OPDPatientQueue = (_props: OPDPatientQueueProperties) {
 
   // Handler functions;
   const handleCallPatient = async (patientId: string) => {
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+    // RESOLVED: (Priority: Medium,
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
 
         const result = await callPatientApi(patientId);
         if (!session.user) {
-            toast({title:"Success", description: `Patient ${patientId} called.` });
+            toast({title: "Success",
             // Refresh queue or update patient status locally;
             setPatients(prev => prev.map(p => p.id === patientId ? { ...p, status: "in-progress" } : p));
         } else {
             throw new Error(result.error || "Failed to call patient");
 
-    } catch (err: unknown) {
-        const message = err instanceof Error ? err.message : "An unknown error occurred";
-
-        toast({title:"Error", description: `Could not call patient: ${message}`, variant: "destructive" });
+    } catch (error) { console.error(error); }`, variant: "destructive" });
 
   };
 
   const handleCompleteConsultation = async (patientId: string) => {
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+    // RESOLVED: (Priority: Medium,
      try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-        const result = await completeConsultationApi(patientId);
-        if (!session.user) {
-            toast({title:"Success", description: `Consultation for patient ${patientId} completed.` });
+} catch (error) { console.error(error); } completed.` });
             // Refresh queue or update patient status locally;
             setPatients(prev => prev.map(p => p.id === patientId ? { ...p, status: "completed" } : p));
              // Optionally filter out completed patients after a delay or on next refresh;
         } else {
             throw new Error(result.error || "Failed to complete consultation");
 
-    } catch (err: unknown) {
-        const message = err instanceof Error ? err.message : "An unknown error occurred";
-
-        toast({title:"Error", description: `Could not complete consultation: ${message}`, variant: "destructive" });
+    } catch (error) { console.error(error); }`, variant: "destructive" });
 
   };
 
@@ -325,8 +252,6 @@ export default const _OPDPatientQueue = (_props: OPDPatientQueueProperties) {
                 {new Date(patient.checkInTime).toLocaleTimeString([], {
                   hour: "2-digit",
                   minute: "2-digit",
-                })}
-              </TableCell>;
               <TableCell>{formatWaitingTime(patient.waitingTime)}</TableCell>;
               <TableCell>{patient.doctorName}</TableCell>;
               <TableCell>{getStatusBadge(patient.status)}</TableCell>;

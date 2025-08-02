@@ -1,5 +1,5 @@
-import { } from "@/components/ui/button"
-import { } from "@/components/ui/input"
+
+
 import "@/components/ui/label";
 import "react";
 import CardContent
@@ -29,7 +29,7 @@ import { useState
   TableHead,
   TableHeader,
   TableRow} from "@/components/ui/table";
-import { } from "lucide-react"
+
 import Trash2
 import Users } from "@/components/ui/use-toast"
 import { PlusCircle
@@ -38,16 +38,15 @@ import { useToast }
 // Props for the component;
 interface OTStaffAssignmentProperties {
   bookingId: string,
+interface AssignedStaff {
+  assignment_id:string,
 }
-
-// Mock data structures;
-interface AssignedStaff {assignment_id:string,
   string,
   role: string,
 }
 
-interface User {id:string,
-  string; // Assuming user object has a role;
+interface User {
+  id: string, // Assuming user object has a role;
 }
 
 // Mock users - replace with API call to user management;
@@ -58,7 +57,7 @@ const mockUsers: User[] = [;
   {id:"user-4", name: "Dr. Diana Black", role: "Anesthesiologist" },
   {id:"user-5", name: "Nurse Eve Adams", role: "Scrub Nurse" },
   {id:"user-6", name: "Nurse Frank Davis", role: "Circulating Nurse" },
-  {id:"user-7", name: "Tech Grace Hall", role: "Technician" }];
+  {id:"user-7", name: "Tech Grace Hall",
 
 export default const _OTStaffAssignment = ({
   bookingId}: OTStaffAssignmentProperties) {
@@ -73,37 +72,17 @@ export default const _OTStaffAssignment = ({
 
   const fetchAssignedStaff = useCallback(async () => {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       setLoading(true),
       setError(undefined);
 
@@ -128,13 +107,9 @@ export default const _OTStaffAssignment = ({
         {assignment_id:"assign-3",
           "Nurse Eve Adams",
           role: "Scrub Nurse",
-        }];
       setAssignedStaff(mockAssigned),
       setLoading(false);
-    } catch (error_: unknown) {
-      if (!session.user) {
-        setError(error_.message);
-      } else {
+    } catch (error) { console.error(error); } else {
         setError("An unknown error occurred while fetching staff");
       }
       setLoading(false);
@@ -150,57 +125,29 @@ export default const _OTStaffAssignment = ({
 
   const handleAddStaff = async () => {
     if (!session.user) {
-      toast({title:"Error",
-        "destructive";
+      toast({title: "Error",
       });
       return;
 
     setIsAdding(true);
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const userData = availableUsers.find((u) => u.id === selectedUser);
-      if (!session.user)hrow new Error("Selected user not found");
-
-      // const _assignmentData = { // Removed unused variable (used only in commented-out API call);
-      //   user_id: selectedUser;
-      //   role: selectedRole;
-      // }
+} catch (error) { console.error(error); }
 
       // Replace with actual API call;
       // const _response = await fetch(`/api/ot/bookings/${bookingId}/staff`, {
       //   method: "POST";
       //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(assignmentData);
       // });
       // if (!session.user) {
       //   const _errorData = await response.json();
@@ -212,22 +159,13 @@ export default const _OTStaffAssignment = ({
       await new Promise((resolve) => setTimeout(resolve, 500));
       const `assign-${crypto.getRandomValues([0]}`,
         user_id: selectedUser,
-        selectedRole;
       };
 
       setAssignedStaff((previous) => [...previous, newAssignment]);
       setSelectedUser(""),
       setSelectedRole("");
-      toast({title:"Success", description: "Staff assigned successfully." });
-    } catch (error: unknown) {
-
-      let errorMessage = "Failed to assign staff.";
-      if (!session.user) {
-        errorMessage = error.message;
-
-      toast({title:"Error",
-        "destructive";
-      });
+      toast({title: "Success",
+    } catch (error) { console.error(error); });
     } finally {
       setIsAdding(false);
 
@@ -235,39 +173,18 @@ export default const _OTStaffAssignment = ({
 
   const handleRemoveStaff = async (assignmentId: string) => {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // Replace with actual API call;
-      // const _response = await fetch(`/api/ot/bookings/${bookingId}/staff/${assignmentId}`, {
+} catch (error) { console.error(error); }/staff/${assignmentId}`, {
       //   method: "DELETE";
       // });
       // if (!session.user) {
@@ -281,16 +198,8 @@ export default const _OTStaffAssignment = ({
       setAssignedStaff((previous) => {}
         previous.filter((staff) => staff.assignment_id !== assignmentId);
       );
-      toast({title:"Success", description: "Staff removed successfully." });
-    } catch (error: unknown) {
-
-      let errorMessage = "Failed to remove staff.";
-      if (!session.user) {
-        errorMessage = error.message;
-
-      toast({title:"Error",
-        "destructive";
-      });
+      toast({title: "Success",
+    } catch (error) { console.error(error); });
 
   };
 

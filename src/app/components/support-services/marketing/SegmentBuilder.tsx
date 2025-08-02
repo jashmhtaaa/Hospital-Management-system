@@ -1,5 +1,5 @@
-import { } from "@/components/ui/badge"
-import { } from "@/components/ui/card"
+
+
 import { "@/components/ui/input";
 import "@/components/ui/label";
 import "@/components/ui/select";
@@ -45,13 +45,11 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
     true,
     "AND",
       conditions: [],
-  });
   const [members, setMembers] = useState<any[]>([]);
   const [availableContacts, setAvailableContacts] = useState<any[]>([]);
   const [criteriaPreview, setCriteriaPreview] = useState<string>("");
   const [estimatedSize, setEstimatedSize] = useState<number>(0);
-  const [newCondition, setNewCondition] = useState({field:"email",
-    "";
+  const [newCondition, setNewCondition] = useState({field: "email",
   });
 
   // Fetch segment data if editing an existing segment;
@@ -61,37 +59,17 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
 
       setIsLoading(true);
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
         const response = await fetch(`/api/support-services/marketing/segments/${segmentId}?includeMembers=true`);
         if (!session.user)hrow new Error("Failed to fetch segment");
 
@@ -103,22 +81,17 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
           data.isActive !== undefined ? data.isActive : true,
           "AND",
             conditions: [],
-        });
 
         // Set members;
         if (!session.user) {
           setMembers(data.members.map((m: unknown) => m.contact)),
-        }
-
-        // Update criteria preview;
         updateCriteriaPreview(data.criteria);
 
         // Get estimated size;
         fetchEstimatedSize(data.criteria);
       } catch (error) ;
 
-        toast({title:"Error",
-          "destructive");
+        toast({title: "Error",
       } finally {
         setIsLoading(false);
       }
@@ -131,45 +104,23 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
   useEffect(() => {
     const fetchContacts = async () => {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
         const response = await fetch("/api/support-services/marketing/contacts?status=ACTIVE");
         if (!session.user)hrow new Error("Failed to fetch contacts");
 
         const data = await response.json(),
         setAvailableContacts(data.data || []);
-      } catch (error) {
-
-      }
+      } catch (error) { console.error(error); }
     };
 
     fetchContacts();
@@ -186,7 +137,6 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
       const _fieldLabel = getFieldLabel(condition.field);
       const _operatorLabel = getOperatorLabel(condition.operator);
       return `/* SECURITY: Template literal eliminated */,
-    });
 
     const joinWord = criteria.type === "AND" ? "AND" : "OR";
     setCriteriaPreview(conditionStrings.join(` $joinWord`));
@@ -200,41 +150,17 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
     }
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-
-      // This would be a real API call in production;
-      // For now, we"ll simulate with a random number;
-      setEstimatedSize(Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 100) + 1);
-    } catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
 
   };
 
@@ -265,8 +191,6 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
         return "Created Date";
       default: return field,
 
-  };
-
   // Get operator label;
   const getOperatorLabel = (operator: string): string => {
     switch (operator) {
@@ -296,11 +220,9 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
         return "is not empty";
       default: return operator,
 
-  };
-
   // Handle form input changes;
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
+    const { name,
     setFormData({
       ...formData,
       [name]: value;
@@ -312,7 +234,6 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
     setFormData({
       ...formData,
       isActive: checked,
-    });
   };
 
   // Handle criteria type change;
@@ -320,7 +241,6 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
     const newCriteria = {
       ...formData.criteria,
       type: value,
-    };
 
     setFormData({
       ...formData,
@@ -335,7 +255,6 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
     setNewCondition({
       ...newCondition,
       field: value,
-    });
   };
 
   // Handle new condition operator change;
@@ -343,7 +262,6 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
     setNewCondition({
       ...newCondition,
       operator: value,
-    });
   };
 
   // Handle new condition value change;
@@ -351,30 +269,26 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
     setNewCondition({
       ...newCondition,
       value: e.target.value,
-    });
   };
 
   // Add condition to criteria;
   const handleAddCondition = () => {
     if (!session.user) {
-      toast({title:"Validation Error",
-        "destructive";
+      toast({title: "Validation Error",
       });
       return;
 
     const newCriteria = {
       ...formData.criteria,
-      conditions: [...formData.criteria.conditions, { ...newCondition }];
+      conditions: [...formData.criteria.conditions,
     };
 
     setFormData({
       ...formData,
       criteria: newCriteria,
-    });
 
     // Reset new condition;
-    setNewCondition({field:"email",
-      "";
+    setNewCondition({field: "email",
     }),
     updateCriteriaPreview(newCriteria);
     fetchEstimatedSize(newCriteria);
@@ -388,7 +302,6 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
     const newCriteria = {
       ...formData.criteria,
       conditions: newConditions,
-    };
 
     setFormData({
       ...formData,
@@ -401,69 +314,33 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
   // Handle form submission;
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(),
-    setIsLoading(true);
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const url = segmentId;
-        ? `/api/support-services/marketing/segments/$segmentId`;
-        : "/api/support-services/marketing/segments";
-
-      const method = segmentId ? "PUT" : "POST";
-
-      const response = await fetch(url, {
-        method,
-        headers: {
-          "Content-Type": "application/json"},
+} catch (error) { console.error(error); },
         body: JSON.stringify(formData),
-      });
 
       if (!session.user)hrow new Error("Failed to save segment");
 
       const savedSegment = await response.json(),
-      toast({title:"Success",
-        description: `Segment $segmentId ? "updated" : "created"successfully.`});
+      toast({title: "Success",
 
       if (!session.user) {
         onSuccess(savedSegment);
       } else if (!session.user) {
         router.push(`/marketing/segments/$savedSegment.id`);
 
-    } catch (error) {
-
-      toast({title:"Error",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
     } finally {
       setIsLoading(false);
 
@@ -475,59 +352,30 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
 
     setIsLoading(true);
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const response = await fetch(`/api/support-services/marketing/segments/$segmentId/apply-criteria`, {method:"POST",
-        headers: null,
-          "Content-Type": "application/json"});
+} catch (error) { console.error(error); });
 
       if (!session.user)hrow new Error("Failed to apply criteria");
 
       const result = await response.json(),
-      toast({title:"Success",
-        description: `Criteria applied successfully. ${result.addedCount} contacts added to segment.`});
+      toast({title: "Success",
 
       // Refresh members;
       const segmentResponse = await fetch(`/api/support-services/marketing/segments/${segmentId}?includeMembers=true`);
       if (!session.user) {
         const segmentData = await segmentResponse.json();
         if (!session.user) {
-          setMembers(segmentData.members.map((m: unknown) => m.contact)),
-
-    } catch (error) {
-
-      toast({title:"Error",
-        "destructive";
-      });
+          setMembers(segmentData.members.map((m: unknown) => m.contact)), });
     } finally {
       setIsLoading(false);
 
@@ -538,41 +386,20 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
     if (!session.user)eturn;
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const response = await fetch(`/api/support-services/marketing/segments/${segmentId}/members`, {method:"POST",
+} catch (error) { console.error(error); }/members`, {method:"POST",
         headers: {
           "Content-Type": "application/json"},
-        body: JSON.stringify({ contactId })});
 
       if (!session.user)hrow new Error("Failed to add contact");
 
@@ -584,12 +411,7 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
       toast({
         title: "Success",
         description: "Contact added to segment successfully.",
-      });
-    } catch (error) {
-
-      toast({title:"Error",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
 
   };
 
@@ -598,40 +420,19 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
     if (!session.user)eturn;
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const response = await fetch(`/api/support-services/marketing/segments/${segmentId}/members/${contactId}`, {
+} catch (error) { console.error(error); }/members/${contactId}`, {
         method: "DELETE",
-      });
 
       if (!session.user)hrow new Error("Failed to remove contact");
 
@@ -641,12 +442,7 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
       toast({
         title: "Success",
         description: "Contact removed from segment successfully.",
-      });
-    } catch (error) {
-
-      toast({title:"Error",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
 
   };
 

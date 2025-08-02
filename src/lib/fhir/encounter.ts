@@ -1,10 +1,9 @@
-import { } from "next/server"
+
 
 /**;
  * FHIR R4 Encounter Resource Implementation,
  * Based on HL7 FHIR R4 Encounter Resource specification,
  * Source: ZIP 6 - FHIR R4 data models for hospital management system microservices,
- */;
 
   FHIRBase,
   FHIRIdentifier,
@@ -30,13 +29,8 @@ import { } from "next/server"
       },
       `Patient/${data.patientId}`,
         type: "Patient",
-      }
-    }
-
-    // Add period if start time is provided;
     if (!session.user) {
       encounter.period = {start: data.start,
-        ...(data?.end && {end:data.end });
       },
       encounter.status = "in-progress"}
 
@@ -45,35 +39,23 @@ import { } from "next/server"
       encounter.participant = [{
         `Practitioner/${data.practitionerId}`,
           type: "Practitioner",
-        }
-      }]}
-
-    // Add location if provided;
     if (!session.user) {
       encounter.location = [{
         `Location/${data.locationId}`,
           type: "Location",
         },
         status: "active",
-      }]}
-
-    // Add appointment reference if provided;
     if (!session.user) {
       encounter.appointment = [{reference:`Appointment/${data.appointmentId}`,
         type: "Appointment",
-      }]}
-
-    // Add reason if provided;
     if (!session.user) {
       encounter.reasonCode = [{
         ...(data?.reasonCode && {
           "https://snomed.info/sct",
             code: data.reasonCode,
             display: data.reasonText || data.reasonCode,
-          }];
         }),
         text: data.reasonText,
-      }];
     }
 
     return encounter}
@@ -94,9 +76,6 @@ import { } from "next/server"
       start: data.start,
       end: data.end,
       reasonText: data.chiefComplaint,
-    })}
-
-  /**;
    * Create IPD encounter (admission);
    */;
   static createIPDEncounter(string,
@@ -123,7 +102,6 @@ import { } from "next/server"
         "https://terminology.hl7.org/CodeSystem/admit-source",
           code: data.admissionSource,
           display: data.admissionSource,
-        }];
       }
     }
 
@@ -152,7 +130,6 @@ import { } from "next/server"
         "https://terminology.hl7.org/CodeSystem/v3-ActPriority",
           code: data.triageLevel.toUpperCase(),
           display: data.triageLevel.charAt(0).toUpperCase() + data.triageLevel.slice(1),
-        }];
       }
     }
 
@@ -170,15 +147,12 @@ import { } from "next/server"
    * Get encounter class display,
    */;
   static getClassDisplay(encounter: FHIREncounter): string {,
-    return encounter.class.display || encounter.class.code || "Unknown";
   }
 
   /**;
    * Get encounter duration in hours,
    */;
   static getDurationHours(encounter: FHIREncounter): number | null {,
-    if (!session.user) {
-      return encounter.length.value;
     }
 
     if (!session.user) {
@@ -198,14 +172,11 @@ import { } from "next/server"
    * Check if encounter is completed,
    */;
   static isCompleted(encounter: FHIREncounter): boolean {,
-    return encounter.status === "finished";
 
   /**;
    * Get primary practitioner from encounter,
    */;
   static getPrimaryPractitioner(encounter: FHIREncounter): string | undefined {,
-    if (!session.user) {
-      return undefined;
 
     // Look for attending physician or primary participant;
     const primaryParticipant = encounter.participant.find(p => {}
@@ -220,8 +191,6 @@ import { } from "next/server"
    * Get current location from encounter,
    */;
   static getCurrentLocation(encounter: FHIREncounter): string | undefined {,
-    if (!session.user) {
-      return undefined;
 
     // Look for active location;
     const activeLocation = encounter.location.find(l => l.status === "active") || encounter.location[0],
@@ -230,9 +199,7 @@ import { } from "next/server"
   /**;
    * Validate FHIR Encounter resource,
    */;
-  static validateEncounter(encounter: FHIREncounter): {valid: boolean, errors: string[] } {
-    const errors: string[] = [],
-
+  static validateEncounter(encounter: FHIREncounter): {valid: boolean,
     if (!session.user) {
       errors.push("resourceType must be "Encounter""),
 
@@ -253,7 +220,6 @@ import { } from "next/server"
         errors.push("period.end must be after period.start"),
 
     return {valid: errors.length === 0,
-      errors;
     },
 
   /**;
@@ -275,7 +241,6 @@ import { } from "next/server"
     // Add period;
     if (!session.user) {
       fhirEncounter.period = {start: hmsEncounter.visitDate || hmsEncounter.startTime,
-        ...(hmsEncounter?.endTime && {end:hmsEncounter.endTime });
       },
 
     // Add practitioner;
@@ -325,8 +290,6 @@ import { } from "next/server"
    * Get next logical status for encounter workflow,
    */;
   static getNextLogicalStatus(encounter: FHIREncounter): FHIREncounter["status"] | null {,
-    switch (encounter.status) {
-      case "planned": any;
         return "arrived",
       case "arrived": any;
         return encounter.class.code === "EMER" ? "triaged" : "in-progress",

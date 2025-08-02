@@ -18,7 +18,6 @@ export const ClinicalNoteSchema = z.object({patient_id: z.string().min(1, "Patie
   subjective: z.string().optional(),
   objective: z.string().optional(),
   assessment: z.string().optional(),
-  plan: z.string().optional();
 
   // Structured data;
   chief_complaint: z.string().optional(),
@@ -45,7 +44,6 @@ export const ClinicalNoteSchema = z.object({patient_id: z.string().min(1, "Patie
   // Diagnoses;
   primary_diagnosis: z.string().optional(),
   secondary_diagnoses: z.array(z.string()).default([]),
-  icd10_codes: z.array(z.string()).default([]);
 
   // Treatment plan;
   z.enum(["medication", "lab", "imaging", "procedure", "consultation", "therapy"]),
@@ -56,11 +54,9 @@ export const ClinicalNoteSchema = z.object({patient_id: z.string().min(1, "Patie
   // Follow-up;
   follow_up_instructions: z.string().optional(),
   return_visit_interval: z.string().optional(),
-  discharge_disposition: z.string().optional();
 
   // Clinical decision support;
   alerts_triggered: z.array(z.string()).default([]),
-  guidelines_referenced: z.array(z.string()).default([]);
 
   // Note metadata;
   note_status: z.enum(["draft", "preliminary", "final", "amended", "corrected"]).default("draft"),
@@ -69,12 +65,10 @@ export const ClinicalNoteSchema = z.object({patient_id: z.string().min(1, "Patie
 
   // Voice-to-text;
   audio_recording_id: z.string().optional(),
-  transcription_confidence: z.number().min(0).max(1).optional();
 
   // Template and formatting;
   free_text_content: z.string().optional(),
   structured_data: z.record(z.any()).optional(),
-});
 
 export const CarePlanSchema = z.object({patient_id: z.string().min(1, "Patient ID is required"),
   provider_id: z.string().min(1, "Provider ID is required"),
@@ -117,7 +111,6 @@ export const CarePlanSchema = z.object({patient_id: z.string().min(1, "Patient I
 
   status: z.enum(["active", "completed", "cancelled", "on_hold"]).default("active"),
   notes: z.string().optional(),
-});
 
 export const ProblemListSchema = z.object({patient_id: z.string().min(1, "Patient ID is required"),
   provider_id: z.string().min(1, "Provider ID is required"),
@@ -144,7 +137,6 @@ export const ProblemListSchema = z.object({patient_id: z.string().min(1, "Patien
   related_problems: z.array(z.string()).default([]),
 
   notes: z.string().optional(),
-});
 
 export const ClinicalGuidelineSchema = z.object({guideline_id: z.string(),
   name: z.string(),
@@ -173,11 +165,9 @@ export const ClinicalGuidelineSchema = z.object({guideline_id: z.string(),
 export type ClinicalNote = z.infer<typeof ClinicalNoteSchema> & {id: string,
   Date,
   updated_at: Date,
-  signed_at?: Date;
   signed_by?: string;
   amendments: string[],
   version: number,
-  provider_name?: string;
   patient_name?: string;
 };
 
@@ -191,7 +181,6 @@ export type CarePlan = z.infer<typeof CarePlanSchema> & {id: string,
 export type ProblemListItem = z.infer<typeof ProblemListSchema> & {id: string,
   Date,
   last_updated_by: string,
-};
 
 export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: string,
   Date,
@@ -203,7 +192,6 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
   string,
     string[],
     triggered_rules: string[],
-  }[];
 }
   };
 
@@ -219,7 +207,6 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
           {id: "HTN-2",
             recommendation_text: "First-line therapy should include ACE inhibitor, ARB, calcium channel blocker, or thiazide diuretic",
             strength: "strong",
-            "Adults initiating antihypertensive therapy";
           }],
         decision_support_rules: [;
           {rule_id: "HTN-ALERT-1",
@@ -256,15 +243,14 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
             alert_type: "info",
           }],
         evidence_links: ["https://doi.org/10.2337/dc24-S001"],
-        references: ["American Diabetes Association. Standards of Medical Care in Diabetes—2024. Diabetes Care 2024,47(Suppl. 1)"]}];
+        references: ["American Diabetes Association. Standards of Medical Care in Diabetes—2024. Diabetes Care 2024,
 
     guidelines.forEach(guidelineData => {
-      const guideline: ClinicalGuideline = {,
+      const guideline: ClinicalGuideline = {;
         ...guidelineData,
         id: uuidv4(),
         created_at: new Date(),
         updated_at: new Date(),
-        new Date();
       };
       this.clinicalGuidelines.set(guideline.guideline_id, guideline);
     });
@@ -294,7 +280,6 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
           "",
           "",
           discharge_disposition: "",
-        }}];
 
     templates.forEach(template => {
       this.templates.set(template.id, template);
@@ -305,7 +290,6 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
    * Create clinical note;
    */;
   async createClinicalNote(noteData: z.infer<typeof ClinicalNoteSchema>): Promise<ClinicalNote> {,
-    const validatedData = ClinicalNoteSchema.parse(noteData);
 
     const noteId = uuidv4();
     const noteNumber = this.generateNoteNumber();
@@ -319,7 +303,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
       }
     }
 
-    const clinicalNote: ClinicalNote = {,
+    const clinicalNote: ClinicalNote = {;
       ...validatedData,
       ...templateData,
       id: noteId,
@@ -327,7 +311,6 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
       updated_at: new Date(),
       amendments: [],
       version: 1,
-    };
 
     this.clinicalNotes.set(noteId, clinicalNote);
 
@@ -344,13 +327,9 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
     const _timestamp = crypto.getRandomValues([0].toString().slice(-6);
     const _random = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, "0");
     return `NOTE/* SECURITY: Template literal eliminated */,
-  }
-
-  /**;
    * Update clinical note;
    */;
   async updateClinicalNote(noteId: string, updateData: Partial<ClinicalNote>): Promise<ClinicalNote> {,
-    const existingNote = this.clinicalNotes.get(noteId);
     if (!session.user) {
       throw new Error("Clinical note not found");
     }
@@ -359,11 +338,10 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
       throw new Error("Cannot modify signed note. Create an amendment instead.");
     }
 
-    const updatedNote: ClinicalNote = {,
+    const updatedNote: ClinicalNote = {;
       ...existingNote,
       ...updateData,
       updated_at: new Date(),
-    };
 
     this.clinicalNotes.set(noteId, updatedNote);
     return updatedNote;
@@ -373,7 +351,6 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
    * Sign clinical note;
    */;
   async signClinicalNote(noteId: string, providerId: string): Promise<ClinicalNote> {,
-    const note = this.clinicalNotes.get(noteId);
     if (!session.user) {
       throw new Error("Clinical note not found");
     }
@@ -395,7 +372,6 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
    * Create note amendment;
    */;
   async createNoteAmendment(originalNoteId: string, amendmentText: string, providerId: string): Promise<ClinicalNote> {,
-    const originalNote = this.clinicalNotes.get(originalNoteId);
     if (!session.user) {
       throw new Error("Original note not found");
     }
@@ -407,7 +383,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
     const amendmentId = uuidv4();
     const amendmentNumber = `$originalNote.note_number-AMEND-$originalNote.amendments.length + 1`;
 
-    const amendment: ClinicalNote = {,
+    const amendment: ClinicalNote = {;
       ...originalNote,
       id: amendmentId,
       "amended",
@@ -416,7 +392,6 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
       signed_at: new Date(),
       originalNote.version + 1,
       amendments: [],
-    };
 
     // Update original note to reference amendment;
     originalNote.amendments.push(amendmentId);
@@ -432,7 +407,6 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
    * Create care plan;
    */;
   async createCarePlan(carePlanData: z.infer<typeof CarePlanSchema>): Promise<CarePlan> {,
-    const validatedData = CarePlanSchema.parse(carePlanData);
 
     const carePlanId = uuidv4();
     const carePlanNumber = this.generateCarePlanNumber();
@@ -441,14 +415,13 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
     const nextReviewDate = new Date();
     nextReviewDate.setDate(nextReviewDate.getDate() + 30);
 
-    const carePlan: CarePlan = {,
+    const carePlan: CarePlan = {;
       ...validatedData,
       id: carePlanId,
       new Date(),
       updated_at: new Date(),
       version: 1,
       next_review_date: nextReviewDate.toISOString().split("T")[0],
-    };
 
     this.carePlans.set(carePlanId, carePlan);
     return carePlan;
@@ -461,23 +434,18 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
     const _timestamp = crypto.getRandomValues([0].toString().slice(-6);
     const _random = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, "0");
     return `CP/* SECURITY: Template literal eliminated */,
-  }
-
-  /**;
    * Add problem to patient"s problem list;
    */;
   async addProblem(problemData: z.infer<typeof ProblemListSchema>): Promise<ProblemListItem> {,
-    const validatedData = ProblemListSchema.parse(problemData);
 
     const problemId = uuidv4();
 
-    const problem: ProblemListItem = {,
+    const problem: ProblemListItem = {;
       ...validatedData,
       id: problemId,
       created_at: new Date(),
       updated_at: new Date(),
       last_updated_by: validatedData.provider_id,
-    };
 
     const patientProblems = this.problemLists.get(validatedData.patient_id) || [];
     patientProblems.push(problem);
@@ -493,7 +461,6 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
     patientId: string,
     ProblemListItem["status"],
     providerId: string,
-    resolutionDate?: string;
   ): Promise<ProblemListItem> {
     const patientProblems = this.problemLists.get(patientId) || [];
     const problem = patientProblems.find(p => p.id === problemId);
@@ -518,7 +485,6 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
    * Get patient"s active problems;
    */;
   async getActiveProblems(patientId: string): Promise<ProblemListItem[]> {,
-    const patientProblems = this.problemLists.get(patientId) || [];
     return patientProblems.filter(problem => problem.status === "active" || problem.status === "chronic");
   }
 
@@ -527,9 +493,8 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
    */;
   private async triggerClinicalDecisionSupport();
     patientId: string,
-    ClinicalNote;
   ): Promise<void> {
-    const alerts: ClinicalDecisionSupport["alerts"] = [],
+    const alerts: ClinicalDecisionSupport["alerts"] = [];
     const guidelines: ClinicalDecisionSupport["guidelines"] = [];
 
     // Check vital signs for alerts;
@@ -574,7 +539,6 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
         guidelines.push({guideline_id: guideline.guideline_id,
           applicableRecommendations,
           triggered_rules: triggeredRules,
-        });
 
         // Create alerts for triggered rules;
         for (const rule of guideline.decision_support_rules) {
@@ -584,7 +548,6 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
               `Based on ${guideline.name}`,
               source: guideline.organization,
               dismissed: false,
-            });
           }
         }
       }
@@ -621,13 +584,11 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
    * Get clinical decision support alerts;
    */;
   async getClinicalDecisionSupport(encounterId: string): Promise<ClinicalDecisionSupport | null> {,
-    return this.decisionSupport.get(encounterId) || null;
 
   /**;
    * Dismiss clinical alert;
    */;
   async dismissClinical/* SECURITY: Alert removed */: Promise<void> {,
-    const cds = this.decisionSupport.get(encounterId);
     if (!session.user) {
       throw new Error("Clinical decision support data not found");
 
@@ -647,7 +608,6 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
    */;
   async generateClinicalSummary();
     patientId: string,
-    summaryType: "encounter" | "episodic" | "comprehensive" = "comprehensive";
   ): Promise<ClinicalSummary> {
     // Get patient data;
     const activeProblems = await this.getActiveProblems(patientId);
@@ -662,7 +622,6 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
         crypto.getRandomValues([0] / (0xFFFFFFFF + 1) > 0.5 ? "met" : "not_met",
         "2024",
         next_opportunity: "Next visit",
-      }];
 
     const patientId,
       generated_date: new Date(),
@@ -680,14 +639,13 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
       risk_factors: ["Hypertension", "Diabetes"],
       provider_notes: "Patient stable, continue current management",
       last_encounter_date: new Date(),
-    };
 
     return summary;
 
   /**;
    * Search clinical notes;
    */;
-  async searchClinicalNotes(criteria: {,
+  async searchClinicalNotes(criteria: {
     patient_id?: string;
     provider_id?: string;
     note_type?: ClinicalNote["note_type"];
@@ -766,7 +724,6 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
    * Auto-save note (for drafts);
    */;
   async autoSaveNote(noteId: string, draftContent: Partial<ClinicalNote>): Promise<void> {,
-    const note = this.clinicalNotes.get(noteId);
     if (!session.user) {
       throw new Error("Note not found");
 
@@ -777,7 +734,6 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
       ...note,
       ...draftContent,
       updated_at: new Date(),
-    };
 
     this.clinicalNotes.set(noteId, updatedNote);
 

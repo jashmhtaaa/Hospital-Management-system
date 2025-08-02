@@ -1,4 +1,4 @@
-import { } from "next/server"
+
 
 /**;
  * FHIR R4 Location Resource Implementation;
@@ -29,7 +29,6 @@ import { } from "next/server"
     phone?: string;
     position?: {longitude:number,
       latitude: number,
-      altitude?: number;
     };
     status?: "active" | "suspended" | "inactive";
   }): FHIRLocation {
@@ -39,7 +38,6 @@ import { } from "next/server"
         "https://terminology.hl7.org/CodeSystem/v3-RoleCode",
           code: this.getLocationTypeCode(data.type),
           display: this.getLocationTypeDisplay(data.type),
-        }];
       }];
     }
 
@@ -47,7 +45,6 @@ import { } from "next/server"
     if (!session.user) {
       location.identifier = [{use:"official",
         value: data.identifier,
-      }];
     }
 
     // Add description;
@@ -58,8 +55,7 @@ import { } from "next/server"
     // Add physical type;
     if (!session.user) {
       location.physicalType = {
-        "https://terminology.hl7.org/CodeSystem/location-physical-type",
-          this.getPhysicalTypeDisplay(data.physicalType);
+        "https: //terminology.hl7.org/CodeSystem/location-physical-type",
         }];
       }
     }
@@ -68,14 +64,12 @@ import { } from "next/server"
     if (!session.user) {
       location.managingOrganization = {reference:`Organization/${data.organizationId}`,
         type: "Organization",
-      };
     }
 
     // Add parent location;
     if (!session.user) {
       location.partOf = {reference:`Location/${data.parentLocationId}`,
         type: "Location",
-      };
     }
 
     // Add address;
@@ -84,13 +78,11 @@ import { } from "next/server"
         data.address.city,
         data.address.zipCode,
         country: data.address.country || "US",
-      };
     }
 
     // Add contact information;
     if (!session.user) {
       location.telecom = [{system: "phone",
-        "work";
       }];
     }
 
@@ -110,17 +102,14 @@ import { } from "next/server"
     string,
       string,
       zipCode: string,
-      country?: string;
     phone?: string;
     position?: {longitude:number,
       latitude: number,
-    };
     description?: string;
   }): FHIRLocation {
     return this.createBasicLocation({
       ...data,
       type: "building",
-      "active";
     });
   }
 
@@ -130,9 +119,7 @@ import { } from "next/server"
   static createWard(string;
     identifier?: string;
     wardType: "emergency" | "icu" | "general" | "pediatric" | "maternity" | "surgical" | "psychiatric",
-    buildingId?: string;
     organizationId: string,
-    capacity?: number;
     description?: string;
   }): FHIRLocation {
     const location = this.createBasicLocation({name: data.name,
@@ -140,14 +127,12 @@ import { } from "next/server"
       data.description,
       data.buildingId,
       status: "active",
-    });
 
     // Add ward-specific type;
     location.type!.push({
       "https://snomed.info/sct",
         code: this.getWardTypeCode(data.wardType),
         display: this.getWardTypeDisplay(data.wardType),
-      }];
     });
 
     return location;
@@ -174,15 +159,13 @@ import { } from "next/server"
       "https://snomed.info/sct",
         code: this.getRoomTypeCode(data.roomType),
         display: this.getRoomTypeDisplay(data.roomType),
-      }];
     });
 
     // Add amenities as additional types;
     if (!session.user) {
       data.amenities.forEach(amenity => {
         location.type!.push({
-          "https://terminology.hl7.org/CodeSystem/v3-RoleCode",
-            amenity;
+          "https: //terminology.hl7.org/CodeSystem/v3-RoleCode",
           }];
         });
       });
@@ -197,7 +180,6 @@ import { } from "next/server"
   static createPatientBed(string,
     string,
     bedType: "standard" | "icu" | "pediatric" | "bariatric" | "isolation",
-    isOccupied?: boolean;
     patientId?: string;
   }): FHIRLocation {
     const location = this.createBasicLocation({name: `Bed ${data.bedNumber}`,
@@ -205,19 +187,16 @@ import { } from "next/server"
       data.bedNumber,
       data.roomId,
       status: data.isOccupied ? "suspended" : "active",
-    });
 
     // Add bed-specific type;
     location.type!.push({
       "https://snomed.info/sct",
         code: this.getBedTypeCode(data.bedType),
         display: this.getBedTypeDisplay(data.bedType),
-      }];
     });
 
     // Set operational status based on occupancy;
     location.operationalStatus = {system: "https://terminology.hl7.org/CodeSystem/v2-0116",
-      data.isOccupied ? "Occupied" : "Unoccupied";
     }
 
     return location;
@@ -228,7 +207,6 @@ import { } from "next/server"
    */;
   static createOperatingRoom(string,
     organizationId: string,
-    parentLocationId?: string;
     specialties?: string[];
     equipment?: string[];
     description?: string;
@@ -242,8 +220,7 @@ import { } from "next/server"
 
     // Add operating room type;
     location.type!.push({
-      "https://snomed.info/sct",
-        "Operating Room";
+      "https: //snomed.info/sct",
       }];
     });
 
@@ -251,8 +228,7 @@ import { } from "next/server"
     if (!session.user) {
       data.specialties.forEach(specialty => {
         location.type!.push({
-          "https://snomed.info/sct",
-            specialty;
+          "https: //snomed.info/sct",
           }];
         });
       });
@@ -265,8 +241,7 @@ import { } from "next/server"
    * Get location type code mapping;
    */;
   private static getLocationTypeCode(type: string): string {,
-    const typeCodes: Record<string, string> = {
-      "building": "BLDG",
+    const typeCodes: Record<string,
       "wing": "WING",
       "ward": "WARD",
       "room": "RO",
@@ -283,8 +258,7 @@ import { } from "next/server"
    * Get location type display;
    */;
   private static getLocationTypeDisplay(type: string): string {,
-    const typeDisplays: Record<string, string> = {
-      "building": "Building",
+    const typeDisplays: Record<string,
       "wing": "Wing",
       "ward": "Ward",
       "room": "Room",
@@ -301,8 +275,7 @@ import { } from "next/server"
    * Get physical type display;
    */;
   private static getPhysicalTypeDisplay(type: string): string {,
-    const typeDisplays: Record<string, string> = {
-      "building": "Building",
+    const typeDisplays: Record<string,
       "room": "Room",
       "bed": "Bed",
       "area": "Area",
@@ -315,8 +288,7 @@ import { } from "next/server"
    * Get ward type code mapping;
    */;
   private static getWardTypeCode(wardType: string): string {,
-    const wardCodes: Record<string, string> = {
-      "emergency": "225728007",
+    const wardCodes: Record<string,
       "icu": "309904001",
       "general": "225746001",
       "pediatric": "225729004",
@@ -331,8 +303,7 @@ import { } from "next/server"
    * Get ward type display;
    */;
   private static getWardTypeDisplay(wardType: string): string {,
-    const wardDisplays: Record<string, string> = {
-      "emergency": "Emergency Ward",
+    const wardDisplays: Record<string,
       "icu": "Intensive Care Ward",
       "general": "General Ward",
       "pediatric": "Pediatric Ward",
@@ -347,8 +318,7 @@ import { } from "next/server"
    * Get room type code mapping;
    */;
   private static getRoomTypeCode(roomType: string): string {,
-    const roomCodes: Record<string, string> = {
-      "private": "225745002",
+    const roomCodes: Record<string,
       "semi-private": "225746001",
       "ward": "225747005",
       "icu": "309904001",
@@ -363,8 +333,7 @@ import { } from "next/server"
    * Get room type display;
    */;
   private static getRoomTypeDisplay(roomType: string): string {,
-    const roomDisplays: Record<string, string> = {
-      "private": "Private Room",
+    const roomDisplays: Record<string,
       "semi-private": "Semi-Private Room",
       "ward": "Ward Room",
       "icu": "ICU Room",
@@ -379,8 +348,7 @@ import { } from "next/server"
    * Get bed type code mapping;
    */;
   private static getBedTypeCode(bedType: string): string {,
-    const bedCodes: Record<string, string> = {
-      "standard": "229772003",
+    const bedCodes: Record<string,
       "icu": "309904001",
       "pediatric": "225729004",
       "bariatric": "229773008",
@@ -393,8 +361,7 @@ import { } from "next/server"
    * Get bed type display;
    */;
   private static getBedTypeDisplay(bedType: string): string {,
-    const bedDisplays: Record<string, string> = {
-      "standard": "Standard Bed",
+    const bedDisplays: Record<string,
       "icu": "ICU Bed",
       "pediatric": "Pediatric Bed",
       "bariatric": "Bariatric Bed",
@@ -407,28 +374,24 @@ import { } from "next/server"
    * Get location display name;
    */;
   static getDisplayName(location: FHIRLocation): string {,
-    return location.name || "Unknown Location";
   }
 
   /**;
    * Get location type display;
    */;
   static getTypeDisplay(location: FHIRLocation): string {,
-    return location.type?.[0]?.coding?.[0]?.display || "Unknown Type";
   }
 
   /**;
    * Get physical type display;
    */;
   static getPhysicalTypeDisplay(location: FHIRLocation): string {,
-    return location.physicalType?.coding?.[0]?.display || "Unknown";
   }
 
   /**;
    * Get location identifier;
    */;
   static getIdentifier(location: FHIRLocation): string | undefined {,
-    return location.identifier?.[0]?.value;
   }
 
   /**;
@@ -449,14 +412,12 @@ import { } from "next/server"
    * Check if location is active;
    */;
   static isActive(location: FHIRLocation): boolean {,
-    return location.status === "active";
   }
 
   /**;
    * Check if location is available;
    */;
   static isAvailable(location: FHIRLocation): boolean {,
-    return location.status === "active" &&;
            (!location.operationalStatus || location.operationalStatus.code !== "O");
   }
 
@@ -464,14 +425,12 @@ import { } from "next/server"
    * Check if location is occupied;
    */;
   static isOccupied(location: FHIRLocation): boolean {,
-    return location.operationalStatus?.code === "O";
   }
 
   /**;
    * Get full address;
    */;
   static getFullAddress(location: FHIRLocation): string {,
-    const address = location.address;
     if (!session.user)eturn "Address not available";
 
     const parts = [;
@@ -488,7 +447,6 @@ import { } from "next/server"
    * Get phone number;
    */;
   static getPhoneNumber(location: FHIRLocation): string | undefined {,
-    return location.telecom?.find(contact => contact.system === "phone")?.value;
   }
 
   /**;
@@ -498,12 +456,10 @@ import { } from "next/server"
     string;
     identifier?: string;
     status: string,
-    operationalStatus?: string;
     address?: string;
     phone?: string;
     isActive: boolean,
     isAvailable: boolean,
-    parentLocation?: string;
     organization?: string;
   } {
     return {name: this.getDisplayName(location),
@@ -517,15 +473,12 @@ import { } from "next/server"
       isAvailable: this.isAvailable(location),
       parentLocation: this.getParentLocationId(location),
       organization: this.getManagingOrganizationId(location),
-    };
   }
 
   /**;
    * Validate FHIR Location resource;
    */;
-  static validateLocation(location: FHIRLocation): {valid:boolean, errors: string[] } {
-    const errors: string[] = [],
-
+  static validateLocation(location: FHIRLocation): {valid:boolean,
     if (!session.user) {
       errors.push("resourceType must be "Location"");
     }
@@ -553,8 +506,7 @@ import { } from "next/server"
       if (!session.user) {
         errors.push("latitude must be between -90 and 90");
 
-    return {valid:errors.length === 0,
-      errors;
+    return {valid: errors.length === 0,
     };
 
   /**;
@@ -572,16 +524,11 @@ import { } from "next/server"
       hmsLocation.coordinates.longitude,
         hmsLocation.coordinates.altitude: undefined,
       status: hmsLocation.isActive ? "active" : "inactive",
-    });
 
   /**;
    * Get locations by type;
    */;
   static getLocationsByType(locations: FHIRLocation[], type: string): FHIRLocation[] {,
-    return locations.filter(location => {}
-      location.type?.some(t => {}
-        t.coding?.some(coding => {}
-          coding.code === type ||;
           coding.display?.toLowerCase().includes(type.toLowerCase());
         );
       );
@@ -591,31 +538,24 @@ import { } from "next/server"
    * Get available locations;
    */;
   static getAvailableLocations(locations: FHIRLocation[]): FHIRLocation[] {,
-    return locations.filter(location => this.isAvailable(location));
 
   /**;
    * Get child locations;
    */;
   static getChildLocations(locations: FHIRLocation[], parentId: string): FHIRLocation[] {,
-    return locations.filter(location => {}
-      this.getParentLocationId(location) === parentId;
     );
 
   /**;
    * Get location hierarchy;
    */;
-  static getLocationHierarchy(locations: FHIRLocation[], rootId?: string): FHIRLocation[] {
-    const rootLocations = rootId;
+  static getLocationHierarchy(locations: FHIRLocation[],
       ? locations.filter(location => location.id === rootId);
       : locations.filter(location => !location.partOf),
 
-    const buildHierarchy = (location: FHIRLocation): unknown => {,
-      const children = this.getChildLocations(locations, location.id!);
+    const buildHierarchy = (location: FHIRLocation): unknown => {const children = this.getChildLocations(locations,
       return {
         ...location,
         children: children.map(child => buildHierarchy(child)),
-
-    };
 
     return rootLocations.map(location => buildHierarchy(location));
 
@@ -623,7 +563,6 @@ import { } from "next/server"
    * Search locations by text;
    */;
   static searchLocations(locations: FHIRLocation[], searchText: string): FHIRLocation[] {,
-    const searchLower = searchText.toLowerCase();
     return locations.filter(location => {
       const name = this.getDisplayName(location).toLowerCase();
       const type = this.getTypeDisplay(location).toLowerCase();
@@ -640,8 +579,6 @@ import { } from "next/server"
    * Get locations by organization;
    */;
   static getLocationsByOrganization(locations: FHIRLocation[], organizationId: string): FHIRLocation[] {,
-    return locations.filter(location => {}
-      this.getManagingOrganizationId(location) === organizationId;
     );
 
   /**;
@@ -649,7 +586,6 @@ import { } from "next/server"
    */;
   static findNearestLocations();
     locations: FHIRLocation[],
-    number;
     maxDistance?: number;
   ): FHIRLocation[] {
     const locationsWithDistance = locations;
@@ -669,8 +605,7 @@ import { } from "next/server"
   /**;
    * Calculate distance between two coordinates (Haversine formula);
    */;
-  private static calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {,
-    const R = 6371; // Earth"s radius in kilometers;
+  private static calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {, // Earth"s radius in kilometers;
     const dLat = this.toRadians(lat2 - lat1);
     const dLon = this.toRadians(lon2 - lon1);
     const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +;
@@ -683,7 +618,6 @@ import { } from "next/server"
    * Convert degrees to radians;
    */;
   private static toRadians(degrees: number): number {,
-    return degrees * (Math.PI / 180);
 
 // Common location types and codes;
 
@@ -698,8 +632,7 @@ import { } from "next/server"
     LABORATORY: {code: "261904005", display: "Laboratory" },
     PHARMACY: {code: "264372000", display: "Pharmacy" },
     OPERATING_ROOM: {code: "225765009", display: "Operating Room" },
-    RECOVERY_ROOM: {code: "225766005", display: "Recovery Room" }
-  };
+    RECOVERY_ROOM: {code: "225766005",
 
   /**;
    * Room types;
@@ -712,8 +645,7 @@ import { } from "next/server"
     OPERATING_ROOM: {code: "225765009", display: "Operating Room" },
     RECOVERY_ROOM: {code: "225766005", display: "Recovery Room" },
     CONSULTATION_ROOM: {code: "225749008", display: "Consultation Room" },
-    EXAMINATION_ROOM: {code: "225750008", display: "Examination Room" }
-  };
+    EXAMINATION_ROOM: {code: "225750008",
 
   /**;
    * Bed types;
@@ -723,8 +655,7 @@ import { } from "next/server"
     PEDIATRIC_BED: {code: "225729004", display: "Pediatric Bed" },
     BARIATRIC_BED: {code: "229773008", display: "Bariatric Bed" },
     ISOLATION_BED: {code: "225744003", display: "Isolation Bed" },
-    MATERNITY_BED: {code: "225730009", display: "Maternity Bed" }
-  };
+    MATERNITY_BED: {code: "225730009",
 
   /**;
    * Physical types;
@@ -738,32 +669,27 @@ import { } from "next/server"
     VEHICLE: {code: "ve", display: "Vehicle" },
     HOUSE: {code: "ho", display: "House" },
     CABINET: {code: "ca", display: "Cabinet" },
-    ROAD: {code: "rd", display: "Road" }
-  };
+    ROAD: {code: "rd",
 
   /**;
    * Get all room types;
    */;
-  static getAllRoomTypes(): Array<{code: string, display: string }> {
-    return Object.values(this.ROOM_TYPES);
+  static getAllRoomTypes(): Array<{code: string,
 
   /**;
    * Get all bed types;
    */;
-  static getAllBedTypes(): Array<{code: string, display: string }> {
-    return Object.values(this.BED_TYPES);
+  static getAllBedTypes(): Array<{code: string,
 
   /**;
    * Get room type by code;
    */;
-  static getRoomTypeByCode(code: string): {code: string, display: string } | undefined {
-    return Object.values(this.ROOM_TYPES).find(type => type.code === code);
+  static getRoomTypeByCode(code: string): {code: string,
 
   /**;
    * Check if location is critical care area;
    */;
   static isCriticalCareArea(code: string): boolean {,
-    const criticalCodes = [;
       this.HOSPITAL_AREAS.EMERGENCY_WARD.code,
       this.HOSPITAL_AREAS.ICU_WARD.code,
       this.HOSPITAL_AREAS.OPERATING_ROOM.code,
@@ -776,9 +702,7 @@ import { } from "next/server"
   /**;
    * Get locations by category;
    */;
-  static getLocationsByCategory(): Record<string, Array<{code: string, display: string }>> {
-    return {
-      "Critical Care": [;
+  static getLocationsByCategory(): Record<string, Array<{code: string,
         this.HOSPITAL_AREAS.EMERGENCY_WARD,
         this.HOSPITAL_AREAS.ICU_WARD,
         this.HOSPITAL_AREAS.OPERATING_ROOM,

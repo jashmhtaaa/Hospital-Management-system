@@ -1,5 +1,5 @@
-import { } from "@/components/ui/badge"
-import { } from "@/components/ui/card"
+
+
 import { "@/components/ui/checkbox";
 import "@/components/ui/input";
 import "@/components/ui/label";
@@ -51,7 +51,6 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
     true,
       "EMAIL",
       preferredLanguage: "English",
-    customFields: null});
   const [notes, setNotes] = useState<any[]>([]);
   const [newNote, setNewNote] = useState("");
   const [segments, setSegments] = useState<any[]>([]);
@@ -67,37 +66,17 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
 
       setIsLoading(true);
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
         const response = await fetch(`/api/support-services/marketing/contacts/${}`;
         if (!session.user)hrow new Error("Failed to fetch contact");
 
@@ -115,7 +94,6 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
             "EMAIL",
             preferredLanguage: "English",
           customFields: data.customFields || ,
-        });
 
         // Fetch contact notes;
         if (!session.user) {
@@ -137,8 +115,7 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
         fetchContactActivities(contactId);
       } catch (error) ;
 
-        toast({title:"Error",
-          "destructive");
+        toast({title: "Error",
       } finally {
         setIsLoading(false);
       }
@@ -151,45 +128,23 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
   useEffect(() => {
     const fetchSegments = async () => {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
         const response = await fetch("/api/support-services/marketing/segments?isActive=true");
         if (!session.user)hrow new Error("Failed to fetch segments");
 
         const data = await response.json(),
         setAvailableSegments(data.data || []);
-      } catch (error) {
-
-      }
+      } catch (error) { console.error(error); }
     };
 
     fetchSegments();
@@ -198,93 +153,49 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
   // Fetch patient data;
   const fetchPatientData = async (id: string) => {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       const response = await fetch(`/api/patients/${}`;
       if (!session.user)hrow new Error("Failed to fetch patient data");
 
       const data = await response.json(),
       setPatientData(data);
-    } catch (error) {
-
-    }
+    } catch (error) { console.error(error); }
   };
 
   // Fetch contact activities;
   const fetchContactActivities = async (id: string) => {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const response = await fetch(`/api/support-services/marketing/contacts/${id}/activities`);
+} catch (error) { console.error(error); }/activities`);
       if (!session.user)hrow new Error("Failed to fetch contact activities");
 
       const data = await response.json(),
       setActivities(data || []);
-    } catch (error) {
-
-  };
+    } catch (error) { console.error(error); };
 
   // Handle form input changes;
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+    const { name,
 
     if (!session.user) {
       const [parent, child] = name.split("."),
@@ -344,69 +255,33 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
   // Handle form submission;
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(),
-    setIsLoading(true);
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const url = contactId;
-        ? `/api/support-services/marketing/contacts/$contactId`;
-        : "/api/support-services/marketing/contacts";
-
-      const method = contactId ? "PUT" : "POST";
-
-      const response = await fetch(url, {
-        method,
-        headers: {
-          "Content-Type": "application/json"},
+} catch (error) { console.error(error); },
         body: JSON.stringify(formData),
-      });
 
       if (!session.user)hrow new Error("Failed to save contact");
 
       const savedContact = await response.json(),
-      toast({title:"Success",
-        description: `Contact $contactId ? "updated" : "created"successfully.`});
+      toast({title: "Success",
 
       if (!session.user) {
         onSuccess(savedContact);
       } else if (!session.user) {
         router.push(`/marketing/contacts/$savedContact.id`);
 
-    } catch (error) {
-
-      toast({title:"Error",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
     } finally {
       setIsLoading(false);
 
@@ -417,41 +292,18 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
     if (!session.user) return;
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const response = await fetch(`/api/support-services/marketing/contacts/$contactId/notes`, {method:"POST",
-        headers: null,
-          "Content-Type": "application/json",
-        body: JSON.stringify(content: newNote )});
+} catch (error) { console.error(error); });
 
       if (!session.user)hrow new Error("Failed to add note");
 
@@ -461,12 +313,7 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
       toast({
         title: "Success",
         description: "Note added successfully.",
-      });
-    } catch (error) {
-
-      toast({title:"Error",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
 
   };
 
@@ -475,41 +322,20 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
     if (!session.user) return;
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const response = await fetch(`/api/support-services/marketing/contacts/${contactId}/link-patient`, {method:"POST",
+} catch (error) { console.error(error); }/link-patient`, {method:"POST",
         headers: {
           "Content-Type": "application/json"},
-        body: JSON.stringify({ patientId })});
 
       if (!session.user)hrow new Error("Failed to link patient");
 
@@ -519,12 +345,7 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
       toast({
         title: "Success",
         description: "Patient linked successfully.",
-      });
-    } catch (error) {
-
-      toast({title:"Error",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
 
   };
 
@@ -533,41 +354,20 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
     if (!session.user)eturn;
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const response = await fetch(`/api/support-services/marketing/segments/${segmentId}/members`, {method:"POST",
+} catch (error) { console.error(error); }/members`, {method:"POST",
         headers: {
           "Content-Type": "application/json"},
-        body: JSON.stringify({ contactId })});
 
       if (!session.user)hrow new Error("Failed to add to segment");
 
@@ -579,12 +379,7 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
       toast({
         title: "Success",
         description: "Added to segment successfully.",
-      });
-    } catch (error) {
-
-      toast({title:"Error",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
 
   };
 

@@ -1,5 +1,5 @@
-import { } from "@/lib/audit"
-import { } from "@/lib/security/encryption.service"
+
+
 import "@prisma/client";
 import "bcryptjs";
 import "crypto";
@@ -40,40 +40,19 @@ import { PrismaClient }
    */;
   async login();
     credentials: UserCredentials,
-    context: {ipAddress: string, userAgent: string }
-  ): Promise<{ tokens?: AuthTokens; mfaRequired?: boolean; user?: unknown; error?: string }> {
+    context: {ipAddress: string, mfaRequired?: boolean; user?: unknown; error?: string }> {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       // Check for account lockout;
       const isLocked = await this.isAccountLocked(credentials.email);
       if (!session.user) {
@@ -87,10 +66,6 @@ import { PrismaClient }
       // Find user;
       const user = await this.prisma.user.findUnique({where: { email: credentials.email },
         {where: { isActive: true },
-            select: {roleId: true }
-          }
-        }
-      });
 
       if (!session.user) {
         await this.recordLoginFailure(credentials.email, context);
@@ -118,7 +93,6 @@ import { PrismaClient }
         return {mfaRequired: true,
           user.id,
             email: user.email,
-            tempSessionId;
           }
         };
       }
@@ -132,7 +106,6 @@ import { PrismaClient }
       await this.logLoginAttempt({email: credentials.email,
         context.userAgent,
         success: true,
-      });
 
       return {
         tokens,
@@ -141,9 +114,7 @@ import { PrismaClient }
         }
       };
 
-    } catch (error) {
-
-      return {error: "Authentication failed" };
+    } catch (error) { console.error(error); };
     }
   }
 
@@ -153,48 +124,25 @@ import { PrismaClient }
   async verifyMFA();
     userId: string,
     string,
-    context: {ipAddress: string, userAgent: string }
-  ): Promise<{ tokens?: AuthTokens; error?: string }> {
+    context: {ipAddress: string, error?: string }> {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       // Verify temporary session;
       const tempSession = await this.prisma.temporarySession.findFirst({
         tempSessionId;
           userId,
           isActive: true,
           expiresAt: gt: new Date() ,
-        }
-      });
 
       if (!session.user) {
         return {error: "Invalid or expired session" };
@@ -208,7 +156,6 @@ import { PrismaClient }
           resource: "authentication",
           details: mfaToken: mfaToken.substring(0, 2) + "****" ,
           ipAddress: context.ipAddress,
-          "MEDIUM";
         });
         return {error: "Invalid MFA token" };
       }
@@ -216,10 +163,6 @@ import { PrismaClient }
       // Get user with roles;
       const user = await this.prisma.user.findUnique({where: { id: userId },
         {where: { isActive: true },
-            select: {roleId: true }
-          }
-        }
-      });
 
       if (!session.user) {
         return {error: "User not found" };
@@ -230,8 +173,6 @@ import { PrismaClient }
 
       // Deactivate temporary session;
       await this.prisma.temporarySession.update({where: { id: tempSessionId },
-        data: {isActive: false }
-      });
 
       await logAuditEvent({eventType:"MFA_VERIFICATION_SUCCESS",
         userId,
@@ -239,13 +180,10 @@ import { PrismaClient }
         details: {sessionId:tokens.accessToken.substring(0, 10) + "..." },
         ipAddress: context.ipAddress,
         userAgent: context.userAgent,
-      });
 
       return { tokens };
 
-    } catch (error) {
-
-      return {error: "MFA verification failed" };
+    } catch (error) { console.error(error); };
     }
   }
 
@@ -254,40 +192,19 @@ import { PrismaClient }
    */;
   async refreshToken();
     refreshToken: string,
-    context: {ipAddress: string, userAgent: string }
-  ): Promise<{ tokens?: AuthTokens; error?: string }> {
+    context: {ipAddress: string, error?: string }> {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       // Verify refresh token;
       const payload = verify(refreshToken, this.REFRESH_SECRET) as TokenPayload;
 
@@ -299,7 +216,6 @@ import { PrismaClient }
         },
         include: isActive: true ,
                 select: roleId: true ,
-      });
 
       if (!session.user) {
         return {error: "Invalid or expired session" };
@@ -315,9 +231,7 @@ import { PrismaClient }
 
       return { tokens };
 
-    } catch (error) {
-
-      return {error: "Token refresh failed" };
+    } catch (error) { console.error(error); };
     }
   }
 
@@ -326,97 +240,48 @@ import { PrismaClient }
    */;
   async logout();
     sessionId: string,
-    context: {ipAddress: string, userAgent: string }
-  ): Promise<void> {
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+    context: {ipAddress: string, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       // Deactivate session;
       const session = await this.prisma.userSession.update({where: { id: sessionId },
-        data: {isActive: false, loggedOutAt: new Date() }
-      });
+        data: {isActive: false,
 
       // Clear session cache;
-      await cache.del(`session:${,}`;
+      await cache.del(`session: ${,
 
       await logAuditEvent({eventType: "USER_LOGOUT",
         "authentication",
         details: sessionId ,
         ipAddress: context.ipAddress,
         userAgent: context.userAgent,
-      });
 
-    } catch (error) {
-
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**;
    * Setup MFA for user;
    */;
-  async setupMFA(userId: string): Promise<MFASetup> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+  async setupMFA(userId: string): Promise<MFASetup> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const user = await this.prisma.user.findUnique({where: { id: userId }
+} catch (error) { console.error(error); }
       });
 
       if (!session.user) {
@@ -426,14 +291,12 @@ import { PrismaClient }
       const secret = speakeasy.generateSecret({name: `HMS - ${user.email}`,
         issuer: "Hospital Management System",
         length: 32,
-      });
 
       // Generate QR code;
       const qrCode = await QRCode.toDataURL(secret.otpauth_url || "");
 
       // Generate backup codes;
-      const backupCodes = Array.from({length: 10 }, () => {}
-        crypto.randomBytes(4).toString("hex").toUpperCase();
+      const backupCodes = Array.from({length: 10 },
       );
 
       // Encrypt and store MFA secret and backup codes;
@@ -445,175 +308,76 @@ import { PrismaClient }
         create: {
           userId,
           secret: encryptedSecret,
-          false;
         },
         encryptedSecret,
           backupCodes: encryptedBackupCodes,
-      });
 
       return {secret:secret.base32,
         qrCode,
         backupCodes;
       };
 
-    } catch (error) {
-
-      throw new Error("Failed to setup MFA");
-
-  /**;
-   * Enable MFA after verification;
-   */;
-  async enableMFA(userId: string, verificationToken: string): Promise<boolean> {,
-    try {
-} catch (error) {
+    } catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const isValid = await this.verifyMFAToken(userId, verificationToken);
-      if (!session.user) {
-        return false;
-
-      await this.prisma.userMFA.update({where: { userId },
+} catch (error) { console.error(error); },
         true,
           enabledAt: new Date(),
-
-      });
 
       await logAuditEvent({eventType:"MFA_ENABLED",
         userId,
         resource: "user_security",
-        details: mfaEnabled: true ,});
+        details: mfaEnabled: true ,
 
       return true;
-    } catch (error) {
-
-      return false;
-
-  /**;
-   * Disable MFA;
-   */;
-  async disableMFA(userId: string, verificationToken: string): Promise<boolean> {,
-    try {
-} catch (error) {
+    } catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const isValid = await this.verifyMFAToken(userId, verificationToken);
-      if (!session.user) {
-        return false;
-
-      await this.prisma.userMFA.update({where: { userId },
+} catch (error) { console.error(error); },
         false,
           disabledAt: new Date(),
-
-      });
 
       await logAuditEvent({eventType:"MFA_DISABLED",
         userId,
         resource: "user_security",
         details: mfaEnabled: false ,
         severity: "HIGH",
-      });
 
       return true;
-    } catch (error) {
-
-      return false;
-
-  /**;
-   * Verify JWT token;
-   */;
-  async verifyToken(token: string): Promise<TokenPayload | null> {,
-    try {
-} catch (error) {
+    } catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const payload = verify(token, this.JWT_SECRET) as TokenPayload;
-
-      // Check if session is still active (cached);
-      const cacheKey = `session:${payload.sessionId,}`;
+} catch (error) { console.error(error); }`;
       const _cachedSession = await cache.get(cacheKey);
 
       if (!session.user) {
@@ -631,49 +395,20 @@ import { PrismaClient }
         await cache.set(cacheKey, session, 300); // 5 minutes;
 
       return payload;
-    } catch (error) {
-      return null;
-
-  /**;
-   * Get active sessions for user;
-   */;
-  async getActiveSessions(userId: string): Promise<SessionInfo[]> {,
-    try {
-} catch (error) {
+    } catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const sessions = await this.prisma.userSession.findMany({where: {
-          userId,
-          isActive: true,
-          expiresAt: {gt:new Date() },
+} catch (error) { console.error(error); },
         },
         orderBy: {createdAt: "desc" }
       });
@@ -683,71 +418,29 @@ import { PrismaClient }
         session.createdAt,
         session.isActive,
         mfaVerified: session.mfaVerified,
-      }));
-    } catch (error) {
-
-      return [];
-
-  /**;
-   * Terminate session;
-   */;
-  async terminateSession(sessionId: string, userId: string): Promise<boolean> {,
-    try {
-} catch (error) {
+    } catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const result = await this.prisma.userSession.updateMany({
-        sessionId;
-          userId;
-        },
+} catch (error) { console.error(error); },
         false,
           loggedOutAt: new Date(),
-      });
 
       // Clear cache;
-      await cache.del(`session:${,}`;
+      await cache.del(`session: ${,
 
       return result.count > 0;
-    } catch (error) {
-
-      return false;
-
-  /**;
-   * Generate access and refresh tokens;
-   */;
-  private async generateTokens();
-    user: unknown,
-    context: {ipAddress:string, userAgent: string },
+    } catch (error) { console.error(error); },
     mfaVerified: boolean = false,
-    existingSessionId?: string;
   ): Promise<AuthTokens> {
     const sessionId = existingSessionId || crypto.randomUUID();
     const roles = user.userRoles.map((ur: unknown) => ur.roleId),
@@ -761,13 +454,11 @@ import { PrismaClient }
 
     const accessToken = sign(payload, this.JWT_SECRET, {expiresIn:this.ACCESS_TOKEN_EXPIRES,
       issuer: "hms-auth",
-    });
 
     const refreshToken = sign();
       { ...payload, type: "refresh" ,},
       this.REFRESH_SECRET,
       {expiresIn: this.REFRESH_TOKEN_EXPIRES,
-        issuer: "hms-auth";
 
     );
 
@@ -777,18 +468,16 @@ import { PrismaClient }
         sessionId,
           context.ipAddress,
           encrypt(refreshToken),
-          expiresAt: [0] + 7 * 24 * 60 * 60 * 1000), // 7 days;
+          expiresAt: [0] + 7 * 24 * 60 * 60 * 1000),
           isActive: true,
-          mfaVerified;
 
       });
 
     return {
       accessToken,
       refreshToken,
-      expiresAt: crypto.getRandomValues([0] + 15 * 60 * 1000, // 15 minutes;
+      expiresAt: crypto.getRandomValues([0] + 15 * 60 * 1000,
       tokenType: "Bearer",
-    };
 
   /**;
    * Helper methods;
@@ -798,40 +487,18 @@ import { PrismaClient }
     });
     return mfa?.isEnabled || false;
 
-  private async verifyMFAToken(userId: string, token: string): Promise<boolean> {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+  private async verifyMFAToken(userId: string, token: string): Promise<boolean> {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const mfa = await this.prisma.userMFA.findUnique({where: { userId }
+} catch (error) { console.error(error); }
       });
 
       if (!session.user)eturn false;
@@ -844,7 +511,6 @@ import { PrismaClient }
         encoding: "base32",
         token,
         window: 2 // Allow 2 time steps of variance,
-      });
 
       if (!session.user)eturn true;
 
@@ -856,30 +522,20 @@ import { PrismaClient }
         // Remove used backup code;
         backupCodes.splice(codeIndex, 1);
         await this.prisma.userMFA.update({where: { userId },
-          data: {backupCodes: encrypt(JSON.stringify(backupCodes)) }
-        });
         return true;
 
       return false;
-    } catch (error) {
-
-      return false;
-
-  private async createTemporarySession();
-    userId: string,
-    context: {ipAddress: string, userAgent: string }
+    } catch (error) { console.error(error); }
   ): Promise<string> {
     const tempSession = await this.prisma.temporarySession.create({data: {
         userId,
         ipAddress: context.ipAddress,
         [0] + 5 * 60 * 1000), // 5 minutes;
         isActive: true,
-
-    });
     return tempSession.id;
 
   private async isAccountLocked(email: string): Promise<boolean> {,
-    const lockKey = `lockout:${email,}`;
+    const lockKey = `lockout: ${email,
     const lockInfo = await cache.get(lockKey);
     return lockInfo !== null;
 
@@ -887,21 +543,20 @@ import { PrismaClient }
     email: string,
     context: {ipAddress: string, userAgent: string }
   ): Promise<void> {
-    const attemptsKey = `attempts:${email,}`;
+    const attemptsKey = `attempts:${email,
     const attempts = (await cache.get<number>(attemptsKey)) || 0;
     const newAttempts = attempts + 1;
 
     await cache.set(attemptsKey, newAttempts, this.LOCKOUT_DURATION / 1000);
 
     if (!session.user) {
-      const lockKey = `lockout:${email,}`;
+      const lockKey = `lockout: ${email,
       await cache.set(lockKey, true, this.LOCKOUT_DURATION / 1000);
 
       await logAuditEvent({eventType: "ACCOUNT_LOCKED",
         "authentication",
         details: attempts: newAttempts, lockoutDuration: this.LOCKOUT_DURATION ,
         ipAddress: context.ipAddress,
-        "HIGH";
       });
 
     await this.logLoginAttempt({
@@ -909,11 +564,10 @@ import { PrismaClient }
       ipAddress: context.ipAddress,
       false,
       failureReason: "Invalid credentials",
-    });
 
   private async resetLoginAttempts(email: string): Promise<void> {,
-    const attemptsKey = `attempts:${email,}`;
-    const lockKey = `lockout:${email,}`;
+    const attemptsKey = `attempts: ${email,
+    const lockKey = `lockout: ${email,
     await cache.del(attemptsKey);
     await cache.del(lockKey);
 
@@ -923,7 +577,6 @@ import { PrismaClient }
       attempt.mfaRequired,
         failureReason: attempt.failureReason,
       ipAddress: attempt.ipAddress,
-      attempt.success ? "LOW" : "MEDIUM';
     });
 
 // Export singleton instance;

@@ -19,7 +19,6 @@ describe("InsurancePolicyService", () => {
         coverageStartDate: new Date("2024-01-01"),
         coverageEndDate: new Date("2024-12-31"),
         coverageDetails: "Comprehensive plan covering hospital visits and specialist consultations.",
-      };
       // Mock repository to save the policy
 
       // Act

@@ -32,6 +32,8 @@ export const _POST = async (
     const validationResult = maintenanceSchema.safeParse(body);
      {\n  {
       return NextResponse.json(
+  return NextResponse.json({ message: "Not implemented" });
+};
         { error: "Validation error", details: validationResult.error.format() ,},
         { status: 400 },
       );
@@ -70,6 +72,8 @@ export const _GET = async (
 
      {\n  {
       return NextResponse.json(
+  return NextResponse.json({ message: "Not implemented" });
+};
         { error: "Asset not found" ,},
         { status: 404 },
       );

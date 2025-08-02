@@ -246,6 +246,8 @@ class ClinicalDecisionSupport {
 // GET /api/clinical-decision-support/analyze
 export const _GET = async (request: NextRequest) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { searchParams } = new URL(request.url);
     const patientId = searchParams.get('patientId');
 
@@ -290,6 +292,8 @@ export const _GET = async (request: NextRequest) => {,
 // POST /api/clinical-decision-support/prescription-check
 export const _POST = async (request: NextRequest) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { patientId, medications } = await request.json();
 
     const { user } = await authService.verifyToken(request);

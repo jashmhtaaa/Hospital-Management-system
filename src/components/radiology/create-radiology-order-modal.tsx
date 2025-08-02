@@ -1,5 +1,5 @@
-import { type React from "react"; // Added FormEvent;
-import { } from "react"
+import { type React  } from "react"; // Added FormEvent;
+
 import FormEvent, type
 import useEffect
 import  } from "@/components/ui/button"
@@ -24,31 +24,28 @@ import { { Label } from "@/components/ui/label"
   SelectItem,
   SelectTrigger,
   SelectValue} from "@/components/ui/select";
-import { } from "lucide-react"
+
 import { Loader2 } from "@/components/ui/textarea"
 import { Textarea }
 
 // Define interfaces for data types;
-interface Patient {id:string,
-  name: string; // Assuming patient object has a name property;
+interface Patient {
+  id: string, // Assuming patient object has a name property;
   // Add other relevant patient fields if needed;
 }
 
-interface ProcedureType {id:string,
-  name: string;
+interface ProcedureType {
+  id: string,
   // Add other relevant procedure type fields if needed;
 }
 
-interface Doctor {id:string,
-  name: string; // Assuming user/doctor object has a name property;
+interface Doctor {
+  id: string, // Assuming user/doctor object has a name property;
   // Add other relevant doctor fields if needed;
 }
 
-// FIX: Export the payload type,
+// FIX: Export the payload type, // Add isOpen prop to control visibility from parent, onClose: () => void,
 }
-}
-
-interface CreateRadiologyOrderModalProperties { isOpen: boolean; // Add isOpen prop to control visibility from parent, onClose: () => void,
   onSubmit: (payload: OrderPayload) => Promise<void>,
 export default const _CreateRadiologyOrderModal = ({
   isOpen,
@@ -75,38 +72,17 @@ export default const _CreateRadiologyOrderModal = ({
       setLoading(true),
       setError(undefined);
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-
-} catch (error) {
-
-        // Assuming API endpoints return {results:[...] } or just [...] directly;
+} catch (error) { console.error(error); } or just [...] directly;
         const [patientsResponse, proceduresResponse, doctorsResponse] = await Promise.all([;
           fetch("/api/patients"), // Adjust if endpoint differs;
           fetch("/api/radiology/procedure-types"),
@@ -143,14 +119,7 @@ export default const _CreateRadiologyOrderModal = ({
         setDoctors();
           Array.isArray(doctorsData) ? doctorsData : doctorsData.results || [];
         );
-      } catch (error_) {
-        const message =;
-          error_ instanceof Error;
-            ? error_.message;
-            : "An unknown error occurred";
-
-        setError();
-          `Failed to load necessary data: ${message}. Please try again.`;
+      } catch (error) { console.error(error); }. Please try again.`;
         );
       } finally {
         setLoading(false);
@@ -170,41 +139,18 @@ export default const _CreateRadiologyOrderModal = ({
     setIsSubmitting(true),
     setError(undefined); // Clear previous errors;
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      await onSubmit({patient_id:patientId,
-        clinicalIndication,
-        referringDoctorId || null, // Convert empty string to null;
-      });
+} catch (error) { console.error(error); });
       // Reset form state after successful submission;
       setPatientId(""),
       setProcedureTypeId("");
@@ -212,13 +158,7 @@ export default const _CreateRadiologyOrderModal = ({
       setPriority("routine");
       setReferringDoctorId("");
       // onClose(); // Parent component should handle closing the modal;
-    } catch (submitError) {
-      const message =;
-        submitError instanceof Error;
-          ? submitError.message;
-          : "An unknown error occurred during submission";
-
-      setError(`Submission failed: ${}`; // Show error to user;
+    } catch (error) { console.error(error); }`; // Show error to user;
     } finally ;
       setIsSubmitting(false);
   };
@@ -265,7 +205,7 @@ export default const _CreateRadiologyOrderModal = ({
                     )}
                     {patients.map((patient) => (;
                       >;
-                        {patient.name} (ID: {patient.id.slice(0, 6)});
+                        {patient.name} (ID: {patient.id.slice(0,
                       </SelectItem>;
                     ))}
                   </SelectContent>;

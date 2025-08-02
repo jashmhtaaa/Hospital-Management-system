@@ -16,6 +16,8 @@ export const _GET = async () => {
 
     // Check authentication
      {\n  {
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
@@ -49,6 +51,8 @@ export const _POST = async (request: NextRequest) => {,
 
     // Check authentication and authorization
      {\n  {
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 

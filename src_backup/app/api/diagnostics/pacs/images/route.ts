@@ -19,6 +19,8 @@ import { type
  */;
 export const GET = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -189,6 +191,8 @@ export const GET = async (request: any) => {,
  */;
 export const _GET_BY_ID = async (request: any, { params }: { params: { id: string } }) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -283,6 +287,8 @@ export const _GET_BY_ID = async (request: any, { params }: { params: { id: strin
  */;
 export const _POST_RETRIEVE = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -460,6 +466,8 @@ export const _POST_RETRIEVE = async (request: any) => {,
  */;
 export const _POST_STORE = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -613,6 +621,8 @@ export const _POST_STORE = async (request: any) => {,
  */;
 export const _POST_ANNOTATIONS = async (request: any, { params }: { params: { id: string } }) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -739,6 +749,8 @@ export const _POST_ANNOTATIONS = async (request: any, { params }: { params: { id
  */;
 export const _GET_ANNOTATIONS = async (request: any, { params }: { params: { id: string } }) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }

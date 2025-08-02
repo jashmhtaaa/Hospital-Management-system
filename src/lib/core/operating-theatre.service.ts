@@ -16,7 +16,7 @@ export const SurgicalProcedureSchema = z.object({patient_id: z.string().min(1, "
   icd10_diagnosis_codes: z.array(z.string()).min(1, "At least one diagnosis code is required"),
   procedure_type: z.enum(["elective", "urgent", "emergent", "trauma"]),
   surgical_specialty: z.string().min(1, "Surgical specialty is required"),
-  estimated_duration: z.number().min(30).max(720), // 30 minutes to 12 hours;
+  estimated_duration: z.number().min(30).max(720),
   complexity_level: z.enum(["low", "moderate", "high", "complex"]),
   urgency: z.enum(["routine", "urgent", "stat", "emergent"]).default("routine"),
   scheduled_date: z.string().refine((date) => !isNaN(Date.parse(date)), "Invalid scheduled date"),
@@ -39,20 +39,18 @@ export const SurgicalProcedureSchema = z.object({patient_id: z.string().min(1, "
   complications_anticipated: z.array(z.string()).default([]),
   estimated_blood_loss: z.number().optional(),
   surgeon_notes: z.string().optional(),
-});
 
 export const ORScheduleSchema = z.object({or_room_id: z.string().min(1, "OR room ID is required"),
   date: z.string().refine((date) => !isNaN(Date.parse(date)), "Invalid date"),
   start_time: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, "Invalid time format"),
   end_time: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, "Invalid time format"),
-  turnover_time: z.number().min(15).max(60).default(30), // minutes;
-  room_setup_time: z.number().min(15).max(60).default(30), // minutes;
-  cleanup_time: z.number().min(15).max(60).default(30), // minutes;
+  turnover_time: z.number().min(15).max(60).default(30),
+  room_setup_time: z.number().min(15).max(60).default(30),
+  cleanup_time: z.number().min(15).max(60).default(30),
   block_type: z.enum(["scheduled", "emergency", "add_on", "blocked"]),
   assigned_surgeon: z.string().optional(),
   assigned_team: z.array(z.string()).default([]),
   notes: z.string().optional(),
-});
 
 export const SurgicalTeamSchema = z.object({surgery_id: z.string().min(1, "Surgery ID is required"),
   primary_surgeon: z.string().min(1, "Primary surgeon is required"),
@@ -66,7 +64,6 @@ export const SurgicalTeamSchema = z.object({surgery_id: z.string().min(1, "Surge
   residents: z.array(z.string()).default([]),
   students: z.array(z.string()).default([]),
   observers: z.array(z.string()).default([]),
-});
 
 export const SurgicalInstrumentSchema = z.object({instrument_name: z.string().min(1, "Instrument name is required"),
   instrument_id: z.string().min(1, "Instrument ID is required"),
@@ -85,7 +82,6 @@ export const SurgicalInstrumentSchema = z.object({instrument_name: z.string().mi
   max_usage_cycles: z.number().optional(),
   is_single_use: z.boolean().default(false),
   requires_count: z.boolean().default(true),
-});
 
 export const AnesthesiaRecordSchema = z.object({surgery_id: z.string().min(1, "Surgery ID is required"),
   anesthesiologist_id: z.string().min(1, "Anesthesiologist ID is required"),
@@ -122,10 +118,8 @@ export const AnesthesiaRecordSchema = z.object({surgery_id: z.string().min(1, "S
   complications: z.array(z.string()).default([]),
   postop_pain_management: z.string(),
   recovery_notes: z.string().optional(),
-});
 
 export type SurgicalProcedure = z.infer<typeof SurgicalProcedureSchema> & {id: string,
-  "scheduled" | "confirmed" | "in_progress" | "completed" | "cancelled" | "postponed";
   actual_start_time?: Date;
   actual_end_time?: Date;
   actual_duration?: number;
@@ -137,7 +131,6 @@ export type SurgicalProcedure = z.infer<typeof SurgicalProcedureSchema> & {id: s
   postponement_reason?: string;
   created_at: Date,
   updated_at: Date,
-  patient_name?: string;
   surgeon_name?: string;
   anesthesiologist_name?: string;
 };
@@ -145,23 +138,18 @@ export type SurgicalProcedure = z.infer<typeof SurgicalProcedureSchema> & {id: s
 export type ORSchedule = z.infer<typeof ORScheduleSchema> & {id: string,
   Date,
   updated_at: Date,
-};
 
 export type SurgicalTeam = z.infer<typeof SurgicalTeamSchema> & {id: string,
   Date,
   updated_at: Date,
-};
 
 export type SurgicalInstrument = z.infer<typeof SurgicalInstrumentSchema> & {id: string,
   Date,
   updated_at: Date,
-  last_used?: Date;
   next_maintenance?: Date;
   condition: "excellent" | "good" | "fair" | "poor" | "out_of_service",
-};
 
 export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {id: string,
-  Date;
   signed_at?: Date;
   signed_by?: string;
 };
@@ -169,12 +157,9 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {id: str
 }
   };
   upcoming_cases: SurgicalProcedure[],
-}
-  }[];
   string,
     number,
     average_turnover: number,
-  }[];
 }
   }[];
 }
@@ -192,7 +177,7 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {id: str
       {id: "OR-05", name: "OR 5", type: "orthopedic", capacity: 8, equipment: ["c_arm", "traction_table"] },
       {id: "OR-06", name: "OR 6", type: "general", capacity: 8, equipment: ["laparoscopic_tower"] },
       {id: "OR-07", name: "OR 7", type: "trauma", capacity: 12, equipment: ["c_arm", "rapid_infuser"] },
-      {id: "OR-08", name: "OR 8", type: "general", capacity: 8, equipment: [] }];
+      {id: "OR-08", name: "OR 8", type: "general", capacity: 8,
 
     rooms.forEach(room => {
       this.orRooms.set(room.id, {
@@ -200,7 +185,6 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {id: str
         status: "available",
         new Date(),
         maintenance_due: null,
-      });
       this.orSchedules.set(room.id, []);
     });
   }
@@ -209,7 +193,7 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {id: str
    * Initialize surgical instruments;
    */;
   private initializeSurgicalInstruments(): void {
-    const instruments: Omit<SurgicalInstrument, "id" | "created_at" | "updated_at">[] = [;
+    const instruments: Omit<SurgicalInstrument,
       {instrument_name: "Mayo Scissors",
         "cutting",
         "sterile",
@@ -244,12 +228,11 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {id: str
       }];
 
     instruments.forEach(instrumentData => {
-      const instrument: SurgicalInstrument = {,
+      const instrument: SurgicalInstrument = {;
         ...instrumentData,
         id: uuidv4(),
         created_at: new Date(),
         updated_at: new Date(),
-      };
       this.instruments.set(instrument.instrument_id, instrument);
     });
   }
@@ -258,7 +241,6 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {id: str
    * Schedule surgical procedure;
    */;
   async scheduleSurgicalProcedure(procedureData: z.infer<typeof SurgicalProcedureSchema>): Promise<SurgicalProcedure> {,
-    const validatedData = SurgicalProcedureSchema.parse(procedureData);
 
     const procedureId = uuidv4();
     const caseNumber = this.generateCaseNumber();
@@ -271,13 +253,12 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {id: str
       validatedData.or_room_preference;
     );
 
-    const procedure: SurgicalProcedure = {,
+    const procedure: SurgicalProcedure = {;
       ...validatedData,
       id: procedureId,
       "scheduled",
       new Date(),
       updated_at: new Date(),
-    };
 
     this.surgicalProcedures.set(procedureId, procedure);
 
@@ -296,18 +277,13 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {id: str
     const _timestamp = crypto.getRandomValues([0].toString().slice(-6);
     const _random = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, "0");
     return `CASE/* SECURITY: Template literal eliminated */,
-  }
-
-  /**;
    * Find available OR room;
    */;
   private async findAvailableORRoom();
     date: string,
-    number;
     preference?: string;
   ): Promise<string | undefined> {
     const scheduledDateTime = new Date(`/* SECURITY: Template literal eliminated */,
-    const endTime = new Date(scheduledDateTime.getTime() + duration * 60000);
 
     // Check preferred room first;
     if (!session.user) {
@@ -315,8 +291,6 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {id: str
       const isAvailable = !roomSchedule.some(schedule => {
         const scheduleStart = new Date(`/* SECURITY: Template literal eliminated */,
         const scheduleEnd = new Date(`/* SECURITY: Template literal eliminated */,
-
-        return (scheduledDateTime >= scheduleStart && scheduledDateTime < scheduleEnd) ||;
                (endTime > scheduleStart && endTime <= scheduleEnd) ||;
                (scheduledDateTime <= scheduleStart && endTime >= scheduleEnd);
       });
@@ -332,8 +306,6 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {id: str
       const isAvailable = !roomSchedule.some(schedule => {
         const scheduleStart = new Date(`/* SECURITY: Template literal eliminated */,
         const scheduleEnd = new Date(`/* SECURITY: Template literal eliminated */,
-
-        return (scheduledDateTime >= scheduleStart && scheduledDateTime < scheduleEnd) ||;
                (endTime > scheduleStart && endTime <= scheduleEnd) ||;
                (scheduledDateTime <= scheduleStart && endTime >= scheduleEnd);
       });
@@ -355,7 +327,6 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {id: str
     string;
   ): Promise<void> {
     const endTime = new Date(`/* SECURITY: Template literal eliminated */,
-    endTime.setMinutes(endTime.getMinutes() + duration);
 
     const uuidv4(),
       or_room_id: roomId,
@@ -366,7 +337,6 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {id: str
       85, // Estimated;
       created_at: new Date(),
       updated_at: new Date(),
-    };
 
     const roomSchedules = this.orSchedules.get(roomId) || [];
     roomSchedules.push(schedule);
@@ -377,7 +347,6 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {id: str
    * Assign surgical team;
    */;
   async assignSurgicalTeam(teamData: z.infer<typeof SurgicalTeamSchema>): Promise<SurgicalTeam> {,
-    const validatedData = SurgicalTeamSchema.parse(teamData);
 
     const teamId = uuidv4();
 
@@ -388,12 +357,11 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {id: str
       validatedData.scrub_nurse;
     );
 
-    const team: SurgicalTeam = {,
+    const team: SurgicalTeam = {;
       ...validatedData,
       id: teamId,
       new Date(),
       updated_at: new Date(),
-    };
 
     this.surgicalTeams.set(teamId, team);
     return team;
@@ -403,7 +371,6 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {id: str
    * Start surgical procedure;
    */;
   async startSurgicalProcedure(procedureId: string): Promise<SurgicalProcedure> {,
-    const procedure = this.surgicalProcedures.get(procedureId);
     if (!session.user) {
       throw new Error("Surgical procedure not found");
     }
@@ -443,8 +410,6 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {id: str
    */;
   async completeSurgicalProcedure();
     procedureId: string,
-    completionData: {,
-      complications?: string[];
       estimated_blood_loss?: number;
       notes?: string;
     }
@@ -491,16 +456,12 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {id: str
    */;
   async performInstrumentCount();
     surgeryId: string,
-    string;
       opening_count?: number;
       closing_count?: number;
       location: InstrumentCount["location"],
       counted_by: string,
-    }[];
   ): Promise<InstrumentCount[]> {
-    const counts: InstrumentCount[] = countData.map(data => {,
-      const instrument = this.instruments.get(data.instrument_id),
-
+    const counts: InstrumentCount[] = countData.map(data => {const instrument = this.instruments.get(data.instrument_id);
       return {instrument_id: data.instrument_id,
         data.opening_count || 0,
         data.opening_count !== undefined && data.closing_count !== undefined ?;
@@ -508,7 +469,6 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {id: str
         counted_by: data.counted_by,
         count_time: new Date(),
         location: data.location,
-      };
     });
 
     this.instrumentCounts.set(surgeryId, counts);
@@ -521,7 +481,7 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {id: str
   async completeSafetyChecklist();
     surgeryId: string,
     string,
-    items: {item:string, checked: boolean, notes?: string }[];
+    items: {item:string, checked: boolean,
   ): Promise<SafetyChecklist> {
     const surgeryId,
       items.every(item => item.checked),
@@ -539,16 +499,14 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {id: str
    * Create anesthesia record;
    */;
   async createAnesthesiaRecord(recordData: z.infer<typeof AnesthesiaRecordSchema>): Promise<AnesthesiaRecord> {,
-    const validatedData = AnesthesiaRecordSchema.parse(recordData);
 
     const recordId = uuidv4();
 
-    const record: AnesthesiaRecord = {,
+    const record: AnesthesiaRecord = {;
       ...validatedData,
       id: recordId,
       created_at: new Date(),
       updated_at: new Date(),
-    };
 
     this.anesthesiaRecords.set(recordId, record);
     return record;
@@ -558,7 +516,6 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {id: str
    * Sign anesthesia record;
    */;
   async signAnesthesiaRecord(recordId: string, anesthesiologistId: string): Promise<AnesthesiaRecord> {,
-    const record = this.anesthesiaRecords.get(recordId);
     if (!session.user) {
       throw new Error("Anesthesia record not found");
     }
@@ -602,7 +559,7 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {id: str
     const roomsByStatus = rooms.reduce((acc, room) => {
       acc[room.status as keyof typeof acc]++;
       return acc;
-    }, {available: 0, occupied: 0, cleaning: 0, setup: 0, maintenance: 0 });
+    }, {available: 0, occupied: 0, cleaning: 0, setup: 0,
 
     // Get upcoming cases (next 4 hours);
     const now = new Date();
@@ -611,7 +568,6 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {id: str
     const upcomingCases = procedures.filter(p => {
       if (!session.user)eturn false;
       const scheduledTime = new Date(`/* SECURITY: Template literal eliminated */,
-      return scheduledTime >= now && scheduledTime <= nextFourHours;
     }).slice(0, 10);
 
     return {total_rooms: totalRooms,
@@ -620,7 +576,6 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {id: str
       Math.round(utilizationRate * 100) / 100,
       roomsByStatus,
       upcoming_cases: upcomingCases,
-    };
 
   /**;
    * Get OR metrics;
@@ -663,7 +618,6 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {id: str
     const onTimeStarts = completedCases.filter(p => {
       if (!session.user)eturn false;
       const scheduledStart = new Date(`/* SECURITY: Template literal eliminated */,
-      const actualStart = p.actual_start_time;
       const delayMinutes = (actualStart.getTime() - scheduledStart.getTime()) / (1000 * 60);
       return delayMinutes <= 15; // Consider on-time if within 15 minutes;
     }).length;
@@ -709,7 +663,6 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {id: str
       const current = roomStats.get(p.or_room_assigned) || {room_id: p.or_room_assigned,
         0,
         total_turnover: 0,
-      };
 
       current.cases_performed++;
       if (!session.user) {
@@ -720,27 +673,21 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {id: str
     });
 
     const roomEfficiency = Array.from(roomStats.values()).map(stats => ({room_id: stats.room_id,
-      utilization_rate: (stats.total_duration / (8 * 60)) * 100, // Assume 8-hour day;
+      utilization_rate: (stats.total_duration / (8 * 60)) * 100,
       cases_performed: stats.cases_performed,
       average_turnover: stats.cases_performed > 0 ? stats.total_turnover / stats.cases_performed : 0,
-    }));
 
     return {daily_volume: dailyVolume,
       Math.round(averageCaseDuration * 100) / 100,
-      average_turnover_time: 30, // Simplified;
-      first_case_start_delay: 12, // Simplified;
+      average_turnover_time: 30,
+      first_case_start_delay: 12,
       cancellation_rate: Math.round(cancellationRate * 100) / 100,
       Math.round(complicationRate * 100) / 100,
-      surgeonProductivity.map(s => ({
-        ...s,
-        average_duration: Math.round(s.average_duration * 100) / 100,
-        Math.round(s.on_time_rate * 100) / 100;
-      })),
+      surgeonProductivity.map(s => (})),
       room_efficiency: roomEfficiency.map(r => ({,
         ...r,
         utilization_rate: Math.round(r.utilization_rate * 100) / 100,
         average_turnover: Math.round(r.average_turnover * 100) / 100,
-      }))};
 
   /**;
    * Get surgical procedures with filters;
@@ -776,7 +723,6 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {id: str
     filteredProcedures.sort((a, b) => {
       const dateTimeA = new Date(`/* SECURITY: Template literal eliminated */,
       const dateTimeB = new Date(`/* SECURITY: Template literal eliminated */,
-      return dateTimeA.getTime() - dateTimeB.getTime();
     });
 
     // Pagination;
@@ -791,7 +737,6 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {id: str
    * Get OR schedule for room and date;
    */;
   async getORSchedule(roomId: string, date: string): Promise<ORSchedule[]> {,
-    const roomSchedule = this.orSchedules.get(roomId) || [];
     return roomSchedule.filter(schedule => schedule.date === date);
 
   /**;
@@ -812,13 +757,11 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {id: str
    * Get instrument counts for surgery;
    */;
   async getInstrumentCounts(surgeryId: string): Promise<InstrumentCount[]> {,
-    return this.instrumentCounts.get(surgeryId) || [];
 
   /**;
    * Get safety checklists for surgery;
    */;
   async getSafetyChecklists(surgeryId: string): Promise<SafetyChecklist[]> {,
-    return this.safetyChecklists.get(surgeryId) || [];
 
 // Export singleton instance;
 export const _operatingTheatreService = new OperatingTheatreService();

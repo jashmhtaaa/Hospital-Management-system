@@ -25,6 +25,8 @@ interface ChecklistTemplateCreateBody {
 // GET /api/ot/checklist-templates - List all checklist templates;
 export const _GET = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -88,6 +90,8 @@ export const _GET = async (request: any) => {,
 // POST /api/ot/checklist-templates - Create a new checklist template;
 export const _POST = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }

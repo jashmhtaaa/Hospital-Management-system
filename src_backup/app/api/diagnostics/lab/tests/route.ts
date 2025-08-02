@@ -91,6 +91,8 @@ interface LabTestCreateBody {
 // GET /api/diagnostics/lab/tests - Get all laboratory tests with enhanced filtering;
 export const _GET = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -283,6 +285,8 @@ export const _GET = async (request: any) => {,
 // POST /api/diagnostics/lab/tests - Create a new laboratory test with enhanced features;
 export const _POST = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }

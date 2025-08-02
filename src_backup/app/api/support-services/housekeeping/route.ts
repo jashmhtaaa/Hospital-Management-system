@@ -47,6 +47,8 @@ export const _GET = async (request: any) => {,
         searchParams.get("fromDate") ? new Date(searchParams.get("fromDate")!) : undefined,
         Number.parseInt(searchParams.get("page") || "1"),
         limit: parseInt(searchParams.get("limit") || "10");
+  return NextResponse.json({ message: "Not implemented" });
+};
       };
 
       // Get housekeeping requests with filters;
@@ -76,6 +78,8 @@ export const _POST = async (request: any) => {,
       // Create housekeeping request;
       const result = await housekeepingService.createHousekeepingRequest(sanitizedData);
 
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json(result, { status: 201 ,});
     },
     {
@@ -95,6 +99,8 @@ export const _GET_BY_ID = async (request: any, { params }: { params: { id: strin
       const result = await housekeepingService.getHousekeepingRequestById(params.id, includeFHIR);
 
       return NextResponse.json(result);
+  return NextResponse.json({ message: "Not implemented" });
+};
     },
     {
       requiredPermission: "housekeeping:read",
@@ -119,6 +125,8 @@ export const _PATCH = async (request: any, { params }: { params: { id: string } 
       const result = await housekeepingService.updateHousekeepingRequest(params.id, sanitizedData);
 
       return NextResponse.json(result);
+  return NextResponse.json({ message: "Not implemented" });
+};
     },
     {
       requiredPermission: "housekeeping:update",
@@ -135,6 +143,8 @@ export const _DELETE = async (request: any, { params }: { params: { id: string }
       // Delete housekeeping request;
       await housekeepingService.deleteHousekeepingRequest(params.id);
 
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ success: true ,});
     },
     {
@@ -151,6 +161,8 @@ export const _ASSIGN = async (request: any, { params }: { params: { id: string }
     async (req) => {
       // Parse request body;
       const body = await req.json();
+  return NextResponse.json({ message: "Not implemented" });
+};
       const { staffId } = body;
 
       if (!session.user) {
@@ -176,6 +188,8 @@ export const _COMPLETE = async (request: any, { params }: { params: { id: string
     async (req) => {
       // Parse request body;
       const body = await req.json();
+  return NextResponse.json({ message: "Not implemented" });
+};
       const { notes, completedById } = body;
 
       // Complete housekeeping request;
@@ -208,6 +222,8 @@ export const _GET_ANALYTICS = async (request: any) => {,
       const result = await housekeepingService.getHousekeepingAnalytics(fromDate, toDate);
 
       return NextResponse.json(result);
+  return NextResponse.json({ message: "Not implemented" });
+};
     },
     {
       requiredPermission: "housekeeping:analytics",

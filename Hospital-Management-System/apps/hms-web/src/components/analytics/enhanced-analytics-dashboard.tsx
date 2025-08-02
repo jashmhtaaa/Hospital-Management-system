@@ -34,20 +34,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 interface AnalyticsData {
   summary: {
     totalPatients: number,
-    totalRevenue: number;
     averageStayDuration: number,
-    bedOccupancyRate: number;
-    patientSatisfactionScore: number
+    patientSatisfactionScore: number;
   };
   patientMetrics: unknown,
-  financialMetrics: unknown;
   clinicalMetrics: unknown,
-  operationalMetrics: unknown;
-  predictions: unknown
+  predictions: unknown;
 }
 
 const EnhancedAnalyticsDashboard: React.FC = () => {
-  const [analyticsData, setAnalyticsData] = useState<AnalyticsData | null>(null);
+  const [analyticsData,
   const [realTimeData, setRealTimeData] = useState<any>(null);
   const [timeRange, setTimeRange] = useState('30d');
   const [loading, setLoading] = useState(true);
@@ -68,9 +64,7 @@ const EnhancedAnalyticsDashboard: React.FC = () => {
       const response = await fetch(`/api/analytics/dashboard?timeRange=${timeRange}`);
       const data = await response.json();
       setAnalyticsData(data.analytics);
-    } catch (error) {
-      /* SECURITY: Console statement removed */
-    } finally {
+    } catch (error) { console.error(error); } finally {
       setLoading(false);
     }
   };
@@ -80,9 +74,7 @@ const EnhancedAnalyticsDashboard: React.FC = () => {
       const response = await fetch('/api/analytics/realtime');
       const data = await response.json();
       setRealTimeData(data.realTimeData);
-    } catch (error) {
-      /* SECURITY: Console statement removed */
-    }
+    } catch (error) { console.error(error); }
   };
 
   const _COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
@@ -90,13 +82,9 @@ const EnhancedAnalyticsDashboard: React.FC = () => {
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
-      currency: 'USD'
-    }).format(amount)
-  };
 
   const MetricCard: React.FC<{
     title: string,
-    value: string | number;
     icon: React.ReactNode;
     trend?: number;
     suffix?: string;
@@ -291,82 +279,6 @@ const EnhancedAnalyticsDashboard: React.FC = () => {
                     { department: 'Orthopedics', revenue: 98000, patients: 67 },
                     { department: 'Neurology', revenue: 87000, patients: 45 },
                     { department: 'Emergency', revenue: 156000, patients: 234 },
-                    { department: 'Surgery', revenue: 234000, patients: 78 }
-                  ]}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="department" />
-                    <YAxis />
-                    <Tooltip />
-                    <Bar dataKey="revenue" fill="#8884d8" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-          </div>
-        </TabsContent>
-
-        <TabsContent value="predictions" className="space-y-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <Brain className="h-5 w-5" />
-                  <span>AI Predictions</span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                {analyticsData?.predictions && (
-                  <div className="space-y-4">
-                    <div className="p-4 bg-blue-50 rounded-lg">
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm font-medium">Predicted Admissions (Next Week)</span>
-                        <Badge>{analyticsData.predictions.predictedAdmissions?.nextWeek || 'N/A'}</Badge>
-                      </div>
-                      <div className="text-xs text-gray-600 mt-1">
-                        Confidence: {(analyticsData.predictions.predictedAdmissions?.confidence * 100 || 0).toFixed(0)}%
-                      </div>
-                    </div>
-
-                    <div className="p-4 bg-green-50 rounded-lg">
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm font-medium">Capacity Forecast</span>
-                        <Badge variant="secondary">Optimal</Badge>
-                      </div>
-                      <div className="text-xs text-gray-600 mt-1">
-                        Expected 85% utilization based on trends
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Resource Optimization</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center p-3 bg-yellow-50 rounded">
-                    <span className="text-sm">ICU Bed Allocation</span>
-                    <Badge className="bg-yellow-100 text-yellow-800">Optimize</Badge>
-                  </div>
-                  <div className="flex justify-between items-center p-3 bg-green-50 rounded">
-                    <span className="text-sm">Staff Scheduling</span>
-                    <Badge className="bg-green-100 text-green-800">Optimal</Badge>
-                  </div>
-                  <div className="flex justify-between items-center p-3 bg-blue-50 rounded">
-                    <span className="text-sm">Equipment Utilization</span>
-                    <Badge className="bg-blue-100 text-blue-800">Good</Badge>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </TabsContent>
-      </Tabs>
-    </div>
-  )
-};
+                    { department: 'Surgery', revenue: 234000,
 
 export default EnhancedAnalyticsDashboard;

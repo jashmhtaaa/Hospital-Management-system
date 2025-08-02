@@ -9,6 +9,8 @@ export const _GET = async (request: NextRequest) => {,
     const user = await getCurrentUser(request);
 
      {\n  {
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ error: "Not authenticated" ,}, { status: 401 ,});
     }
 

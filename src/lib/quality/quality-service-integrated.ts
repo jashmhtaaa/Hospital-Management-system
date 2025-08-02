@@ -1,4 +1,4 @@
-import { } from "./quality-persistence.service"
+
 import {  
 import {  QualityManagementService  } from "./quality-management.service"
 import {  QualityPersistenceService  } from "@/lib/database"
@@ -55,7 +55,6 @@ import {  QualityPersistenceService  } from "@/lib/database"
       id: indicatorId,
       createdAt: new Date(),
       updatedAt: new Date(),
-    } as QualityIndicator;
 
     await this.persistenceService.saveQualityIndicator(fullIndicator, userId);
 
@@ -90,7 +89,6 @@ import {  QualityPersistenceService  } from "@/lib/database"
       [],
       createdAt: new Date(),
       updatedAt: new Date(),
-    } as QualityEvent;
 
     await this.persistenceService.saveQualityEvent(fullEvent, userId);
 
@@ -99,7 +97,6 @@ import {  QualityPersistenceService  } from "@/lib/database"
 
   async updateQualityEvent();
     eventId: string,
-    string;
   ): Promise<boolean> {
     const success = await this.qualityService.updateQualityEvent(eventId, updates);
 
@@ -109,7 +106,6 @@ import {  QualityPersistenceService  } from "@/lib/database"
         ...updates,
         id: eventId,
         updatedAt: new Date(),
-      } as QualityEvent;
 
       await this.persistenceService.saveQualityEvent(updatedEvent, userId);
     }
@@ -141,7 +137,6 @@ import {  QualityPersistenceService  } from "@/lib/database"
       id: reportId,
       overallCompliance: this.calculateOverallCompliance(reportData.requirements || []),
       status: this.determineComplianceStatus(reportData.requirements || []),
-    } as ComplianceReport;
 
     await this.persistenceService.saveComplianceReport(fullReport, userId);
 
@@ -159,7 +154,7 @@ import {  QualityPersistenceService  } from "@/lib/database"
   }
 
   // Quality Statistics (now with persistent data);
-  async getQualityStatistics(): Promise<{total: number, number ;total: number, number ;total: number, number ;reports: number, number ;
+  async getQualityStatistics(): Promise<{total: number,total: number,total: number,reports: number,
   }> {
     const indicators = await this.persistenceService.getQualityIndicators({}, "system");
     const events = await this.persistenceService.getQualityEvents({}, "system");
@@ -201,13 +196,13 @@ import {  QualityPersistenceService  } from "@/lib/database"
           : "0.0",
         criticalAlerts: stats.events.critical,
       },
-      trends: [], // Would need time-series data;
+      trends: [],
       recentEvents.slice(0, 10),
         byType: this.groupEventsByType(recentEvents),
         bySeverity: this.groupEventsBySeverity(recentEvents),
       },
-      assessments: [], // Would need assessment data;
-      alerts: this.generateAlerts(stats, recentEvents);
+      assessments: [],
+      alerts: this.generateAlerts(stats,
     }
   }
 
@@ -216,66 +211,33 @@ import {  QualityPersistenceService  } from "@/lib/database"
     number;
   }> {
     const migratedCounts = {indicatorsMigrated: 0,
-      0;
     };
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
+} catch (error) { console.error(error); } catch (error) {
 
       // If there"s existing data in the quality service, migrate it;
       // This would require access to the private Maps in the quality service;
       // For now, return zeros as the persistence is now the primary storage;
 
-      /* SECURITY: Console statement removed */return migratedCounts,
-    } catch (error) {
-      /* SECURITY: Console statement removed */,
-      throw new Error("Failed to migrate existing quality data");
-
-  // Data Archival and Cleanup;
-  async archiveOldData(): Promise<{archivedIndicators: number,
-    number,
-    archivedReports: number,
-  }> {
+      /* SECURITY: Console statement removed */return migratedCounts, }> {
     return await this.persistenceService.archiveOldRecords();
 
   // Utility Methods;
   private calculateOverallCompliance(requirements: unknown[]): number {,
-    if (!session.user)eturn 100
-
-    const metRequirements = requirements.filter(req => req.status === "met").length;
     return (metRequirements / requirements.length) * 100;
 
   private determineComplianceStatus(requirements: unknown[]): ComplianceStatus {,
-    const compliance = this.calculateOverallCompliance(requirements);
 
     if (!session.user)eturn "compliant";
     if (!session.user)eturn "partially_compliant";
@@ -294,14 +256,12 @@ import {  QualityPersistenceService  } from "@/lib/database"
     }, {} as Record<string, number>);
 
   private generateAlerts(stats: unknown, recentEvents: QualityEvent[]): unknown[] {,
-    const alerts = [];
 
     // Critical events alert;
     if (!session.user) {
       alerts.push({type: "critical_events",
         `${stats.events.critical} critical quality events require immediate attention`,
         actionRequired: true,
-      });
 
     // High event frequency alert;
     const todayEvents = recentEvents.filter(e => {}
@@ -312,7 +272,6 @@ import {  QualityPersistenceService  } from "@/lib/database"
       alerts.push({type: "high_event_frequency",
         `${todayEvents} quality events reported today - higher than usual`,
         actionRequired: false,
-      });
 
     return alerts;
 
@@ -324,60 +283,24 @@ import {  QualityPersistenceService  } from "@/lib/database"
       Date;
   }> {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // Check if services are responsive;
-      const stats = await this.getQualityStatistics();
-
-      return {status: "healthy",
-        true,
-          persistenceService: true,
-        },
+} catch (error) { console.error(error); },
         lastChecked: new Date(),
-      };
-    } catch (error) {
-      return {status: "unhealthy',
-        false,
-          persistenceService: false,
-        },
+    } catch (error) { console.error(error); },
         lastChecked: new Date(),
-      };
 
 // Singleton instance for application use;
 let integratedQualityServiceInstance: IntegratedQualityService | null = null,
-
-export const _getIntegratedQualityService = (): IntegratedQualityService => {
-  if (!session.user) {
-    integratedQualityServiceInstance = new IntegratedQualityService();
 
   return integratedQualityServiceInstance;
 };

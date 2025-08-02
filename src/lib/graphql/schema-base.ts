@@ -1,4 +1,4 @@
-import { } from "graphql-tag"
+
 import {  gql  } from "graphql-subscriptions"
 import {  PubSub  } from "@/lib/database"
 
@@ -31,13 +31,11 @@ export const _SUBSCRIPTION_EVENTS = {
 
   // Clinical Documentation events;
   CLINICAL_NOTE_CREATED: "CLINICAL_NOTE_CREATED",
-  "QUALITY_METRIC_ALERT";
 
   // Patient Management events;
   PATIENT_REGISTERED: "PATIENT_REGISTERED",
   "APPOINTMENT_SCHEDULED",
   INSURANCE_VERIFIED: "INSURANCE_VERIFIED",
-} as const;
 
 // Base GraphQL types;
 export const _baseTypeDefs = gql`;
@@ -64,17 +62,16 @@ export const _baseTypeDefs = gql`;
   }
 
   # Base interfaces;
-  interface Node {id: ID!,
-    DateTime!;
+  interface Node {
+  id: ID!,
   }
 
-  interface AuditableEntity {id: ID!,
+  interface AuditableEntity {
+  id: ID!,
+}
     DateTime!,
     String,
     version: Int!,
-  }
-
-  # Common types;
   type Address {line1: String!,
     String!,
     String!,
@@ -96,10 +93,6 @@ export const _baseTypeDefs = gql`;
   type Identifier {system: String!,
     String,
     use: IdentifierUse,
-  }
-
-  enum IdentifierUse {
-    USUAL;
     OFFICIAL;
     TEMP;
     SECONDARY;
@@ -130,15 +123,10 @@ export const _baseTypeDefs = gql`;
 
   input SortInput {field:String!,
     direction: SortDirection!,
-  }
-
-  enum SortDirection {
-    ASC;
     DESC;
   }
 
   input FilterInput {field: String!,
-    String!;
   }
 
   enum FilterOperator {
@@ -162,8 +150,7 @@ export const _baseTypeDefs = gql`;
     String,
     details: JSON,
 
-  type MutationResponse {success:Boolean!,
-    String;
+  type MutationResponse {success: Boolean!,
 
   # Real-time notifications;
   type Notification {id:ID!,
@@ -190,9 +177,6 @@ export const _baseTypeDefs = gql`;
   type HealthStatus {service:String!,
     DateTime!,
     details: JSON,
-
-  enum HealthStatusType {
-    HEALTHY;
     DEGRADED;
     UNHEALTHY;
     UNKNOWN;
@@ -242,32 +226,25 @@ export const _baseTypeDefs = gql`;
 
 // Base resolvers;
 export const _baseResolvers = {
-  (date: unknown) => {,
-      if (!session.user) {
+  (date: unknown) => {if (!session.user) {
         return date.toISOString();
 
       return date;
     },
-    parseValue: (value: unknown) => {,
-      return new Date(value);
+    parseValue: (value: unknown) => {return new Date(value);
     },
-    parseLiteral: (ast: unknown) => {,
-      return new Date(ast.value);
+    parseLiteral: (ast: unknown) => {return new Date(ast.value);
     }},
 
   (value: unknown) => value,
     parseValue: (value: unknown) => value,
-    parseLiteral: (ast: unknown) => {,
-      switch (ast.kind) {
-        case "StringValue": any;
         case "BooleanValue": any;
           return ast.value;
         case "IntValue": any;
         case "FloatValue": any;
           return Number.parseFloat(ast.value),
         case "ObjectValue": any;
-          return ast.fields.reduce((obj: unknown, field: unknown) => {,
-            obj[field.name.value] = field.value;
+          return ast.fields.reduce((obj: unknown,
             return obj;
           }, {});
         case "ListValue": any;
@@ -287,13 +264,12 @@ export const _baseResolvers = {
           details: {hitRate:0.95, memoryUsage: "45%" }},
         {service: "fhir-server",
           new Date(),
-          details: {resources:1250 },}];
+          details: {resources:1250 },
     },
 
     process.env.npm_package_version || "1.0.0",
       Math.floor(process.uptime()),
       timestamp: new Date(),
-      features: [;
         "FHIR_R4_COMPLIANCE",
         "REAL_TIME_SUBSCRIPTIONS",
         "MICROSERVICES_ARCHITECTURE",
@@ -315,16 +291,14 @@ export const _baseResolvers = {
         mimetype,
         encoding,
         url: `/uploads/$filename`,
-        size: 1024, // Would be actual file size;
+        size: 1024,
         uploadedAt: new Date(),
         uploadedBy: context.user?.id || "system",
-      };
     },
 
     markNotificationRead: async (parent, { id }, context) => {
       // Implementation would update notification status;
       return {success: true,
-        [];
       };
     }},
 
@@ -347,26 +321,19 @@ export const _baseResolvers = {
 
   static createConnection<T>(;
     items: T[],
-    number;
   ) {
     const edges = items.map((item: unknown, index) => ({cursor:Buffer.from(`${}`.toString("base64"),
       node: item,
-    }));
 
     const hasNextPage = args.first ? items.length === args.first : false;
     const hasPreviousPage = args.last ? items.length === args.last : false;
 
     return {
       edges,
-      pageInfo: {,
-        hasNextPage,
-        hasPreviousPage,
-        startCursor: edges.length > 0 ? edges[0].cursor : null,
-        totalCount;
-      }};
+      pageInfo: }};
 
   static buildFilters(filters: unknown[]): unknown {,
-    const where: unknown = {,};
+    const where: unknown = {,
 
     filters?.forEach((filter) => {
       const { field, operator, value } = filter;
@@ -375,16 +342,16 @@ export const _baseResolvers = {
         case "EQUALS": any;
           where[field] = value;\n    }\n    case "NOT_EQUALS": any;
           where[field] = {not: value };\n    }\n    case "CONTAINS": any;
-          where[field] = {contains: value, mode: "insensitive" };\n    }\n    case "NOT_CONTAINS": any;
-          where[field] = {not: { contains: value, mode: "insensitive" } };\n    }\n    case "STARTS_WITH": any;
-          where[field] = {startsWith: value, mode: "insensitive" };\n    }\n    case "ENDS_WITH": any;
-          where[field] = {endsWith: value, mode: "insensitive" };\n    }\n    case "GREATER_THAN": any;
+          where[field] = {contains: value,\n    }\n    case "NOT_CONTAINS": any;
+          where[field] = {not: { contains: value,\n    }\n    case "STARTS_WITH": any;
+          where[field] = {startsWith: value,\n    }\n    case "ENDS_WITH": any;
+          where[field] = {endsWith: value,\n    }\n    case "GREATER_THAN": any;
           where[field] = {gt: Number.parseFloat(value) };\n    }\n    case "LESS_THAN": any;
           where[field] = {lt: Number.parseFloat(value) };\n    }\n    case "GREATER_THAN_OR_EQUAL": any;
           where[field] = {gte: Number.parseFloat(value) };\n    }\n    case "LESS_THAN_OR_EQUAL": any;
           where[field] = {lte: Number.parseFloat(value) };\n    }\n    case "IN": any;
-          where[field] = {in: value.split(",") };\n    }\n    case "NOT_IN": any;
-          where[field] = {notIn: value.split(",") };\n    }\n    case "IS_NULL": any;
+          where[field] = {in: value.split(",\n    }\n    case "NOT_IN": any;
+          where[field] = {notIn: value.split(",\n    }\n    case "IS_NULL": any;
           where[field] = null;\n    }\n    case "IS_NOT_NULL": any;
           where[field] = {not: null };
           break;
@@ -394,13 +361,10 @@ export const _baseResolvers = {
     return where;
 
   static buildOrderBy(sort: unknown[]): unknown {,
-    return sort?.map((s) => ({
-      [s.field]: s.direction.toLowerCase()})) || [];
 
   // Real-time notification utilities;
   static async publishNotification();
     type: string,
-    string;
     data?: unknown,
     userId?: string,
     priority: string = "MEDIUM",
@@ -414,7 +378,6 @@ export const _baseResolvers = {
       timestamp: new Date(),
       userId,
       read: false,
-    };
 
     const eventName = userId ? `NOTIFICATION_${userId}` : "NOTIFICATION_GLOBAL";
     await pubsub.publish(eventName, {notifications: notification });
@@ -426,14 +389,12 @@ export const _baseResolvers = {
       service,
       status,
       timestamp: new Date(),
-      details};
 
     await pubsub.publish("HEALTH_UPDATE", {healthUpdates: healthUpdate });
     return healthUpdate;
 
   // FHIR integration utilities;
   static fhirToGraphQL(fhirResource: unknown, resourceType: string) {,
-    // Convert FHIR resource to GraphQL format;
     const graphqlResource = {id:fhirResource.id,
       resourceType,
       meta: fhirResource.meta;
@@ -446,7 +407,6 @@ export const _baseResolvers = {
     return graphqlResource;
 
   static graphqlToFHIR(graphqlData: unknown, resourceType: string) {,
-    // Convert GraphQL data to FHIR format;
     const fhirResource = {
       resourceType,
       id: graphqlData.id,

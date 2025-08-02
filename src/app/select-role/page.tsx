@@ -1,5 +1,5 @@
-import { } from "@/components/ui/button"
-import { } from "@/components/ui/select"
+
+
 import "@/hooks/use-toast";
 import "next/image";
 import "next/navigation";
@@ -48,61 +48,35 @@ export default const _SelectRolePage = () {
 
   const handleContinue = async () => {
     if (!session.user) {
-      toast({title:"Selection Required",
-        "destructive";
+      toast({title: "Selection Required",
       });
       return;
     }
 
     setIsLoading(true);
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
+} catch (error) { console.error(error); } catch (error) {
 
       // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
-      // This might involve an API call or just updating client-side state/session;
       // await updateSessionRole(selectedRole);
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+      // RESOLVED: (Priority: Medium,
 
-      toast({title:"Role Selected",
-        description: `Proceeding as ${selectedRole}.`});
+      toast({title: "Role Selected",
 
       // Redirect to the main dashboard;
       router.push("/dashboard");
 
-    } catch (error: unknown) { // Use unknown;
-      const message = error instanceof Error ? error.message : "Failed to set role.";
-      toast({title:"Error",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
     } finally {
       setIsLoading(false);
 

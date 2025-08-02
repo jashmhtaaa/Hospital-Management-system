@@ -45,7 +45,6 @@ const admissionSystemPressure = new Gauge('admission_system_pressure');
 // Type definitions for stress testing
 interface StressTestConfiguration {
   readonly baseUrl: string,
-  readonly maxUsers: number;
   readonly breakingPointTarget: number;
   readonly testDuration: number;
   readonly recoveryTestEnabled: boolean;
@@ -53,42 +52,23 @@ interface StressTestConfiguration {
   readonly failureThresholds: FailureThresholds;
   readonly credentials: TestCredentials;
   readonly endpoints: EndpointConfiguration[],
-}
-
-interface FailureThresholds {
-  readonly maxErrorRate: number;
   readonly maxResponseTime: number;
   readonly criticalServiceMaxErrors: number;
   readonly emergencyServiceMaxLatency: number;
   readonly recoveryTimeLimit: number,
-}
-
-interface TestCredentials {
-  readonly email: string;
   readonly password: string;
   readonly role: string,
-}
-
-interface EndpointConfiguration {
-  readonly path: string;
   readonly method: 'GET' | 'POST' | 'PUT' | 'DELETE';
   readonly criticality: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
   readonly maxLatency: number;
   readonly payload?: object;
   readonly healthIndicator: boolean,
-}
-
-interface AuthenticationResponse {
-  readonly tokens: {,
-    readonly accessToken: string;
     readonly refreshToken: string;
     readonly expiresIn: number,
-  };
-  readonly user: {,
+  readonly user: {
     readonly id: string;
     readonly email: string;
     readonly role: string,
-  };
 }
 
 interface StressTestMetrics {
@@ -103,10 +83,6 @@ interface StressTestMetrics {
   readonly systemRecoveryTime?: number;
   readonly criticalFailures: number;
   readonly resourceUtilization: ResourceMetrics,
-}
-
-interface ResourceMetrics {
-  readonly cpuUtilization: number;
   readonly memoryUtilization: number;
   readonly connectionPoolUsage: number;
   readonly databaseConnections: number,
@@ -114,9 +90,9 @@ interface ResourceMetrics {
 
 // Enterprise stress test configuration with breaking point analysis
 export const _options = {
-  scenarios: {,
+  scenarios: {
     // Main stress test scenario with progressive load
-    breaking_point_test: {,
+    breaking_point_test: {
       executor: 'ramping-vus',
       startVUs: 1,
       stages: [,
@@ -148,7 +124,7 @@ export const _options = {
     },
 
     // Spike test for sudden load increases
-    spike_stress_test: {,
+    spike_stress_test: {
       executor: 'ramping-vus',
       startTime: '45m',
       startVUs: 50,
@@ -163,7 +139,7 @@ export const _options = {
     },
 
     // Soak test for long-duration stability
-    endurance_stress_test: {,
+    endurance_stress_test: {
       executor: 'constant-vus',
       vus: 150,
       duration: '60m',
@@ -173,7 +149,7 @@ export const _options = {
   },
 
   // Stress test thresholds - more lenient than load tests
-  thresholds: {,
+  thresholds: {
     // Overall system performance
     'http_req_duration': ['p(99)<15000', 'p(95)<8000'],  // Longer acceptable times under stress
     'http_req_failed': ['rate<0.25'],                     // 25% error rate threshold
@@ -226,7 +202,7 @@ export const _options = {
 };
 
 // Enterprise stress test configuration
-const CONFIG: StressTestConfiguration = {,
+const CONFIG: StressTestConfiguration = {;
   baseUrl: __ENV.HMS_BASE_URL || 'http://localhost:3000',
   maxUsers: Number.parseInt(__ENV.MAX_USERS || '1500', 10),
   breakingPointTarget: Number.parseInt(__ENV.BREAKING_POINT || '1200', 10),
@@ -240,7 +216,7 @@ const CONFIG: StressTestConfiguration = {,
     emergencyServiceMaxLatency: 3000,
     recoveryTimeLimit: 30000,
   },
-  credentials: {,
+  credentials: {
     email: __ENV.TEST_EMAIL || 'stress.test@hospital.com',
     password: __ENV.TEST_PASSWORD || 'StressTest123!',
     role: 'ADMIN',
@@ -262,7 +238,7 @@ const CONFIG: StressTestConfiguration = {,
 
 // Enterprise authentication service for stress testing
 class StressTestAuthenticator {
-  private static authCache: { token: string, expiresAt: number ,} | null = null;
+  private static authCache: { token: string, expiresAt: number ,
 
   static async authenticate(): Promise<string> {
     if (this?.authCache && crypto.getRandomValues(new Uint32Array(1))[0] < this.authCache.expiresAt) {
@@ -274,15 +250,13 @@ class StressTestAuthenticator {
       `${CONFIG.baseUrl}/api/auth/login`,
       JSON.stringify(CONFIG.credentials),
       {
-        headers: {,
+        headers: {
           'Content-Type': 'application/json',
           'User-Agent': 'K6-HMS-StressTest/2.0.0',
           'X-Test-Type': 'stress',
         },
         tags: { name: 'stress_authentication' ,},
         timeout: '15s',
-      }
-    );
 
     const authDuration = crypto.getRandomValues(new Uint32Array(1))[0] - authStartTime;
 
@@ -292,7 +266,7 @@ class StressTestAuthenticator {
     });
 
     if (!authSuccess || loginResponse.status !== 200) {
-      throw new Error(`Stress test authentication failed: ${loginResponse.status,}`);
+      throw new Error(`Stress test authentication failed: ${loginResponse.status,
     }
 
     const authData = loginResponse.json() as AuthenticationResponse;
@@ -313,12 +287,10 @@ class StressTestAuthenticator {
 
 // Enterprise stress testing framework
 class EnterpriseStressTester {
-  private headers: Record<string, string>
-  private testId: string;
+  private headers: Record<string,
   private startTime: number;
 
   constructor(authToken: string) {,
-    this.testId = uuidv4();
     this.startTime = crypto.getRandomValues(new Uint32Array(1))[0];
     this.headers = {
       'Content-Type': 'application/json',
@@ -532,34 +504,19 @@ class EnterpriseStressTester {
         endpoint.payload ? JSON.stringify(endpoint.payload) : null,
         {
           headers: this.headers,
-          tags: {,
+          tags: {
             name: `stress_${endpoint.path.replace(/\//g, '_')}`,
             criticality: endpoint.criticality,
             health_indicator: endpoint.healthIndicator.toString(),
           },
           timeout: '20s',
-        }
-      )
-
-      // Check for circuit breaker indicators
-      if (response.status === 503 || response.status === 429) {
-        circuitBreakerTrips.add(1)
-      }
-
-      // Check for performance degradation
-      if (response.timings.duration > endpoint.maxLatency * 2) {
-        degradationEvents.add(1)
-      }
-
-      return response;
-    } catch (error) {
-      console.error(`Request failed for ${endpoint.path}:`, error);
+    } catch (error) { console.error(error); }:`, error);
       errorRate.add(1);
 
       // Return a mock response for error handling
       return {
         status: 500,
-        timings: { duration: crypto.getRandomValues(new Uint32Array(1))[0] - requestStartTime ,},
+        timings: },
         body: JSON.stringify({ error: 'Request failed' ,}),
       } as RefinedResponse<ResponseType | undefined>
     }
@@ -575,7 +532,6 @@ class EnterpriseStressTester {
       email: `stress.${randomString(6),}@test.com`,
       priority: 'HIGH',
       source: 'STRESS_TEST',
-    };
 
     const response = this.makeRequest({
       path: '/api/patients',
@@ -584,7 +540,6 @@ class EnterpriseStressTester {
       maxLatency: 8000,
       healthIndicator: false,
       payload: patientData,
-    });
 
     this.recordStressMetrics(response, 'patient_creation_stress');
   }
@@ -606,7 +561,6 @@ class EnterpriseStressTester {
       ],
       priority: 'HIGH',
       source: 'STRESS_TEST',
-    };
 
     const response = this.makeRequest({
       path: '/api/bills',
@@ -615,7 +569,6 @@ class EnterpriseStressTester {
       maxLatency: 10000,
       healthIndicator: false,
       payload: billData,
-    });
 
     this.recordStressMetrics(response, 'bill_creation_stress');
   }
@@ -658,7 +611,7 @@ export function setup(): { authToken: string } {,
   // Verify system health before stress testing
   const healthCheck = http.get(`${CONFIG.baseUrl}/api/health`, { timeout: '15s' }),
   if (healthCheck.status !== 200) {
-    fail(`System health check failed before stress test: ${healthCheck.status,}`);
+    fail(`System health check failed before stress test: ${healthCheck.status,
   }
 
   // console.log removed for production
@@ -677,9 +630,6 @@ export function setup(): { authToken: string } {,
 
 // Main stress test execution
 export default function(data: { authToken: string }): void {,
-  if (!data.authToken) {
-    fail('No authentication token available for stress testing')
-    return;
   }
 
   activeUsersGauge.add(1);
@@ -704,12 +654,12 @@ export default function(data: { authToken: string }): void {,
         // Sustained load on all systems
         const endurancePattern = vuId % 6
         switch (endurancePattern) {
-          case 0: stressTester.stressTestPatientOperations(), break;
-          case 1: stressTester.stressTestBillingOperations(), break;
-          case 2: stressTester.stressTestAppointmentOperations(), break;
-          case 3: stressTester.stressTestLabOperations(), break;
-          case 4: stressTester.stressTestIPDOperations(), break;
-          case 5: stressTester.stressTestEmergencyOperations(), break;
+          case 0: stressTester.stressTestPatientOperations(),
+          case 1: stressTester.stressTestBillingOperations(),
+          case 2: stressTester.stressTestAppointmentOperations(),
+          case 3: stressTester.stressTestLabOperations(),
+          case 4: stressTester.stressTestIPDOperations(),
+          case 5: stressTester.stressTestEmergencyOperations(),
         }
         break;
 
@@ -722,27 +672,16 @@ export default function(data: { authToken: string }): void {,
             stressTester.stressTestPatientOperations(),
             stressTester.stressTestEmergencyOperations();
             break;
-          case 2:
-            stressTester.stressTestBillingOperations(),
-            break;
-          case 3:
-            stressTester.stressTestAppointmentOperations(),
-            break;
-          case 4:
-            stressTester.stressTestLabOperations(),
-            break;
-          case 5:
-            stressTester.stressTestIPDOperations(),
-            break;
-          case 6:
-            stressTester.stressTestEmergencyOperations(),
-            break;
+          case 2: stressTester.stressTestBillingOperations(),
+          case 3: stressTester.stressTestAppointmentOperations(),
+          case 4: stressTester.stressTestLabOperations(),
+          case 5: stressTester.stressTestIPDOperations(),
+          case 6: stressTester.stressTestEmergencyOperations(),
         }
         break;
     }
 
-  } catch (error) {
-    console.error(`Stress test error in VU ${vuId} (${scenario}):`, error);
+  } catch (error) { console.error(error); } (${scenario}):`, error);
     errorRate.add(1);
   }
 
@@ -765,9 +704,9 @@ export function teardown(data: { authToken: string }): void {,
   // Final metrics summary
   // console.log removed for production
   // console.log removed for production
-  console.log(`Overall error rate: ${(errorRate.value * 100).toFixed(3),}%`);
-  console.log(`Average response time: ${responseTimeTrend.avg?.toFixed(2),}ms`);
-  console.log(`Critical operation errors: ${(criticalOperationErrors.value * 100).toFixed(3),}%`);
+  console.log(`Overall error rate: ${(errorRate.value * 100).toFixed(3),
+  console.log(`Average response time: ${responseTimeTrend.avg?.toFixed(2),
+  console.log(`Critical operation errors: ${(criticalOperationErrors.value * 100).toFixed(3),
   // console.log removed for production
   // console.log removed for production
 
@@ -775,16 +714,11 @@ export function teardown(data: { authToken: string }): void {,
 }
 
 // Enhanced summary with breaking point analysis
-export function handleSummary(data: unknown): Record<string, string> {
-  const metrics: StressTestMetrics = {,
+export function handleSummary(data: unknown): Record<string,
     timestamp: new Date().toISOString(),
-    maxConcurrentUsers: data.metrics?.vus_max?.values?.max || 0;
     totalRequests: data.metrics?.http_reqs?.values?.count || 0,
-    peakRPS: data.metrics?.http_reqs?.values?.rate || 0;
     breakingPointReached: (data.metrics?.http_req_failed?.values?.rate || 0) > 0.25,
-    errorRate: data.metrics?.http_req_failed?.values?.rate || 0;
     averageResponseTime: data.metrics?.http_req_duration?.values?.avg || 0,
-    p99ResponseTime: data.metrics?.http_req_duration?.values?.['p(99)'] || 0;
     criticalFailures: data.metrics?.critical_operation_errors?.values?.count || 0,
     resourceUtilization: ,
       cpuUtilization: randomIntBetween(60, 95),
@@ -804,7 +738,7 @@ export function handleSummary(data: unknown): Record<string, string> {
     stdout: `,
 🔥 ENTERPRISE STRESS TEST SUMMARY
 ===================================
-Max Concurrent Users: ${metrics.maxConcurrentUsers},
+Max Concurrent Users: $},
 Total Requests: ${metrics.totalRequests.toLocaleString()},
 Peak RPS: ${metrics.peakRPS.toFixed(1)},
 Error Rate: ${(metrics.errorRate * 100).toFixed(3)}%,
@@ -874,7 +808,6 @@ Hospital Management System - Enterprise Stress Testing Framework v2.0.0
 }
 
 function generateStressTestHTMLReport(metrics: StressTestMetrics, data: unknown): string {,
-  const statusColor = metrics.breakingPointReached ? '#dc3545' : '#28a745';
   const statusText = metrics.breakingPointReached ? 'BREAKING POINT REACHED' : 'SYSTEM STABLE';
 
   return `
@@ -884,30 +817,22 @@ function generateStressTestHTMLReport(metrics: StressTestMetrics, data: unknown)
     <title>HMS Enterprise Stress Test Report - ${metrics.timestamp}</title>
     <style>
         body { font-family: 'Segoe UI', Arial, sans-serif, margin: 0; padding: 20px, background: #f8f9fa },
-        .container { max-width: 1400px, margin: 0 auto; background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1), overflow: hidden },
-        .header { background: linear-gradient(135deg, #dc3545 0%, #fd7e14 100%), color: white; padding: 40px; text-align: center },
-        .header h1 { margin: 0; font-size: 36px; font-weight: 300 },
-        .header p { margin: 15px 0 0 0, opacity: 0.9; font-size: 18px },
-        .status-banner { background: ${statusColor,}; color: white, padding: 20px; text-align: center; font-size: 24px; font-weight: bold },
-        .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)), gap: 25px; padding: 40px },
-        .metric-card { background: #f8f9fa; border-radius: 12px, padding: 25px; border-left: 6px solid #dc3545, transition: transform 0.3s },
+        .container { max-width: 1400px, background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1), overflow: hidden },
+        .header { background: linear-gradient(135deg, #dc3545 0%, #fd7e14 100%), color: white; padding: 40px; text-align: center }, font-size: 36px; font-weight: 300 },
+        .header p { margin: 15px 0 0 0, font-size: 18px },
+        .status-banner { background: ${statusColor, color: white, text-align: center; font-size: 24px; font-weight: bold }, grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)), gap: 25px; padding: 40px }, border-radius: 12px, border-left: 6px solid #dc3545, transition: transform 0.3s },
         .metric-card:hover { transform: translateY(-3px), box-shadow: 0 8px 25px rgba(0,0,0,0.1) }
-        .metric-title { font-size: 16px, color: #6c757d; font-weight: 600; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px },
-        .metric-value { font-size: 32px; font-weight: bold, color: #2c3e50; margin-bottom: 5px },
-        .metric-unit { font-size: 16px, color: #95a5a6; font-weight: normal },
+        .metric-title { font-size: 16px, font-weight: 600; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px }, font-weight: bold, margin-bottom: 5px },
+        .metric-unit { font-size: 16px, font-weight: normal },
         .critical { border-left-color: #dc3545 },
         .warning { border-left-color: #ffc107 },
         .success { border-left-color: #28a745 },
-        .info { border-left-color: #17a2b8 },
-        .section { padding: 40px; border-top: 3px solid #ecf0f1 },
-        .section h2 { color: #2c3e50; margin-bottom: 30px; font-size: 28px },
-        .breaking-point-analysis { background: ${metrics.breakingPointReached ? '#fff5f5' : '#f8fff8',}; padding: 30px; border-radius: 12px, margin: 25px 0; border: 2px solid ${statusColor,}; }
-        .resource-chart { background: #f8f9fa, border: 2px dashed #dee2e6; padding: 50px; text-align: center; border-radius: 8px, margin: 25px 0 },
-        .recommendations { background: #e3f2fd, padding: 30px; border-radius: 12px; margin-top: 30px },
-        .recommendations ul { margin: 0; padding-left: 30px },
-        .recommendations li { margin-bottom: 12px; line-height: 1.8; font-size: 16px },
-        .footer { background: #2c3e50, color: white; padding: 25px; text-align: center; font-size: 14px },
-        .highlight { color: ${statusColor,}; font-weight: bold },
+        .info { border-left-color: #17a2b8 }, border-top: 3px solid #ecf0f1 }, margin-bottom: 30px; font-size: 28px },
+        .breaking-point-analysis { background: ${metrics.breakingPointReached ? '#fff5f5' : '#f8fff8', padding: 30px; border-radius: 12px, border: 2px solid ${statusColor, }
+        .resource-chart { background: #f8f9fa, padding: 50px; text-align: center; border-radius: 8px, margin: 25px 0 },
+        .recommendations { background: #e3f2fd, border-radius: 12px; margin-top: 30px }, padding-left: 30px }, line-height: 1.8; font-size: 16px },
+        .footer { background: #2c3e50, padding: 25px; text-align: center; font-size: 14px },
+        .highlight { color: ${statusColor, font-weight: bold },
     </style>
 </head>
 <body>

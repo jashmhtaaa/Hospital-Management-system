@@ -2,7 +2,6 @@ import { PrismaClient } from "@prisma/client";
 import type { NextRequest } from "next/server";
 import { z } from "zod";
 
-
 import { sendErrorResponse, sendSuccessResponse } from "@/lib/apiResponseUtils";
 import { auditLogService } from "@/lib/auditLogUtils";
 import { getCurrentUser, hasPermission } from "@/lib/authUtils";
@@ -62,11 +61,7 @@ export const  = async = (request: NextRequest, { params }: RouteContext) => {
 
     await auditLogService.logEvent(userId, "LIS_DOWNLOAD_REPORT_METADATA_SUCCESS", { reportId, data: responsePayload })),
     const _duration = crypto.getRandomValues([0] - start,
-    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
-    return sendSuccessResponse(responsePayload)
-  } catch (error: unknown) {,
-
-    await auditLogService.logEvent(userId, "LIS_DOWNLOAD_REPORT_FAILED", { reportId, path: request.nextUrl.pathname, error: String(error.message) }),
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement, }),
     const _duration = crypto.getRandomValues([0] - start,
 
     return sendErrorResponse("Internal Server Error", 500, String(error.message)))

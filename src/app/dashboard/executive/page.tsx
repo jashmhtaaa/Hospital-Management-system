@@ -1,5 +1,5 @@
-import { } from "@/components/ui/alert"
-import { } from "@/components/ui/button"
+
+
 import { "@/components/ui/card";
 import "@/components/ui/progress";
 import "@/components/ui/select";
@@ -92,14 +92,18 @@ import { useState
   Minus;
 } from "lucide-react";
 
-interface ExecutiveDashboardData {strategicKPIs:StrategyMetric[],
+interface ExecutiveDashboardData {
+  strategicKPIs:StrategyMetric[],
+}
   OperationalMetrics,
   MarketMetrics,
   BoardMetric[],
   ExecutiveAlert[],
   benchmarks: BenchmarkData[],
 
-interface StrategyMetric {kpi:string,
+interface StrategyMetric {
+  kpi:string,
+}
   number,
   "positive" | "negative" | "neutral",
   "excellent" | "good" | "attention" | "critical",
@@ -110,7 +114,6 @@ interface FinancialOverview {
   number,
     number,
     trend: number[],
-  };
   number,
     number;
   };
@@ -126,59 +129,52 @@ interface FinancialOverview {
   number,
     number,
     denialRate: number,
-  };
 
 interface OperationalMetrics {
     number,
     number,
     equipmentEfficiency: number,
-  };
   number,
     number,
     dischargeEfficiency: number,
-  };
   number,
     number,
     cyberSecurityScore: number,
-  };
   number,
     number,
     trainingCompliance: number,
-  };
 
 interface QualityOverview {
     number,
     number,
     infectionRate: number,
-  };
   number,
     number,
     compliments: number,
-  };
   number,
     number,
     evidenceBasedCare: number,
-  };
   number,
     string,
     lastAuditScore: number,
-  };
 
-interface MarketMetrics {marketShare:number,
+interface MarketMetrics {
+  marketShare:number,
+}
   number,
   number,
     number,
     lifetimeValue: number,
-  };
   string,
     number,
     marketPosition: number,
-  }[];
   number,
     number;
   };
 
-interface RiskAssessment {overallRisk:"low" | "medium" | "high" | "critical",
+interface RiskAssessment {
+  overallRisk:"low" | "medium" | "high" | "critical",
+}
   {financial:number,
     number,
     number;
@@ -189,27 +185,34 @@ interface RiskAssessment {overallRisk:"low" | "medium" | "high" | "critical",
   number,
     number,
     overall: number,
-  };
 
-interface BoardMetric {metric:string,
+interface BoardMetric {
+  metric:string,
+}
   number,
   string,
   priority: "board" | "executive" | "operational",
 
-interface StrategicInitiative {id:string,
+interface StrategicInitiative {
+  id:string,
+}
   "growth" | "efficiency" | "quality" | "innovation",
   "on-track" | "at-risk" | "delayed" | "completed",
   number,
   string,
   string;
 
-interface ExecutiveAlert {id:string,
+interface ExecutiveAlert {
+  id:string,
+}
   "info" | "warning" | "critical",
   string,
   string,
   string;
 
-interface BenchmarkData {metric:string,
+interface BenchmarkData {
+  metric:string,
+}
   number,
   number,
   percentile: number,
@@ -219,7 +222,6 @@ const CHART_COLORS = {primary:"#1e40af",
   "#16a34a",
   "#7c3aed",
   pink: "#db2777",
-};
 
 export default const _ExecutiveDashboard = () {
   const [data, setData] = useState<ExecutiveDashboardData | null>(null);
@@ -231,41 +233,18 @@ export default const _ExecutiveDashboard = () {
     const fetchData = async () => {
       setLoading(true);
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-        // Simulate API call;
-        await ;
-        setData(generateMockExecutiveData());
-      } catch (error) {
+} catch (error) { console.error(error); } catch (error) {
 
       } finally {
         setLoading(false);
@@ -283,11 +262,7 @@ export default const _ExecutiveDashboard = () {
       case "critical": return "text-red-600";
       default: return "text-gray-600",
 
-  };
-
-  const getTrendIcon = (trend: string, change = 0) => {
-    if (!session.user) {
-      return <ArrowUpRight className="h-4 w-4 text-green-500" />;
+  const getTrendIcon = (trend: string,
     } else if (!session.user) {
       return <ArrowDownRight className="h-4 w-4 text-red-500" />;
 
@@ -437,7 +412,6 @@ export default const _ExecutiveDashboard = () {
                     <LineChart data={data.financialOverview.revenue.trend.map((value, index) => ({
                       month: `Month ${index + 1}`,
                       revenue: value,
-                    }))}>;
                       <CartesianGrid strokeDasharray="3 3" />;
                       <XAxis dataKey="month" />;
                       <YAxis />;
@@ -562,9 +536,7 @@ export default const _ExecutiveDashboard = () {
                         {name:"Commercial", value: data.financialOverview.reimbursements.commercial },
                         {name:"Medicare", value: data.financialOverview.reimbursements.medicare },
                         {name:"Medicaid", value: data.financialOverview.reimbursements.medicaid },
-                        {name:"Other", value: 100 - data.financialOverview.reimbursements.commercial - data.financialOverview.reimbursements.medicare - data.financialOverview.reimbursements.medicaid }
-                      ]}
-                      cx="50%";
+                        {name: "Other",
                       cy="50%";
                       outerRadius={80}
                       fill={CHART_COLORS.primary}
@@ -1009,9 +981,7 @@ export default const _ExecutiveDashboard = () {
                         {name:"Growth", value: 35, fill: CHART_COLORS.primary },
                         {name:"Efficiency", value: 25, fill: CHART_COLORS.secondary },
                         {name:"Quality", value: 20, fill: CHART_COLORS.warning },
-                        {name:"Innovation", value: 20, fill: CHART_COLORS.purple }
-                      ]}
-                      cx="50%";
+                        {name:"Innovation", value: 20,
                       cy="50%";
                       outerRadius={80}
                       dataKey = "value",
@@ -1232,14 +1202,7 @@ export default const _ExecutiveDashboard = () {
 
 // Mock data generation function for executive dashboard;
 const generateMockExecutiveData = (): ExecutiveDashboardData {
-  return { strategicKPIs: [, {
-        kpi: "Annual Revenue",
-        450000000,
-        "positive",
-        "good",
-        "financial",
-        "high";
-       },
+  return { strategicKPIs: [, },
       {
         kpi: "EBITDA Margin",
         20.0,
@@ -1315,7 +1278,7 @@ const generateMockExecutiveData = (): ExecutiveDashboardData {
       15420,
         285,
         lifetimeValue: 12500,
-      serviceLines: [name: "Cardiology", revenue: 85, growth: 12.3, marketPosition: 1 ,name: "Orthopedics", revenue: 72, growth: 8.7, marketPosition: 2 ,name: "Emergency", revenue: 95, growth: 5.2, marketPosition: 1 ,name: "Surgery", revenue: 120, growth: 15.8, marketPosition: 1 ;
+      serviceLines: [name: "Cardiology", revenue: 85, growth: 12.3, marketPosition: 1 ,name: "Orthopedics", revenue: 72, growth: 8.7, marketPosition: 2 ,name: "Emergency", revenue: 95, growth: 5.2, marketPosition: 1 ,name: "Surgery", revenue: 120, growth: 15.8,
       ],
       8,
         5;
@@ -1338,7 +1301,6 @@ const generateMockExecutiveData = (): ExecutiveDashboardData {
       {metric:"HCAHPS Top Box", value: "94.3%", change: 1.8, status: "positive", benchmark: "89.2%", priority: "board" },
       {metric:"Physician Engagement", value: "8.7/10", change: 0.4, status: "positive", benchmark: "7.9/10", priority: "executive" }
     ],
-    initiatives: [;
       {id:"1",
         "innovation",
         "on-track",
@@ -1378,8 +1340,7 @@ const generateMockExecutiveData = (): ExecutiveDashboardData {
     benchmarks: [;
       {metric:"EBITDA Margin", ourValue: 18.2, industryAvg: 16.5, topQuartile: 19.8, topDecile: 22.1, percentile: 75 },
       {metric:"Length of Stay", ourValue: 4.2, industryAvg: 4.8, topQuartile: 4.0, topDecile: 3.7, percentile: 80 },
-      {metric:"Patient Satisfaction", ourValue: 94.3, industryAvg: 89.2, topQuartile: 92.5, topDecile: 95.8, percentile: 90 }
-    ];
+      {metric:"Patient Satisfaction", ourValue: 94.3, industryAvg: 89.2, topQuartile: 92.5, topDecile: 95.8,
   };
 
 ";

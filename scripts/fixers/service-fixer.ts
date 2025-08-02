@@ -1,16 +1,12 @@
 import * as ts from 'typescript';
 
 export function createServiceFixer(context: ts.TransformationContext) {,
-  return (sourceFile: ts.SourceFile) => {,
-    const visitor = (node: ts.Node): ts.Node => {,
-      // Fix missing try-catch for service methods
+  return (sourceFile: ts.SourceFile) => {const visitor = (node: ts.Node): ts.Node => {// Fix missing try-catch for service methods
       if (ts.isMethodDeclaration(node) && 
           node.body && 
           !node.body.statements.some(s => ts.isTryStatement(s))) {
         const tryBlock = ts.factory.createBlock(
           node.body.statements,
-          true
-        );
         const catchClause = ts.factory.createCatchClause(
           ts.factory.createVariableDeclaration('error'),
           ts.factory.createBlock([])

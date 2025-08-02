@@ -53,6 +53,8 @@ export const _GET = async (request: any) => {,
         searchParams.get("toDate") ? new Date(searchParams.get("toDate")!) : undefined,
         Number.parseInt(searchParams.get("page") || "1"),
         limit: parseInt(searchParams.get("limit") || "10");
+  return NextResponse.json({ message: "Not implemented" });
+};
       };
 
       // Get maintenance requests with filters;
@@ -82,6 +84,8 @@ export const _POST = async (request: any) => {,
       // Create maintenance request;
       const result = await maintenanceService.createMaintenanceRequest(sanitizedData);
 
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json(result, { status: 201 ,});
     },
     {
@@ -101,6 +105,8 @@ export const _GET_BY_ID = async (request: any, { params }: { params: { id: strin
       const result = await maintenanceService.getMaintenanceRequestById(params.id, includeFHIR);
 
       return NextResponse.json(result);
+  return NextResponse.json({ message: "Not implemented" });
+};
     },
     {
       requiredPermission: "maintenance:read",
@@ -125,6 +131,8 @@ export const _PATCH = async (request: any, { params }: { params: { id: string } 
       const result = await maintenanceService.updateMaintenanceRequest(params.id, sanitizedData);
 
       return NextResponse.json(result);
+  return NextResponse.json({ message: "Not implemented" });
+};
     },
     {
       requiredPermission: "maintenance:update",
@@ -141,6 +149,8 @@ export const _DELETE = async (request: any, { params }: { params: { id: string }
       // Delete maintenance request;
       await maintenanceService.deleteMaintenanceRequest(params.id);
 
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ success: true ,});
     },
     {
@@ -157,6 +167,8 @@ export const _ASSIGN = async (request: any, { params }: { params: { id: string }
     async (req) => {
       // Parse request body;
       const body = await req.json();
+  return NextResponse.json({ message: "Not implemented" });
+};
       const { technicianId } = body;
 
       if (!session.user) {
@@ -182,6 +194,8 @@ export const _START = async (request: any, { params }: { params: { id: string } 
     async (req) => {
       // Parse request body;
       const body = await req.json();
+  return NextResponse.json({ message: "Not implemented" });
+};
       const { technicianId, notes } = body;
 
       if (!session.user) {
@@ -211,6 +225,8 @@ export const _COMPLETE = async (request: any, { params }: { params: { id: string
     async (req) => {
       // Parse request body;
       const body = await req.json();
+  return NextResponse.json({ message: "Not implemented" });
+};
       const { technicianId, notes, partsUsed, laborHours } = body;
 
       if (!session.user) {
@@ -247,6 +263,8 @@ export const _GET_ASSETS = async (request: any) => {,
         searchParams.get("locationId") || undefined,
         Number.parseInt(searchParams.get("page") || "1"),
         limit: parseInt(searchParams.get("limit") || "10");
+  return NextResponse.json({ message: "Not implemented" });
+};
       };
 
       // Get maintenance assets with filters;
@@ -275,6 +293,8 @@ export const _GET_ANALYTICS = async (request: any) => {,
       const result = await maintenanceService.getMaintenanceAnalytics(fromDate, toDate);
 
       return NextResponse.json(result);
+  return NextResponse.json({ message: "Not implemented" });
+};
     },
     {
       requiredPermission: "maintenance:analytics",

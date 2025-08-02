@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 
 import { Badge } from '@/components/ui/badge';
@@ -14,7 +14,7 @@ interface Theatre {
 }
 
 interface OTTheatreListProps {
-  theatres: Theatre[]
+  theatres: Theatre[];
 }
 
 /**

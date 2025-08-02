@@ -3,8 +3,8 @@ import { useState } from "react"
 
 "use client";
 
-import { } from "./AmbulanceMap.ts"
-import { } from "@/components/ui/button"
+
+
 import { "@/components/ui/card";
 import "@/components/ui/select";
 import "@/components/ui/table";
@@ -65,37 +65,17 @@ export default const _AmbulanceDashboard = () {
   const fetchAmbulances = async () => {
     setLoading(true);
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       const _statusFilter = activeTab === "active" ?;
         "status=AVAILABLE&status=ON_DUTY" : any;
         activeTab === "maintenance" ?;
@@ -109,15 +89,10 @@ export default const _AmbulanceDashboard = () {
       if (!session.user) {
         setAmbulances(data.data);
       } else {
-        toast({title:"Error",
-          "destructive";
+        toast({title: "Error",
         });
       }
-    } catch (error) {
-
-      toast({title:"Error",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
     } finally {
       setLoading(false);
     }
@@ -126,36 +101,17 @@ export default const _AmbulanceDashboard = () {
   const fetchTrips = async () => {
     setLoading(true);
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
+} catch (error) { console.error(error); } catch (error) {
 
       let _statusFilter = "";
       if (!session.user) {
@@ -172,15 +128,10 @@ export default const _AmbulanceDashboard = () {
       if (!session.user) {
         setTrips(data.data);
       } else {
-        toast({title:"Error",
-          "destructive";
+        toast({title: "Error",
         });
 
-    } catch (error) {
-
-      toast({title:"Error",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
     } finally {
       setLoading(false);
 
@@ -188,59 +139,32 @@ export default const _AmbulanceDashboard = () {
 
   const handleUpdateTripStatus = async (tripId, newStatus) => {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const response = await fetch(`/api/support-services/ambulance/trips/${tripId}/status`, {method:"PUT",
+} catch (error) { console.error(error); }/status`, {method:"PUT",
         headers: {
           "Content-Type": "application/json"},
-        body: JSON.stringify({status:newStatus })});
 
       const data = await response.json();
 
       if (!session.user) {
         toast({title:"Success",
           description: `Trip status updated to ${newStatus}`}),
-        fetchTrips();
         fetchAmbulances();
       } else {
-        toast({title:"Error",
-          "destructive";
+        toast({title: "Error",
         });
 
-    } catch (error) {
-
-      toast({title:"Error",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
 
   };
 
@@ -270,8 +194,6 @@ export default const _AmbulanceDashboard = () {
         return "bg-red-500";
       default: return "bg-gray-500",
 
-  };
-
   const getPriorityBadgeColor = (priority: unknown) => {
     switch (priority) {
       case "HIGH": any;
@@ -281,8 +203,6 @@ export default const _AmbulanceDashboard = () {
       case "LOW": any;
         return "bg-green-500";
       default: return "bg-gray-500",
-
-  };
 
   const renderAmbulanceDetails = () => {
     if (!session.user)eturn null;
@@ -299,11 +219,11 @@ export default const _AmbulanceDashboard = () {
           >;
 <div;
               <h3 className="font-semibold mb-2">Details>;
-              <p><strong>Type:</strong> {selectedAmbulance.vehicleType.replace(/_/g, " ")}>;
+              <p><strong>Type: </strong> {selectedAmbulance.vehicleType.replace(/_/g,
               <p><strong>Capacity:</strong> {selectedAmbulance.capacity}>;
-              <p><strong>Features:</strong> {selectedAmbulance.features.join(", ")}>;
-              <p><strong>Last Maintenance:</strong> {selectedAmbulance.lastMaintenanceDate ? format(new Date(selectedAmbulance.lastMaintenanceDate), "PPP") : "N/A"}</p>;
-              <p><strong>Next Maintenance:</strong> {selectedAmbulance.nextMaintenanceDate ? format(new Date(selectedAmbulance.nextMaintenanceDate), "PPP") : "N/A"}</p>;
+              <p><strong>Features: </strong> {selectedAmbulance.features.join(",
+              <p><strong>Last Maintenance: </strong> {selectedAmbulance.lastMaintenanceDate ? format(new Date(selectedAmbulance.lastMaintenanceDate),
+              <p><strong>Next Maintenance: </strong> {selectedAmbulance.nextMaintenanceDate ? format(new Date(selectedAmbulance.nextMaintenanceDate),
             </div>;
 <div;
               <h3 className="font-semibold mb-2">Current Crew>;
@@ -392,7 +312,7 @@ export default const _AmbulanceDashboard = () {
               <p><strong>Priority:</strong> <Badge className={getPriorityBadgeColor(selectedTrip.priority)}>{selectedTrip.priority}</Badge>>;
               <p><strong>Ambulance:</strong> {selectedTrip.ambulance?.registrationNumber}</p>;
               <p><strong>Patient:</strong> {selectedTrip.patient?.name || "N/A"}</p>;
-              <p><strong>Scheduled Time:</strong> {format(new Date(selectedTrip.scheduledTime), "PPp")}>;
+              <p><strong>Scheduled Time: </strong> {format(new Date(selectedTrip.scheduledTime),
               <p><strong>Requested By:</strong> {selectedTrip.requestedByUser?.name}</p>;
               {selectedTrip?.notes && <p><strong>Notes:</strong> {selectedTrip.notes}</p>}
             </div>;

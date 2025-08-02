@@ -10,7 +10,7 @@ import { Textarea } from '@/components/ui/textarea';
 }
 interface OTSurgeryTypeModalProps {
   isOpen: boolean,
-  \1,\2 (data: unknown) => void
+  \1,\2 (data: unknown) => void;
 }
 
 /**
@@ -73,22 +73,3 @@ export const _OTSurgeryTypeModal = ({ isOpen, onClose, onSubmit }: OTSurgeryType
                   { value: "low", label: "Low Risk" },
                   { value: "medium", label: "Medium Risk" },
                   { value: "high", label: "High Risk" },
-                ]}
-              />
-            </div>
-
-            \1>
-              <Label htmlFor="notes">Notes\1>
-              <Textarea id="notes" placeholder="Additional information" />
-            </div>
-          </div>
-          <DialogFooter>
-            \1>
-              Cancel
-            </Button>
-            <Button type="submit">Save</Button>
-          </DialogFooter>
-        </form>
-      </DialogContent>
-    </Dialog>
-  );

@@ -22,6 +22,8 @@ interface LabTestCreateBody {
 // GET /api/laboratory/tests - Get all laboratory tests;
 export const _GET = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -107,6 +109,8 @@ export const _GET = async (request: any) => {,
 // POST /api/laboratory/tests - Create a new laboratory test;
 export const _POST = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }

@@ -28,6 +28,8 @@ const SearchQuerySchema = z.object({
  */
 export const GET = async (request: NextRequest) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { searchParams } = new URL(request.url);
     const queryParams = Object.fromEntries(searchParams.entries());
 
@@ -86,6 +88,8 @@ export const POST = async (request: NextRequest) => {,
         metadata: ,
           patientId: patient.id,
            patient.createdAt,
+  return NextResponse.json({ message: "Not implemented" });
+};
       },status: 201 ,
     );
   } catch (error) {

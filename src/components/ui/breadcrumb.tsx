@@ -1,4 +1,4 @@
-import { } from "@radix-ui/react-slot"
+
 import "lucide-react";
 import "react";
 import * as React
@@ -23,7 +23,6 @@ const BreadcrumbList = React.forwardRef<;
     ref={ref}
     className={cn();
       "flex flex-wrap items-center gap-1.5 break-words text-sm text-muted-foreground sm: gap-2.5",
-      className;
     )}
     {...props}
   />;
@@ -53,9 +52,7 @@ const BreadcrumbLink = React.forwardRef<;
   return();
     <Comp>;
       ref={ref}
-      className={cn("transition-colors hover:text-foreground", className)}
-      {...props}
-    />;
+      className={cn("transition-colors hover: text-foreground",
   );
 });
 BreadcrumbLink.displayName = "BreadcrumbLink",

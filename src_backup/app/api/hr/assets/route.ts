@@ -34,6 +34,8 @@ const assetSchema = z.object({
 // POST handler for creating asset;
 export const _POST = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -99,6 +101,8 @@ export const _POST = async (request: any) => {,
 // GET handler for listing assets;
 export const _GET = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }

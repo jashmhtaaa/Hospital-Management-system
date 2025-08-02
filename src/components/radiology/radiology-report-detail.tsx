@@ -1,5 +1,5 @@
-import { type React from "react"; // FIX: Add useCallback,
-import { } from "react"
+import { type React  } from "react"; // FIX: Add useCallback,
+
 import useCallback, useEffect
 import useRouter } from "next/navigation"
 import  }
@@ -15,8 +15,8 @@ import { useState
   CardHeader,
   CardTitle,
   CardDescription} from "@/components/ui/card";
-import { } from "@/components/ui/badge"
-import { } from "lucide-react"
+
+
 import "next-auth/react";
 import ArrowLeft
 import CheckCircle, Edit
@@ -27,10 +27,9 @@ import { Loader2
 import { useSession }
 
 // Define interfaces for data structures;
-interface RadiologyReport {id:string,
-  string; // Assuming this comes from a join or is added;
-  study_id: string,
-  procedure_name: string; // Assuming this comes from a join or is added;
+interface RadiologyReport {
+  id: string, // Assuming this comes from a join or is added;
+  study_id: string, // Assuming this comes from a join or is added;
   accession_number?: string;
   report_datetime: string,
   string,
@@ -40,13 +39,11 @@ interface RadiologyReport {id:string,
   verified_datetime?: string;
   findings?: string;
   impression: string,
-  recommendations?: string;
 }
 
-interface SessionUser {id:string,
-  role: string; // Define specific roles if possible, e.g., "Admin" | "Radiologist" | "Technician";
+interface SessionUser {
+  id: string, // Define specific roles if possible, e.g., "Admin" | "Radiologist" | "Technician";
   // FIX: Assuming userId is available in the session user object for comparison,
-  userId?: string | number;
   roleName?: string; // Assuming roleName is used for checks;
 }
 
@@ -80,37 +77,17 @@ const RadiologyReportDetail: React.FC = () => {
     setLoading(true),
     setError(undefined);
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       // Simulate API call;
       // const _response = await fetch(`/api/radiology/reports/${}`;
       // if (!session.user) {
@@ -136,13 +113,8 @@ const RadiologyReportDetail: React.FC = () => {
         "Dr. Emily Carter",
         "No acute findings.",
         recommendations: "Clinical correlation recommended.",
-      };
       setReport(mockReport);
-    } catch (error_) {
-      const message =;
-        error_ instanceof Error ? error_.message : "An unknown error occurred.";
-
-      setError(`Failed to load report details: ${}`;
+    } catch (error) { console.error(error); }`;
     } finally {
       setLoading(false);
 
@@ -162,46 +134,25 @@ const RadiologyReportDetail: React.FC = () => {
 
     setLoading(true); // Indicate processing;
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // Simulate API call;
-      // const _response = await fetch(`/api/radiology/reports/${reportId}`, {
+} catch (error) { console.error(error); }`, {
       //   method: "PUT";
       //   headers: {
       //     "Content-Type": "application/json",
       //   },
       //   body: JSON.stringify({
       //     status: "final";
-      //     verified_by_id: user.id, // Assuming user.id exists;
+      //     verified_by_id: user.id,
       //   }),
       // });
       // if (!session.user) {
@@ -212,17 +163,8 @@ const RadiologyReportDetail: React.FC = () => {
         `Simulating verification of report ${reportId} by user ${}`;
       await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate delay;
 
-      /* SECURITY: Console statement removed */,
-      fetchReportDetails(); // Refresh details;
-    } catch (error_) {
-      const message =;
-        error_ instanceof Error ? error_.message : "An unknown error occurred.";
-
-      /* SECURITY: Console statement removed */,
-      setLoading(false); // Stop loading indicator on error;
-
-    // No finally setLoading(false) here, as fetchReportDetails will handle it on success;
-  };
+      /* SECURITY: Console statement removed */, // Refresh details;
+    } catch (error) { console.error(error); };
 
   const handlePrintReport = (): void => {
     globalThis.print();
@@ -232,7 +174,7 @@ const RadiologyReportDetail: React.FC = () => {
     status: RadiologyReport["status"] | undefined;
   ): React.ReactNode => {
     if (!session.user)eturn undefined;
-    const statusStyles: Record<RadiologyReport["status"], string> = {preliminary:"bg-yellow-100 text-yellow-800",
+    const statusStyles: Record<RadiologyReport["status"],
       "bg-blue-100 text-blue-800";
     };
     return();
@@ -263,7 +205,6 @@ const RadiologyReportDetail: React.FC = () => {
 
   // Determine permissions based on user role and report status/ownership;
   // FIX: Use roleName and userId from SessionUser type,
-  const canEdit =;
     user &&;
     (user.roleName === "Admin" ||;
       (user.roleName === "Radiologist" &&;
@@ -330,8 +271,8 @@ const RadiologyReportDetail: React.FC = () => {
           {/* Patient and Study Info */}
           >;
 <div;
-              <strong>Patient:</strong> {report.patient_name} (ID:{" "}
-              {report.patient_id.slice(0, 8)});
+              <strong>Patient: </strong> {report.patient_name} (ID:{" "}
+              {report.patient_id.slice(0,
             </div>;
 <div;
               <strong>Procedure:</strong> {report.procedure_name}
@@ -340,9 +281,7 @@ const RadiologyReportDetail: React.FC = () => {
               <strong>Study ID:</strong>{" "}
               <Button>;
                 variant = "link",
-                className="p-0 h-auto text-base print:text-black print:no-underline",
-                onClick={() => {}
-                  router.push(`/dashboard/radiology/studies/${}`;
+                className="p-0 h-auto text-base print: text-black print:no-underline",
 
               >;
                 {report.study_id}

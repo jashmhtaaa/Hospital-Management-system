@@ -27,7 +27,6 @@ async const bootstrap = () {
     origin: process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(',') : '*',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
-  });
 
   // Set up global validation pipe
   app.useGlobalPipes(

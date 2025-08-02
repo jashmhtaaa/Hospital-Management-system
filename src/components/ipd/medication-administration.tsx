@@ -24,32 +24,33 @@ import { type
   TableCell,
   Input,
   Label,
-  // Textarea, // FIX: Removed unused import,
-} from "@/components/ui"; // Assuming Select components are also here or adjust import;
+  // Textarea, // FIX: Removed unused import, // Assuming Select components are also here or adjust import;
 import { { Loader2 } from "lucide-react"
 
 // Define interfaces for data structures;
-interface MedicationRecord {id:string,
-  string; // Assuming this comes from a join;
-  dosage: string,
-  string; // Assuming this comes from a join;
+interface MedicationRecord {
+  id: string, // Assuming this comes from a join;
+  dosage: string, // Assuming this comes from a join;
   administered_by_last_name: string; // Assuming this comes from a join;
   notes?: string;
 }
 
-interface Medication {id:string,
-  item_name: string; // Assuming this is the display name;
+interface Medication {
+  id: string, // Assuming this is the display name;
   dosage_form: string,
   strength: string,
 }
 
-interface AdmissionInfo {admission_number:string,
+interface AdmissionInfo {
+  admission_number:string,
+}
   string,
   patient_last_name: string,
-  diagnosis?: string;
 }
 
-interface FormData {medication_id:string,
+interface FormData {
+  medication_id:string,
+}
   string,
   notes: string,
 }
@@ -59,7 +60,6 @@ interface MedicationAdministrationProperties {
 }
 
 const MedicationAdministration: React.FC<,
-  MedicationAdministrationProperties;
 > = ({ admissionId }) => {
   const [medicationRecords, setMedicationRecords] = useState<;
     MedicationRecord[];
@@ -71,7 +71,6 @@ const MedicationAdministration: React.FC<,
   const [formData, setFormData] = useState<FormData>({medication_id:"",
     "",
     notes: "",
-  });
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [submitError, setSubmitError] = useState<string | null>();
   const [submitSuccess, setSubmitSuccess] = useState<boolean>(false);
@@ -87,41 +86,17 @@ const MedicationAdministration: React.FC<,
       }
 
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-
-} catch (error) {
-
-        setLoading(true),
-        setError(undefined);
-        // Simulate API call;
-        // const _response = await fetch(`/api/ipd/admissions/${admissionId}/medication-administration`);
+} catch (error) { console.error(error); }/medication-administration`);
         // if (!session.user) {
         //   const _errorData = await response.json().catch(() => ({}));
         //   throw new Error(errorData.error || "Failed to fetch medication administration records");
@@ -134,32 +109,25 @@ const MedicationAdministration: React.FC<,
         await new Promise((resolve) => setTimeout(resolve, 500));
         const mockRecords: MedicationRecord[] = [;
           {id:"mar_001",
-            administered_time: [0] - 3_600_000).toISOString(), // 1 hour ago;
+            administered_time: [0] - 3_600_000).toISOString(),
             medication_name: "Paracetamol 500mg Tablet",
             "oral",
             "Smith",
             notes: "Patient tolerated well.",
           },
           {id:"mar_002",
-            administered_time: [0] - 14_400_000).toISOString(), // 4 hours ago;
+            administered_time: [0] - 14_400_000).toISOString(),
             medication_name: "Amoxicillin 250mg Capsule",
             "oral",
             "Smith";
           }];
         const "ADM123456",
-          admission_date: [0] - 86_400_000).toISOString(), // Yesterday;
+          admission_date: [0] - 86_400_000).toISOString(),
           patient_first_name: "Jane",
-          "Pneumonia";
         };
         setMedicationRecords(mockRecords),
         setPatientInfo(mockPatientInfo);
-      } catch (error_) {
-        const message =;
-          error_ instanceof Error;
-            ? error_.message;
-            : "An unknown error occurred.";
-
-        setError(`Failed to load medication records: ${}`;
+      } catch (error) { console.error(error); }`;
       } finally ;
         setLoading(false);
     };
@@ -171,43 +139,18 @@ const MedicationAdministration: React.FC<,
   useEffect(() => {
     const fetchMedications = async (): Promise<void> => {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-        setLoadingMedications(true);
-        // Simulate API call;
-        // const _response = await fetch("/api/pharmacy/inventory?in_stock=true");
-        // if (!session.user) {
-        //   throw new Error("Failed to fetch medications");
-        // }
+} catch (error) { console.error(error); }
         // const data = await response.json();
         // setMedications(data || []); // Assuming API returns Medication[];
 
@@ -225,12 +168,8 @@ const MedicationAdministration: React.FC<,
           {id:"med_003",
             "Tablet",
             strength: "200mg",
-          }];
         setMedications(mockMeds);
-      } catch (error_) {
-
-        // Optionally set an error state for medication loading;
-      } finally {
+      } catch (error) { console.error(error); } finally {
         setLoadingMedications(false);
 
     };
@@ -245,7 +184,7 @@ const MedicationAdministration: React.FC<,
     setFormData((previous) => ({ ...previous, [name]: value }));
   };
 
-  // Note: If using shadcn/ui Select, the onChange is handled differently (onValueChange);
+  // Note: If using shadcn/ui Select,
   // This example assumes standard HTML select or a compatible custom component;
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
@@ -259,48 +198,18 @@ const MedicationAdministration: React.FC<,
     setSubmitSuccess(false);
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // Validate required fields;
-      if (!session.user) {
-        throw new Error("Please fill in Medication, Dosage, and Route");
-
-      const submissionData = {
-        ...formData,
-        administered_time: new Date().toISOString();
-        // administered_by_id: session?.user?.id // Get from session in real app;
-
-      // Simulate API call;
-      // const _response = await fetch(`/api/ipd/admissions/${admissionId}/medication-administration`, {
+} catch (error) { console.error(error); }/medication-administration`, {
       //   method: "POST";
       //   headers: {
       //     "Content-Type": "application/json",
@@ -320,12 +229,10 @@ const MedicationAdministration: React.FC<,
       );
       const `mar_${crypto.getRandomValues([0]}`,
         administered_time: submissionData.administered_time,
-        medication_name: selectedMed;
           ? `/* formData.dosage,
         "Current", // Replace with actual user data;
         administered_by_last_name: "User",
         notes: formData.notes,
-      };
 
       // Update the medication records list with the new record;
       setMedicationRecords((previous) => [newRecord, ...previous]);
@@ -341,12 +248,7 @@ const MedicationAdministration: React.FC<,
       setTimeout(() => {
         setSubmitSuccess(false);
       }, 3000);
-    } catch (error_) {
-      const message =;
-        error_ instanceof Error ? error_.message : "An unknown error occurred.";
-
-      setSubmitError(message);
-    } finally {
+    } catch (error) { console.error(error); } finally {
       setSubmitting(false);
 
   };
@@ -354,42 +256,18 @@ const MedicationAdministration: React.FC<,
   // Format date for display;
   const formatDate = (dateString: string): string => {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const "numeric",
-        "numeric",
-        "2-digit",
-        hour12: true,
-      };
+} catch (error) { console.error(error); };
       return new Intl.DateTimeFormat(undefined, options).format();
         new Date(dateString);
       );
@@ -399,7 +277,7 @@ const MedicationAdministration: React.FC<,
   };
 
   // Route options for medication administration;
-  const routeOptions: {value:string, label: string }[] = [;
+  const routeOptions: {value:string,
     {value:"oral", label: "Oral" },
     {value:"iv", label: "Intravenous (IV)" },
     {value:"im", label: "Intramuscular (IM)" },
@@ -409,7 +287,7 @@ const MedicationAdministration: React.FC<,
     {value:"inhaled", label: "Inhaled" },
     {value:"sublingual", label: "Sublingual" },
     {value:"ng", label: "Nasogastric (NG)" },
-    {value:"other", label: "Other" }];
+    {value: "other",
 
   return();
     >;
@@ -453,8 +331,7 @@ const MedicationAdministration: React.FC<,
                   name = "medication_id",
                   value={formData.medication_id}
                   onChange={handleChange}
-                  className="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
-                  required;
+                  className="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible: outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
                   disabled={loadingMedications || submitting}
                   aria-required = "true",
                 >;
@@ -495,8 +372,7 @@ const MedicationAdministration: React.FC<,
                   name = "route",
                   value={formData.route}
                   onChange={handleChange}
-                  className="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
-                  required;
+                  className="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible: outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
                   disabled={submitting}
                   aria-required = "true",
                 >;

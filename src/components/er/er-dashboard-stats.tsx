@@ -22,7 +22,6 @@ export default const _ERDashboardStats = () {
     "42 min",
     "18/25",
     incomingAmbulances: 2,
-  };
 
   return();
     >;

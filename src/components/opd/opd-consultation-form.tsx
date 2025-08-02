@@ -17,8 +17,8 @@ import { useRouter } from "next/navigation"; // Added useRouter;
   SelectItem,
   SelectTrigger,
   SelectValue} from "@/components/ui/select";
-import { } from "@/components/ui/button"
-import { } from "@/components/ui/input"
+
+
 import "@/components/ui/tabs";
 import "@/components/ui/textarea";
 import CardContent, TabsContent
@@ -49,26 +49,25 @@ const consultationFormSchema = z.object({ // Uncommented;
     height: z.string().optional(),
   }).optional(), // Made optional to avoid issues if not filled initially;
   diagnosis: z.string().min(3, {message:"Diagnosis is required" }),
-  treatmentPlan: z.string().min(3, {message:"Treatment plan is required" }),
-  medications: z;
+  treatmentPlan: z.string().min(3, {message: "Treatment plan is required" }),
     .array();
       z.object({name:z.string().min(1, {message:"Medication name is required" }),
         dosage: z.string().min(1, message: "Dosage is required" ),
         frequency: z.string().min(1, message: "Frequency is required" ),
         duration: z.string().min(1, message: "Duration is required" ),
         instructions: z.string().optional(),
-      });
     );
     .optional(),
-  labTests: z.array(z.string()).optional(), // Assuming lab tests are selected by ID;
+  labTests: z.array(z.string()).optional(),
   followUpDate: z.string().optional(),
   notes: z.string().optional(),
-});
 
 type ConsultationFormValues = z.infer> // Uncommented;
 
 // Define necessary interfaces based on usage;
-interface Patient {id:string,
+interface Patient {
+  id:string,
+}
   number,
   number;
   // Add other relevant patient fields if needed;
@@ -82,7 +81,9 @@ interface Patient {id:string,
 // Assuming the API returns an array directly, adjust if it returns {results:Patient[] }
 // type PatientsQueueApiResponse = Patient[];
 
-interface ConsultationApiResponse { consultationId: string; // Assuming the API returns the ID of the created consultation;
+interface ConsultationApiResponse {
+  consultationId: string; // Assuming the API returns the ID of the created consultation;
+}
   error?: string,  }
 
 interface ApiErrorResponse {
@@ -92,7 +93,6 @@ interface ApiErrorResponse {
 // Mock permission check function (replace with actual API call);
 const checkPermission = async (permission: string): Promise<boolean> => {
   // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
-  // Replace with actual API call to /api/session/check-permission;
   // Example: const response = await fetch(`/api/session/check-permission?permission=${}`;
   // const data: PermissionApiResponse = await response.json();
   // return data.hasPermission ?? false;
@@ -103,7 +103,7 @@ const checkPermission = async (permission: string): Promise<boolean> => {
 
 // Mock fetch patients function (replace with actual API call);
 const fetchPatientsQueue = async (): Promise<Patient[]> => {
-  // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+  // RESOLVED: (Priority: Medium,
   // Replace with actual API call to /api/opd/queue or similar;
   // Example: const response = await fetch("/api/opd/queue");
   // const data: PatientsQueueApiResponse = await response.json();
@@ -112,7 +112,7 @@ const fetchPatientsQueue = async (): Promise<Patient[]> => {
   // Return mock data for testing;
   return [;
     {id:"pat1", name: "John Doe", age: 45, gender: "Male", tokenNumber: 101 },
-    {id:"pat2", name: "Jane Smith", age: 32, gender: "Female", tokenNumber: 102 }];
+    {id:"pat2", name: "Jane Smith", age: 32, gender: "Female",
 };
 
 export default const _OPDConsultationForm = () {
@@ -136,43 +136,22 @@ export default const _OPDConsultationForm = () {
       [],
       "",
       notes: "",
-    }});
 
   // Fetch permissions and patient queue on component mount;
   useEffect(() => {
     const fetchData = async () => {
       setLoadingPermissions(true);
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
 
         const [prescribePerm, orderTestsPerm, patientsData] = await Promise.all([;
           checkPermission("opd.prescribe"),
@@ -181,9 +160,7 @@ export default const _OPDConsultationForm = () {
         setCanPrescribe(prescribePerm),
         setCanOrderTests(orderTestsPerm);
         setPatients(patientsData);
-      } catch (error) {
-
-        toast({title:"Error", description: "Failed to load initial data.", variant: "destructive" });
+      } catch (error) { console.error(error); });
       } finally {
         setLoadingPermissions(false);
 
@@ -199,11 +176,11 @@ export default const _OPDConsultationForm = () {
     // Reset other fields when patient changes, or fetch history;
     form.reset({
         ...form.getValues(), // Keep existing values if needed, or reset specific fields;
-        patientId: patientId, // Ensure patientId is set;
-        chiefComplaint: "", // Example reset;
+        patientId: patientId,
+        chiefComplaint: "",
         // ... reset other fields;
     });
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+    // RESOLVED: (Priority: Medium,
     // Optionally fetch patient history here;
     // if (!session.user)etchPatientHistory(patient.id);
   };
@@ -213,7 +190,7 @@ export default const _OPDConsultationForm = () {
     const currentMedications = form.getValues().medications || [];
     form.setValue("medications", [
       ...currentMedications,
-      {name:"", dosage: "", frequency: "", duration: "", instructions: "" }]);
+      {name:"", dosage: "", frequency: "", duration: "",
   };
 
   // Remove medication field;
@@ -228,91 +205,45 @@ export default const _OPDConsultationForm = () {
   // Form submission handler;
   const onSubmit = async (data: ConsultationFormValues) => {
     setLoading(true);
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+    // RESOLVED: (Priority: Medium,
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const response = await fetch("/api/opd-visits", { // Updated API endpoint based on file structure;
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"},
+} catch (error) { console.error(error); },
         body: JSON.stringify(data),
-      });
 
       if (!session.user) {
         const errorMessage = "Failed to save consultation";
         try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-          const errorData: ApiErrorResponse = await response.json(),
-          errorMessage = errorData.error || errorMessage;
-        } catch {
+} catch (error) { console.error(error); } catch {
           /* Ignore */;
 
         throw new Error(errorMessage);
 
-      const result: ConsultationApiResponse = await response.json(); // Assuming API returns {consultationId:string }
+      const result: ConsultationApiResponse = await response.json(); // Assuming API returns {consultationId: string }
 
-      toast({title:"Success", description: "Consultation saved successfully." });
+      toast({title:"Success",
 
       // Redirect to consultation details or reset form;
       if (!session.user) {
@@ -322,11 +253,7 @@ export default const _OPDConsultationForm = () {
         form.reset(),
         setSelectedPatient(null); // Clear selected patient;
 
-    } catch (error: unknown) {
-      const messageText =;
-        error instanceof Error ? error.message : "An unknown error occurred";
-
-      toast({title:"Error", description: messageText, variant: "destructive" });
+    } catch (error) { console.error(error); });
     } finally {
       setLoading(false);
 
@@ -489,9 +416,7 @@ export default const _OPDConsultationForm = () {
                           type = "button",
                           variant = "ghost",
                           size = "sm",
-                          className="absolute top-2 right-2 text-destructive hover:bg-destructive/10",
-                          onClick={() => removeMedication(index)}
-                        >;
+                          className="absolute top-2 right-2 text-destructive hover: bg-destructive/10",
                           Remove;
                         </Button>;
                         >;

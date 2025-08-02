@@ -23,6 +23,8 @@ interface SurgeryTypeCreateBody {
 // GET /api/ot/surgery-types - List all surgery types
 export const _GET = async (request: NextRequest) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { searchParams } = new URL(request.url);
     const specialty = searchParams.get("specialty");
     // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
@@ -66,6 +68,8 @@ export const _POST = async (request: NextRequest) => {,
       estimated_duration_minutes,
       required_staff,
       required_equipment,
+  return NextResponse.json({ message: "Not implemented" });
+};
     } = body;
 
      {\n  {

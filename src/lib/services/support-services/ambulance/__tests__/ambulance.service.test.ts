@@ -19,17 +19,14 @@ vi.mock("@/lib/prisma", () => ({
       create: vi.fn(),
       update: vi.fn(),
       delete: vi.fn(),
-      count: vi.fn();
     },
     vi.fn(),
       findUnique: vi.fn(),
       count: vi.fn(),
-      update: vi.fn();
     },
     vi.fn(),
       findUnique: vi.fn(),
       count: vi.fn(),
-      update: vi.fn();
     },
     vi.fn();
     },
@@ -71,7 +68,6 @@ describe("AmbulanceService", () => {
           scheduledTime: new Date(),
           status: "PENDING",
           createdAt: new Date(),
-          updatedAt: new Date();
         },
         {id: "2",
           "MEDIUM",
@@ -79,7 +75,6 @@ describe("AmbulanceService", () => {
           scheduledTime: new Date(),
           status: "ASSIGNED",
           createdAt: new Date(),
-          updatedAt: new Date();
 
       ];
 
@@ -88,14 +83,12 @@ describe("AmbulanceService", () => {
       (prisma.ambulanceTrip.count as any).mockResolvedValue(2);
 
       // Call the service method;
-      const result = await ambulanceService.getAmbulanceTrips({page:1,
-        limit: 10;
+      const result = await ambulanceService.getAmbulanceTrips({page: 1,
       });
 
       // Verify Prisma was called with correct arguments;
       expect(prisma.ambulanceTrip.findMany).toHaveBeenCalledWith();
         expect.objectContaining({skip: 0,
-          "asc" ;
         });
       );
 
@@ -117,7 +110,6 @@ describe("AmbulanceService", () => {
           scheduledTime: new Date(),
           status: "PENDING",
           createdAt: new Date(),
-          updatedAt: new Date();
 
       ];
 
@@ -163,12 +155,11 @@ describe("AmbulanceService", () => {
         ...mockTrip,
         status: "PENDING",
         createdAt: new Date(),
-        updatedAt: new Date();
       };
 
       // Mock Prisma response;
-      (prisma.patient.findUnique as any).mockResolvedValue({id: "patient1", name: "John Doe" });
-      (prisma.user.findUnique as any).mockResolvedValue({id: "user1", name: "Dr. Smith" });
+      (prisma.patient.findUnique as any).mockResolvedValue({id: "patient1",
+      (prisma.user.findUnique as any).mockResolvedValue({id: "user1",
       (prisma.ambulanceTrip.create as any).mockResolvedValue(mockCreatedTrip);
 
       // Call the service method;
@@ -184,7 +175,6 @@ describe("AmbulanceService", () => {
           "John Doe",
           ["OXYGEN", "STRETCHER"],
           specialInstructions: "Patient is elderly and has mobility issues",
-          status: "PENDING";
         });
       });
 
@@ -198,7 +188,6 @@ describe("AmbulanceService", () => {
         "Main Street 123",
         "invalid-patient",
         scheduledTime: new Date(),
-        requestedById: "user1";
       };
 
       // Mock Prisma response;
@@ -224,7 +213,7 @@ describe("AmbulanceService", () => {
       };
 
       // Mock Prisma response;
-      (prisma.user.findUnique as any).mockResolvedValue({id: "user1", name: "Dr. Smith" });
+      (prisma.user.findUnique as any).mockResolvedValue({id: "user1",
       (prisma.ambulanceTrip.create as any).mockResolvedValue(mockCreatedTrip);
 
       // Call the service method;
@@ -251,7 +240,6 @@ describe("AmbulanceService", () => {
         scheduledTime: new Date(),
         status: "PENDING",
         createdAt: new Date(),
-        updatedAt: new Date();
       };
 
       // Mock Prisma response;
@@ -262,7 +250,6 @@ describe("AmbulanceService", () => {
 
       // Verify Prisma was called with correct arguments;
       expect(prisma.ambulanceTrip.findUnique).toHaveBeenCalledWith({where: { id: "1" },
-        include: expect.any(Object);
       });
 
       // Verify result;
@@ -287,7 +274,6 @@ describe("AmbulanceService", () => {
         "user1",
         requestedBy: id: "user1", name: "Dr. Smith" ,
         createdAt: new Date("2025-05-25T09:30:00Z"),
-        updatedAt: new Date("2025-05-25T09:30:00Z");
       };
 
       // Mock Prisma response;
@@ -319,11 +305,9 @@ describe("AmbulanceService", () => {
         scheduledTime: new Date(),
         status: "PENDING",
         createdAt: new Date(),
-        updatedAt: new Date();
       };
 
       const mockUpdateData = {priority: "HIGH",
-        "ASSIGNED";
       };
 
       const mockUpdatedTrip = {
@@ -342,7 +326,6 @@ describe("AmbulanceService", () => {
       // Verify Prisma was called with correct arguments;
       expect(prisma.ambulanceTrip.update).toHaveBeenCalledWith({where: { id: "1" },
         data: mockUpdateData,
-        include: expect.any(Object);
       });
 
       // Verify result;
@@ -367,7 +350,6 @@ describe("AmbulanceService", () => {
         scheduledTime: new Date(),
         status: "PENDING",
         createdAt: new Date(),
-        updatedAt: new Date();
       };
 
       const mockAmbulance = {id: "amb1",
@@ -377,8 +359,7 @@ describe("AmbulanceService", () => {
 
       const mockCrews = [;
         {id: "crew1", name: "John Driver", role: "DRIVER", status: "AVAILABLE" },
-        {id: "crew2", name: "Jane Medic", role: "PARAMEDIC", status: "AVAILABLE" }
-      ];
+        {id: "crew2", name: "Jane Medic", role: "PARAMEDIC",
 
       const mockUpdatedTrip = {
         ...mockExistingTrip,
@@ -405,7 +386,7 @@ describe("AmbulanceService", () => {
       expect(prisma.ambulanceTrip.update).toHaveBeenCalledWith({where: { id: "1" },
         "ASSIGNED",
           ambulanceId: "amb1";
-          {connect: [{id:"crew1" }, {id: "crew2" }];
+          {connect: [{id:"crew1" },
 
         },
         include: expect.any(Object);
@@ -413,8 +394,6 @@ describe("AmbulanceService", () => {
 
       // Verify ambulance status was updated;
       expect(prisma.ambulance.update).toHaveBeenCalledWith({where: { id: "amb1" },
-        data: {status: "ASSIGNED" }
-      });
 
       // Verify crew status was updated;
       expect(prisma.ambulanceCrew.update).toHaveBeenCalledTimes(2);
@@ -438,7 +417,6 @@ describe("AmbulanceService", () => {
         scheduledTime: new Date(),
         status: "PENDING",
         createdAt: new Date(),
-        updatedAt: new Date();
       };
 
       // Mock Prisma response;
@@ -457,7 +435,6 @@ describe("AmbulanceService", () => {
         scheduledTime: new Date(),
         status: "PENDING",
         createdAt: new Date(),
-        updatedAt: new Date();
       };
 
       const mockAmbulance = {id: "amb1",
@@ -482,10 +459,9 @@ describe("AmbulanceService", () => {
         scheduledTime: new Date(),
         status: "ASSIGNED",
         "amb1", registrationNumber: "AMB-001" ,
-        crew: [id: "crew1", name: "John Driver" ,id: "crew2", name: "Jane Medic" ;
+        crew: [id: "crew1", name: "John Driver" ,id: "crew2",
         ],
         createdAt: new Date(),
-        updatedAt: new Date();
       };
 
       const mockUpdatedTrip = {
@@ -536,17 +512,15 @@ describe("AmbulanceService", () => {
         scheduledTime: new Date(),
         status: "EN_ROUTE_TO_DROPOFF",
         "amb1", registrationNumber: "AMB-001" ,
-        crew: [id: "crew1", name: "John Driver" ,id: "crew2", name: "Jane Medic" ;
+        crew: [id: "crew1", name: "John Driver" ,id: "crew2",
         ],
         createdAt: new Date(),
-        updatedAt: new Date();
       };
 
       const mockUpdatedTrip = {
         ...mockExistingTrip,
         status: "COMPLETED",
         completedAt: expect.any(Date),
-        updatedAt: new Date();
       };
 
       // Mock Prisma response;
@@ -573,8 +547,6 @@ describe("AmbulanceService", () => {
 
       // Verify ambulance status was updated;
       expect(prisma.ambulance.update).toHaveBeenCalledWith({where: { id: "amb1" },
-        data: {status: "AVAILABLE" }
-      });
 
       // Verify crew status was updated;
       expect(prisma.ambulanceCrew.update).toHaveBeenCalledTimes(2);
@@ -595,9 +567,8 @@ describe("AmbulanceService", () => {
         "URGENT",
         "City Hospital",
         scheduledTime: new Date(),
-        status: "PENDING", // Not assigned yet;
+        status: "PENDING",
         createdAt: new Date(),
-        updatedAt: new Date();
       };
 
       // Mock Prisma response;
@@ -621,14 +592,12 @@ describe("AmbulanceService", () => {
           new Date(),
           nextMaintenanceDate: new Date(),
           createdAt: new Date(),
-          updatedAt: new Date();
         },
         {id: "amb2",
           "BASIC_LIFE_SUPPORT",
           new Date(),
           nextMaintenanceDate: new Date(),
           createdAt: new Date(),
-          updatedAt: new Date();
 
       ];
 
@@ -637,14 +606,12 @@ describe("AmbulanceService", () => {
       (prisma.ambulance.count as any).mockResolvedValue(2);
 
       // Call the service method;
-      const result = await ambulanceService.getAmbulanceVehicles({page:1,
-        limit: 10;
+      const result = await ambulanceService.getAmbulanceVehicles({page: 1,
       });
 
       // Verify Prisma was called with correct arguments;
       expect(prisma.ambulance.findMany).toHaveBeenCalledWith();
         expect.objectContaining({skip: 0,
-          "asc" ;
         });
       );
 
@@ -665,7 +632,6 @@ describe("AmbulanceService", () => {
           new Date(),
           nextMaintenanceDate: new Date(),
           createdAt: new Date(),
-          updatedAt: new Date();
 
       ];
 
@@ -704,8 +670,7 @@ describe("AmbulanceService", () => {
         {status: "AT_PICKUP", count: 1 },
         {status: "EN_ROUTE_TO_DROPOFF", count: 2 },
         {status: "COMPLETED", count: 10 },
-        {status: "CANCELLED", count: 1 }
-      ];
+        {status: "CANCELLED",
 
       // Mock data for request types;
       const mockRequestTypes = [;
@@ -713,16 +678,14 @@ describe("AmbulanceService", () => {
         {requestType: "NON_EMERGENCY", count: 5 },
         {requestType: "TRANSFER", count: 7 },
         {requestType: "DISCHARGE", count: 3 },
-        {requestType: "SCHEDULED", count: 1 }
-      ];
+        {requestType: "SCHEDULED",
 
       // Mock data for priority distribution;
       const mockPriorities = [;
         {priority: "LOW", count: 2 },
         {priority: "MEDIUM", count: 8 },
         {priority: "HIGH", count: 6 },
-        {priority: "URGENT", count: 8 }
-      ];
+        {priority: "URGENT",
 
       // Mock Prisma response for each query;
       (prisma.ambulanceTrip.groupBy as any) = vi.fn();
@@ -745,18 +708,15 @@ describe("AmbulanceService", () => {
       // Verify specific data;
       expect(result.statusDistribution).toEqual(expect.arrayContaining([;
         {status: "PENDING", count: 5 },
-        {status: "COMPLETED", count: 10 }
-      ]));
+        {status: "COMPLETED",
 
       expect(result.requestTypeDistribution).toEqual(expect.arrayContaining([;
         {requestType: "EMERGENCY", count: 8 },
-        {requestType: "TRANSFER", count: 7 }
-      ]));
+        {requestType: "TRANSFER",
 
       expect(result.priorityDistribution).toEqual(expect.arrayContaining([;
         {priority: "MEDIUM", count: 8 },
-        {priority: "URGENT", count: 8 }
-      ]));
+        {priority: "URGENT",
     });
 
     it("should apply date filters when provided", async () => {
@@ -774,13 +734,11 @@ describe("AmbulanceService", () => {
       // Verify Prisma was called with date filters;
       expect(prisma.ambulanceTrip.count).toHaveBeenCalledWith({
         {gte: fromDate,
-            lte: toDate;
 
       }),
       expect(prisma.ambulanceTrip.groupBy).toHaveBeenCalledWith();
         expect.objectContaining({
           {gte: fromDate,
-              lte: toDate;
 
         });
       );

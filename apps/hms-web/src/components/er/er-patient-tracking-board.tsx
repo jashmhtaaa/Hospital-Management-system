@@ -1,24 +1,20 @@
-import React from 'react';
+import React from "react";
 
 
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 interface Patient {
   id: string,
-  name: string;
   age: number,
-  gender: string;
   chiefComplaint: string,
-  triageLevel: 1 | 2 | 3 | 4 | 5;
   arrivalTime: string,
-  waitTime: string;
   status: 'waiting' | 'in-progress' | 'ready-for-discharge' | 'discharged';
   assignedTo?: string;
   location?: string;
 }
 
 interface ERPatientTrackingBoardProps {
-  patients: Patient[]
+  patients: Patient[];
 }
 
 /**

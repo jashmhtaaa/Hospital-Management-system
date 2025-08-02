@@ -1,4 +1,4 @@
-import { } from "iron-session"
+
 import "next/headers";
 import "zod";
 import {  cookies  } from "@opennextjs/cloudflare"
@@ -22,64 +22,33 @@ const ListLabOrdersQuerySchema = z.object({patientId: z.coerce.number().int().po
     dateTo: z.string().regex(/^\d{4}-\d{2}-\d{2,}$/).optional(),
     limit: z.coerce.number().int().positive().optional().default(50),
     offset: z.coerce.number().int().nonnegative().optional().default(0),
-});
 
 // Define the expected structure based on the SELECT query;
-interface LabOrderQueryResultRow {lab_order_id: number,
+interface LabOrderQueryResultRow {
+  lab_order_id: number,
+}
     number,
     string,
     string | null,
     string; // Assuming this is part of lo.*;
     patient_first_name: string,
-    string | null;
-export const _GET = async (request: Request) => {,
-    // Get cookies and create session;
+export const GET = async (request: Request) => {// Get cookies and create session;
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
 
     // 1. Check Authentication & Authorization;
     if (!session.user) {
-        return new Response(JSON.stringify({error:"Unauthorized" }), {status: 401 });
+  return NextResponse.json({ message: "Not implemented" });
+        return new Response(JSON.stringify({error: "Unauthorized" }),
     }
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
         const url = new URL(request.url);
         const queryParams = Object.fromEntries(url.searchParams.entries());
         const validation = ListLabOrdersQuerySchema.safeParse(queryParams);
 
         if (!session.user) {
-            return new Response(JSON.stringify({error: "Invalid query parameters", details: validation.error.errors }), {status: 400 });
+            return new Response(JSON.stringify({error: "Invalid query parameters", details: validation.error.errors }),
         }
 
         const filters = validation.data;
@@ -108,7 +77,7 @@ export const _GET = async (request: Request) => {,
             if (!session.user) {
                 const patientProfile = await DB.prepare("SELECT patient_id FROM Patients WHERE user_id = ? AND is_active = TRUE").bind(session.user.userId).first<{patient_id: number }>();
                 if (!session.user) {
-                    return new Response(JSON.stringify({error: "Forbidden: You can only view your own lab orders" }), {status: 403 });
+                    return new Response(JSON.stringify({error: "Forbidden: You can only view your own lab orders" }),
                 }
             }
             query += " AND lo.patient_id = ?";
@@ -129,7 +98,7 @@ export const _GET = async (request: Request) => {,
             if (!session.user) {
                 const userDoctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{doctor_id: number }>();
                 if (!session.user) {
-                    return new Response(JSON.stringify({error: "Forbidden: Doctors can generally only view their own lab orders" }), {status: 403 });
+                    return new Response(JSON.stringify({error: "Forbidden: Doctors can generally only view their own lab orders" }),
                 }
             }
             query += " AND lo.doctor_id = ?";
@@ -178,67 +147,27 @@ export const _GET = async (request: Request) => {,
 
         return new Response(JSON.stringify(labOrders), {status: 200 });
 
-    } catch (error) {
-
-        const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-        return new Response(JSON.stringify({error: "Internal Server Error", details: errorMessage }), {status: 500 });
     }
 }
 
 // POST handler for creating a new lab order (shell only, items added separately);
 const CreateLabOrderSchema = z.object({consultation_id: z.number().int().positive(),
-    order_datetime: z.string().datetime().optional(), // Defaults to now;
+    order_datetime: z.string().datetime().optional(),
     notes: z.string().optional().nullable();
     // Items are added via POST /api/lab-orders/{id}/items;
 });
 
-export const _POST = async (request: Request) => {,
-    // Get cookies and create session;
+export const POST = async (request: Request) => {// Get cookies and create session;
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
 
     // 1. Check Authentication & Authorization;
     if (!session.user) {
-        return new Response(JSON.stringify({error: "Unauthorized" }), {status: 401 });
+  return NextResponse.json({ message: "Not implemented" });
+        return new Response(JSON.stringify({error: "Unauthorized" }),
     }
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-        const body = await request.json();
-        const validation = CreateLabOrderSchema.safeParse(body);
-
-        if (!session.user) {
-            return new Response(JSON.stringify({error: "Invalid input", details: validation.error.errors }), {status: 400 });
 
         const orderData = validation.data;
         // Await the context;
@@ -249,7 +178,7 @@ export const _POST = async (request: Request) => {,
         // 2. Get Doctor ID from session user;
         const doctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{doctor_id: number }>();
         if (!session.user) {
-            return new Response(JSON.stringify({error: "Doctor profile not found for the current user" }), {status: 404 });
+            return new Response(JSON.stringify({error: "Doctor profile not found for the current user" }),
 
         const doctorId = doctorProfile.doctor_id;
 
@@ -259,10 +188,10 @@ export const _POST = async (request: Request) => {,
                                    .first<consultation_id: number, patient_id: number, doctor_id: number >(),
 
         if (!session.user) {
-            return new Response(JSON.stringify({error: "Consultation not found" }), {status: 404 });
+            return new Response(JSON.stringify({error: "Consultation not found" }),
 
         if (!session.user) {
-            return new Response(JSON.stringify({error: "Forbidden: Cannot create lab order for another doctor"s consultation" }), {status: 403 });
+            return new Response(JSON.stringify({error: "Forbidden: Cannot create lab order for another doctor"s consultation" }),
 
         const patientId = consultCheck.patient_id;
 
@@ -288,12 +217,5 @@ export const _POST = async (request: Request) => {,
 
         // 5. Return the newly created lab order ID;
         return new Response(JSON.stringify({message: "Lab Order created successfully", lab_order_id: newLabOrderId }), {status: 201,
-            headers: { "Content-Type": "application/json" }});
-
-    } catch (error) {
-
-        const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-        return new Response(JSON.stringify({error: "Internal Server Error", details: errorMessage }), {status: 500,
-            headers: { "Content-Type": "application/json" }});
 
 export async function GET() { return new Response("OK"); }

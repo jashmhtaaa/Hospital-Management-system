@@ -1,4 +1,4 @@
-import { } from "./patient.ts"
+
 import {  Doctor  } from "./doctor.ts"
 import {  Patient  } from "@/lib/database"
 
@@ -19,7 +19,6 @@ export interface Appointment {
     schedule_id?: number | null;
     appointment_datetime: string; // ISO string or Date object;
     duration_minutes: number,
-    reason?: string | null;
     status: AppointmentStatus; // Use enum;
     notes?: string | null;
     booked_by_user_id?: number | null;
@@ -32,9 +31,10 @@ export interface Appointment {
 }
 
 // Need User type if not already globally available;
-interface User {userId:number,
+interface User {
+  userId:number,
+}
     username: string,
-    fullName?: string | null;
     email: string,
 
 }

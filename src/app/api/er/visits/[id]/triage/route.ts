@@ -1,15 +1,19 @@
-import {NextRequest, NextResponse } from "next/server";
-import {type } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-// GET /api/er/visits/[id]/triage - Get triage information for a visit
-export const GET = async (request: NextRequest, { params }: {params: { id: string } }) => {
+interface RouteContext {
+  params: { id: string };
+}
+
+export const GET = async (request: NextRequest, context: RouteContext) => {
   try {
-    // Implementation here
-    return NextResponse.json({triage: {} });
+    const { id } = context.params;
+    
+    // TODO: Implement Er Visits [Id] Triage logic for ID: {id}
+    return NextResponse.json({ 
+      id,
+      message: "Not implemented" 
+    });
   } catch (error) {
-    return NextResponse.json(
-      {error: "Failed to fetch triage information" },
-      {status: 500 }
-    );
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 };

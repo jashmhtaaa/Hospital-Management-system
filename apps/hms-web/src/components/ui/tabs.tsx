@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 
 import { cn } from '@/lib/utils';
@@ -60,8 +60,7 @@ const TabsContent = React.forwardRef<HTMLDivElement, TabsContentProps>(
 <div
       ref={ref}
       className={cn(
-        "mt-2 ring-offset-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 focus-visible:ring-offset-2",
-        className;
+        "mt-2 ring-offset-white focus-visible: outline-none focus-visible:ring-2 focus-visible:ring-gray-950 focus-visible:ring-offset-2",
       )}
       {...props}
     />

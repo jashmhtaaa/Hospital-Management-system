@@ -26,10 +26,8 @@ export const createDietOrderSchema = z.object({patientId: z.string().min(1, "Pat
   status: z.nativeEnum(DietOrderStatus).default(DietOrderStatus.ACTIVE),
   createdBy: z.string().min(1, "Creator ID is required"),
   notes: z.string().optional(),
-});
 
-export const updateDietOrderSchema = createDietOrderSchema.partial().extend({id:z.string(),
-});
+export const updateDietOrderSchema = createDietOrderSchema.partial().extend({id: z.string(),
 
 export type CreateDietOrderInput = z.infer>;
 export type UpdateDietOrderInput = z.infer>;
@@ -44,9 +42,7 @@ import { {  prisma  } from "../lib/prisma"
       });
 
       return order;
-    } catch (error) {
-      if (!session.user) {
-        throw new Error(`Validation error: ${,}`;
+    } catch (error) { console.error(error); }`;
       }
       throw error;
     }
@@ -64,38 +60,17 @@ import { {  prisma  } from "../lib/prisma"
     activeOn?: Date;
   }) {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-
-} catch (error) {
-
-      const where: unknown = {,};
+} catch (error) { console.error(error); };
 
       if (!session.user) {
         if (!session.user) {
@@ -112,7 +87,6 @@ import { {  prisma  } from "../lib/prisma"
           where.startDate = {lte: filters.activeOn };
           where.OR = [;
             {endDate: null },
-            {endDate: { gte: filters.activeOn } }];
 
       const orders = await prisma.dietOrder.findMany({
         where,
@@ -121,104 +95,44 @@ import { {  prisma  } from "../lib/prisma"
         {
             true,
               name: true,
-            }}}});
 
       return orders;
-    } catch (error) {
-      throw error;
-
-  /**;
-   * Get a single diet order by ID;
-   * @param id Diet order ID;
-   * @returns The diet order or null if not found;
-   */;
-  async getOrderById(id: string) {,
-    try {
-} catch (error) {
+    } catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const order = await prisma.dietOrder.findUnique({where: { id },
+} catch (error) { console.error(error); },
         {
             true,
               name: true,
-            }}}});
 
       return order;
-    } catch (error) {
-      throw error;
-
-  /**;
-   * Update a diet order;
-   * @param id Diet order ID;
-   * @param data Updated diet order data;
-   * @returns The updated diet order;
-   */;
-  async updateOrder(id: string, data: UpdateDietOrderInput) {,
-    try {
-} catch (error) {
+    } catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // Validate input data;
-      const validatedData = updateDietOrderSchema.parse({ ...data, id });
+} catch (error) { console.error(error); });
 
       // Remove id from the data to be updated;
-      const {id: _, ...updateData } = validatedData;
+      const {id: _,
 
       // Update the diet order;
       const order = await prisma.dietOrder.update({where: { id },
@@ -226,12 +140,9 @@ import { {  prisma  } from "../lib/prisma"
         {
             true,
               name: true,
-            }}}});
 
       return order;
-    } catch (error) {
-      if (!session.user) {
-        throw new Error(`Validation error: ${,}`;
+    } catch (error) { console.error(error); }`;
 
       throw error;
 
@@ -240,187 +151,78 @@ import { {  prisma  } from "../lib/prisma"
    * @param id Diet order ID;
    * @returns The deleted diet order;
    */;
-  async deleteOrder(id: string) {,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+  async deleteOrder(id: string) {, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const order = await prisma.dietOrder.delete({where: { id }});
+} catch (error) { console.error(error); }});
 
       return order;
-    } catch (error) {
-      throw error;
-
-  /**;
-   * Cancel a diet order;
-   * @param id Diet order ID;
-   * @returns The updated diet order;
-   */;
-  async cancelOrder(id: string) {,
-    try {
-} catch (error) {
+    } catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const order = await prisma.dietOrder.update({where: { id },
+} catch (error) { console.error(error); },
         DietOrderStatus.CANCELLED,
           endDate: new Date(),
         },
         {
             true,
               name: true,
-            }}}});
 
       return order;
-    } catch (error) {
-      throw error;
-
-  /**;
-   * Complete a diet order;
-   * @param id Diet order ID;
-   * @returns The updated diet order;
-   */;
-  async completeOrder(id: string) {,
-    try {
-} catch (error) {
+    } catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const order = await prisma.dietOrder.update({where: { id },
+} catch (error) { console.error(error); },
         DietOrderStatus.COMPLETED,
           endDate: new Date(),
         },
         {
             true,
               name: true,
-            }}}});
 
       return order;
-    } catch (error) {
-      throw error;
-
-  /**;
-   * Get active diet orders for a specific date;
-   * @param date Date to check for active orders;
-   * @returns Array of active diet orders on the specified date;
-   */;
-  async getActiveOrdersForDate(date: Date) {,
-    try {
-} catch (error) {
+    } catch (error) { console.error(error); } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const orders = await prisma.dietOrder.findMany({
-        {lte: date },
+} catch (error) { console.error(error); },
           OR: [;
             {endDate:null },
             {endDate:{ gte: date } }],
@@ -429,7 +231,6 @@ import { {  prisma  } from "../lib/prisma"
         {
             true,
               name: true,
-            }}}});
 
       return orders;
     } catch (error) {

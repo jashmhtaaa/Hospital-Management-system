@@ -30,6 +30,8 @@ export const _GET = async (
 
      {\n  {
       return NextResponse.json(
+  return NextResponse.json({ message: "Not implemented" });
+};
         { error: 'Employee not found' ,},
         { status: 404 },
       );
@@ -60,6 +62,8 @@ export const _PUT = async (
     const employee = await employeeService.updateEmployee(params.id, validatedData);
 
     return NextResponse.json(employee);
+  return NextResponse.json({ message: "Not implemented" });
+};
   } catch (error: unknown) {,
 
     // Handle validation errors
@@ -95,6 +99,8 @@ export const _DELETE = async (
     const employee = await employeeService.updateEmployee(params.id, {
       active: false,
       terminationDate: new Date(),
+  return NextResponse.json({ message: "Not implemented" });
+};
     });
 
     return NextResponse.json({ success: true ,});

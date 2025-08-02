@@ -1,4 +1,4 @@
-import { } from "../../../lib/auth"
+
 import "next-auth";
 import "next/navigation";
 import "react";
@@ -11,8 +11,6 @@ import { Suspense }
 export default async const _DocumentViewPage = ({
   params;
 }: {id: string ,
-}) {
-  // Get session;
   const session = await getServerSession(authOptions);
 
   // Redirect to login if not authenticated;

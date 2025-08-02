@@ -1,5 +1,5 @@
-import { } from "@/components/ui/button"
-import { } from "react"
+
+
 import CardContent
 import CardHeader
 import CardTitle, React
@@ -19,7 +19,7 @@ import { useState
   TableHead,
   TableHeader,
   TableRow} from "@/components/ui/table";
-import { } from "date-fns"
+
 import "lucide-react";
 import { Badge } from "@/components/ui/badge"
 import { Calculator }
@@ -35,7 +35,6 @@ interface BillingItem {
   number,
   status: "billed" | "unbilled" | "cancelled"; // Define possible statuses;
   surgery_id: string,
-  invoice_id?: string;
 }
 
 // FIX: Define API response types;
@@ -47,16 +46,13 @@ interface BillingItem {
 // }
 
 interface OTBillingItemsProperties {
-  patientId: string,
-  invoiceId?: string; // Optional: if creating/editing a specific invoice,
-  onAddToBill?: (items: BillingItem[]) => void; // Callback for adding selected items to bill;
+  patientId: string, // Optional: if creating/editing a specific invoice, // Callback for adding selected items to bill;
   readOnly?: boolean; // If true, just displays items without selection capability;
 }
 
 // Helper function to format currency;
 const formatCurrency = (amount: number) => {
-  return new Intl.NumberFormat("en-IN", {style:"currency",
-    0;
+  return new Intl.NumberFormat("en-IN", {style: "currency",
   }).format(amount);
 };
 
@@ -92,46 +88,17 @@ export default const _OTBillingItems = ({
   useEffect(() => {
     const fetchOTBillingItems = async () => {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-
-} catch (error) {
-
-        setLoading(true),
-        setError(undefined);
-
-        // Replace with actual API call;
-        // const _response = await fetch(`/api/ot/billing-items?patientId=/* "2025-04-28T09:00:00Z",
-            "Surgery",
-            "unbilled",
-            surgery_id: "booking-1",
-          },
+} catch (error) { console.error(error); },
             id: "bill-item-2",
             date: "2025-04-28T09:00:00Z",
             "Facility",
@@ -149,16 +116,7 @@ export default const _OTBillingItems = ({
             "INV-001"];
         setBillingItems(mockData),
         setLoading(false);
-      } catch (error_: unknown) {
-        // FIX: Use unknown,
-        const messageText =;
-          error_ instanceof Error;
-            ? error_.message;
-            : "An unknown error occurred";
-        setError(messageText),
-        setLoading(false);
-
-    };
+      } catch (error) { console.error(error); };
 
     if (!session.user) {
       fetchOTBillingItems();
@@ -176,8 +134,6 @@ export default const _OTBillingItems = ({
   const handleAddToBill = () => {
     if (!session.user) {
       // FIX: Use BillingItem type,
-      const itemsToAdd = billingItems.filter((item: BillingItem) => {}
-        selectedItems.includes(item.id);
       );
       onAddToBill(itemsToAdd);
       // Reset selection after adding;

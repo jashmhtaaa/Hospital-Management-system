@@ -12,26 +12,22 @@ import {  HousekeepingInspection
      } from "next/server"[];
   }[];
   {system: string,
-      string;
     }[];
     text: string,
-  };
   string;
     display?: string;
   };
   string;
     display?: string;
   };
-  performer?: {reference:string,
-    display?: string;
+  performer?: {reference: string,
   }[];
   string;
     display?: string;
   }[];
   occurrenceDateTime?: string;
   authoredOn: string,
-  note?: {text:string,
-  }[];
+  note?: {text: string,
 
 /**;
  * FHIR-compliant Housekeeping Task;
@@ -41,19 +37,15 @@ import {  HousekeepingInspection
   }[];
   status: "draft" | "requested" | "received" | "accepted" | "rejected" | "ready" | "cancelled" | "in-progress" | "on-hold" | "failed" | "completed" | "entered-in-error",
   "routine" | "urgent" | "asap" | "stat",
-  {reference:string,
-  };
+  {reference: string,
   string;
   };
   authoredOn: string,
-  {reference:string,
-    display?: string;
+  {reference: string,
   };
-  owner?: {reference:string,
-    display?: string;
+  owner?: {reference: string,
   };
-  note?: {text:string,
-  }[];
+  note?: {text: string,
   executionPeriod?: {
     start?: string;
     end?: string;
@@ -71,10 +63,8 @@ import {  HousekeepingInspection
       string;
     }[];
   };
-  managingOrganization?: {reference:string,
-  };
-  partOf?: {reference:string,
-  };
+  managingOrganization?: {reference: string,
+  partOf?: {reference: string,
 
 /**;
  * FHIR-compliant Housekeeping Inspection;
@@ -84,31 +74,23 @@ import {  HousekeepingInspection
     }[];
   }[];
   {system: string,
-      string;
     }[];
     text: string,
-  };
-  subject?: {reference:string,
-  };
+  subject?: {reference: string,
   effectiveDateTime: string,
-  string;
     display?: string;
   }[];
   valueQuantity?: {value: number,
     string,
     code: string,
-  };
   component?: {
     {system: string,
-        string;
       }[];
       text: string,
-    };
     valueString?: string;
     valueQuantity?: {value: number,
       string,
       code: string,
-    };
   }[];
 
 /**;
@@ -116,11 +98,9 @@ import {  HousekeepingInspection
  */;
 export const _toFHIRHousekeepingRequest = (unknown,
   requestedByUser: unknown,
-  tasks?: unknown[];
 }): FHIRHousekeepingRequest {
   // Map status from internal to FHIR status;
-  const statusMap: Record<string, "draft" | "active" | "on-hold" | "revoked" | "completed" | "entered-in-error" | "unknown"> = {
-    "PENDING": "draft",
+  const statusMap: Record<string,
     "ASSIGNED": "active",
     "IN_PROGRESS": "active",
     "COMPLETED": "completed",
@@ -128,8 +108,7 @@ export const _toFHIRHousekeepingRequest = (unknown,
   };
 
   // Map priority from internal to FHIR priority;
-  const priorityMap: Record<string, "routine" | "urgent" | "asap" | "stat"> = {
-    "LOW": "routine",
+  const priorityMap: Record<string,
     "MEDIUM": "routine",
     "HIGH": "urgent",
     "URGENT": "stat";
@@ -140,15 +119,12 @@ export const _toFHIRHousekeepingRequest = (unknown,
     "REGULAR_CLEANING": {code: "regular-cleaning", display: "Regular Cleaning" },
     "DEEP_CLEANING": {code: "deep-cleaning", display: "Deep Cleaning" },
     "SPILL_CLEANUP": {code: "spill-cleanup", display: "Spill Cleanup" },
-    "TERMINAL_CLEANING": {code: "terminal-cleaning", display: "Terminal Cleaning" }
-  };
+    "TERMINAL_CLEANING": {code: "terminal-cleaning",
 
   return {resourceType: "ServiceRequest",
     statusMap[request.status] || "unknown",
     priorityMap[request.priority] || "routine",
-    [{system:"https://terminology.hl7.org/CodeSystem/service-category",
-        "Housekeeping";
-      }]],
+    [}]],
     "https://hms.local/fhir/CodeSystem/housekeeping-request-type",
         code: requestTypeMap[request.requestType]?.code || request.requestType.toLowerCase(),
         display: requestTypeMap[request.requestType]?.display || request.requestType,
@@ -164,7 +140,6 @@ export const _toFHIRHousekeepingRequest = (unknown,
       display: request.location?.name || "Unknown Location"],
     occurrenceDateTime: request.scheduledDate?.toISOString(),
     authoredOn: request.createdAt.toISOString(),
-    note: request.notes ? [text: request.notes ] : [];
 
 /**;
  * Convert database HousekeepingTask to FHIR Task;
@@ -172,17 +147,13 @@ export const _toFHIRHousekeepingRequest = (unknown,
 export const _toFHIRHousekeepingTask = (HousekeepingRequest;
   assignedToUser?: unknown;
   createdByUser: unknown,
-}): FHIRHousekeepingTask {
-  // Map status from internal to FHIR status;
-  const statusMap: Record<string, "draft" | "requested" | "received" | "accepted" | "rejected" | "ready" | "cancelled" | "in-progress" | "on-hold" | "failed" | "completed" | "entered-in-error"> = {
-    "PENDING": "requested",
+  const statusMap: Record<string,
     "IN_PROGRESS": "in-progress",
     "COMPLETED": "completed",
     "CANCELLED": "cancelled";
   };
 
   return {resourceType: "Task",
-    [{reference:`ServiceRequest/${task.requestId}`;
     }],
     status: statusMap[task.status] || "requested",
     priorityMap[task.request?.priority] || "routine",
@@ -197,26 +168,20 @@ export const _toFHIRHousekeepingTask = (HousekeepingRequest;
     note: task.notes ? [text: task.notes ] : [],
     task.startTime?.toISOString(),
       end: task.endTime?.toISOString(),
-  };
 
 /**;
  * Convert database HousekeepingInspection to FHIR Observation;
  */;
 export const _toFHIRHousekeepingInspection = (unknown,
   inspector: unknown,
-}): FHIRHousekeepingInspection {
-  // Map status from internal to FHIR status;
-  const statusMap: Record<string, "registered" | "preliminary" | "final" | "amended" | "corrected" | "cancelled" | "entered-in-error" | "unknown"> = {
-    "SCHEDULED": "registered",
+  const statusMap: Record<string,
     "COMPLETED": "final",
     "FAILED": "final";
   };
 
   return {resourceType: "Observation",
     statusMap[inspection.status] || "unknown",
-    [{system:"https://terminology.hl7.org/CodeSystem/observation-category",
-        "Survey";
-      }]],
+    [}]],
     "https://hms.local/fhir/CodeSystem/housekeeping-inspection-type",
         code: inspection.inspectionType.toLowerCase(),
         display: inspection.inspectionType,
@@ -236,7 +201,6 @@ export const _toFHIRHousekeepingInspection = (unknown,
     component: [,
       ...(inspection.findings ? [{
         [{system: "https://hms.local/fhir/CodeSystem/housekeeping-inspection",
-            "Findings";
           }],
           text: "Findings",
         },
@@ -244,19 +208,16 @@ export const _toFHIRHousekeepingInspection = (unknown,
       }] : []),
       ...(inspection.recommendations ? [{
         [{system: "https://hms.local/fhir/CodeSystem/housekeeping-inspection",
-            "Recommendations";
           }],
           text: "Recommendations",
         },
         valueString: inspection.recommendations,
-      }] : []);
     ];
   };
 
 // Helper function to map priority;
 const priorityMap = (priority: string): "routine" | "urgent" | "asap" | "stat" {,
-  const map: Record<string, "routine" | "urgent" | "asap" | "stat"> = {
-    "LOW": "routine",
+  const map: Record<string,
     "MEDIUM": "routine",
     "HIGH": "urgent",
     "URGENT": "stat";

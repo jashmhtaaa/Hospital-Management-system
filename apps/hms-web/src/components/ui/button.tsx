@@ -22,8 +22,6 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       outline: "border border-gray-300 bg-transparent hover:bg-gray-100",
       ghost: "bg-transparent hover:bg-gray-100",
       link: "bg-transparent underline-offset-4 hover:underline text-blue-600",
-      danger: "bg-red-600 text-white hover:bg-red-700"
-    };
 
     const sizes = {
       default: "h-10 py-2 px-4",

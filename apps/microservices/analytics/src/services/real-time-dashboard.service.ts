@@ -32,9 +32,6 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
   itemHeight?: number;
   icon?: 'circle' | 'rect' | 'roundRect' | 'triangle' | 'diamond' | 'pin' | 'arrow' | 'none';
   scrollable: boolean,
-
-}
-    };
     labelFont?: {
       family?: string;
       size?: number;
@@ -49,7 +46,6 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
     max?: number;
     logarithmic: boolean,
     reversed: boolean,
-  };
    boolean;
     title?: string;
     titleFont?: {
@@ -73,7 +69,6 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
     max?: number;
     logarithmic: boolean,
     reversed: boolean,
-  };
 
 }
   };
@@ -93,9 +88,6 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
   showDelay?: number;
   hideDelay?: number;
   animation: boolean,
-
-}
-  };
   dateSettings?: DateFilterSettings;
   measureSettings?: MeasureFilterSettings;
   cascading: boolean,
@@ -121,9 +113,6 @@ export enum FilterType {
   }[];
   preserveFilters: boolean,
   openInNewTab: boolean,
-
-}
-  }[];
   lastPublishedDate?: Date;
   lastPublishedBy?: string;
   dataSourceLastRefreshed?: Date;
@@ -173,19 +162,8 @@ export enum FilterType {
    string,
    VisibilitySettings,
   metadata: Record>,
-
-}
-  }[];
   enabled: boolean,
   sequence: number,
-
-}
-}
-
-// Financial Dashboard models
-
-}
-  };
   kpis: FinancialKPI[],
    DashboardFilter[],
    boolean,
@@ -226,12 +204,12 @@ export enum FilterType {
     owner?: string;): Promise<Dashboard[]> 
     try {
       // Try cache first
-      const cacheKey = `dashboards:${JSON.stringify(filters || {}),}`;
-      const cached = await cacheService.getCachedResult('analytics:', cacheKey);
+      const cacheKey = `dashboards: ${JSON.stringify(filters || {}),
+      const cached = await cacheService.getCachedResult('analytics: ',
        {\n  eturn cached;
 
       // Build filters
-      const where: unknown = {,};
+      const where: unknown = {,
        {\n  here.category = filters.category;
        {\n  here.type = filters.type;
        {\n  here.status = filters.status;
@@ -252,8 +230,6 @@ export enum FilterType {
       // Record metrics
       metricsCollector.incrementCounter('analytics.dashboard_queries', 1, {
         category: filters?.category || 'ALL',
-         filters?.status || 'ACTIVE'
-      });
 
       return dashboards as Dashboard[];catch (error) 
 
@@ -266,8 +242,8 @@ export enum FilterType {
   async getDashboardById(id: string): Promise<Dashboard | null> {,
     try {
       // Try cache first
-      const cacheKey = `dashboard:${id,}`;
-      const cached = await cacheService.getCachedResult('analytics:', cacheKey);
+      const cacheKey = `dashboard: ${id,
+      const cached = await cacheService.getCachedResult('analytics: ',
        {\n  eturn cached;
 
       // Query database
@@ -288,10 +264,7 @@ export enum FilterType {
       });
 
       return dashboard as Dashboard;
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**
@@ -307,7 +280,7 @@ export enum FilterType {
 
       // Create dashboard
       const newDashboard = await this.prisma.dashboard.create({
-        data: {,
+        data: {
           ...dashboard,
           id: `dashboard-${crypto.getRandomValues([0],}`,
           created: new Date(),
@@ -320,7 +293,6 @@ export enum FilterType {
       // Create audit log
       await this.auditService.createAuditLog({
         action: 'CREATE',
-         newDashboard.id;
         userId,
          dashboard.name,
            dashboard.type,
@@ -333,18 +305,13 @@ export enum FilterType {
       metricsCollector.incrementCounter('analytics.dashboards_created', 1, {
         category: dashboard.category,
         type: dashboard.type,
-      });
 
       // Publish event
       await pubsub.publish('DASHBOARD_CREATED', {
         dashboardCreated: newDashboard,
-      });
 
       return newDashboard as Dashboard;
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**
@@ -352,7 +319,6 @@ export enum FilterType {
    */
   async updateDashboard(
     id: string,
-     string;
   ): Promise<Dashboard> {
     try {
       // Get current dashboard
@@ -367,7 +333,7 @@ export enum FilterType {
       // Update dashboard
       const updatedDashboard = await this.prisma.dashboard.update({
         where: { id ,},
-        data: {,
+        data: {
           ...updates,
           updated: new Date(),
         },
@@ -376,7 +342,6 @@ export enum FilterType {
       // Create audit log
       await this.auditService.createAuditLog({
         action: 'UPDATE',
-         id;
         userId,
          currentDashboard.name,
            updates.metadata?.version || currentDashboard.metadata.version,
@@ -390,7 +355,6 @@ export enum FilterType {
           date: new Date(),
           userId,
           changes: 'Dashboard updated',
-        });
 
         await this.prisma.dashboard.update({
           where: { id ,},
@@ -409,13 +373,9 @@ export enum FilterType {
       // Publish event
       await pubsub.publish('DASHBOARD_UPDATED', {
         dashboardUpdated: updatedDashboard,
-      });
 
       return updatedDashboard as Dashboard;
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**
@@ -423,14 +383,8 @@ export enum FilterType {
    */
   async getDashboardData(
     dashboardId: string,
-    options: {,
-      filters?: Record>
-      executionId?: string;
       refreshType?: 'auto' | 'manual' | 'initial';
       userContext: UserContext,
-    }
-  ): Promise<DashboardData> {
-    const startTime = crypto.getRandomValues([0];
 
     try {
       // Get dashboard
@@ -446,7 +400,7 @@ export enum FilterType {
       const filterState = options.filters || {};
 
       // Fetch data for each widget
-      const widgetData: Record<string, WidgetData> = {};
+      const widgetData: Record<string,
 
       await Promise.all(
         dashboard.widgets.map(async (widget) => {
@@ -472,21 +426,7 @@ export enum FilterType {
               timestamp: new Date(),
               metadata: data.metadata,
               updateTrigger: options.refreshType,
-            };
-          } catch (error) {
-
-            // Add error information
-            widgetData[widget.id] = {
-              widgetId: widget.id,
-               [],
-               0,
-               'ERROR',
-               'WIDGET_DATA_ERROR',
-                 error.stack,
-              cachedResult: false,
-              timestamp: new Date(),
-              updateTrigger: options.refreshType,
-            };
+          } catch (error) { console.error(error); };
           }
         });
       );
@@ -494,7 +434,7 @@ export enum FilterType {
       const executionTime = crypto.getRandomValues([0] - startTime;
 
       // Create dashboard data
-      const dashboardData: DashboardData = {,
+      const dashboardData: DashboardData = {;
         dashboardId,
         timestamp: new Date(),
         filterState,
@@ -503,7 +443,6 @@ export enum FilterType {
         executionId,
         userContext: options.userContext,
         refreshType: options.refreshType || 'manual',
-      };
 
       // Record metrics
       metricsCollector.recordTimer('analytics.dashboard_load_time', executionTime);
@@ -511,7 +450,6 @@ export enum FilterType {
         dashboardId,
         refreshType: options.refreshType || 'manual',
         widgetCount: Object.keys(widgetData).length.toString(),
-      });
 
       // Record widget errors
       const errorWidgets = Object.values(widgetData).filter(w => w.dataStatus === 'ERROR');
@@ -522,10 +460,7 @@ export enum FilterType {
       }
 
       return dashboardData;
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**
@@ -547,13 +482,12 @@ export enum FilterType {
       this.validateWidget(widget);
 
       // Create widget
-      const newWidget: DashboardWidget = {,
+      const newWidget: DashboardWidget = {;
         ...widget,
         id: `widget-${crypto.getRandomValues([0],}`,
         created: new Date(),
         updated: new Date(),
         creator: userId,
-      };
 
       // Add widget to dashboard
       const updatedWidgets = [...dashboard.widgets, newWidget];
@@ -584,21 +518,17 @@ export enum FilterType {
         dashboardId,
         widgetType: widget.type,
         visualization: widget.visualization,
-      });
 
       // Publish event
       await pubsub.publish('WIDGET_CREATED', {
-        widgetCreated: {,
+        widgetCreated: {
           dashboardId,
           widget: newWidget,
         },
       });
 
       return newWidget;
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**
@@ -631,7 +561,6 @@ export enum FilterType {
         ...currentWidget,
         ...updates,
         updated: new Date(),
-      };
 
       // Update widgets array
       const updatedWidgets = [...dashboard.widgets];
@@ -663,21 +592,17 @@ export enum FilterType {
         dashboardId,
         widgetType: updatedWidget.type,
         visualization: updatedWidget.visualization,
-      });
 
       // Publish event
       await pubsub.publish('WIDGET_UPDATED', {
-        widgetUpdated: {,
+        widgetUpdated: {
           dashboardId,
           widget: updatedWidget,
         },
       });
 
       return updatedWidget as DashboardWidget;
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**
@@ -692,22 +617,19 @@ export enum FilterType {
       this.validateKPI(kpi);
 
       // Create KPI
-      const newKPI: KPI = {,
+      const newKPI: KPI = {;
         ...kpi,
         id: `kpi-${crypto.getRandomValues([0],}`,
         created: new Date(),
         updated: new Date(),
-      };
 
       // Save KPI
       await this.prisma.kpi.create({
         data: newKPI as any,
-      });
 
       // Create audit log
       await this.auditService.createAuditLog({
         action: 'CREATE',
-         newKPI.id;
         userId,
          kpi.name,
            kpi.type,
@@ -717,18 +639,13 @@ export enum FilterType {
       metricsCollector.incrementCounter('analytics.kpis_created', 1, {
         category: kpi.category,
         type: kpi.type,
-      });
 
       // Publish event
       await pubsub.publish('KPI_CREATED', {
         kpiCreated: newKPI,
-      });
 
       return newKPI;
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**
@@ -737,8 +654,8 @@ export enum FilterType {
   async getKPIById(id: string): Promise<KPI | null> {,
     try {
       // Try cache first
-      const cacheKey = `kpi:${id,}`;
-      const cached = await cacheService.getCachedResult('analytics:', cacheKey);
+      const cacheKey = `kpi: ${id,
+      const cached = await cacheService.getCachedResult('analytics: ',
        {\n  eturn cached;
 
       // Query database
@@ -752,10 +669,7 @@ export enum FilterType {
       await cacheService.cacheResult('analytics:', cacheKey, kpi, 300); // 5 minutes
 
       return kpi as KPI;
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**
@@ -768,12 +682,12 @@ export enum FilterType {
   }): Promise<KPI[]> {
     try {
       // Try cache first
-      const cacheKey = `kpis:${JSON.stringify(filters || {}),}`;
-      const cached = await cacheService.getCachedResult('analytics:', cacheKey);
+      const cacheKey = `kpis: ${JSON.stringify(filters || {}),
+      const cached = await cacheService.getCachedResult('analytics: ',
        {\n  eturn cached;
 
       // Build filters
-      const where: unknown = {,};
+      const where: unknown = {,
        {\n  here.category = filters.category;
        {\n  here.type = filters.type;
        {\n  here.status = filters.status;
@@ -793,14 +707,9 @@ export enum FilterType {
       // Record metrics
       metricsCollector.incrementCounter('analytics.kpi_queries', 1, {
         category: filters?.category || 'ALL',
-         filters?.status || 'ACTIVE'
-      });
 
       return kpis as KPI[];
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**
@@ -808,7 +717,6 @@ export enum FilterType {
    */
   async updateKPIValue(
     kpiId: string,
-     string;
     metadata?: Record<string, any>
   ): Promise<void> {
     try {
@@ -869,7 +777,7 @@ export enum FilterType {
       // Update KPI
       await this.prisma.kpi.update({
         where: { id: kpiId ,},
-        data: {,
+        data: {
           tracking,
           updated: new Date(),
         },
@@ -890,19 +798,15 @@ export enum FilterType {
 
       // Publish event
       await pubsub.publish('KPI_VALUE_UPDATED', {
-        kpiValueUpdated: {,
+        kpiValueUpdated: {
           kpiId,
-          name: kpi.name;
           value,
           period,
           timestamp: new Date(),
           metadata,
         },
       });
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**
@@ -917,24 +821,21 @@ export enum FilterType {
       this.validateClinicalQualityDashboard(dashboard);
 
       // Create dashboard
-      const newDashboard: ClinicalQualityDashboard = {,
+      const newDashboard: ClinicalQualityDashboard = {;
         ...dashboard,
         id: `quality-dashboard-${crypto.getRandomValues([0],}`,
         created: new Date(),
         updated: new Date(),
         createdBy: userId,
         updatedBy: userId,
-      };
 
       // Save dashboard
       await this.prisma.clinicalQualityDashboard.create({
         data: newDashboard as any,
-      });
 
       // Create audit log
       await this.auditService.createAuditLog({
         action: 'CREATE',
-         newDashboard.id;
         userId,
          dashboard.name,
            dashboard.measures.length,
@@ -944,18 +845,13 @@ export enum FilterType {
       metricsCollector.incrementCounter('analytics.quality_dashboards_created', 1, {
         specialty: dashboard.specialty || 'GENERAL',
         measureCount: dashboard.measures.length.toString(),
-      });
 
       // Publish event
       await pubsub.publish('QUALITY_DASHBOARD_CREATED', {
         qualityDashboardCreated: newDashboard,
-      });
 
       return newDashboard;
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**
@@ -970,24 +866,21 @@ export enum FilterType {
       this.validateFinancialDashboard(dashboard);
 
       // Create dashboard
-      const newDashboard: FinancialDashboard = {,
+      const newDashboard: FinancialDashboard = {;
         ...dashboard,
         id: `financial-dashboard-${crypto.getRandomValues([0],}`,
         created: new Date(),
         updated: new Date(),
         createdBy: userId,
         updatedBy: userId,
-      };
 
       // Save dashboard
       await this.prisma.financialDashboard.create({
         data: newDashboard as any,
-      });
 
       // Create audit log
       await this.auditService.createAuditLog({
         action: 'CREATE',
-         newDashboard.id;
         userId,
          dashboard.name,
            dashboard.kpis.length,
@@ -997,18 +890,13 @@ export enum FilterType {
       metricsCollector.incrementCounter('analytics.financial_dashboards_created', 1, {
         timeframe: dashboard.timeframe,
         kpiCount: dashboard.kpis.length.toString(),
-      });
 
       // Publish event
       await pubsub.publish('FINANCIAL_DASHBOARD_CREATED', {
         financialDashboardCreated: newDashboard,
-      });
 
       return newDashboard;
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**
@@ -1023,46 +911,36 @@ export enum FilterType {
       this.validateOperationalDashboard(dashboard);
 
       // Create dashboard
-      const newDashboard: OperationalDashboard = {,
+      const newDashboard: OperationalDashboard = {;
         ...dashboard,
         id: `operational-dashboard-${crypto.getRandomValues([0],}`,
         created: new Date(),
         updated: new Date(),
         createdBy: userId,
         updatedBy: userId,
-      };
 
       // Save dashboard
       await this.prisma.operationalDashboard.create({
         data: newDashboard as any,
-      });
 
       // Create audit log
       await this.auditService.createAuditLog({
         action: 'CREATE',
-         newDashboard.id;
         userId,
          dashboard.name,
            dashboard.timeframe,
           kpiCount: dashboard.kpis.length,
-      });
 
       // Record metrics
       metricsCollector.incrementCounter('analytics.operational_dashboards_created', 1, {
         department: dashboard.department || 'GENERAL',
-         dashboard.kpis.length.toString()
-      });
 
       // Publish event
       await pubsub.publish('OPERATIONAL_DASHBOARD_CREATED', {
         operationalDashboardCreated: newDashboard,
-      });
 
       return newDashboard;
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   // Private helper methods
@@ -1104,7 +982,7 @@ export enum FilterType {
     dashboardFilters: DashboardFilter[],
   ): Record<string, any> {
     // Get filters that affect this widget
-    const relevantFilters: Record<string, any> = {};
+    const relevantFilters: Record<string,
 
     // Find dashboard filters that affect this widget
     dashboardFilters.forEach(filter => {
@@ -1136,13 +1014,12 @@ export enum FilterType {
     // In a real implementation, this would query the appropriate data source
 
     // Try cache first
-    const cacheKey = `widget:${widget.id}:${JSON.stringify(filters)}:${userContext.userId,}`;
-    const cached = await cacheService.getCachedResult('analytics:', cacheKey);
+    const cacheKey = `widget: ${widget.id}:${JSON.stringify(filters)}:${userContext.userId,
+    const cached = await cacheService.getCachedResult('analytics: ',
      {\n  {
       return {
         ...cached,
         cachedResult: true,
-      };
     }
 
     // Simulate widget data retrieval
@@ -1160,7 +1037,6 @@ export enum FilterType {
           columns.push(
             { name: 'category', label: 'Category', dataType: 'string', role: 'dimension' ,},
             { name: 'value', label: 'Value', dataType: 'number', role: 'measure' },
-          );
 
           // Generate sample data based on dimensions and measures
            {\n   {
@@ -1170,7 +1046,6 @@ export enum FilterType {
               { category: 'Pediatrics', value: 70 ,},
               { category: 'Cardiology', value: 95 ,},
               { category: 'Oncology', value: 60 },
-            );
           } else  {\n   {
             data.push(
               { category: 'Jan', value: 45 ,},
@@ -1179,7 +1054,6 @@ export enum FilterType {
               { category: 'Apr', value: 65 ,},
               { category: 'May', value: 70 ,},
               { category: 'Jun', value: 80 },
-            );
           } else {
             data.push(
               { category: 'Category A', value: 50 ,},
@@ -1187,7 +1061,6 @@ export enum FilterType {
               { category: 'Category C', value: 30 ,},
               { category: 'Category D', value: 45 ,},
               { category: 'Category E', value: 60 },
-            );
           }
 
           totalRows = data.length;
@@ -1252,7 +1125,6 @@ export enum FilterType {
                 actual: Math.round(baseValue + random),
                  null,
                 upper: null,
-              });
             } else {
               // Forecast data
               const forecast = Math.round(baseValue);
@@ -1263,7 +1135,6 @@ export enum FilterType {
                 forecast,
                 lower: Math.round(forecast - confidence),
                 upper: Math.round(forecast + confidence),
-              });
             }
           }
 
@@ -1281,16 +1152,11 @@ export enum FilterType {
             { key: 'Item 1', value: 10 ,},
             { key: 'Item 2', value: 20 ,},
             { key: 'Item 3', value: 30 },
-          );
 
           totalRows = data.length;
           break;
       }
-    } catch (e) {
-      error = {
-        code: 'DATA_PROCESSING_ERROR',
-         e.stack
-      };
+    } catch (error) { console.error(error); };
     }
 
     const result = {
@@ -1315,9 +1181,6 @@ export enum FilterType {
   }
 
   private async checkKPIThresholds(kpiId: string, value: number): Promise<void> {,
-    try {
-      // Get KPI
-      const kpi = await this.getKPIById(kpiId);
        {\n  {
         throw new Error(`KPI ${kpiId} not found`);
       }
@@ -1337,22 +1200,11 @@ export enum FilterType {
 
          {\n  {
           // Generate alert
-          await this.generateKPI/* SECURITY: Alert removed */,
-        }
-      }
-    } catch (error) {
-
-    }
+          await this.generateKPI/* SECURITY: Alert removed */, }
   }
 
   private async generateKPI/* SECURITY: Alert removed */: Promise<void> {,
-    try {
-      // Format alert message
-      const message = threshold.alertMessage ||;
         `KPI ${kpi.name} has reached ${threshold.severity} threshold: /* SECURITY: Template literal eliminated */,
-
-      // Create alert record
-      const alertId = `kpi-alert-${crypto.getRandomValues([0]}`;
       await this.prisma.kpiAlert.create({
          alertId,
            threshold.id;
@@ -1368,8 +1220,6 @@ export enum FilterType {
       // Record metrics
       metricsCollector.incrementCounter('analytics.kpi_alerts', 1, {
         kpiId: kpi.id,
-         threshold.severity
-      });
 
       // Publish event
       await pubsub.publish('KPI_ALERT', {
@@ -1385,7 +1235,5 @@ export enum FilterType {
 
       // Notify recipients (in a real implementation)
       // This would integrate with a notification service
-    } catch (error) {
-
-    }
+    } catch (error) { console.error(error); }
   }

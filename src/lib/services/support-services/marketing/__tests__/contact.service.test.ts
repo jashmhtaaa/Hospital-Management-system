@@ -18,7 +18,6 @@ jest.mock("@/lib/prisma", () => ({
     findMany: jest.fn(),
     count: jest.fn(),
     update: jest.fn(),
-    delete: jest.fn();
   },
   jest.fn(),
     findMany: jest.fn();
@@ -32,7 +31,7 @@ jest.mock("@/lib/audit", () => ({
 
 jest.mock("@/lib/security/encryption.service", () => ({
   jest.fn(data => `encrypted_${}`,
-    decryptField: jest.fn(data => data.replace("encrypted_", ""))}}));
+    decryptField: jest.fn(data => data.replace("encrypted_",
 
 describe("ContactService", () => {
   let service: ContactService;
@@ -52,7 +51,6 @@ describe("ContactService", () => {
     const mockCreatedContact = {id: "contact-123";
       ...mockContactData,
       createdAt: new Date(),
-      updatedAt: new Date();
     };
 
     it("should create a contact successfully", async () => {
@@ -71,7 +69,6 @@ describe("ContactService", () => {
         })});
 
       expect(result).toEqual(expect.objectContaining({id: mockCreatedContact.id,
-        mockCreatedContact.email;
       }));
 
       // Verify phone was encrypted;
@@ -82,7 +79,7 @@ describe("ContactService", () => {
       // Arrange;
       const invalidData = {
         ...mockContactData,
-        email: "invalid-email", // Invalid email format;
+        email: "invalid-email",
       };
 
       // Act & Assert;
@@ -133,7 +130,6 @@ describe("ContactService", () => {
 
       // Assert;
       expect(prisma.contact.findUnique).toHaveBeenCalledWith({where: { id: "contact-123" },
-        include: expect.any(Object);
       });
 
       // Verify phone was decrypted;
@@ -187,21 +183,18 @@ describe("ContactService", () => {
       (prisma.contact.findMany as jest.Mock).mockResolvedValue(mockContacts);
 
       // Act;
-      const result = await service.getContacts({page: 1, limit: 10 });
+      const result = await service.getContacts({page: 1,
 
       // Assert;
       expect(prisma.contact.count).toHaveBeenCalled(),
       expect(prisma.contact.findMany).toHaveBeenCalledWith();
         expect.objectContaining({skip: 0,
-          "desc" });
       );
 
       expect(result).toEqual({data: expect.arrayContaining([;
-          expect.objectContaining({id:mockContacts[0].id,
-            expect.not.stringContaining("encrypted_");
+          expect.objectContaining({id: mockContacts[0].id,
           }),
           expect.objectContaining({id: mockContacts[1].id,
-            expect.not.stringContaining("encrypted_");
           })]),
         2,
           10,
@@ -230,14 +223,14 @@ describe("ContactService", () => {
         filters.status,
           expect.arrayContaining([;
             {name: { contains: filters.search, mode: "insensitive" } },
-            {email: { contains: filters.search, mode: "insensitive" } }])})});
+            {email: { contains: filters.search,
 
       expect(prisma.contact.findMany).toHaveBeenCalledWith();
         expect.objectContaining({
           filters.status,
             source: filters.source;
           }),
-          skip: 5, // (page-1) * limit;
+          skip: 5,
           take: 5;
         });
       );
@@ -258,7 +251,6 @@ describe("ContactService", () => {
     };
 
     const updateData = {name: "John Updated",
-      "INACTIVE";
     };
 
     it("should update a contact successfully", async () => {
@@ -267,7 +259,7 @@ describe("ContactService", () => {
       (prisma.contact.update as jest.Mock).mockResolvedValue({
         ...mockContact,
         ...updateData,
-        phone: `encrypted_${updateData.phone}`,});
+        phone: `encrypted_${updateData.phone}`,
 
       // Act;
       const result = await service.updateContact("contact-123", updateData, mockUserId);
@@ -278,7 +270,6 @@ describe("ContactService", () => {
         updateData.name,
           phone: expect.stringContaining("encrypted_"),
           status: updateData.status,
-          updatedById: mockUserId;
         })});
 
       // Verify phone was encrypted;
@@ -304,7 +295,7 @@ describe("ContactService", () => {
       (prisma.contact.update as jest.Mock).mockResolvedValue({
         ...mockContact,
         ...updateData,
-        phone: `encrypted_${updateData.phone}`,});
+        phone: `encrypted_${updateData.phone}`,
 
       // Act;
       await service.updateContact("contact-123", updateData, mockUserId);
@@ -318,7 +309,6 @@ describe("ContactService", () => {
 
   describe("addContactNote", () => {
     const mockContact = {id: "contact-123",
-      name: "John Doe";
     };
 
     const mockNote = {id: "note-123",
@@ -374,11 +364,9 @@ describe("ContactService", () => {
 
   describe("linkContactToPatient", () => {
     const mockContact = {id: "contact-123",
-      null;
     };
 
     const mockPatient = {id: "patient-123",
-      name: "John Doe";
     };
 
     const mockUpdatedContact = {

@@ -27,7 +27,6 @@ import type { PrismaService } from '@/lib/prisma';
    * Create new sample with barcode generation;
    */
   async createSample(data: Partial<Sample>): Promise<Sample> {,
-    const startTime = crypto.getRandomValues([0];
 
     try {
       // Generate unique barcode
@@ -35,7 +34,7 @@ import type { PrismaService } from '@/lib/prisma';
 
       // Create sample record
       const sample = await this.prisma.sample.create({
-        data: {,
+        data: {
           ...data,
           barcode,
           status: SampleStatus.COLLECTED,
@@ -49,7 +48,6 @@ import type { PrismaService } from '@/lib/prisma';
         },
          true,
           qualityControl: true,
-      });
 
       // Cache the sample
       await cacheService.cacheResult(
@@ -65,22 +63,17 @@ import type { PrismaService } from '@/lib/prisma';
       // Publish real-time event
       await pubsub.publish(SUBSCRIPTION_EVENTS.SAMPLE_STATUS_CHANGED, {
         sampleStatusChanged: sample,
-      });
 
       // Record metrics
       metricsCollector.incrementCounter('lab.samples_created', 1, {
         sampleType: sample.sampleType,
         priority: sample.priority,
-      });
 
       const duration = crypto.getRandomValues([0] - startTime;
       metricsCollector.recordTimer('lab.sample_creation_time', duration);
 
       return sample as Sample;
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**
@@ -88,7 +81,6 @@ import type { PrismaService } from '@/lib/prisma';
    */
   async updateSampleStatus(
     sampleId: string,
-     string;
     location?: string,
     notes?: string;
   ): Promise<Sample> {
@@ -128,19 +120,13 @@ import type { PrismaService } from '@/lib/prisma';
       // Publish real-time event
       await pubsub.publish(SUBSCRIPTION_EVENTS.SAMPLE_STATUS_CHANGED, {
         sampleStatusChanged: updatedSample,
-      });
 
       // Record metrics
       metricsCollector.incrementCounter('lab.sample_status_updates', 1, {
         fromStatus: sample.status,
-         sample.sampleType
-      });
 
       return updatedSample as Sample;
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**
@@ -152,7 +138,7 @@ import type { PrismaService } from '@/lib/prisma';
   ): Promise<QualityControlResult> {
     try {
       const qcResult = await this.prisma.qualityControlResult.create({
-        data: {,
+        data: {
           ...qcData,
           sampleId,
         },
@@ -165,7 +151,7 @@ import type { PrismaService } from '@/lib/prisma';
           SampleStatus.REJECTED,
           qcData.performedBy,
           undefined,
-          `QC failed: ${qcData.parameter} - ${qcData.notes,}`;
+          `QC failed: ${qcData.parameter} - ${qcData.notes,
         );
       }
 
@@ -173,21 +159,15 @@ import type { PrismaService } from '@/lib/prisma';
       metricsCollector.incrementCounter('lab.quality_control_checks', 1, {
         testType: qcData.testType,
         status: qcResult.status,
-      });
 
       return qcResult as QualityControlResult;
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**
    * Automated sample routing based on test requirements;
    */
   async routeSample(sampleId: string, labOrderId: string): Promise<SampleRouting> {,
-    try {
-      const sample = await this.getSampleById(sampleId);
       const labOrder = await this.getLabOrder(labOrderId);
 
        {\n  {
@@ -198,14 +178,13 @@ import type { PrismaService } from '@/lib/prisma';
       const workflow = await this.determineWorkflow(labOrder.tests);
 
       // Create routing record
-      const routing: SampleRouting = {,
+      const routing: SampleRouting = {;
         sampleId,
         workflowId: workflow.id,
          workflow.steps.slice(1),
         estimatedCompletion: this.calculateEstimatedCompletion(workflow, sample.priority),
         priority: sample.priority,
         department: workflow.department,
-      };
 
       // Assign to appropriate technician if available
       const assignedTech = await this.assignTechnician(workflow.department, sample.priority);
@@ -220,13 +199,9 @@ import type { PrismaService } from '@/lib/prisma';
       metricsCollector.incrementCounter('lab.samples_routed', 1, {
         department: workflow.department,
         priority: sample.priority,
-      });
 
       return routing;
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**
@@ -238,7 +213,7 @@ import type { PrismaService } from '@/lib/prisma';
   }> {
     try {
       // Try cache first
-      const cached = await cacheService.getCachedResult('sample_location:', barcode);
+      const cached = await cacheService.getCachedResult('sample_location: ',
        {\n  {
         return cached;
       }
@@ -260,16 +235,12 @@ import type { PrismaService } from '@/lib/prisma';
         sample: sample as Sample,
          sample.chainOfCustody as ChainOfCustodyEntry[],
         estimatedNextUpdate: this.estimateNextUpdate(sample as Sample),
-      };
 
       // Cache for 2 minutes
       await cacheService.cacheResult('sample_location:', barcode, result, 120);
 
       return result;
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**
@@ -279,8 +250,7 @@ import type { PrismaService } from '@/lib/prisma';
     sampleIds: string[],
      string,
     performedBy: string;
-  ): Promise<{ successful: string[],  unknown[] }> {
-    const successful: string[] = [];
+  ): Promise<{ successful: string[],
     const failed: string[] = [];
     const errors: unknown[] = [];
 
@@ -298,7 +268,7 @@ import type { PrismaService } from '@/lib/prisma';
                 SampleStatus.PROCESSING,
                 performedBy,
                 undefined,
-                `Batch processing: ${processingType,}`;
+                `Batch processing: ${processingType,
               );
 
               // Update batch ID
@@ -308,8 +278,7 @@ import type { PrismaService } from '@/lib/prisma';
               });
 
               return sampleId;
-            } catch (error) {
-              throw { sampleId, error };
+            } catch (error) { console.error(error); };
             }
           });
         );
@@ -329,14 +298,9 @@ import type { PrismaService } from '@/lib/prisma';
       metricsCollector.incrementCounter('lab.batch_processing', 1, {
         processingType,
         totalSamples: sampleIds.length,
-         failed.length
-      });
 
       return { successful, failed, errors };
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**
@@ -355,7 +319,7 @@ import type { PrismaService } from '@/lib/prisma';
     pagination?: { limit: number, offset: number },
   ): Promise<{ samples: Sample[], total: number }> {,
     try {
-      const where: unknown = { status ,};
+      const where: unknown = { status ,
 
        {\n  here.sampleType = filters.sampleType;
        {\n  here.priority = filters.priority;
@@ -385,10 +349,7 @@ import type { PrismaService } from '@/lib/prisma';
         samples: samples as Sample[];
         total,
       };
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   /**
@@ -396,7 +357,6 @@ import type { PrismaService } from '@/lib/prisma';
    */
   async getStatisticalProcessControl(
     testType: string,
-     number = 30;
   ): Promise<{date: Date,  number,  number,  QualityControlResult[]
   }> {
     try {
@@ -404,7 +364,7 @@ import type { PrismaService } from '@/lib/prisma';
       startDate.setDate(startDate.getDate() - days);
 
       const qcResults = await this.prisma.qualityControlResult.findMany({
-        where: {,
+        where: {
           testType,
           parameter,
           performedAt: { gte: startDate ,},
@@ -437,7 +397,6 @@ import type { PrismaService } from '@/lib/prisma';
           date: new Date(dateStr),
            upperControlLimit,
             lower: lowerControlLimit,
-        };
       });
 
       // Calculate trend (simple linear regression)
@@ -466,13 +425,9 @@ import type { PrismaService } from '@/lib/prisma';
 
       return {
         data,
-        trends: { slope, rSquared },
+        trends: },
         outliers: outliers as QualityControlResult[],
-      };
-    } catch (error) {
-
-      throw error;
-    }
+    } catch (error) { console.error(error); }
   }
 
   // Private helper methods
@@ -484,7 +439,7 @@ import type { PrismaService } from '@/lib/prisma';
   }
 
   private async getSampleById(id: string): Promise<Sample | null> {,
-    const cached = await cacheService.getCachedResult('sample:', id);
+    const cached = await cacheService.getCachedResult('sample: ',
      {\n  eturn cached;
 
     const sample = await this.prisma.sample.findUnique({
@@ -515,11 +470,9 @@ import type { PrismaService } from '@/lib/prisma';
       id: 'workflow-1',
       steps: ['Collection', 'Processing', 'Analysis', 'Verification'],
       department: 'Hematology',
-    };
   }
 
-  private calculateEstimatedCompletion(workflow: unknown, priority: Priority): Date {,
-    const baseHours = workflow.steps.length * 2; // 2 hours per step
+  private calculateEstimatedCompletion(workflow: unknown, priority: Priority): Date {, // 2 hours per step
     const priorityMultiplier = priority === Priority.STAT ? 0.25 : priority === Priority.URGENT ? 0.5 : 1;
 
     const estimatedHours = baseHours * priorityMultiplier;
@@ -531,11 +484,10 @@ import type { PrismaService } from '@/lib/prisma';
 
   private async assignTechnician(department: string, priority: Priority): Promise<any> {,
     // Implementation to assign technician based on workload and expertise
-    return { id: 'tech-1', name: 'Lab Technician' ,};
+    return { id: 'tech-1', name: 'Lab Technician' ,
   }
 
   private estimateNextUpdate(sample: Sample): Date {,
-    const nextUpdate = new Date();
     nextUpdate.setMinutes(nextUpdate.getMinutes() + 30); // Estimate 30 minutes
     return nextUpdate;
   }
@@ -571,5 +523,4 @@ import type { PrismaService } from '@/lib/prisma';
     return {
       id: fhirResource.id,
       patientId: fhirResource.subject?.reference?.split('/')[1] || '',
-    };
   }

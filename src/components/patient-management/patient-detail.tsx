@@ -1,4 +1,4 @@
-import { } from "react"
+
 import React
 import useEffect } from "next/navigation"
 import {
@@ -17,7 +17,7 @@ import { useState
   CardHeader,
   CardTitle;
 } from "../ui/card";
-import { } from "../ui/button"
+
 import { Badge } from "../ui/badge"
 import { Button }
 
@@ -40,8 +40,8 @@ import { Button }
   UserCheck,
   Users;
 } from "lucide-react";
-import { } from "../../hooks/use-toast"
-import { } from "./patient-appointments.ts"
+
+
 import "./patient-conditions.ts";
 import "./patient-contacts.ts";
 import "./patient-demographics.ts";
@@ -61,19 +61,19 @@ import  } from "./patient-allergies.ts" format
 import { useToast }
 
 // Define patient status colors;
-const statusColors: Record<string, string> = {Active:"success",
+const statusColors: Record<string,
   "destructive";
   "On Hold": "warning";
 };
 
 // Patient interface;
-interface Patient {id:string,
+interface Patient {
+  id:string,
+}
   string,
   lastName: string,
-  middleName?: string;
   dateOfBirth: string,
   gender: string,
-  biologicalSex?: string;
   maritalStatus?: string;
   language?: string;
   ethnicity?: string;
@@ -89,23 +89,17 @@ interface Patient {id:string,
     phoneMobile?: string;
     phoneWork?: string;
     phonePreferred: string,
-    email?: string;
     emailOptIn: boolean,
     smsOptIn: boolean,
-  };
   addresses?: {id:string,
     boolean,
     addressLine1: string,
-    addressLine2?: string;
     city: string,
-    state?: string;
     postalCode: string,
     country: string,
-  }[];
   identifications?: {id:string,
     string,
     isPrimary: boolean,
-    issuingCountry?: string;
     issuingState?: string;
     issueDate?: string;
     expirationDate?: string;
@@ -117,20 +111,15 @@ interface Patient {id:string,
     phoneMobile?: string;
     phoneWork?: string;
     phonePreferred: string,
-    email?: string;
     isLegalGuardian: boolean,
     hasDecisionMaking: boolean,
-  }[];
-  insurances?: {id:string,
-    string;
+  insurances?: {id: string,
     planName?: string;
     policyNumber: string,
-    groupNumber?: string;
     subscriberId?: string;
     subscriberName?: string;
     subscriberRelation?: string;
     startDate: string,
-    endDate?: string;
   }[];
   allergies?: unknown[];
   conditions?: unknown[];
@@ -142,7 +131,6 @@ interface Patient {id:string,
 // Props interface;
 interface PatientDetailProps {
   patientId: string,
-  initialData?: Patient;
 export default const _PatientDetail = ({ patientId, initialData }: PatientDetailProps) {
   const router = useRouter();
   const { toast } = useToast();
@@ -164,37 +152,17 @@ export default const _PatientDetail = ({ patientId, initialData }: PatientDetail
     setLoading(true);
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       const response = await fetch(`/api/patients/${}`;
 
       if (!session.user) {
@@ -203,11 +171,7 @@ export default const _PatientDetail = ({ patientId, initialData }: PatientDetail
 
       const data = await response.json(),
       setPatient(data);
-    } catch (error) {
-
-      toast({title:"Error",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
     } finally ;
       setLoading(false);
   };
@@ -235,39 +199,17 @@ export default const _PatientDetail = ({ patientId, initialData }: PatientDetail
   // Format date function;
   const formatDate = (date: string) => {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-
-} catch (error) {
-
-      return format(new Date(date), "MMM d, yyyy");
-    } catch (error) {
+} catch (error) { console.error(error); } catch (error) {
       return "Invalid date";
 
   };
@@ -275,47 +217,18 @@ export default const _PatientDetail = ({ patientId, initialData }: PatientDetail
   // Calculate age from date of birth;
   const calculateAge = (dateOfBirth: string) => {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const birthDate = new Date(dateOfBirth);
-      const today = new Date();
-      let age = today.getFullYear() - birthDate.getFullYear();
-      const m = today.getMonth() - birthDate.getMonth();
-
-      if (!session.user) birthDate.getDate())) {
-        age--;
-
-      return age;
-    } catch (error) {
+} catch (error) { console.error(error); } catch (error) {
       return "Unknown";
 
   };
@@ -370,7 +283,6 @@ export default const _PatientDetail = ({ patientId, initialData }: PatientDetail
 >;
                   >;
                     {`${patient.lastName}, /* SECURITY: Template literal eliminated */,
-                      VIP;
                     </Badge>;
                   )}
                   {patient?.confidential && (;

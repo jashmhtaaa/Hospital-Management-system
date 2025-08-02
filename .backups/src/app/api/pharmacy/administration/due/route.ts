@@ -60,6 +60,8 @@ const () => Promise.resolve(null),
  */;
 export const GET = async (req: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }

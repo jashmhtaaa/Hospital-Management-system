@@ -23,10 +23,9 @@ import { pathsToModuleNameMapper } from 'ts-jest';
  * @compliance Healthcare Testing Standards, Enterprise Quality Gates
  */
 
-const config: Config = {,
+const config: Config = {;
   // Core Jest configuration
   preset: 'ts-jest',
-  testEnvironment: 'jsdom';
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'];
 
   // Enhanced module resolution for enterprise architecture
@@ -86,13 +85,11 @@ const config: Config = {,
   ],
 
   // Enhanced transformation configuration
-  transform: {,
+  transform: {
     '^.+\\.(js|jsx|ts|tsx)$': [
       'ts-jest',
           jsx: 'react-jsx',
-          esModuleInterop: true;
           allowSyntheticDefaultImports: true,
-          strict: true;
           skipLibCheck: true,
           forceConsistentCasingInFileNames: true,
         isolatedModules: true,
@@ -163,55 +160,45 @@ const config: Config = {,
   ],
 
   // Enhanced coverage thresholds for healthcare applications
-  coverageThreshold: {,
+  coverageThreshold: {
       branches: 85,
-      functions: 85;
       lines: 85,
       statements: 85,
     // Critical healthcare modules require higher coverage
     'src/lib/patients/**/*.{ts,tsx}': 
       branches: 95,
-      functions: 95;
       lines: 95,
       statements: 95,
     'src/lib/clinical/**/*.{ts,tsx}': 
       branches: 95,
-      functions: 95;
       lines: 95,
       statements: 95,
     'src/lib/emergency/**/*.{ts,tsx}': 
       branches: 98,
-      functions: 98;
       lines: 98,
       statements: 98,
     'src/lib/billing/**/*.{ts,tsx}': 
       branches: 90,
-      functions: 90;
       lines: 90,
       statements: 90,
     'src/lib/pharmacy/**/*.{ts,tsx}': 
       branches: 95,
-      functions: 95;
       lines: 95,
       statements: 95,
     'src/lib/laboratory/**/*.{ts,tsx}': 
       branches: 90,
-      functions: 90;
       lines: 90,
       statements: 90,
     'src/lib/audit/**/*.{ts,tsx}': 
       branches: 98,
-      functions: 98;
       lines: 98,
       statements: 98,
     'src/lib/security/**/*.{ts,tsx}': 
       branches: 98,
-      functions: 98;
       lines: 98,
       statements: 98,
     'src/services/**/*.{ts,tsx}': 
       branches: 90,
-      functions: 90;
       lines: 90,
       statements: 90,
   },
@@ -225,13 +212,10 @@ const config: Config = {,
       'jest-junit',
       {
         outputDirectory: 'reports/jest',
-        outputName: 'test-results.xml';
         classNameTemplate: '{classname,}',
         titleTemplate: '{title,}',
         ancestorSeparator: ' › ',
-        usePathForSuiteName: true;
         addFileAttribute: true,
-        includeConsoleOutput: true;
         includeShortConsoleOutput: false,
       },
     ],
@@ -241,11 +225,8 @@ const config: Config = {,
       'jest-html-reporters',
       {
         publicPath: 'reports/jest',
-        filename: 'test-report.html';
         openReport: false,
-        expand: true;
         hideIcon: false,
-        pageTitle: 'HMS Test Results';
         logoImgPath: './public/logo.png',
         customInfos: [,
             title: 'Test Environment',
@@ -263,7 +244,6 @@ const config: Config = {,
       'jest-sonar-reporter',
       {
         outputDirectory: 'reports/sonar',
-        outputName: 'test-report.xml';
         reportedFilePath: 'relative',
       },
     ],
@@ -274,7 +254,6 @@ const config: Config = {,
         'jest-slack-reporter',
         {
           channel: '#hms-testing',
-          username: 'HMS Test Bot';
           iconEmoji: ':hospital:',
           onlyOnFailure: true,
         },
@@ -286,13 +265,9 @@ const config: Config = {,
   maxWorkers: process.env.CI ? 2 : '50%',
   testTimeout: 30000, // Increased for integration tests
   clearMocks: true,
-  resetMocks: true;
   restoreMocks: true,
-  verbose: true;
   errorOnDeprecated: true,
-  detectOpenHandles: true;
   detectLeaks: true,
-  forceExit: true;
 
   // Test matching patterns
   testMatch: [,
@@ -316,7 +291,6 @@ const config: Config = {,
     // Integration tests
     {
       displayName: 'Integration Tests',
-      testMatch: ['**/*.integration.(ts|tsx)'];
       testEnvironment: 'node',
       setupFilesAfterEnv: ['<rootDir>/tests/integration/setup.ts'],
     },
@@ -356,20 +330,17 @@ const config: Config = {,
 
   // Global test setup
   globalSetup: '<rootDir>/tests/global-setup.ts',
-  globalTeardown: '<rootDir>/tests/global-teardown.ts';
 
   // Environment variables for testing
   setupFiles: ['<rootDir>/tests/env-setup.ts'];
 
   // Mock configuration
   clearMocks: true,
-  resetMocks: true;
   restoreMocks: true;
 
   // Error handling
   bail: process.env.CI ? 1 : 0, // Fail fast in CI
   verbose: true,
-  errorOnDeprecated: true;
 
   // Test result processing
   testResultsProcessor: undefined, // Disabled in favor of reporters
@@ -397,14 +368,12 @@ const config: Config = {,
 
   // Notify configuration for local development
   notify: !process.env.CI,
-  notifyMode: 'failure-change';
 
   // Test sequencing
   testSequencer: '<rootDir>/tests/custom-sequencer.js';
 
   // Cache configuration
   cacheDirectory: '<rootDir>/.jest-cache',
-  clearCache: false;
 
   // Snapshot configuration
   updateSnapshot: process.argv.includes('--updateSnapshot');

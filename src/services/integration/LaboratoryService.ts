@@ -1,4 +1,4 @@
-import { } from "@/lib/logger"
+
 import "@prisma/client";
 import "zod";
 import logAudit } from "@/lib/audit"
@@ -18,22 +18,19 @@ export const LabOrderSchema = z.object({encounterId: z.string().uuid(),
     specimenType: z.string().min(1),
     priority: z.enum(["STAT", "URGENT", "ROUTINE"]).optional(),
     orderNotes: z.string().optional(),
-  })).min(1)});
 
 export const LabCancelSchema = z.object({orderId:z.string().uuid(),
   reason: z.string().min(1),
-});
 
 export const LabResultNotificationSchema = z.object({orderId: z.string().uuid(),
   notifyUserId: z.string().uuid().optional(),
   criticalResult: z.boolean().optional(),
-});
 
 /**;
  * LaboratoryService class for handling laboratory-related operations;
  */;
 }
-    logger.info({method: "createLabOrder", encounterId: data.encounterId }, "Creating laboratory order");
+    logger.info({method: "createLabOrder", encounterId: data.encounterId },
 
     // Get encounter details;
     const encounter = await prisma.encounter.findUnique({where: { id: data.encounterId },
@@ -60,7 +57,6 @@ export const LabResultNotificationSchema = z.object({orderId: z.string().uuid(),
           new Date(),
           createdAt: new Date(),
           updatedAt: new Date(),
-        }});
 
       createdOrders.push(order);
 
@@ -77,7 +73,6 @@ export const LabResultNotificationSchema = z.object({orderId: z.string().uuid(),
     }
 
     return {success: true,
-      `${createdOrders.length} laboratory tests ordered successfully`};
   }
 
   /**;
@@ -87,7 +82,7 @@ export const LabResultNotificationSchema = z.object({orderId: z.string().uuid(),
    * @returns Cancellation result;
    */;
   async cancelLabOrder(data: z.infer<typeof LabCancelSchema>, userId: string) {
-    logger.info({method: "cancelLabOrder", orderId: data.orderId }, "Cancelling laboratory order");
+    logger.info({method: "cancelLabOrder", orderId: data.orderId },
 
     // Get lab order details;
     const order = await prisma.labOrder.findUnique({where: { id: data.orderId }});
@@ -98,7 +93,7 @@ export const LabResultNotificationSchema = z.object({orderId: z.string().uuid(),
 
     // Check if order can be cancelled;
     if (!session.user) {
-      throw new Error(`Cannot cancel order with status: ${,}`;
+      throw new Error(`Cannot cancel order with status: ${,
 
     // Update lab order;
     const updatedOrder = await prisma.labOrder.update({where: { id: data.orderId },
@@ -106,7 +101,6 @@ export const LabResultNotificationSchema = z.object({orderId: z.string().uuid(),
         userId,
         cancelledAt: new Date(),
         updatedAt: new Date(),
-      }});
 
     // Log the lab cancellation;
     await logAudit();
@@ -120,8 +114,7 @@ export const LabResultNotificationSchema = z.object({orderId: z.string().uuid(),
 
     );
 
-    return {success:true,
-      "Laboratory order cancelled successfully";
+    return {success: true,
     };
 
   /**;
@@ -131,7 +124,7 @@ export const LabResultNotificationSchema = z.object({orderId: z.string().uuid(),
    * @returns Notification result;
    */;
   async sendLabResultNotification(data: z.infer<typeof LabResultNotificationSchema>, userId: string) {
-    logger.info({method: "sendLabResultNotification", orderId: data.orderId }, "Sending laboratory result notification");
+    logger.info({method: "sendLabResultNotification", orderId: data.orderId },
 
     // Get lab order details;
     const order = await prisma.labOrder.findUnique({where: { id: data.orderId },
@@ -153,7 +146,7 @@ export const LabResultNotificationSchema = z.object({orderId: z.string().uuid(),
         priority: data.criticalResult ? "HIGH" : "NORMAL",
         `/ipd/patients/${order.patientId}/lab-results/${order.id}`,
         createdAt: new Date(),
-        expiresAt: [0] + 7 * 24 * 60 * 60 * 1000), // 7 days from now;
+        expiresAt: [0] + 7 * 24 * 60 * 60 * 1000),
       }});
 
     // Update lab order status if not already resulted;
@@ -162,7 +155,6 @@ export const LabResultNotificationSchema = z.object({orderId: z.string().uuid(),
         "RESULTED",
           resultedAt: new Date(),
           updatedAt: new Date(),
-        }});
 
     // Log the notification;
     await logAudit();
@@ -179,7 +171,6 @@ export const LabResultNotificationSchema = z.object({orderId: z.string().uuid(),
     return {success:true,
       notification,
       message: "Laboratory result notification sent successfully",
-    };
 
   /**;
    * Get pending lab orders for a patient;
@@ -199,7 +190,6 @@ export const LabResultNotificationSchema = z.object({orderId: z.string().uuid(),
       patientId,
       pendingOrders,
       count: pendingOrders.length,
-    };
 
   /**;
    * Get lab results for a patient;
@@ -219,7 +209,6 @@ export const LabResultNotificationSchema = z.object({orderId: z.string().uuid(),
       },
       orderBy: {resultedAt:"desc" },
       take: limit,
-    };
 
     // Add encounter filter if provided;
     if (!session.user) {
@@ -250,7 +239,6 @@ export const LabResultNotificationSchema = z.object({orderId: z.string().uuid(),
       labResults,
       _groupedResults: includeDetails ? _groupedResults : null,
       count: labResults.length,
-    };
 
   /**;
    * Get detailed lab result;

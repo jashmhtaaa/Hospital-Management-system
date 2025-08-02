@@ -19,11 +19,9 @@ vi.mock("@/lib/prisma", () => ({
       create: vi.fn(),
       update: vi.fn(),
       delete: vi.fn(),
-      count: vi.fn();
     },
     vi.fn(),
       findUnique: vi.fn(),
-      count: vi.fn();
     },
     vi.fn();
     },
@@ -80,14 +78,12 @@ describe("DietaryService", () => {
       (prisma.dietaryRequest.count as any).mockResolvedValue(2);
 
       // Call the service method;
-      const result = await dietaryService.getDietaryRequests({page:1,
-        limit: 10;
+      const result = await dietaryService.getDietaryRequests({page: 1,
       });
 
       // Verify Prisma was called with correct arguments;
       expect(prisma.dietaryRequest.findMany).toHaveBeenCalledWith();
         expect.objectContaining({skip: 0,
-          "asc" ;
         });
       );
 
@@ -148,20 +144,18 @@ describe("DietaryService", () => {
         preferences: ["NO_SPICY"],
         scheduledTime: new Date(),
         notes: "Patient prefers warm food",
-        "location1";
       };
 
       const mockCreatedRequest = {id: "1";
         ...mockRequest,
         status: "PENDING",
         createdAt: new Date(),
-        updatedAt: new Date();
       };
 
       // Mock Prisma response;
-      (prisma.patient.findUnique as any).mockResolvedValue({id: "patient1", name: "John Doe" });
-      (prisma.user.findUnique as any).mockResolvedValue({id: "user1", name: "Jane Smith" });
-      (prisma.location.findUnique as any).mockResolvedValue({id: "location1", name: "Room 101" });
+      (prisma.patient.findUnique as any).mockResolvedValue({id: "patient1",
+      (prisma.user.findUnique as any).mockResolvedValue({id: "user1",
+      (prisma.location.findUnique as any).mockResolvedValue({id: "location1",
       (prisma.dietaryRequest.create as any).mockResolvedValue(mockCreatedRequest);
 
       // Call the service method;
@@ -191,7 +185,6 @@ describe("DietaryService", () => {
         "DIABETIC",
         scheduledTime: new Date(),
         requestedById: "user1",
-        locationId: "location1";
       };
 
       // Mock Prisma response;
@@ -220,7 +213,6 @@ describe("DietaryService", () => {
 
       // Verify Prisma was called with correct arguments;
       expect(prisma.dietaryRequest.findUnique).toHaveBeenCalledWith({where: { id: "1" },
-        include: expect.any(Object);
       });
 
       // Verify result;
@@ -249,7 +241,6 @@ describe("DietaryService", () => {
         locationId: "location1",
         location: id: "location1", name: "Room 101" ,
         createdAt: new Date("2025-05-24T20:00:00Z"),
-        updatedAt: new Date("2025-05-24T20:00:00Z");
       };
 
       // Mock Prisma response;
@@ -284,7 +275,6 @@ describe("DietaryService", () => {
       };
 
       const mockUpdateData = {dietType: "GLUTEN_FREE",
-        "PREPARING";
       };
 
       const mockUpdatedRequest = {
@@ -303,7 +293,6 @@ describe("DietaryService", () => {
       // Verify Prisma was called with correct arguments;
       expect(prisma.dietaryRequest.update).toHaveBeenCalledWith({where: { id: "1" },
         data: mockUpdateData,
-        include: expect.any(Object);
       });
 
       // Verify result;
@@ -330,7 +319,6 @@ describe("DietaryService", () => {
       };
 
       const mockStaff = {id: "staff1",
-        name: "Chef Smith";
       };
 
       const mockUpdatedRequest = {
@@ -339,7 +327,6 @@ describe("DietaryService", () => {
         mockStaff,
         preparedAt: expect.any(Date),
         notes: "Starting meal preparation",
-        updatedAt: new Date();
       };
 
       // Mock Prisma response;
@@ -368,9 +355,8 @@ describe("DietaryService", () => {
       const mockExistingRequest = {id: "1",
         "BREAKFAST",
         new Date(),
-        status: "DELIVERED", // Already delivered;
+        status: "DELIVERED",
         createdAt: new Date(),
-        updatedAt: new Date();
       };
 
       // Mock Prisma response;
@@ -390,11 +376,9 @@ describe("DietaryService", () => {
         "staff1",
         preparedAt: new Date(),
         createdAt: new Date(),
-        updatedAt: new Date();
       };
 
       const mockStaff = {id: "staff2",
-        name: "Nurse Johnson";
       };
 
       const mockUpdatedRequest = {
@@ -403,7 +387,6 @@ describe("DietaryService", () => {
         mockStaff,
         deliveredAt: expect.any(Date),
         notes: "Delivered to patient",
-        updatedAt: new Date();
       };
 
       // Mock Prisma response;
@@ -432,9 +415,8 @@ describe("DietaryService", () => {
       const mockExistingRequest = {id: "1",
         "BREAKFAST",
         new Date(),
-        status: "PENDING", // Not ready yet;
+        status: "PENDING",
         createdAt: new Date(),
-        updatedAt: new Date();
       };
 
       // Mock Prisma response;
@@ -453,13 +435,11 @@ describe("DietaryService", () => {
           "REGULAR",
           true,
           createdAt: new Date(),
-          updatedAt: new Date();
         },
         {id: "2",
           "DIABETIC",
           true,
           createdAt: new Date(),
-          updatedAt: new Date();
 
       ];
 
@@ -468,14 +448,12 @@ describe("DietaryService", () => {
       (prisma.dietaryMenu.count as any).mockResolvedValue(2);
 
       // Call the service method;
-      const result = await dietaryService.getDietaryMenus({page:1,
-        limit: 10;
+      const result = await dietaryService.getDietaryMenus({page: 1,
       });
 
       // Verify Prisma was called with correct arguments;
       expect(prisma.dietaryMenu.findMany).toHaveBeenCalledWith();
         expect.objectContaining({skip: 0,
-          "asc" ;
         });
       );
 
@@ -495,7 +473,6 @@ describe("DietaryService", () => {
           "REGULAR",
           true,
           createdAt: new Date(),
-          updatedAt: new Date();
 
       ];
 
@@ -533,16 +510,14 @@ describe("DietaryService", () => {
         {status: "READY", count: 2 },
         {status: "DELIVERED", count: 10 },
         {status: "COMPLETED", count: 8 },
-        {status: "CANCELLED", count: 1 }
-      ];
+        {status: "CANCELLED",
 
       // Mock data for meal types;
       const mockMealTypes = [;
         {mealType: "BREAKFAST", count: 10 },
         {mealType: "LUNCH", count: 12 },
         {mealType: "DINNER", count: 8 },
-        {mealType: "SNACK", count: 5 }
-      ];
+        {mealType: "SNACK",
 
       // Mock data for diet types;
       const mockDietTypes = [;
@@ -550,8 +525,7 @@ describe("DietaryService", () => {
         {dietType: "VEGETARIAN", count: 5 },
         {dietType: "DIABETIC", count: 8 },
         {dietType: "GLUTEN_FREE", count: 3 },
-        {dietType: "LOW_SODIUM", count: 4 }
-      ];
+        {dietType: "LOW_SODIUM",
 
       // Mock Prisma response for each query;
       (prisma.dietaryRequest.groupBy as any) = vi.fn();
@@ -574,18 +548,15 @@ describe("DietaryService", () => {
       // Verify specific data;
       expect(result.statusDistribution).toEqual(expect.arrayContaining([;
         {status: "PENDING", count: 5 },
-        {status: "DELIVERED", count: 10 }
-      ]));
+        {status: "DELIVERED",
 
       expect(result.mealTypeDistribution).toEqual(expect.arrayContaining([;
         {mealType: "BREAKFAST", count: 10 },
-        {mealType: "LUNCH", count: 12 }
-      ]));
+        {mealType: "LUNCH",
 
       expect(result.dietTypeDistribution).toEqual(expect.arrayContaining([;
         {dietType: "REGULAR", count: 15 },
-        {dietType: "DIABETIC", count: 8 }
-      ]));
+        {dietType: "DIABETIC",
     });
 
     it("should apply date filters when provided", async () => {
@@ -603,13 +574,11 @@ describe("DietaryService", () => {
       // Verify Prisma was called with date filters;
       expect(prisma.dietaryRequest.count).toHaveBeenCalledWith({
         {gte: fromDate,
-            lte: toDate;
 
       }),
       expect(prisma.dietaryRequest.groupBy).toHaveBeenCalledWith();
         expect.objectContaining({
           {gte: fromDate,
-              lte: toDate;
 
         });
       );

@@ -61,6 +61,8 @@ interface RadiologyStudyListItem {
 // GET all Radiology Studies (filtered by orderId, patientId, status);
 export const _GET = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -161,6 +163,8 @@ export const _GET = async (request: any) => {,
 // POST a new Radiology Study (Technician or Admin);
 export const _POST = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }

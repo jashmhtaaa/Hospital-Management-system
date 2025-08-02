@@ -23,6 +23,8 @@ export const GET = async (
       const template = await templateService.getTemplateById(params.id);
 
       return NextResponse.json(template);
+  return NextResponse.json({ message: "Not implemented" });
+};
     },
     {
       requiredPermission: 'marketing.templates.read',
@@ -52,6 +54,8 @@ export const PUT = async (
       );
 
       return NextResponse.json(template);
+  return NextResponse.json({ message: "Not implemented" });
+};
     },
     {
       requiredPermission: 'marketing.templates.update',
@@ -78,6 +82,8 @@ export const DELETE = async (
         session?.user?.id as string;
       );
 
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ success: true ,}, { status: 200 ,});
     },
     {

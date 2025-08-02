@@ -37,6 +37,8 @@ interface LabSample {
 // GET /api/laboratory/samples - Get laboratory samples;
 export const _GET = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -131,6 +133,8 @@ export const _GET = async (request: any) => {,
 // POST /api/laboratory/samples - Create or update a laboratory sample;
 export const _POST = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }

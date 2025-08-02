@@ -21,24 +21,20 @@ import { useCallback
   SearchOutlined,
   CheckOutlined,
   // CloseOutlined, // FIX: Removed unused import,
-  EditOutlined} from "@ant-design/icons";
-// import dayjs from "dayjs"; // FIX: Removed unused import,
-// import { Dayjs  } from "dayjs"; // FIX: Removed unused import;
+// import dayjs from "dayjs"; // FIX: Removed unused import, // FIX: Removed unused import;
 
 const { Option } = Select;
 // const { TabPane } = Tabs; // FIX: Removed unused import;
 
 // Define interfaces for data types;
-interface LabResult {id:string,
-  string;
+interface LabResult {
+  id: string,
   parameter_id?: string;
   parameter_name?: string;
   result_value: string,
-  unit?: string;
   reference_range_male?: string;
   reference_range_female?: string;
   is_abnormal: boolean,
-  notes?: string;
   performed_by?: string;
   performed_by_name?: string;
   performed_at?: string;
@@ -47,8 +43,8 @@ interface LabResult {id:string,
   verified_at?: string;
 }
 
-interface LabOrder {id:string,
-  patient_name: string;
+interface LabOrder {
+  id: string,
   // Add other relevant order fields if needed for display;
 }
 
@@ -61,8 +57,6 @@ interface LabOrder {id:string,
 // }
 
 // FIX: Define API response types,
-interface ResultsApiResponse {
-    results?: LabResult[];
 }
 
 interface OrdersApiResponse {
@@ -81,18 +75,16 @@ interface ApiErrorResponse {
 interface UpdateResultValues {
   result_value: string,
   is_abnormal: boolean,
-  notes?: string;
 }
 
 interface CreateResultValues {
     parameter_id?: string;
   result_value: string,
   is_abnormal: boolean,
-  notes?: string;
 }
 
 const ResultManagement: React.FC = () => {
-  const [results, setResults] = useState<LabResult[]>([]);
+  const [results,
   const [loading, setLoading] = useState<boolean>(false);
   const [searchText, setSearchText] = useState<string>("");
   const [orderFilter, setOrderFilter] = useState<string | null>();
@@ -112,37 +104,17 @@ const ResultManagement: React.FC = () => {
   const fetchResults = useCallback(async (): Promise<void> => {
     setLoading(true);
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       let url = "/api/laboratory/results";
       const parameters_ = new URLSearchParams();
 
@@ -158,38 +130,18 @@ const ResultManagement: React.FC = () => {
       if (!session.user) {
         const errorMessage = "Failed to fetch results";
         try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
-          const errorData: ApiErrorResponse = await response.json(),
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+          const errorData: ApiErrorResponse = await response.json();
           errorMessage = errorData.error || errorMessage;
         } catch {
           /* Ignore */;
@@ -197,8 +149,6 @@ const ResultManagement: React.FC = () => {
         throw new Error(errorMessage);
       }
       // FIX: Type the response data,
-      const data: ResultsApiResponse = await response.json(),
-
       let fetchedResults: LabResult[] = data.results || [];
 
       // Filter by search text if provided;
@@ -213,12 +163,7 @@ const ResultManagement: React.FC = () => {
       }
 
       setResults(fetchedResults);
-    } catch (error: unknown) {
-      // FIX: Use unknown,
-      const messageText =;
-        error instanceof Error ? error.message : "An unknown error occurred";
-
-      message.error(`Failed to load laboratory results: ${}`;
+    } catch (error) { console.error(error); }`;
     } finally {
       setLoading(false);
     }
@@ -227,163 +172,73 @@ const ResultManagement: React.FC = () => {
   // Fetch orders for filter dropdown;
   const fetchOrders = useCallback(async (): Promise<void> => {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       const response = await fetch("/api/laboratory/orders");
       if (!session.user) {
         const errorMessage = "Failed to fetch orders";
         try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-          const errorData: ApiErrorResponse = await response.json(),
-          errorMessage = errorData.error || errorMessage;
-        } catch {
+} catch (error) { console.error(error); } catch {
           /* Ignore */;
 
         throw new Error(errorMessage);
 
       // FIX: Type the response data,
-      const data: OrdersApiResponse = await response.json(),
       setOrders(data.results || []);
-    } catch (error: unknown) {
-      // FIX: Use unknown,
-      const messageText =;
-        error instanceof Error ? error.message : "An unknown error occurred";
-
-      message.error(`Failed to load laboratory orders: ${}`;
+    } catch (error) { console.error(error); }`;
 
   }, []);
 
   // Fetch order items for a specific order;
   // const _fetchOrderItems = async (orderId: string): Promise<void> => { // FIX: Removed unused function;
   //   try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-  //     const response = await fetch(`/api/laboratory/orders/${orderId}/items`);
+} catch (error) { console.error(error); }/items`);
   //     if (!session.user) {
   //       let errorMessage = "Failed to fetch order items";
   //       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-  //         const errorData: ApiErrorResponse = await response.json();
-  //         errorMessage = errorData.error || errorMessage;
-  //       } catch {
+} catch (error) { console.error(error); } catch {
   //         /* Ignore */;
   //       }
   //       throw new Error(errorMessage);
@@ -391,89 +246,41 @@ const ResultManagement: React.FC = () => {
   //     // FIX: Type the response data;
   //     const data: OrderItemsApiResponse = await response.json();
   //     setOrderItems(data.results || []);
-  //   } catch (error: unknown) {
-  //     // FIX: Use unknown,
-  //     const messageText =;
-  //       error instanceof Error ? error.message : "An unknown error occurred";
-  //     // Debug logging removed;
-  //     message.error(`Failed to load order items: ${}`;
+  //   } catch (error) { console.error(error); }`;
   //   }
   // }
 
   // Fetch parameters for a specific test;
   // const _fetchParameters = async (testId: string): Promise<void> => { // Removed unused function;
   //   try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-  //     const response = await fetch();
-  //       `/api/laboratory/tests/${testId}/parameters`;
+} catch (error) { console.error(error); }/parameters`;
   //     );
   //     if (!session.user) {
   //       let errorMessage = "Failed to fetch test parameters";
   //       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-  //         const errorData: ApiErrorResponse = await response.json();
-  //         errorMessage = errorData.error || errorMessage;
-  //       } catch {
+} catch (error) { console.error(error); } catch {
   //         /* Ignore */;
   //       }
   //       throw new Error(errorMessage);
@@ -481,12 +288,7 @@ const ResultManagement: React.FC = () => {
   //     // FIX: Type the response data;
   //     const data: ParametersApiResponse = await response.json();
   //     setParameters(data.results || []);
-  //   } catch (error: unknown) {
-  //     // FIX: Use unknown,
-  //     const messageText =;
-  //       error instanceof Error ? error.message : "An unknown error occurred";
-  //     // Debug logging removed;
-  //     message.error(`Failed to load test parameters: ${}`;
+  //   } catch (error) { console.error(error); }`;
   //   }
   // }
 
@@ -507,81 +309,36 @@ const ResultManagement: React.FC = () => {
   ): Promise<void> => {}
     if (!session.user)eturn;
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const response = await fetch("/api/laboratory/results", {method:"POST", // Assuming POST handles updates via ID;
-        headers: {
-          "Content-Type": "application/json"},
+} catch (error) { console.error(error); },
         selectedResult.id;
           ...values}),);
 
       if (!session.user) {
         // FIX: Type the error response,
-        const errorMessage = "Failed to update result";
         try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-          const errorData: ApiErrorResponse = await response.json(),
-          errorMessage = errorData.error || errorMessage;
-        } catch {
+} catch (error) { console.error(error); } catch {
           /* Ignore */;
 
         throw new Error(errorMessage);
@@ -590,97 +347,42 @@ const ResultManagement: React.FC = () => {
       setIsModalVisible(false);
       form.resetFields(),
       fetchResults();
-    } catch (error: unknown) {
-      // FIX: Use unknown,
-      const messageText =;
-        error instanceof Error ? error.message : "An unknown error occurred";
-
-      message.error(messageText);
-
-  };
+    } catch (error) { console.error(error); };
 
   // Handle creating a new result;
   const handleCreateResult = async();
     values: CreateResultValues;
   ): Promise<void> => {
-    // if (!session.user)eturn; // FIX: selectedOrderItem is not defined,
-    try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+    // if (!session.user)eturn; // FIX: selectedOrderItem is not defined, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const response = await fetch("/api/laboratory/results", {method:"POST",
-        headers: {
-          "Content-Type": "application/json"},
+} catch (error) { console.error(error); },
         body: JSON.stringify({
-          // order_item_id: selectedOrderItem.id, // FIX: selectedOrderItem is not defined
-          ...values})});
+          // order_item_id: selectedOrderItem.id,
 
       if (!session.user) {
         // FIX: Type the error response,
-        const errorMessage = "Failed to create result";
         try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-          const errorData: ApiErrorResponse = await response.json(),
-          errorMessage = errorData.error || errorMessage;
-        } catch {
+} catch (error) { console.error(error); } catch {
           /* Ignore */;
 
         throw new Error(errorMessage);
@@ -689,108 +391,48 @@ const ResultManagement: React.FC = () => {
       setIsEntryModalVisible(false);
       entryForm.resetFields(),
       fetchResults();
-    } catch (error: unknown) {
-      // FIX: Use unknown;
-      const messageText =;
-        error instanceof Error ? error.message : "An unknown error occurred";
-
-      message.error(messageText);
-
-  };
+    } catch (error) { console.error(error); };
 
   // Handle verifying a result;
   const handleVerifyResult = async (result: LabResult): Promise<void> => {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const response = await fetch("/api/laboratory/results", {method:"POST", // Assuming POST handles verification;
-        headers: {
-          "Content-Type": "application/json"},
+} catch (error) { console.error(error); },
         result.id,
           verify: true,
-        })});
 
       if (!session.user) {
         // FIX: Type the error response,
-        const errorMessage = "Failed to verify result";
         try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-          const errorData: ApiErrorResponse = await response.json(),
-          errorMessage = errorData.error || errorMessage;
-        } catch {
+} catch (error) { console.error(error); } catch {
           /* Ignore */;
 
         throw new Error(errorMessage);
 
       message.success("Result verified successfully"),
       fetchResults();
-    } catch (error: unknown) {
-      // FIX: Use unknown;
-      const messageText =;
-        error instanceof Error ? error.message : "An unknown error occurred";
-
-      message.error(messageText);
-
-  };
+    } catch (error) { console.error(error); };
 
   // Show result entry modal;
   // const _showResultEntryModal = (orderItem: LabOrderItem): void => { // FIX: Removed unused function;
@@ -809,8 +451,7 @@ const ResultManagement: React.FC = () => {
   // Show result update modal;
   const showResultUpdateModal = (result: LabResult): void => {
     setSelectedResult(result);
-    form.setFieldsValue({result_value:result.result_value,
-      result.notes || "";
+    form.setFieldsValue({result_value: result.result_value,
     }),
     setIsModalVisible(true);
   };
@@ -836,16 +477,14 @@ const ResultManagement: React.FC = () => {
     {title:"Reference Range",
       "15%",
       render: (_: unknown, record: LabResult) => {
-        // Simplified - in a real app, you"d use patient gender/age to determine which range to show;
+        // Simplified - in a real app,
         return();
           record.reference_range_male || record.reference_range_female || "N/A";
         );
       }},
     {title:"Status",
       "10%",
-      render: (_: unknown, record: LabResult) => {
-        if (!session.user) {
-          return <Tag color="success">Verified</Tag>;
+      render: (_: unknown,
         } else if (!session.user) {
           return <Tag color="error">Abnormal>;
         } else {
@@ -858,12 +497,11 @@ const ResultManagement: React.FC = () => {
     },
     {title:"Actions",
       "15%",
-      render: (_: unknown, record: LabResult) => {
-        const actions = [];
+      render: (_: unknown,
 
         // Edit action (only if not verified);
         if (!session.user) {
-          actions.push();
+          actions.push("");
             <Button>;
               key = "edit",
               type = "link",
@@ -876,7 +514,7 @@ const ResultManagement: React.FC = () => {
 
         // Verify action (only if not verified and user has permission - permission check omitted for brevity);
         if (!session.user) {
-          actions.push();
+          actions.push("");
             <Button>;
               key = "verify",
               type = "link",
@@ -900,7 +538,6 @@ const ResultManagement: React.FC = () => {
             icon={<PlusOutlined />}
             onClick={() => {
               // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
-              message.info();
                 "Select an order/item to enter results for (feature pending).";
               );
             }}
@@ -930,8 +567,7 @@ const ResultManagement: React.FC = () => {
             style={{ width: 250 }}
             value={orderFilter}
             onChange={(value: string | null) => setOrderFilter(value)}
-            filterOption={(input, option) => {}
-              (option?.children as unknown as string);
+            filterOption={(input,
                 ?.toLowerCase();
                 .includes(input.toLowerCase()) ?? false;
 
@@ -983,8 +619,7 @@ const ResultManagement: React.FC = () => {
             name = "result_value",
             label="Result Value";
             rules={[;
-              {required:true, message: "Please enter the result value" }]}
-          >;
+              {required: true,
             <Input />;
           </Form.Item>;
           <Form.Item;
@@ -1021,8 +656,7 @@ const ResultManagement: React.FC = () => {
             <Form.Item;
               name = "parameter_id",
               label = "Parameter",
-              rules={[{ required: true, message: "Please select a parameter" }]}
-            >;
+              rules={[{ required: true,
               >;
                 {parameters.map((p: unknown) => ( // Added "any' type temporarily if uncommented;
                   >;
@@ -1037,8 +671,7 @@ const ResultManagement: React.FC = () => {
             name = "result_value",
             label="Result Value";
             rules={[;
-              {required:true, message: "Please enter the result value" }]}
-          >;
+              {required: true,
             <Input />;
           </Form.Item>;
           <Form.Item;

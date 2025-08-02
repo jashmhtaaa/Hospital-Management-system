@@ -15,6 +15,8 @@ export const GET = async (request: NextRequest) => {,
     // Authentication
     const session = await getSession();
      {\n  {
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
@@ -154,6 +156,8 @@ export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { i
     // Authentication
     const session = await getSession();
      {\n  {
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
@@ -217,6 +221,8 @@ export const _POST_RETRIEVE = async (request: NextRequest) => {,
     // Authentication
     const session = await getSession();
      {\n  {
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
@@ -363,6 +369,8 @@ export const _POST_STORE = async (request: NextRequest) => {,
     // Authentication
     const session = await getSession();
      {\n  {
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
@@ -494,6 +502,8 @@ export const _POST_ANNOTATIONS = async (request: NextRequest, { params }: { para
     // Authentication
     const session = await getSession();
      {\n  {
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
@@ -596,6 +606,8 @@ export const _GET_ANNOTATIONS = async (request: NextRequest, { params }: { param
     // Authentication
     const session = await getSession();
      {\n  {
+  return NextResponse.json({ message: "Not implemented" });
+};
       return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 

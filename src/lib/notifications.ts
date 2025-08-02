@@ -14,9 +14,6 @@ interface DBResult {
 
   number;
   affectedRows: number,
-}
-
-/**;
  * Notification type definition;
  */;
 }
@@ -31,44 +28,23 @@ interface DBResult {
  */;
 export const _notifyUsers = async();
   userIds: number[],
-  notification: Omit>;
 ): Promise<number[]> {
 export const notifyUsers = async();
   userIds: number[],
-  notification: Omit<Notification, "userId">;
+  notification: Omit<Notification,
 ): Promise<number[]> => {
   try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
     const db = DB();
     const notificationIds: number[] = [];
 
@@ -96,10 +72,7 @@ export const notifyUsers = async();
     }
 
     return notificationIds;
-  } catch (error) {
-    return [];
-
-};
+  } catch (error) { console.error(error); };
 
 /**;
  * Marks a notification as read;
@@ -110,55 +83,23 @@ export const notifyUsers = async();
  */;
 export const _markNotificationRead = async();
   notificationId: number,
-  userId: number;
 ): Promise<boolean> {
 export const markNotificationRead = async();
   notificationId: number,
-  userId: number;
 ): Promise<boolean> => {
   try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-    const db = DB();
-
-    const result = await db.query();
-      `UPDATE notifications;
-       SET read = true, read_at = NOW();
-       WHERE id = ? AND user_id = ?`,
-      [notificationId, userId];
-    ) as DBResult;
-
-    return result.affectedRows > 0;
-  } catch (error) {
+} catch (error) { console.error(error); } catch (error) {
     return false;
 
 };
@@ -173,72 +114,26 @@ export const markNotificationRead = async();
  */;
 export const _getUserNotifications = async();
   userId: number,
-  unreadOnly = false;
   limit: number = 50;
 ): Promise<any[]> {
 export const getUserNotifications = async();
   userId: number,
   unreadOnly: boolean = false,
-  limit: number = 50;
 ): Promise<any[]> => {
   try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-    const db = DB();
-
-    let query = `;
-      SELECT *;
-      FROM notifications;
-      WHERE user_id = ?;
-    `;
-
-    const params: unknown[] = [userId],
-
-    if (!session.user) {
-      query += " AND read = false";
-
-    query += " ORDER BY created_at DESC LIMIT ?";
-    params.push(limit);
-
-    const result = await db.query(query, params) as DBResult;
-
-    return result.results.map((notification: any) => ({,
-      ...notification,
-      metadata: notification.metadata ? JSON.parse(notification.metadata) : null,
-    }));
-  } catch (error) {
-    return [];
-
-};
+} catch (error) { console.error(error); }));
+  } catch (error) { console.error(error); };
 
 export default {
   notifyUsers,

@@ -178,6 +178,8 @@ async const createPreAuthorizationInDB = (
  */
 export const GET = async (request: NextRequest) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { searchParams } = new URL(request.url);
     const filters: PreAuthorizationFilters = {,
       status: searchParams.get("status") ?? undefined,
@@ -218,6 +220,8 @@ export const POST = async (request: NextRequest) => {,
       return NextResponse.json(
         {
           error: "Missing required fields (patient_insurance_id, requested_procedure)",
+  return NextResponse.json({ message: "Not implemented" });
+};
         },
         { status: 400 },
       )

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 
 import { Badge } from '@/components/ui/badge';
@@ -15,7 +15,7 @@ interface RadiologyStudy {
 }
 
 interface RadiologyStudyDetailProps {
-  study: RadiologyStudy
+  study: RadiologyStudy;
 }
 
 /**
@@ -92,13 +92,7 @@ export const _RadiologyStudyDetail = ({ study }: RadiologyStudyDetailProps) => {
               {study.images.length === 0 ? (
                 <p>No images available</p>
               ) : (
-                study.images.map((image, index) => (
-                  \1>
-                    \1>
-                      <span className="text-gray-500">Image {index + 1}</span>
-                    </div>
-                  </div>
-                ));
+                study.images.map((image,
               )}
             </div>
           </div>

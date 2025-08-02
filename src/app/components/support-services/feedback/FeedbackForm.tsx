@@ -3,8 +3,8 @@ import { useState } from "react"
 
 "use client";
 
-import { } from "@/components/ui/button"
-import { } from "@/components/ui/checkbox"
+
+
 import { "@/components/ui/input";
 import "@/components/ui/label";
 import "@/components/ui/radio-group";
@@ -60,15 +60,13 @@ const feedbackFormSchema = z.object({
   z.string().optional(),
     email: z.string().email().optional(),
     phone: z.string().optional(),
-  }).optional()});
 
 type FeedbackFormValues = z.infer>;
 
 interface FeedbackFormProps {
-    departments?: {id:string, name: string }[];
+    departments?: {id: string,
   serviceTypes?: string[];
   onSuccess?: (data: unknown) => void,
-  defaultValues?: Partial>;
 export default const _FeedbackForm = ({ departments = [], serviceTypes = [], onSuccess, defaultValues }: FeedbackFormProps) {
   const {data:session } = useSession();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -80,8 +78,7 @@ export default const _FeedbackForm = ({ departments = [], serviceTypes = [], onS
       defaultValues?.rating || 0,
       defaultValues?.departmentId || "",
       defaultValues?.serviceId || "",
-      defaultValues?.contactInfo || {name:"",
-        "";
+      defaultValues?.contactInfo || {name: "",
       }}});
 
   // Watch for anonymous field changes;
@@ -94,42 +91,19 @@ export default const _FeedbackForm = ({ departments = [], serviceTypes = [], onS
   const onSubmit = async (values: FeedbackFormValues) => {
     setIsSubmitting(true);
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const response = await fetch("/api/support-services/feedback", {method:"POST",
-        headers: {
-          "Content-Type": "application/json"},
+} catch (error) { console.error(error); },
         body: JSON.stringify(values),
-      });
 
       if (!session.user) {
         const error = await response.json();
@@ -139,7 +113,6 @@ export default const _FeedbackForm = ({ departments = [], serviceTypes = [], onS
       toast({
         title: "Feedback Submitted",
         description: "Thank you for your feedback!",
-      });
 
       // Reset form;
       form.reset();
@@ -148,10 +121,7 @@ export default const _FeedbackForm = ({ departments = [], serviceTypes = [], onS
       if (!session.user) {
         onSuccess(data);
 
-    } catch (error: unknown) {
-      toast({title:"Error",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
     } finally {
       setIsSubmitting(false);
 

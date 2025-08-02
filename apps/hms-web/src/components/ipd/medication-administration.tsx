@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 
 import { Badge } from '@/components/ui/badge';
@@ -11,7 +11,7 @@ interface Medication {
   \1,\2 string,
   startDate: string;
   endDate?: string;
-  status: 'active' | 'discontinued' | 'completed'
+  status: 'active' | 'discontinued' | 'completed';
 }
 
 interface MedicationAdministration {
@@ -28,7 +28,7 @@ interface MedicationAdministration {
 interface MedicationAdministrationProps {
   patientId: string,
   \1,\2 Medication[],
-  administrations: MedicationAdministration[]
+  administrations: MedicationAdministration[];
 }
 
 /**

@@ -1,4 +1,4 @@
-import { } from "@radix-ui/react-accordion"
+
 import "lucide-react";
 import "react";
 import * as AccordionPrimitive
@@ -33,7 +33,6 @@ const AccordionTrigger = React.forwardRef<;
       ref={ref}
       className={cn();
         "flex flex-1 items-center justify-between py-4 text-sm font-medium transition-all hover: underline text-left [&[data-state=open]>svg]:rotate-180",
-        className;
       )}
       {...props}
     >;

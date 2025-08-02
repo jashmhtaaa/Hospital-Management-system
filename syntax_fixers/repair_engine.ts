@@ -15,13 +15,11 @@ try {
         tsConfigFilePath: path.join(__dirname, '../tsconfig.json'),
         skipAddingFilesFromTsConfig: false,
         skipFileDependencyResolution: false,
-    });
 
     // Register repair functions for different error patterns
     const repairStrategies = {
         // Fix malformed imports
-        fixImports: (file) => {,
-            file.getImportDeclarations().forEach(imp => {
+        fixImports: (file) => {file.getImportDeclarations().forEach(imp => {
                 const text = imp.getText();
                 if (text.includes('import') && text.includes('}') && !text.includes('from')) {
                     const fixedText = text
@@ -33,8 +31,7 @@ try {
         },
         
         // Fix malformed exports
-        fixExports: (file) => {,
-            file.getExportDeclarations().forEach(exp => {
+        fixExports: (file) => {file.getExportDeclarations().forEach(exp => {
                 const text = exp.getText();
                 if (text.includes('export') && text.includes('}') && !text.includes('from')) {
                     const fixedText = text
@@ -46,8 +43,7 @@ try {
         },
         
         // Fix common syntax errors
-        fixSyntax: (file) => {,
-            // Implement additional syntax repair logic here
+        fixSyntax: (file) => {// Implement additional syntax repair logic here
             // based on the specific error patterns observed
         }
     };
@@ -64,13 +60,11 @@ try {
             Object.values(repairStrategies).forEach(strategy => {
                 try {
                     strategy(file);
-                } catch (error) {
-                    console.error(`Error applying strategy to ${filePath}:`, error);
+                } catch (error) { console.error(error); }:`, error);
                 }
             });
             
-        } catch (error) {
-            console.error(`Error processing ${filePath}:`, error);
+        } catch (error) { console.error(error); }:`, error);
         }
     });
     
@@ -78,7 +72,4 @@ try {
     project.saveSync();
     console.log('Syntax repairs completed');
     
-} catch (error) {
-    console.error('Fatal error in syntax repair engine:', error);
-    process.exit(1);
-}
+} catch (error) { console.error(error); }

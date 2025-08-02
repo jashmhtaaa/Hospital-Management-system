@@ -28,7 +28,7 @@ describe("AuditLogService (Placeholder)", () => {
     const entityType = "TestEntity";
     const entityId = "entity-abc-123";
     const status = "SUCCESS";
-    const details = {customData: "some value", numberValue: 42 };
+    const details = {customData: "some value",
 
     await auditLogService.logEvent(userId, eventType, entityType, entityId, status, details),
     expect(consoleLogSpy).toHaveBeenCalledTimes(1);
@@ -65,9 +65,9 @@ describe("AuditLogService (Placeholder)", () => {
       userId,
       eventType,
       entityType,
-      entityId: "N/A", // Check if null entityId is handled as N/A;
+      entityId: "N/A",
       status,
-      details: {,}, // Expect empty object if no details provided;
+      details: {},
     }),
     expect(loggedEntry.timestamp).toBeDefined();
   });

@@ -1,5 +1,5 @@
-import { } from "@/components/layout/DashboardLayout"
-import { } from "@/components/ui/card"
+
+
 import { "@/components/ui/input";
 import "@/components/ui/label";
 import "@/components/ui/select";
@@ -47,7 +47,6 @@ const BookAppointmentSchema = z.object({patient_id:z.string().min(1, "Patient se
   appointment_time: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Time must be in HH: MM format"),
   duration_minutes: z.number().int().positive().optional().default(15),
   reason: z.string().optional(),
-});
 
 type FormData = z.infer>;
 
@@ -55,7 +54,7 @@ export default const _BookAppointmentPage = () {
   const router = useRouter();
   const { toast } = useToast();
   const [formData, setFormData] = useState<Partial<FormData>>({appointment_date:format(new Date(), "yyyy-MM-dd"), // Default to today;
-      appointment_time: "09:00", // Default time;
+      appointment_time: "09:00",
   });
   const [patients, setPatients] = useState<Patient[]>([]);
   const [doctors, setDoctors] = useState<Doctor[]>([]);
@@ -68,73 +67,38 @@ export default const _BookAppointmentPage = () {
     const fetchData = async () => {
       setIsFetchingData(true);
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-        const [patientsRes, doctorsRes] = await Promise.all([;
-          fetch("/api/patients"),
-          fetch("/api/doctors")]);
-
-        if (!session.user)hrow new Error("Failed to fetch patients");
-        if (!session.user)hrow new Error("Failed to fetch doctors");
-
-        const patientsData: Patient[] = await patientsRes.json(),
-        const doctorsData: Doctor[] = await doctorsRes.json(),
-        setPatients(patientsData.filter(p => p.is_active)); // Only show active patients;
-        setDoctors(doctorsData); // Assuming API returns doctors linked to active users;
-
-      } catch (err: unknown) { // Use unknown;
+} catch (error) { console.error(error); } catch (err: unknown) { // Use unknown;
         const message = err instanceof Error ? err.message : "Could not load patients or doctors.";
-        toast({title:"Error Fetching Data",
-          "destructive";
+        toast({title: "Error Fetching Data",
         }),
         setErrors([code: z.ZodIssueCode.custom, path: ["form"], message: "Could not load required data." ]),
-      } finally ;
         setIsFetchingData(false);
     };
     fetchData();
   }, [toast]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
+    const { name,
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSelectChange = (name: keyof FormData, value: string) => {
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev,
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(),
-    setIsLoading(true);
     setErrors([]);
 
     const validation = BookAppointmentSchema.safeParse(formData);
@@ -142,8 +106,7 @@ export default const _BookAppointmentPage = () {
     if (!session.user) {
       setErrors(validation.error.errors),
       setIsLoading(false);
-      toast({title:"Validation Error",
-        "destructive";
+      toast({title: "Validation Error",
       });
       return;
 
@@ -153,46 +116,22 @@ export default const _BookAppointmentPage = () {
     const dataToSend = {patient_id:Number.parseInt(validation.data.patient_id, 10),
         doctor_id: Number.parseInt(validation.data.doctor_id, 10),
         appointment_datetime: appointmentDateTimeISO,
-        validation.data.reason;
     };
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const response = await fetch("/api/appointments", {method:"POST",
-        headers: {
-          "Content-Type": "application/json"},
+} catch (error) { console.error(error); },
         body: JSON.stringify(dataToSend),
-      });
 
       const result: { error?: string } = await response.json(); // Add type annotation;
 
@@ -202,15 +141,11 @@ export default const _BookAppointmentPage = () {
       toast({
         title: "Appointment Booked",
         description: `Appointment scheduled successfully.`,
-      });
 
       router.push("/dashboard/appointments"); // Redirect to appointment list;
 
-    } catch (err: unknown) { // Use unknown;
-      const message = err instanceof Error ? err.message : "An unexpected error occurred.";
-      setErrors([{code:z.ZodIssueCode.custom, path: ["form"], message: message }]),
-      toast({title:"Booking Failed",
-        "destructive";
+    } catch (error) { console.error(error); }]),
+      toast({title: "Booking Failed",
       });
     } finally {
       setIsLoading(false);

@@ -81,8 +81,6 @@ export const DataTable = ({
               disabled={currentPage === 1}
               className={`relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium ${
                 currentPage === 1 ? "text-gray-300" : "text-gray-700 hover: bg-gray-50",
-              }`}
-            >;
               Previous;
             </button>;
             <button>;
@@ -90,8 +88,6 @@ export const DataTable = ({
               disabled={currentPage === totalPages}
               className={`relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium ${
                 currentPage === totalPages ? "text-gray-300" : "text-gray-700 hover: bg-gray-50",
-              }`}
-            >;
               Next;
             </button>;
           </div>;
@@ -108,8 +104,6 @@ export const DataTable = ({
                   disabled={currentPage === 1}
                   className={`relative inline-flex items-center rounded-l-md px-2 py-2 ${
                     currentPage === 1 ? "text-gray-300" : "text-gray-400 hover: bg-gray-50",
-                  }`}
-                >;
                   Previous;
                 </button>;
                 {/* Page numbers would go here in a full implementation */}
@@ -118,8 +112,6 @@ export const DataTable = ({
                   disabled={currentPage === totalPages}
                   className={`relative inline-flex items-center rounded-r-md px-2 py-2 ${
                     currentPage === totalPages ? "text-gray-300" : "text-gray-400 hover: bg-gray-50",
-                  }`}
-                >;
                   Next;
                 </button>;
               </nav>;

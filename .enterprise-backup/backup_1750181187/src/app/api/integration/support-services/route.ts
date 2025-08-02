@@ -32,6 +32,8 @@ export const GET = async (
     return NextResponse.json({
       success: true,
       data: patientInfo,
+  return NextResponse.json({ message: "Not implemented" });
+};
     });
   });
 }
@@ -59,6 +61,8 @@ export const GET = async (
     return NextResponse.json({
       success: true,
       data: locationInfo,
+  return NextResponse.json({ message: "Not implemented" });
+};
     });
   });
 }
@@ -75,6 +79,8 @@ export const POST = async (request: NextRequest) => {,
 
     // Parse request body
     const body = await request.json();
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { recipientId, type, title, message, metadata } = body;
 
     // Validate required fields
@@ -121,6 +127,8 @@ export const POST = async (request: NextRequest) => {,
 
     // Parse request body
     const body = await request.json();
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { reportType, reportData } = body;
 
     // Validate required fields
@@ -167,6 +175,8 @@ export const POST = async (
 
     // Parse request body
     const body = await request.json();
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { patientId } = body;
 
     // Validate required fields
@@ -232,6 +242,8 @@ export const POST = async (
 
     // Parse request body
     const body = await request.json();
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { locationId } = body;
 
     // Validate required fields

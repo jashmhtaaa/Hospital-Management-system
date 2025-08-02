@@ -25,6 +25,8 @@ const payrollPeriodSchema = z.object({
 // POST handler for creating payroll period;
 export const _POST = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -89,6 +91,8 @@ export const _POST = async (request: any) => {,
 // GET handler for listing payroll periods;
 export const _GET = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }

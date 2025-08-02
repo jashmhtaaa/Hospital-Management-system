@@ -10,6 +10,8 @@ import { NextResponse }
  */;
 export const GET = async () => {
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }

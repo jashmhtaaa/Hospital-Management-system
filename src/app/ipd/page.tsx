@@ -16,7 +16,7 @@ export const dynamic = "force-dynamic";
   TabsList,
   TabsTrigger,
   TabsContent} from "@/components/ui"; // Assuming all these are from @/components/ui;
-import { } from "@/components/ipd/bed-management-dashboard"
+
 import "@/components/ipd/discharge-summary";
 import "@/components/ipd/ipd-patient-list";
 import "@/components/ipd/medication-administration";
@@ -36,14 +36,13 @@ import { Button } from "@/components/ipd/admission-form"; // FIX: Add missing Bu
 
 // --- INTERFACES ---;
 
-// FIX: Define props type for IPDPatientDetails,
-interface IPDPatientDetailsProperties { patientId: number; // Assuming ID is a number;
+// FIX: Define props type for IPDPatientDetails, // Assuming ID is a number;
+}
   admissionId: number; // Assuming ID is a number,  }
 
 // FIX: Define type for selected admission state,
 interface SelectedAdmission {
   admissionId: number,
-  patientId: number;
 
 // --- COMPONENTS ---;
 
@@ -54,7 +53,6 @@ const IPDPatientDetails: React.FC<IPDPatientDetailsProperties> = ({
   const [activeDetailTab, setActiveDetailTab] = useState("progress-notes");
 
   // FIX: Convert number IDs to strings for child components if they expect strings,
-  const admissionIdString = admissionId.toString();
   // const _patientIdStr = patientId.toString(); // If needed by children;
 
   return();
@@ -98,7 +96,7 @@ const IPDPatientDetails: React.FC<IPDPatientDetailsProperties> = ({
 };
 
 const IPDPage = () => {
-  // FIX: Use the defined type for state, initialize to null;
+  // FIX: Use the defined type for state,
   const [selectedAdmission, setSelectedAdmission] =;
     useState<SelectedAdmission | null>();
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -182,9 +180,6 @@ const IPDPage = () => {
               <CardContent>;
                 <IPDPatientDetails>;
                   // FIX: Add check for selectedAdmission before accessing properties,
-                  patientId={selectedAdmission.patientId}
-                  admissionId={selectedAdmission.admissionId}
-                />;
               </CardContent>;
             </Card>;
           </TabsContent>;

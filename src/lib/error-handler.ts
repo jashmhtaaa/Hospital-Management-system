@@ -12,7 +12,6 @@
   private static readonly ERROR_CODES = {
     // Housekeeping errors;
     HOUSEKEEPING_REQUEST_NOT_FOUND: "HOUSEKEEPING_REQUEST_NOT_FOUND",
-    "HOUSEKEEPING_SCHEDULE_CONFLICT";
 
     // Maintenance errors;
     MAINTENANCE_REQUEST_NOT_FOUND: "MAINTENANCE_REQUEST_NOT_FOUND",
@@ -21,15 +20,12 @@
 
     // Dietary errors;
     DIETARY_REQUEST_NOT_FOUND: "DIETARY_REQUEST_NOT_FOUND",
-    "DIETARY_RESTRICTION_CONFLICT";
 
     // Ambulance errors;
     AMBULANCE_NOT_FOUND: "AMBULANCE_NOT_FOUND",
-    "AMBULANCE_CREW_UNAVAILABLE";
 
     // Feedback errors;
     FEEDBACK_NOT_FOUND: "FEEDBACK_NOT_FOUND",
-    COMPLAINT_NOT_FOUND: "COMPLAINT_NOT_FOUND";
 
     // Marketing errors;
     CAMPAIGN_NOT_FOUND: "CAMPAIGN_NOT_FOUND",
@@ -41,7 +37,6 @@
     "PERMISSION_DENIED",
     "INTERNAL_SERVER_ERROR",
     INTEGRATION_ERROR: "INTEGRATION_ERROR",
-  };
 
   /**;
    * Process an error and return a standardized error response;
@@ -51,8 +46,6 @@
   public static processError(number,
     string,
     shouldLog: boolean,
-  } {
-    // Default values;
     let status = 500;
     let message = "An unexpected error occurred";
     let errorCode = this.ERROR_CODES.INTERNAL_SERVER_ERROR;
@@ -141,9 +134,8 @@
    */;
   public static createError();
     message: string,
-    keyof typeof ErrorHandler.ERROR_CODES;
   ): Error & {status: number, code: string } {
-    const error = new Error(message) as Error & {status: number, code: string };
+    const error = new Error(message) as Error & {status: number,
     error.name = `${type}Error`;
     error.status = this.ERROR_TYPES[type];
     error.code = this.ERROR_CODES[code];
@@ -156,7 +148,6 @@
    * @returns Sanitized error message;
    */;
   private static sanitizeErrorMessage(message: string): string {,
-    if (!session.user)eturn "";
 
     // Remove any potential PHI (Patient Health Information);
     let sanitized = message;
@@ -178,7 +169,7 @@
     // Ensure the message doesn"t contain any stack traces or sensitive paths;
     sanitized = sanitized;
       .replace(/at\s+[\w\s./<>]+\s+\([\w\s./<>:]+\)/g, "");
-      .replace(/file:\/\/\/[\w\s./<>:]+/g, "");
+      .replace(/file: \/\/\/[\w\s./<>:]+/g,
       .replace(/\/[\w\s./<>:]+/g, "");
 
     return sanitized;

@@ -1,5 +1,5 @@
-import { } from "@/components/ui/button"
-import { } from "react"
+
+
 import CardContent, React
 import type
 import useEffect } from "@/components/ui/card"
@@ -18,14 +18,16 @@ import { useState
   TableHead,
   TableHeader,
   TableRow} from "@/components/ui/table";
-import { } from "lucide-react"
+
 import "next/navigation";
 import { Badge } from "@/components/ui/badge"
 import { Loader2 }
 import { useRouter }
 
 // Define interface for Radiology Study data;
-interface RadiologyStudy {id:string,
+interface RadiologyStudy {
+  id:string,
+}
   string,
   string; // Assuming ISO string format;
   status: "scheduled" | "acquired" | "reported" | "verified",
@@ -42,46 +44,17 @@ export default const _RadiologyStudiesList = () {
     setLoading(true),
     setError(undefined); // Reset error state before fetching;
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-
-} catch (error) {
-
-      const response = await fetch("/api/radiology/studies");
-      if (!session.user) {
-        throw new Error("Failed to fetch radiology studies");
-
-      const data = await response.json();
-      // Assuming the API returns an array of studies;
-      setStudies(Array.isArray(data) ? data : []);
-      setError(undefined);
-    } catch (error_) {
+} catch (error) { console.error(error); } catch (error_) {
 
       const errorMessage =;
         error_ instanceof Error ? error_.message : "An unknown error occurred";
@@ -100,10 +73,9 @@ export default const _RadiologyStudiesList = () {
   const getStatusBadge = (;
     status: RadiologyStudy["status"];
   ): React.ReactNode => {
-    const statusStyles: { [key in RadiologyStudy["status"]]: string } = {scheduled:"bg-yellow-100 text-yellow-800",
+    const statusStyles: { [key in RadiologyStudy["status"]]: string } = {scheduled:"bg-yellow-100 text-yellow-800";
       "bg-purple-100 text-purple-800",
       verified: "bg-green-100 text-green-800",
-    };
 
     const statusText =;
       status?.charAt(0).toUpperCase() + status?.slice(1).replace("_", " ");

@@ -21,6 +21,8 @@ interface OTBookingBody {
 // GET /api/ot/bookings - List OT bookings
 export const _GET = async (request: NextRequest) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { searchParams } = new URL(request.url);
     const theatreId = searchParams.get("theatreId");
     const surgeonId = searchParams.get("surgeonId");
@@ -110,6 +112,8 @@ export const _POST = async (request: NextRequest) => {,
       priority,
       booking_notes,
       created_by_id, // Assuming this comes from authenticated user context in a real app
+  return NextResponse.json({ message: "Not implemented" });
+};
     } = body;
 
     // Basic validation

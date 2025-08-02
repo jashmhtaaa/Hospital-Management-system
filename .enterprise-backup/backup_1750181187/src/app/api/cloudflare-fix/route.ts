@@ -47,6 +47,8 @@ export const _GET = async () => {
      {\n  {
 
       return new Response(
+  return NextResponse.json({ message: "Not implemented" });
+};
         JSON.stringify({ error: "Database binding not available" ,}),
         {
           status: 500,

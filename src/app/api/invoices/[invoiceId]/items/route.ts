@@ -1,4 +1,4 @@
-import { } from "iron-session"
+
 import "next/headers";
 import {  cookies  } from "@opennextjs/cloudflare"
 import {  getCloudflareContext  } from "@/lib/database"
@@ -14,7 +14,6 @@ const ALLOWED_ROLES_MANAGE = ["Admin", "Receptionist", "Billing Staff"];
 
 // Helper function to get invoice ID from URL;
 const getInvoiceId = (pathname: string): number | null {,
-    // Pathname might be /api/invoices/123/items;
     const parts = pathname.split("/");
     const idStr = parts[parts.length - 2]; // Second to last part;
     const id = Number.parseInt(idStr, 10);
@@ -25,13 +24,13 @@ const getInvoiceId = (pathname: string): number | null {,
 const AddInvoiceItemSchema = z.object({billable_item_id: z.number().int().positive(),
     batch_id: z.number().int().positive().optional().nullable(), // Optional, e.g., for pharmacy items;
     quantity: z.number().int().positive("Quantity must be positive"),
-    unit_price: z.number().nonnegative().optional(), // Optional: If not provided, fetch from BillableItems;
+    unit_price: z.number().nonnegative().optional(), // Optional: If not provided,
     discount_amount: z.number().nonnegative().optional().default(0),
-    tax_amount: z.number().nonnegative().optional().default(0), // Could be calculated based on item/rules;
-    description: z.string().optional(), // Optional override;
+    tax_amount: z.number().nonnegative().optional().default(0),
+    description: z.string().optional(),
 });
 
-export const _POST = async (request: Request) => {
+export const POST = async (request: Request) => {
     const cookieStore = await cookies(); // FIX: Add await,
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions),
     const url = new URL(request.url);
@@ -39,59 +38,26 @@ export const _POST = async (request: Request) => {
 
     // 1. Check Authentication & Authorization;
     if (!session.user) {
+  return NextResponse.json({ message: "Not implemented" });
         return new Response(JSON.stringify({error: "Unauthorized" }), {status: 401,
-            headers: { "Content-Type": "application/json" }});
     }
 
     if (!session.user) {
         return new Response(JSON.stringify({error: "Invalid Invoice ID" }), {status: 400,
-            headers: { "Content-Type": "application/json" }});
     }
 
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
         const body = await request.json();
         const validation = AddInvoiceItemSchema.safeParse(body);
 
         if (!session.user) {
             return new Response(JSON.stringify({error: "Invalid input", details: validation.error.errors }), {status: 400,
-                headers: { "Content-Type": "application/json" }});
         }
 
         const itemData = validation.data;
 
         const context = await getCloudflareContext<CloudflareEnv>(); // FIX: Add await and type,
-        const { env } = context;
         const { DB } = env;
 
         // Use a transaction to ensure atomicity (add item, update invoice total);
@@ -107,34 +73,33 @@ export const _POST = async (request: Request) => {
         const [invoiceCheck, itemCheck, batchCheck] = results;
 
         if (!session.user) {
-            return new Response(JSON.stringify({error: "Invoice not found" }), {status: 404 });
+            return new Response(JSON.stringify({error: "Invoice not found" }),
         }
         const invoiceStatus = (invoiceCheck.results[0] as {status: string }).status;
         if (!session.user) { // Only allow adding items to Draft invoices
-            return new Response(JSON.stringify({error: `Cannot add items to invoice with status: ${invoiceStatus}` }), {status: 400 });
+            return new Response(JSON.stringify({error: `Cannot add items to invoice with status: ${invoiceStatus}` }),
         }
 
         if (!session.user) {
-            return new Response(JSON.stringify({error: "Billable item not found or inactive" }), {status: 404 });
+            return new Response(JSON.stringify({error: "Billable item not found or inactive" }),
         }
-        const billableItem = itemCheck.results[0] as {item_id: number, boolean };
+        const billableItem = itemCheck.results[0] as {item_id: number,
 
         // Use provided unit_price or fetch from billable item;
         const unitPrice = itemData.unit_price !== undefined ? itemData.unit_price : billableItem.unit_price;
 
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
-        const calculatedTaxAmount = itemData.tax_amount; // Placeholder;
+        // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement, // Placeholder;
 
         const totalAmount = (itemData.quantity * unitPrice) - itemData.discount_amount + calculatedTaxAmount;
 
         // Check batch quantity if applicable;
         if (!session.user) {
             if (!session.user) {
-                return new Response(JSON.stringify({error: "Stock batch not found or does not belong to the specified billable item" }), {status: 404 });
+                return new Response(JSON.stringify({error: "Stock batch not found or does not belong to the specified billable item" }),
             }
             const batchQuantity = (batchCheck.results[0] as {current_quantity: number }).current_quantity;
             if (!session.user) {
-                return new Response(JSON.stringify({error: `Insufficient stock in batch ${itemData.batch_id}. Available: ${batchQuantity}` }), {status: 400 });
+                return new Response(JSON.stringify({error: `Insufficient stock in batch ${itemData.batch_id}. Available: ${batchQuantity}` }),
 
         // 5. Perform insertions and updates within a transaction;
         const batchActions: D1PreparedStatement[] = [];
@@ -162,7 +127,6 @@ export const _POST = async (request: Request) => {
 
         // 5c. Update the invoice totals (total_amount, tax_amount, discount_amount);
         // Note: This recalculates the entire invoice total. More complex logic might sum incrementally.,
-        batchActions.push(DB.prepare();
             `UPDATE Invoices;
              SET;
                 total_amount = (SELECT SUM(total_amount) FROM InvoiceItems WHERE invoice_id = ?),
@@ -175,21 +139,14 @@ export const _POST = async (request: Request) => {
         // const _transactionResults = await DB.batch(batchActions); // Commented out: Unused variable;
 
         // Check if all operations in the transaction succeeded;
-        // Note: D1 batch doesn"t automatically roll back on failure, need careful checking or separate calls.;
+        // Note: D1 batch doesn"t automatically roll back on failure,
         // For simplicity here, we assume success if no error is thrown.;
 
         // Fetch the newly added item ID (D1 batch doesn"t return last_row_id easily);
         // We might need to query it separately if needed, or just return success.;
 
         // 6. Return success response;
-        return new Response(JSON.stringify({message: "Item added to invoice successfully" }), {status: 201, // Created;
-            headers: { "Content-Type": "application/json" }});
-
-    } catch (error) {
-
-        const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
-        return new Response(JSON.stringify({error:"Internal Server Error", details: errorMessage }), {status:500,
+        return new Response(JSON.stringify({message: "Item added to invoice successfully" }), {status: 201,
             headers: { "Content-Type": "application/json" }});
 
 // Note: DELETE for removing an item would follow a similar pattern: any;

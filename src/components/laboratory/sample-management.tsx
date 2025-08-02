@@ -24,18 +24,17 @@ import { type
   PrinterOutlined,
   CheckOutlined,
   CloseOutlined} from "@ant-design/icons";
-import { } from "moment"
+
 import moment
 import { ColumnsType } from "antd/es/table"
 
 const { Option } = Select;
 
 // Define interfaces for data structures;
-interface Sample {id:string,
-  string;
+interface Sample {
+  id: string,
   patient_name?: string; // Optional, might come from join;
   order_id: string,
-  "pending" | "collected" | "received" | "rejected" | "processed";
   collected_at?: string | null;
   collected_by_user_id?: string | null;
   collector_name?: string; // Optional, might come from join;
@@ -47,15 +46,11 @@ interface Sample {id:string,
 }
 
 interface ScanFormValues {
-  barcode: string,
-}
-
-interface UpdateFormValues { status: "rejected"; // Only handling rejection in this modal, rejection_reason: string,
-  notes?: string;
+  barcode: string, // Only handling rejection in this modal, rejection_reason: string,
  }
 
 const SampleManagement: React.FC = () => {
-  const [samples, setSamples] = useState<Sample[]>([]);
+  const [samples,
   const [loading, setLoading] = useState<boolean>(false);
   const [searchText, setSearchText] = useState<string>("");
   const [statusFilter, setStatusFilter] = useState<string | null>();
@@ -70,37 +65,17 @@ const SampleManagement: React.FC = () => {
   const fetchSamples = useCallback(async (): Promise<void> => {
     setLoading(true);
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       // Simulate API call;
       // let _url = "/api/laboratory/samples";
       // const _params = new URLSearchParams();
@@ -130,7 +105,6 @@ const SampleManagement: React.FC = () => {
           "collected",
           collected_at: [0] - 3_600_000).toISOString(),
           collected_by_user_id: "nurse01",
-          [0] - 7_200_000).toISOString();
         },
         {id:"smp_003",
           "p003",
@@ -172,11 +146,7 @@ const SampleManagement: React.FC = () => {
             new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
         );
       );
-    } catch (err) { // Changed error to err;
-      const messageText =;
-        err instanceof Error ? err.message : "An unknown error occurred."; // Use err;
-      // Debug logging removed // Use err;
-      message.error(`Failed to load laboratory samples: ${}`;
+    } catch (error) { console.error(error); }`;
     } finally {
       setLoading(false);
     }
@@ -203,42 +173,19 @@ const SampleManagement: React.FC = () => {
   ): Promise<void> => {
     if (!session.user)eturn;
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-
-} catch (error) {
-
-      // Simulate API call;
-      // const _response = await fetch(`/api/laboratory/samples/${selectedSample.id}`, {
-      //   method: "PUT", // Or PATCH;
+} catch (error) { console.error(error); }`, {
+      //   method: "PUT",
       //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(values);
       // });
       // if (!session.user) {
       //   const _errorData = await response.json().catch(() => ({}));
@@ -251,57 +198,30 @@ const SampleManagement: React.FC = () => {
       setIsUpdateModalVisible(false);
       updateForm.resetFields(),
       fetchSamples(); // Refresh list;
-    } catch (err) { // Changed error to err;
-      const messageText =;
-        err instanceof Error ? err.message : "An unknown error occurred."; // Use err;
-      // Debug logging removed // Use err;
-      message.error(`Failed to update sample: ${}`;
+    } catch (error) { console.error(error); }`;
 
   };
 
   // Generic function to update sample status;
   const updateSampleStatus = async();
     _sample: Sample, // FIX: Prefixed unused parameter,
-    newStatus: Sample["status"];
   ): Promise<void> => {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      // Simulate API call;
-      // const _response = await fetch(`/api/laboratory/samples/${sample.id}/status`, {
+} catch (error) { console.error(error); }/status`, {
       //   method: "PUT";
       //   headers: { "Content-Type": "application/json" },
       //   body: JSON.stringify({status:newStatus }),
-      // });
       // if (!session.user) {
       //   const _errorData = await response.json().catch(() => ({}));
       //   throw new Error(errorData.error || `Failed to update status to ${}`;
@@ -311,26 +231,21 @@ const SampleManagement: React.FC = () => {
 
       message.success(`Sample marked as ${}`,
       fetchSamples(); // Refresh list;
-    } catch (err) { // Changed error to err;
-      const messageText =;
-        err instanceof Error ? err.message : "An unknown error occurred."; // Use err;
-      // Debug logging removed // Use err;
-      message.error(`Failed to update status: ${}`;
+    } catch (error) { console.error(error); }`;
 
   };
 
   const handleCollectSample = (sample: Sample): void => {
-    updateSampleStatus(sample, "collected");
+    updateSampleStatus(sample,
   };
 
   const handleReceiveSample = (sample: Sample): void => {
-    updateSampleStatus(sample, "received");
+    updateSampleStatus(sample,
   };
 
   const showRejectModal = (sample: Sample): void => {
     setSelectedSample(sample);
-    updateForm.setFieldsValue({status:"rejected",
-      sample.notes || "";
+    updateForm.setFieldsValue({status: "rejected",
     }),
     setIsUpdateModalVisible(true);
   };
@@ -343,7 +258,6 @@ const SampleManagement: React.FC = () => {
 
   const handleScanSubmit = (values: ScanFormValues): void => {
     message.info(`Searching for barcode: ${}`,
-    setIsScanModalVisible(false);
     setSearchText(values.barcode),
     fetchSamples(); // Trigger search;
     form.resetFields()
@@ -375,23 +289,19 @@ const SampleManagement: React.FC = () => {
       }},
     {title:"Collected By",
       "15%",
-      render: (_, record: Sample) => {}
-        record.collector_name ||;
+      render: (_,
         (record.status === "pending" ? "Not collected" : "Unknown")},
     {title:"Collected At",
       "collected_at",
       (date: string | null | undefined, record: Sample) => // Added record here,
-        date;
           ? moment(date).format("YYYY-MM-DD HH:mm");
           : record.status === "pending" // Changed status to record.status;
             ? "Not collected";
             : "N/A"},
     {title:"Actions",
       "20%",
-      render: (_, record: Sample) => {
-        const actions: React.ReactNode[] = [],
-
-        actions.push();
+      render: (_,
+        actions.push("");
           <Button>;
             key = "print",
             type = "link",
@@ -405,7 +315,7 @@ const SampleManagement: React.FC = () => {
 
         switch (record.status) {
           case "pending": {
-            actions.push();
+            actions.push("");
               <Button>;
                 key = "collect",
                 type = "link",
@@ -420,7 +330,7 @@ const SampleManagement: React.FC = () => {
             break;
 
           case "collected": {
-            actions.push();
+            actions.push("");
               <Button>;
                 key = "receive",
                 type = "link",
@@ -504,8 +414,7 @@ const SampleManagement: React.FC = () => {
             columns={columns}
             dataSource={samples}
             rowKey = "id",
-            pagination={{ pageSize: 10, showSizeChanger: true }}
-            scroll={{ x: "max-content" }} // Ensure horizontal scroll on smaller screens;
+            pagination={{ pageSize: 10,
           />;
         </Spin>;
       </Card>;
@@ -526,8 +435,7 @@ const SampleManagement: React.FC = () => {
             name = "barcode",
             label = "Barcode",
             rules={[;
-              {required:true, message: "Please enter or scan barcode" }]}
-          >;
+              {required: true,
             <Input>;
               placeholder="Scan or enter barcode";
               autoFocus;
@@ -566,8 +474,7 @@ const SampleManagement: React.FC = () => {
             name = "rejection_reason",
             label="Rejection Reason";
             rules={[;
-              {required:true, message: "Please provide rejection reason" }]}
-          >;
+              {required: true,
             >;
               <Option value="insufficient_volume">Insufficient Volume>;
               <Option value="hemolyzed">Hemolyzed Sample>;

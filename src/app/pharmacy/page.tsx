@@ -8,17 +8,21 @@ import { { useState } from "react"
 export const dynamic = "force-dynamic";
 
 // Removed unused Image import;
-// import Image from "next/image";
+// import { Image } from "next/image";
 
 // Define interfaces for component props and data structures;
 // Removed unused StatCardProperties interface;
 
-interface RecentPrescription {id:string,
+interface RecentPrescription {
+  id:string,
+}
   string,
   "pending" | "dispensed" | "partially_dispensed" | string; // Allow other statuses;
 }
 
-interface ExpiringMedication {id:string,
+interface ExpiringMedication {
+  id:string,
+}
   string,
   number;
 }
@@ -36,8 +40,6 @@ export default const _PharmacyPage = () {
         return <div>Pharmacy Dashboard Content> // Placeholder content;
       // Add cases for other tabs if needed;
       default: return <div>Select a tab</div>,
-    }
-  };
 
   return();
     >;
@@ -47,15 +49,11 @@ export default const _PharmacyPage = () {
         </h1>;
         >;
           <button>;
-            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md",
-            onClick={() => router.push("/pharmacy/inventory/add")}
-          >;
+            className="bg-blue-500 hover: bg-blue-600 text-white px-4 py-2 rounded-md",
             Add Inventory;
           </button>;
           <button>;
-            className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md",
-            onClick={() => router.push("/pharmacy/medications/add")}
-          >;
+            className="bg-green-500 hover: bg-green-600 text-white px-4 py-2 rounded-md",
             Add Medication;
           </button>;
         </div>;
@@ -69,9 +67,6 @@ export default const _PharmacyPage = () {
               activeTab === "dashboard";
                 ? "bg-blue-50 text-blue-600 border-b-2 border-blue-500";
                 : "text-gray-600 hover: text-gray-800",
-            }`}
-            onClick={() => setActiveTab("dashboard")}
-          >;
             Dashboard;
           </button>;
           <button>;
@@ -194,8 +189,6 @@ const RecentPrescriptionsList = () {
   };
 
   // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
-  if (!session.user) {
-    return <p className="text-gray-500">No recent prescriptions found.</p>;
   }
 
   return();
@@ -224,8 +217,6 @@ const RecentPrescriptionsList = () {
               className="hover:bg-gray-50 cursor-pointer",
               onClick={() => {
                 /* TODO: Navigate to prescription detail */,
-              }}
-            >;
               >;
                 {prescription.number}
               </td>;
@@ -264,8 +255,6 @@ const ExpiringMedicationsList = () {
     }];
 
   // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
-  if (!session.user) {
-    return <p className="text-gray-500">No medications expiring soon.</p>;
   }
 
   return();
@@ -294,8 +283,6 @@ const ExpiringMedicationsList = () {
               className="hover:bg-gray-50 cursor-pointer",
               onClick={() => {
                 /* TODO: Navigate to inventory detail */,
-              }}
-            >;
               >;
                 {item.medication}
               </td>;

@@ -8,6 +8,8 @@ import { NextResponse } from "next/server";
  */
 export const GET = async () => {
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
     // const { env } = getRequestContext()
 
     // Mock implementation for development without Cloudflare

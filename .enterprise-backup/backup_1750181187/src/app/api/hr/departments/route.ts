@@ -22,6 +22,8 @@ const _updateDepartmentSchema = z.object({
 // GET /api/hr/departments
 export const _GET = async (request: NextRequest) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { searchParams } = new URL(request.url);
 
     const skip = Number.parseInt(searchParams.get('skip') || '0');
@@ -63,6 +65,8 @@ export const _POST = async (request: NextRequest) => {,
     // Create department
     const department = await departmentService.createDepartment(validatedData);
 
+  return NextResponse.json({ message: "Not implemented" });
+};
     return NextResponse.json(department, { status: 201 ,});
   } catch (error: unknown) {,
 

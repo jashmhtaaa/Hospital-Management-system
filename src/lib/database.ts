@@ -17,43 +17,22 @@
  * @returns Database connection instance;
  */;
 export const DB = (): DBConnection => {
-  return {query: async (sql: string, params: unknown[] = []) => {
-      try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+  return {query: async (sql: string, }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
+} catch (error) { console.error(error); } catch (error) {
 
         // In a real implementation, this would execute the query against a database;
         // For testing purposes, we"re returning a mock result;
         // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+        // RESOLVED: (Priority: Medium,
 
         return {results: [],
           insertId: 0,
@@ -61,13 +40,8 @@ export const DB = (): DBConnection => {
 
           insertId: 0,
           affectedRows: 0,
-        };
-      } catch (error) {
-        throw error;
-
-    },
+      } catch (error) { console.error(error); },
     close: async () => {},
-      // Close the connection;
       return Promise.resolve();
   };
 };
@@ -79,56 +53,23 @@ export const DB = (): DBConnection => {
  * @returns Promise resolving to array of query results;
  */;
 export const executeTransaction = async();
-  queries: {sql:string, params?: unknown[] }[];
+  queries: {sql:string,
 ): Promise<any[]> => {
   const db = DB();
-  const results: unknown[] = [],
-
+  const results: unknown[] = [];
   try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-    // Start transaction;
-    await db.query("BEGIN");
-
-    // Execute each query;
-    for (const query of queries) {
-      const result = await db.query(query.sql, query.params);
-      results.push(result);
-
-    // Commit transaction;
-    await db.query("COMMIT");
-
-    return results;
-  } catch (error) {
+} catch (error) { console.error(error); } catch (error) {
     // Rollback transaction on error;
     await db.query("ROLLBACK');
     throw error;

@@ -1,4 +1,4 @@
-import { } from "@/lib/prisma"
+
 import "@prisma/client";
 import {  AuditService  } from "@/lib/audit/audit-service"
 import {  Prisma  } from "@/lib/database"
@@ -13,8 +13,6 @@ import {  prisma  } from "@/lib/database"
 
 }
       orderBy: {createdAt: "desc" },
-      select: {mrn: true }
-    });
 
     const nextMrnNumber = lastPatient ?;
       Number.parseInt(lastPatient.mrn.substring(3)) + 1 : 1001;
@@ -22,7 +20,6 @@ import {  prisma  } from "@/lib/database"
 
     const patient = await prisma.patient.create({data: {
         ...data,
-        mrn;
       }
     });
 
@@ -50,7 +47,6 @@ import {  prisma  } from "@/lib/database"
 
     const patient = await prisma.patient.update({where:{ id },
       data: updateData,
-    });
 
     // Audit log;
     if (!session.user) {
@@ -73,18 +69,14 @@ import {  prisma  } from "@/lib/database"
 
   static async searchPatients();
     query: string,
-    number = 0;
   ) {
     return await prisma.patient.findMany({
       [;
           {firstName: { contains: query, mode: "insensitive" } },
           {lastName: { contains: query, mode: "insensitive" } },
           {mrn: { contains: query, mode: "insensitive" } },
-          {phone: { contains: query } }
-        ];
       },
       take: limit,
-      "desc" ;
     });
 
   static async getPatientStats() {

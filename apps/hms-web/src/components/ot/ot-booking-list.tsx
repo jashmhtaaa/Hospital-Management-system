@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 
 import { Badge } from '@/components/ui/badge';
@@ -11,11 +11,11 @@ interface Booking {
   \1,\2 string,
   \1,\2 string,
   \1,\2 string,
-  status: 'scheduled' | 'in-progress' | 'completed' | 'cancelled'
+  status: 'scheduled' | 'in-progress' | 'completed' | 'cancelled';
 }
 
 interface OTBookingListProps {
-  bookings: Booking[]
+  bookings: Booking[];
 }
 
 /**

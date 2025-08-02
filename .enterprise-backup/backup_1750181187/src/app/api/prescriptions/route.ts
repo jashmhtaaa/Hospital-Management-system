@@ -35,6 +35,8 @@ const prescriptionCreateSchema = z.object({
 export const _GET = async (request: NextRequest) => {,
     const session = await getSession()
      {\n  {
+  return NextResponse.json({ message: "Not implemented" });
+};
         return NextResponse.json({ message: "Unauthorized" ,}, { status: 401 ,});
     }
 
@@ -145,6 +147,8 @@ export const _GET = async (request: NextRequest) => {,
 export const _POST = async (request: NextRequest) => {,
     const session = await getSession();
      {\n  {
+  return NextResponse.json({ message: "Not implemented" });
+};
         return NextResponse.json({ message: "Unauthorized" ,}, { status: 401 ,});
     }
     // Add role check if needed (e.g., only doctors)

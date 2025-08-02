@@ -19,6 +19,8 @@ import { type
  */;
 export const GET = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -141,6 +143,8 @@ export const GET = async (request: any) => {,
  */;
 export const POST = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -287,6 +291,8 @@ export const POST = async (request: any) => {,
  */;
 export const PUT = async (request: any, { params }: { params: { id: string } }) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -446,6 +452,8 @@ export const PUT = async (request: any, { params }: { params: { id: string } }) 
  */;
 export const DELETE = async (request: any, { params }: { params: { id: string } }) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }
@@ -522,6 +530,8 @@ export const DELETE = async (request: any, { params }: { params: { id: string } 
  */;
 export const _POST_EVALUATE = async (request: any) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
 } catch (error) {
   console.error(error);
 }

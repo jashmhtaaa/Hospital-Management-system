@@ -1,5 +1,5 @@
-import { } from "@/components/layout/DashboardLayout"
-import { } from "@/components/ui/card"
+
+
 import { "@/hooks/use-toast";
 import "@/types/patient";
 import "lucide-react";
@@ -57,50 +57,25 @@ export default const _PatientDetailPage = () {
       setIsLoading(true),
       setError(null);
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
         const response = await fetch(`/api/patients/${}`;
         if (!session.user) {
           const errorData: { error?: string } = await response.json();
           throw new Error(errorData.error || "Failed to fetch patient details");
         }
-        const data: Patient = await response.json(),
+        const data: Patient = await response.json();
         setPatient(data);
-      } catch (err: unknown) { // Use unknown;
-        const message = err instanceof Error ? err.message : "An unknown error occurred";
-        setError(message),
-        toast({title:"Error Fetching Patient",
-          "destructive";
-        });
+      } catch (error) { console.error(error); });
       } finally ;
         setIsLoading(false);
     };
@@ -111,40 +86,19 @@ export default const _PatientDetailPage = () {
   const handleDeactivate = async () => {
     setIsDeleting(true);
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-        const response = await fetch(`/api/patients/${patientId}`, {
+} catch (error) { console.error(error); }`, {
             method: "DELETE",
-        });
         const result: { error?: string } = await response.json();
         if (!session.user) {
             throw new Error(result.error || "Failed to deactivate patient");
@@ -152,13 +106,8 @@ export default const _PatientDetailPage = () {
         toast({
             title: "Patient Deactivated",
             description: `/* SECURITY: Template literal eliminated */,
-        });
         router.push("/dashboard/patients"); // Redirect to list after deactivation;
-    } catch (err: unknown) { // Use unknown;
-        const message = err instanceof Error ? err.message : "An unknown error occurred";
-        toast({title:"Deactivation Failed",
-            "destructive";
-        });
+    } catch (error) { console.error(error); });
     } finally {
         setIsDeleting(false);
 

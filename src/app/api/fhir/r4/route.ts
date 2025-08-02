@@ -1,16 +1,14 @@
-import {NextRequest, NextResponse } from "next/server";
-import {FHIRBundle } from "next/server";
-import {fhirService } from "next/server";
-import {type } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export const GET = async (request: NextRequest) => {,
+export const GET = async (request: NextRequest) => {
   try {
-    // Implementation here
-    return NextResponse.json({message: "FHIR endpoint" });
+    // TODO: Implement Fhir R4 logic
+    return NextResponse.json({ message: "Not implemented" });
   } catch (error) {
-    return NextResponse.json(
-      {error: "FHIR operation failed" },
-      {status: 500 }
-    );
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  }
+};
+  } catch (error) {
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 };

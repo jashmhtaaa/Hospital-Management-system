@@ -12,7 +12,7 @@
  * 3. Uncomment the database operation code;
  * 4. Make sure D1 database binding is configured in wrangler.toml;
  * 5. Required database tables: any;
- *    - counters table: name(TEXT), value(INTEGER);
+ *    - counters table: name(TEXT),
  *    - access_logs table: ip(TEXT), path(TEXT), accessed_at(DATETIME);
  */;
 export const _incrementAndLog = async () => {
@@ -24,7 +24,6 @@ export const _incrementAndLog = async () => {
   // Store updated count in cookie (expires in 1 year);
   cookieStore.set("page_views", currentCount.toString(), {expires:[0] + 365 * 24 * 60 * 60 * 1000),
     path: "/",
-  });
 
   // Log this access in memory (will be lost on restart);
 // Keep only the 5 most recent accesses;
@@ -33,9 +32,8 @@ export const _incrementAndLog = async () => {
   }
 
   // Store recent access list in cookie;
-  cookieStore.set("recent_access", JSON.stringify(recentAccessList), {expires:[0] + 7 * 24 * 60 * 60 * 1000), // 1 week;
+  cookieStore.set("recent_access", JSON.stringify(recentAccessList), {expires: [0] + 7 * 24 * 60 * 60 * 1000),
     path: "/",
-  });
 
   // Database operation example (commented out): any;
   // const {results: countResults } = await cf.env.DB.prepare();
@@ -55,10 +53,6 @@ export const _incrementAndLog = async () => {
 
   return {count:currentCount,
     recentAccess: recentAccessList,
-  }
-}
-
-/**;
  * Get current counter value and recent access logs;
  *;
  * Database query instructions: any;

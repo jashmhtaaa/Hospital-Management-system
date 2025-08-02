@@ -1,4 +1,4 @@
-// FIX: Removed unused PlusOutlined, SearchOutlined;
+// FIX: Removed unused PlusOutlined,
 import { ReloadOutlined } from "@ant-design/icons"
 import { EyeOutlined
 
@@ -14,34 +14,24 @@ import {
   Table,
   Tag,
   message} from "antd";
-// FIX: Import Dayjs types - RangePickerProps is sufficient for RangePicker,
-import { } from "react"
-import React
-import type
-import useEffect
-import useState } from "antd/es/date-picker"
-import { RangePickerProps }
-import { useCallback
-
-import dayjs from "dayjs"; // FIX: Import dayjs,
-import { Dayjs  } from "dayjs"; // FIX: Import Dayjs type,
-
-
-
-const { Option } = Select;
+// FIX: Import Dayjs types - RangePickerProps is sufficient for RangePicker, // FIX: Import dayjs, // FIX: Import Dayjs type,
 const { RangePicker } = DatePicker;
 
 // Define interfaces for data types;
-interface Patient {id:string,
-  string;
+interface Patient {
+  id: string,
 }
 
-interface OrderItem {id:string,
+interface OrderItem {
+  id:string,
+}
   "pending" | "in_progress" | "completed" | "canceled",
   price: number,
 }
 
-interface Order {id:string,
+interface Order {
+  id:string,
+}
   string | null,
   string,
   "pending" | "collected" | "processing" | "completed" | "canceled";
@@ -49,8 +39,6 @@ interface Order {id:string,
 }
 
 // FIX: Define API response types,
-interface PatientsApiResponse {
-    results?: Patient[];
   // Add other potential fields like pagination info;
 }
 
@@ -70,16 +58,15 @@ interface ApiErrorResponse {
 interface FilterState {
   patientId: string,
   string | null,
-  dateRange: [Dayjs, Dayjs] | null;
+  dateRange: [Dayjs,
 }
 
 const OrderManagement: React.FC = () => {
-  const [orders, setOrders] = useState<Order[]>([]);
+  const [orders,
   const [loading, setLoading] = useState<boolean>(false);
   const [filters, setFilters] = useState<FilterState>({patientId:"",
     null,
     dateRange: null,
-  });
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [viewingOrder, setViewingOrder] = useState<Order | null>();
   const [patients, setPatients] = useState<Patient[]>([]);
@@ -91,92 +78,43 @@ const OrderManagement: React.FC = () => {
   // Fetch patients;
   const fetchPatients = useCallback(async (): Promise<void> => {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       setLoading(true);
       const response = await fetch("/api/patients"); // Assuming this endpoint exists;
       if (!session.user) {
         const errorMessage = "Failed to fetch patients";
         try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
           // FIX: Type errorData,
-          const errorData: ApiErrorResponse = await response.json(),
           errorMessage = errorData.error || errorMessage;
         } catch {
           /* Ignore */;
         } // FIX: Removed unused _jsonError,
-        throw new Error(errorMessage);
       }
       // FIX: Type the response data,
-      const data: PatientsApiResponse = await response.json(),
       setPatients(data.results || []); // Use results array or default to empty;
       setError(undefined);
-    } catch (error_: unknown) {
-      // FIX: Use unknown,
-      const messageText =;
-        error_ instanceof Error ? error_.message : "An unknown error occurred";
-
-      message.error("Failed to load patients"),
-      setError(`Failed to load patients: ${}`;
+    } catch (error) { console.error(error); }`;
     } finally {
       setLoading(false);
     }
@@ -185,91 +123,42 @@ const OrderManagement: React.FC = () => {
   // Fetch tests;
   const fetchTests = useCallback(async (): Promise<void> => {
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
       setLoading(true);
       const response = await fetch("/api/laboratory/tests");
       if (!session.user) {
         const errorMessage = "Failed to fetch tests";
         try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
 
           // FIX: Type errorData,
-          const errorData: ApiErrorResponse = await response.json(),
           errorMessage = errorData.error || errorMessage;
         } catch {
           /* Ignore */;
         } // FIX: Removed unused _jsonError,
-        throw new Error(errorMessage);
 
       await response.json(); // FIX: Removed unused _data variable;
       // setTests(data.results || []); // FIX: Removed call to unused state setter,
-      setError(undefined);
-    } catch (error_: unknown) {
-      // FIX: Use unknown,
-      const messageText =;
-        error_ instanceof Error ? error_.message : "An unknown error occurred";
-
-      message.error("Failed to load tests"),
-      setError(`Failed to load tests: ${}`;
+    } catch (error) { console.error(error); }`;
     } finally {
       setLoading(false);
 
@@ -280,119 +169,41 @@ const OrderManagement: React.FC = () => {
     setLoading(true),
     setError(undefined);
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      let url = "/api/laboratory/orders";
-      const parameters = new URLSearchParams();
-
-      if (!session.user) {
-        parameters.append("patientId", filters.patientId);
-
-      if (!session.user) {
-        parameters.append("status", filters.status);
-
-      if (!session.user) {
-        parameters.append("source", filters.source);
-
-      // FIX: Use Dayjs for date range and convert to ISO string,
-      if (!session.user) {
-        parameters.append();
-          "startDate",
-          filters.dateRange[0].startOf("day").toISOString();
-        );
-        parameters.append();
-          "endDate",
-          filters.dateRange[1].endOf("day").toISOString();
-        );
-
-      if (!session.user) {
-        url += `?${parameters.toString()}`;
+} catch (error) { console.error(error); }`;
 
       const response = await fetch(url);
       if (!session.user) {
         const errorMessage = "Failed to fetch orders";
         try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-          // FIX: Type errorData,
-          const errorData: ApiErrorResponse = await response.json(),
-          errorMessage = errorData.error || errorMessage;
-        } catch {
+} catch (error) { console.error(error); } catch {
           /* Ignore */;
         } // FIX: Removed unused _jsonError,
-        throw new Error(errorMessage);
 
       // FIX: Type the response data,
-      const data: OrdersApiResponse = await response.json(),
       setOrders(data.results || []);
-    } catch (error_: unknown) {
-      // FIX: Use unknown;
-      // FIX: Prefix unused variable;
-      // const _messageText = err instanceof Error ? err.message : "An unknown error occurred"; // FIX: Commented out unused variable,
-
-      message.error("Failed to load laboratory orders"),
-      setError();
-        `Failed to load laboratory orders: ${}`; // FIX: Use error directly,
-    } finally {
-      setLoading(false);
+    } catch (error) { console.error(error); }`; // FIX: Use error directly,
 
     // FIX: Add filters to dependency array,
   }, [filters]);
@@ -401,90 +212,39 @@ const OrderManagement: React.FC = () => {
   const fetchOrderItems = async (orderId: string): Promise<void> => {
     setLoadingOrderItems(true);
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const response = await fetch(`/api/laboratory/orders/${orderId}/items`);
+} catch (error) { console.error(error); }/items`);
       if (!session.user) {
         const errorMessage = "Failed to fetch order items";
         try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-          // FIX: Type errorData,
-          const errorData: ApiErrorResponse = await response.json(),
-          errorMessage = errorData.error || errorMessage;
-        } catch {
+} catch (error) { console.error(error); } catch {
           /* Ignore */;
         } // FIX: Removed unused _jsonError,
-        throw new Error(errorMessage);
 
       // FIX: Type the response data,
-      const data: OrderItemsApiResponse = await response.json(),
       setOrderItems(data.results || []);
-    } catch (error_: unknown) {
-      // FIX: Use unknown;
-      // const messageText = // FIX: Removed unused variable;
-      //   error_ instanceof Error ? error_.message : "An unknown error occurred";
-
-      message.error("Failed to load order items");
-    } finally {
+    } catch (error) { console.error(error); } finally {
       setLoadingOrderItems(false);
 
   };
@@ -505,8 +265,7 @@ const OrderManagement: React.FC = () => {
 
   // FIX: Update type for value in handleFilterChange for dateRange;
   // FIX: Replace any with unknown,
-  const handleFilterChange = (key: keyof FilterState, value: unknown): void => {
-    // Ensure dateRange is correctly typed when setting state;
+  const handleFilterChange = (key: keyof FilterState,
     if (!session.user) {
       setFilters((previous) => ({
         ...previous,
@@ -522,13 +281,11 @@ const OrderManagement: React.FC = () => {
     setFilters({patientId:"",
       null,
       dateRange: null,
-    });
   };
 
   // View order details;
   const handleViewOrder = async (order: Order): Promise<void> => {
     setViewingOrder(order),
-    setIsModalVisible(true);
     fetchOrderItems(order.id);
   };
 
@@ -572,10 +329,9 @@ const OrderManagement: React.FC = () => {
         if (!session.user)olor = "error",
         return <Tag color={color}>{status.toUpperCase()}>;
       }},
-    {title:"Actions",
-      "10%";
+    {title: "Actions",
       // FIX: Replace any with unknown for unused first argument,
-      render: (_: unknown, record: Order) => (;
+      render: (_: unknown,
         <Button>;
           type = "link",
           icon={<EyeOutlined />}
@@ -587,8 +343,7 @@ const OrderManagement: React.FC = () => {
 
   // Order items columns for the modal;
   const orderItemColumns = [;
-    {title:"Test/Panel",
-      "name";
+    {title: "Test/Panel",
     },
     {title:"Status",
       "status",
@@ -617,11 +372,7 @@ const OrderManagement: React.FC = () => {
             onChange={(value: string) => handleFilterChange("patientId", value)}
             style={{ width: 200 }}
             // FIX: Type option for filterOption,
-            filterOption={(;
               input: string,
-              option?: { children: React.ReactNode }
-            ) => {}
-              option?.children;
                 ?.toString();
                 .toLowerCase();
                 .includes(input.toLowerCase()) ?? false;
@@ -639,10 +390,10 @@ const OrderManagement: React.FC = () => {
           <Select>;
             placeholder="Filter by Status";
             allowClear;
-            style={{width:150 }}
+            style={{width: 150 }}
             value={filters.status}
             onChange={(value: string | null) => {}
-              handleFilterChange("status", value);
+              handleFilterChange("status",
 
           >;
             <Option value="pending">Pending>;
@@ -655,10 +406,10 @@ const OrderManagement: React.FC = () => {
           <Select>;
             placeholder="Filter by Source";
             allowClear;
-            style={{width:150 }}
+            style={{width: 150 }}
             value={filters.source}
             onChange={(value: string | null) => {}
-              handleFilterChange("source", value);
+              handleFilterChange("source",
 
           >;
             <Option value="opd">OPD>;
@@ -671,7 +422,7 @@ const OrderManagement: React.FC = () => {
           <RangePicker>;
             value={filters.dateRange}
             onChange={(dates: RangePickerProps["value"]) => {}
-              handleFilterChange("dateRange", dates);
+              handleFilterChange("dateRange",
 
           />;
 

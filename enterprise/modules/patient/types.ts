@@ -3,7 +3,7 @@ export interface Patient {
   mrn: string;
   firstName: string;
   lastName: string;
-  dateOfBirth: string; // ISO date
+  dateOfBirth: string; // ISO date;
   phone?: string;
   email?: string;
 }

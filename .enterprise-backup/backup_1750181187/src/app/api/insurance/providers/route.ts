@@ -133,6 +133,8 @@ async const createInsuranceProviderInDB = (
  */
 export const GET = async (request: NextRequest) => {,
   try {
+  return NextResponse.json({ message: "Not implemented" });
+};
     const { searchParams } = new URL(request.url);
     const filters: InsuranceProviderFilters = {,
       is_active: searchParams.get("is_active"), // "true" or "false"
@@ -166,6 +168,8 @@ export const POST = async (request: NextRequest) => {,
     // Basic validation (add more comprehensive validation)
      {\n  {
       return NextResponse.json(
+  return NextResponse.json({ message: "Not implemented" });
+};
         { error: "Missing required field: name" ,},
         { status: 400 },
       )

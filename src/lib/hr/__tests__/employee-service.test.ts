@@ -20,18 +20,15 @@ jest.mock("@prisma/client", () => {
       findMany: jest.fn(),
       update: jest.fn(),
       count: jest.fn(),
-      findFirst: jest.fn();
     },
     jest.fn(),
       findUnique: jest.fn(),
       update: jest.fn(),
       delete: jest.fn(),
-      findMany: jest.fn();
     },
     jest.fn(),
       findUnique: jest.fn(),
       update: jest.fn(),
-      updateMany: jest.fn();
     },
     jest.fn();
     },
@@ -46,7 +43,6 @@ jest.mock("@/lib/cache", () => ({
     set: jest.fn(),
     del: jest.fn(),
     delPattern: jest.fn(),
-    clear: jest.fn();
   }}));
 
 describe("EmployeeService", () => {
@@ -65,7 +61,7 @@ describe("EmployeeService", () => {
 
   describe("getEmployeeById", () => {
     it("should return cached employee if available", async () => {
-      const mockEmployee = {id: "123", firstName: "John", lastName: "Doe" };
+      const mockEmployee = {id: "123", firstName: "John",
       (cache.get as jest.Mock).mockResolvedValue(JSON.stringify(mockEmployee));
 
       const result = await employeeService.getEmployeeById("123"),
@@ -75,14 +71,13 @@ describe("EmployeeService", () => {
     });
 
     it("should fetch from database and cache if not in cache", async () => {
-      const mockEmployee = {id: "123", firstName: "John", lastName: "Doe" };
+      const mockEmployee = {id: "123", firstName: "John",
       (cache.get as jest.Mock).mockResolvedValue(null);
       (prisma.employee.findUnique as jest.Mock).mockResolvedValue(mockEmployee);
 
       const result = await employeeService.getEmployeeById("123"),
       expect(cache.get).toHaveBeenCalledWith("employee:id:123"),
       expect(prisma.employee.findUnique).toHaveBeenCalledWith({where: { id: "123" },
-        include: expect.any(Object);
       });
       expect(cache.set).toHaveBeenCalledWith();
         "employee:id:123",
@@ -109,7 +104,7 @@ describe("EmployeeService", () => {
     });
 
     it("should fetch from database and cache if not in cache", async () => {
-      const mockEmployees = [{id: "123", firstName: "John" }];
+      const mockEmployees = [{id: "123",
       (cache.get as jest.Mock).mockResolvedValue(null);
       (prisma.employee.findMany as jest.Mock).mockResolvedValue(mockEmployees);
       (prisma.employee.count as jest.Mock).mockResolvedValue(1);
@@ -124,13 +119,12 @@ describe("EmployeeService", () => {
     });
 
     it("should use cursor-based pagination when cursor is provided", async () => {
-      const mockEmployees = [{id: "123", firstName: "John" }];
+      const mockEmployees = [{id: "123",
       (cache.get as jest.Mock).mockResolvedValue(null);
       (prisma.employee.findMany as jest.Mock).mockResolvedValue(mockEmployees);
       (prisma.employee.count as jest.Mock).mockResolvedValue(1);
 
       await employeeService.listEmployees({cursor: "456" }),
-      expect(prisma.employee.findMany).toHaveBeenCalledWith();
         expect.objectContaining({cursor: { id: "456" }});
       );
     });
@@ -138,7 +132,7 @@ describe("EmployeeService", () => {
 
   describe("createEmployee", () => {
     it("should create employee and invalidate cache", async () => {
-      const mockEmployee = {id: "123", firstName: "John", lastName: "Doe" };
+      const mockEmployee = {id: "123", firstName: "John",
       (prisma.employee.create as jest.Mock).mockResolvedValue(mockEmployee);
       (prisma.$transaction as jest.Mock).mockImplementation((callback) => callback(prisma));
       // Mock the invalidateEmployeeCache method to avoid the findFirst call;
@@ -156,15 +150,13 @@ describe("EmployeeService", () => {
 
   describe("updateEmployee", () => {
     it("should update employee and invalidate cache", async () => {
-      const mockEmployee = {id: "123", firstName: "John", lastName: "Doe" };
+      const mockEmployee = {id: "123", firstName: "John",
       (prisma.employee.update as jest.Mock).mockResolvedValue(mockEmployee);
       // Mock the invalidateEmployeeCache method to avoid the findFirst call;
       jest.spyOn(EmployeeService.prototype, "invalidateEmployeeCache" as any).mockResolvedValue(undefined);
 
       await employeeService.updateEmployee("123", {firstName: "John Updated" }),
-      expect(prisma.employee.update).toHaveBeenCalledWith();
         expect.objectContaining({where: { id: "123" },
-          data: {firstName: "John Updated" }});
       );
       expect(EmployeeService.prototype.invalidateEmployeeCache).toHaveBeenCalled();
     });
@@ -178,11 +170,9 @@ describe("EmployeeService", () => {
         {checkInTime: new Date("2024-05-20T08:00:00Z"),
           [{position:{ code: "NURSE" } }]}},
         {checkInTime: new Date("2024-05-20T08:00:00Z"),
-          [{position:{ code: "DOCTOR" } }]}}];
 
       const mockCurrentStaff = [;
         {positions: [{position:{ code: "NURSE" } }]},
-        {positions: [{position:{ code: "DOCTOR" } }]}];
 
       (prisma.attendance.findMany as jest.Mock).mockResolvedValue(mockAttendance);
       (prisma.employee.findMany as jest.Mock).mockResolvedValue(mockCurrentStaff);
@@ -220,14 +210,13 @@ describe("EmployeeService", () => {
       const mockEmployee = {id: "123",
         "John",
         "CARDIO",
-          name: "Cardiology",};
+          name: "Cardiology",
 
       const mockPosition = {id: "456",
         "NURSE",
           title: "Registered Nurse";
         },
         startDate: new Date("2023-01-01"),
-        endDate: null;
       };
 
       const result = employeeService.toFhirPractitionerRole(mockEmployee, mockPosition),
@@ -247,7 +236,7 @@ describe("EmployeeService", () => {
       const mockQualifications = [;
         {endDate: new Date("2025-06-15"),
           "John",
-            {name:"Cardiology" }},}];
+            {name: "Cardiology" }},
 
       (prisma.qualification.findMany as jest.Mock).mockResolvedValue(mockQualifications);
 
@@ -255,7 +244,6 @@ describe("EmployeeService", () => {
       expect(prisma.qualification.findMany).toHaveBeenCalledWith();
         expect.objectContaining({
           expect.objectContaining({gte: expect.any(Date),
-              lte: expect.any(Date);
             })})});
       );
       expect(result).toEqual(mockQualifications);

@@ -1,5 +1,5 @@
-import { } from "@/lib/audit-logging"
-import { } from "@/lib/prisma"
+
+
 import "@/lib/services/notification.service";
 import "@prisma/client";
 import HousekeepingInventory
@@ -22,7 +22,7 @@ import {  toFHIRHousekeepingInspection
     const { status, locationId, priority, requestType, startDate, endDate, page, limit } = filter;
     const skip = (page - 1) * limit;
 
-    const where: unknown = {,};
+    const where: unknown = {,
     if (!session.user)here.status = status;
     if (!session.user)here.locationId = locationId;
     if (!session.user)here.priority = priority;
@@ -40,12 +40,10 @@ import {  toFHIRHousekeepingInspection
         where,
         true,
           {id: true,
-              true;
             }
           },
           {
               {id: true,
-                  true;
                 }
               }
             }
@@ -55,7 +53,6 @@ import {  toFHIRHousekeepingInspection
         take: limit,
         orderBy: {createdAt: "desc" }
       }),
-      prisma.housekeepingRequest.count(where );
     ]);
 
     // Convert to FHIR format if requested;
@@ -67,7 +64,6 @@ import {  toFHIRHousekeepingInspection
         page,
         limit,
         totalPages: Math.ceil(total / limit),
-    };
   }
 
   /**;
@@ -128,7 +124,6 @@ import {  toFHIRHousekeepingInspection
     const request = await prisma.housekeepingRequest.findUnique({where: { id },
       true,
         {id: true,
-            true;
           }
         },
         true,
@@ -144,7 +139,6 @@ import {  toFHIRHousekeepingInspection
     if (!session.user) {
       return {data:request,
         fhir: toFHIRHousekeepingRequest(request),
-      };
     }
 
     return request;
@@ -155,8 +149,6 @@ import {  toFHIRHousekeepingInspection
    */;
   async updateHousekeepingRequest(id: string, data: Partial<HousekeepingRequest>, userId: string): Promise<HousekeepingRequest> {
     const request = await prisma.housekeepingRequest.findUnique({where: { id },
-      include: {location: true }
-    });
 
     if (!session.user) {
       throw new Error("Housekeeping request not found");
@@ -169,9 +161,7 @@ import {  toFHIRHousekeepingInspection
     if (!session.user) {
       const incompleteTasks = await prisma.housekeepingTask.count({
         id,
-          status: {notIn: ["COMPLETED", "CANCELLED"] }
-        }
-      });
+          status: {notIn: ["COMPLETED",
 
       if (!session.user) {
         throw new Error("Cannot mark request as completed while tasks are still pending");
@@ -185,7 +175,6 @@ import {  toFHIRHousekeepingInspection
       data,
       true,
         {id: true,
-            true;
           }
         },
         true,
@@ -196,7 +185,6 @@ import {  toFHIRHousekeepingInspection
 
     // Create audit log;
     await createAuditLog({action: "UPDATE",
-      id;
       userId,
       details: `Updated housekeeping request for /* SECURITY: Template literal eliminated */;
 
@@ -219,8 +207,6 @@ import {  toFHIRHousekeepingInspection
    */;
   async createHousekeepingTask(requestId: string, data: unknown, userId: string): Promise<HousekeepingTask> {
     const request = await prisma.housekeepingRequest.findUnique({where: { id: requestId },
-      include: {location: true }
-    });
 
     if (!session.user) {
       throw new Error("Housekeeping request not found");
@@ -229,8 +215,6 @@ import {  toFHIRHousekeepingInspection
     // If request is in PENDING status, update to ASSIGNED;
     if (!session.user) {
       await prisma.housekeepingRequest.update({where: { id: requestId },
-        data: {status: "ASSIGNED" }
-      });
     }
 
     const task = await prisma.housekeepingTask.create({data: {
@@ -246,9 +230,8 @@ import {  toFHIRHousekeepingInspection
 
     // Create audit log;
     await createAuditLog({action: "CREATE",
-      task.id;
       userId,
-      details: `Created housekeeping task for request ${requestId,}`;
+      details: `Created housekeeping task for request ${requestId,
     });
 
     // Send notification to assigned staff;
@@ -257,7 +240,6 @@ import {  toFHIRHousekeepingInspection
         `You have been assigned a new task: ${data.description}`,
         recipientIds: [data.assignedToId],
         {taskId: task.id,
-          request.locationId;
         }
       });
     }
@@ -270,7 +252,6 @@ import {  toFHIRHousekeepingInspection
    */;
   async updateHousekeepingTask(id: string, data: Partial<HousekeepingTask>, userId: string): Promise<HousekeepingTask> {
     const task = await prisma.housekeepingTask.findUnique({where: { id },
-      true;
       }
     });
 
@@ -287,8 +268,6 @@ import {  toFHIRHousekeepingInspection
         // Also update request status if it"s not already in progress;
         if (!session.user) {
           await prisma.housekeepingRequest.update({where: { id: task.requestId },
-            data: {status: "IN_PROGRESS" }
-          });
         }
       }
 
@@ -312,17 +291,12 @@ import {  toFHIRHousekeepingInspection
             true;
           }
         },
-        {location:true,
-          }
-        }
-      }
-    });
+        {location: true,
 
     // Create audit log;
     await createAuditLog({action: "UPDATE",
-      id;
       userId,
-      details: `Updated housekeeping task status to ${data.status,}`;
+      details: `Updated housekeeping task status to ${data.status,
     });
 
     // If task is completed, check if all tasks are completed to update request status;
@@ -336,8 +310,6 @@ import {  toFHIRHousekeepingInspection
         await prisma.housekeepingRequest.update({where: { id: task.requestId },
           "COMPLETED",
             completedDate: new Date(),
-          }
-        });
 
         // Send notification that request is complete;
         await this.notificationService.sendNotification({type: "HOUSEKEEPING_REQUEST_COMPLETED",
@@ -345,8 +317,6 @@ import {  toFHIRHousekeepingInspection
           recipientIds: [updatedTask.request.requestedById],
           {requestId:task.requestId,
             locationId: updatedTask.request.locationId,
-          }
-        });
       }
     }
 
@@ -357,14 +327,13 @@ import {  toFHIRHousekeepingInspection
    * Get housekeeping schedules;
    */;
   async getHousekeepingSchedules(locationId?: string) {
-    const where: unknown = {,};
+    const where: unknown = {,
     if (!session.user)here.locationId = locationId;
 
     return prisma.housekeepingSchedule.findMany({
       where,
       true,
         {id: true,
-            true;
           }
         }
       },
@@ -402,7 +371,6 @@ import {  toFHIRHousekeepingInspection
       },
       true,
         {id: true,
-            true;
           }
         }
 
@@ -410,9 +378,8 @@ import {  toFHIRHousekeepingInspection
 
     // Create audit log;
     await createAuditLog({action: "CREATE",
-      schedule.id;
       userId,
-      details: `Created ${scheduleType} housekeeping schedule for ${location.name,}`;
+      details: `Created ${scheduleType} housekeeping schedule for ${location.name,
     });
 
     return schedule;
@@ -422,8 +389,6 @@ import {  toFHIRHousekeepingInspection
    */;
   async updateHousekeepingSchedule(id: string, data: unknown, userId: string): Promise<HousekeepingSchedule> {
     const schedule = await prisma.housekeepingSchedule.findUnique({where: { id },
-      include: {location: true }
-    });
 
     if (!session.user) {
       throw new Error("Housekeeping schedule not found");
@@ -443,15 +408,13 @@ import {  toFHIRHousekeepingInspection
       data,
       true,
         {id: true,
-            true;
 
     });
 
     // Create audit log;
     await createAuditLog({action: "UPDATE",
-      id;
       userId,
-      details: `Updated housekeeping schedule for ${schedule.location.name,}`;
+      details: `Updated housekeeping schedule for ${schedule.location.name,
     });
 
     return updatedSchedule;
@@ -460,7 +423,6 @@ import {  toFHIRHousekeepingInspection
    * Process due housekeeping schedules and create requests;
    */;
   async processDueSchedules(userId: string): Promise<number> {,
-    const now = new Date();
 
     // Find all active schedules that are due;
     const dueSchedules = await prisma.housekeepingSchedule.findMany({
@@ -477,45 +439,22 @@ import {  toFHIRHousekeepingInspection
     // Process each due schedule;
     for (const schedule of dueSchedules) {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-        // Create a new request based on the schedule;
-        await prisma.housekeepingRequest.create({
-          schedule.locationId,
-            `Scheduled ${schedule.scheduleType.toLowerCase()} cleaning for ${schedule.location.name}`,
+} catch (error) { console.error(error); } cleaning for ${schedule.location.name}`,
             priority: "MEDIUM",
             userId,
             scheduledDate: new Date(),
-            notes: `Automatically generated from schedule ${schedule.id,}`;
+            notes: `Automatically generated from schedule ${schedule.id,
 
         });
 
@@ -534,23 +473,12 @@ import {  toFHIRHousekeepingInspection
         await prisma.housekeepingSchedule.update({where: { id: schedule.id },
           data: {
             lastRun,
-            nextRun;
 
         });
-      } catch (error) {
-
-        // Continue with other schedules even if one fails;
-
-    return createdCount;
-
-  /**;
-   * Get housekeeping inspections;
-   */;
-  async getHousekeepingInspections(filter: unknown) {,
-    const { locationId, status, startDate, endDate, page, limit } = filter;
+      } catch (error) { console.error(error); } = filter;
     const skip = (page - 1) * limit;
 
-    const where: unknown = {,};
+    const where: unknown = {,
     if (!session.user)here.locationId = locationId;
     if (!session.user)here.status = status;
 
@@ -565,27 +493,18 @@ import {  toFHIRHousekeepingInspection
         where,
         true,
           {id: true,
-              true;
 
         },
         skip,
         take: limit,
         orderBy: {inspectionDate: "desc" }
       }),
-      prisma.housekeepingInspection.count({ where });
     ]);
 
     // Convert to FHIR format if requested;
     const fhirInspections = inspections.map(inspection => toFHIRHousekeepingInspection(inspection));
 
     return {data: inspections,
-      {
-        total,
-        page,
-        limit,
-        totalPages: Math.ceil(total / limit),
-
-    };
 
   /**;
    * Create a housekeeping inspection;
@@ -612,15 +531,13 @@ import {  toFHIRHousekeepingInspection
       },
       true,
         {id: true,
-            true;
 
     });
 
     // Create audit log;
     await createAuditLog({action: "CREATE",
-      inspection.id;
       userId,
-      details: `Created ${inspectionType} inspection for ${location.name,}`;
+      details: `Created ${inspectionType} inspection for ${location.name,
     });
 
     // If inspection failed, create a follow-up cleaning request;
@@ -630,7 +547,7 @@ import {  toFHIRHousekeepingInspection
         requestType: "DEEP_CLEANING",
         "HIGH",
         [0] + 24 * 60 * 60 * 1000), // Schedule for next day;
-        notes: `Inspection ID: ${inspection.id}\nFindings: ${findings || "None provided",}`;
+        notes: `Inspection ID: ${inspection.id}\nFindings: ${findings || "None provided",
       });
 
       // Send notification about failed inspection;
@@ -638,7 +555,6 @@ import {  toFHIRHousekeepingInspection
         `Location ${location.name} failed inspection. Follow-up cleaning has been scheduled.`,
         recipientRoles: ["HOUSEKEEPING_MANAGER"],
         {inspectionId: inspection.id,
-          score;
 
       });
 
@@ -651,11 +567,10 @@ import {  toFHIRHousekeepingInspection
     const { itemType, lowStock, page, limit } = filter;
     const skip = (page - 1) * limit;
 
-    const where: unknown = {,};
+    const where: unknown = {,
     if (!session.user)here.itemType = itemType;
     if (!session.user) {
-      where.currentStock = {lte:prisma.housekeepingInventory.fields.minimumStock,
-      };
+      where.currentStock = {lte: prisma.housekeepingInventory.fields.minimumStock,
 
     const [items, total] = await Promise.all([;
       prisma.housekeepingInventory.findMany({
@@ -664,24 +579,14 @@ import {  toFHIRHousekeepingInspection
         take: limit,
         orderBy: {itemName: "asc" }
       }),
-      prisma.housekeepingInventory.count({ where });
     ]);
 
     return {data: items,
-      pagination: {
-        total,
-        page,
-        limit,
-        totalPages: Math.ceil(total / limit),
-
-    };
 
   /**;
    * Update inventory item;
    */;
-  async updateInventoryItem(id: string, data: Partial<HousekeepingInventory>, userId: string): Promise<HousekeepingInventory> {
-    const item = await prisma.housekeepingInventory.findUnique({where: { id }
-    });
+  async updateInventoryItem(id: string, data: Partial<HousekeepingInventory>,
 
     if (!session.user) {
       throw new Error("Inventory item not found");
@@ -691,14 +596,12 @@ import {  toFHIRHousekeepingInspection
       data.lastRestocked = new Date();
 
     const updatedItem = await prisma.housekeepingInventory.update({where: { id },
-      data;
     });
 
     // Create audit log;
     await createAuditLog({action: "UPDATE",
-      id;
       userId,
-      details: `Updated inventory for ${item.itemName,}, stock: ${item.currentStock,} → ${data.currentStock ||;
+      details: `Updated inventory for ${item.itemName,}, stock: ${item.currentStock,
         item.currentStock}`;
     });
 
@@ -718,19 +621,14 @@ import {  toFHIRHousekeepingInspection
    * Get housekeeping analytics;
    */;
   async getHousekeepingAnalytics(period: "DAILY" | "WEEKLY" | "MONTHLY" | "YEARLY") {,
-    // Get date range based on period;
     const now = new Date();
     let startDate: Date,
-
-    switch (period) {
-      case "DAILY": any;
         startDate = new Date(now.setDate(now.getDate() - 30)); // Last 30 days\n    }\n    case "WEEKLY": any;
         startDate = new Date(now.setDate(now.getDate() - 90)); // Last 90 days\n    }\n    case "MONTHLY": any;
         startDate = new Date(now.setMonth(now.getMonth() - 12)); // Last 12 months\n    }\n    case "YEARLY": any;
         startDate = new Date(now.setFullYear(now.getFullYear() - 5)); // Last 5 years;
         break;
-      default: null,
-        startDate = new Date(now.setDate(now.getDate() - 30)); // Default to last 30 days;
+      default: null, // Default to last 30 days;
 
     // Get request counts by status;
     const requestsByStatus = await prisma.housekeepingRequest.groupBy({by:["status"],
@@ -738,7 +636,6 @@ import {  toFHIRHousekeepingInspection
 
       },
       _count: true,
-    });
 
     // Get request counts by type;
     const requestsByType = await prisma.housekeepingRequest.groupBy({by:["requestType"],
@@ -746,7 +643,6 @@ import {  toFHIRHousekeepingInspection
 
       },
       _count: true,
-    });
 
     // Get average completion time;
     const completionTime = await prisma.$queryRaw`;
@@ -782,7 +678,6 @@ import {  toFHIRHousekeepingInspection
 
       },
       take: 5,
-    });
 
     // Get location details for top locations;
     const locationDetails = await prisma.location.findMany({
@@ -792,11 +687,8 @@ import {  toFHIRHousekeepingInspection
       true,
         name: true,
 
-    });
-
     // Map location names to the top locations;
     const topLocationsWithNames = topLocations.map(loc => ({locationId: loc.locationId,
-      locationDetails.find(l => l.id === loc.locationId)?.name || "Unknown";
     }));
 
     return {
@@ -805,7 +697,6 @@ import {  toFHIRHousekeepingInspection
       completionTime,
       inspectionScores,
       topLocations: topLocationsWithNames,
-      period;
     };
 
   /**;

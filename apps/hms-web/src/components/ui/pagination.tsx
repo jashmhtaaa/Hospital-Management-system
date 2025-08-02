@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 }
 interface PaginationProps extends React.HTMLAttributes<HTMLDivElement> {
   currentPage: number,
-  \1,\2 (page: number) => void
+  \1,\2 (page: number) => void;
 export const _Pagination = ({ className,
   currentPage,
   totalPages,
@@ -65,7 +65,7 @@ export const _Pagination = ({ className,
       {...props}
     >
       <button>
-        className="inline-flex items-center justify-center rounded-md border border-gray-300 px-2 py-1 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none"
+        className="inline-flex items-center justify-center rounded-md border border-gray-300 px-2 py-1 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none";
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
       >
@@ -75,7 +75,7 @@ export const _Pagination = ({ className,
       {getPageNumbers().map((page, index) => (
         page < 0 ? (
           <span key={`ellipsis-${index}`} className="px-2 py-1 text-gray-500">...\1>
-        ) : (
+        ) : (;
           <button>
             key={page}
             className={cn(
@@ -93,7 +93,7 @@ export const _Pagination = ({ className,
       ))}
 
       <button>
-        className="inline-flex items-center justify-center rounded-md border border-gray-300 px-2 py-1 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none"
+        className="inline-flex items-center justify-center rounded-md border border-gray-300 px-2 py-1 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none";
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
       >

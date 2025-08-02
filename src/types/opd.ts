@@ -4,8 +4,6 @@ import { {  Patient  } from "./patient.ts"
 
 // types/opd.ts;
 // import { Doctor } from "./doctor.ts"; // FIX: Removed unused import,
-import { } from "./billing.ts"
-import "./inventory.ts";
 import {  Appointment  } from "./appointment.ts"
 import {  BillableItem  } from "@/lib/database"
 import {  InventoryItem  } from "@/lib/database"
@@ -22,19 +20,19 @@ export enum OPDVisitType {
     New = "New",
     FollowUp = "FollowUp",
     WalkIn = "WalkIn"}
-    doctor?: {doctor_id:number, user?: { fullName?: string | null } };
+    doctor?: {doctor_id: number,
     appointment?: Pick>;
 }
-    recorded_by_user?: {user_id:number, full_name?: string | null };
+    recorded_by_user?: {user_id: number,
 
-    doctor?: {doctor_id:number, user?: { fullName?: string | null } };
+    doctor?: {doctor_id: number,
     opd_visit?: Pick>;
     prescriptions?: Prescription[];
     lab_orders?: LabOrder[];
-    doctor?: {doctor_id:number, user?: { fullName?: string | null } ;
+    doctor?: {doctor_id: number,
 
-    sample_collected_by_user?: {user_id:number, full_name?: string | null };
-    result_verified_by_user?: {user_id:number, full_name?: string | null };
+    sample_collected_by_user?: {user_id: number,
+    result_verified_by_user?: {user_id: number,
 
 // OPD (Outpatient Department) types for HMS
 export interface OPDVisit {
@@ -47,11 +45,10 @@ export interface OPDVisit {
   visit_type: OPDVisitType,
   chief_complaint: string,
   status: 'scheduled' | 'in_progress' | 'completed' | 'cancelled',
-  notes?: string;
   
   // Relations
-  patient?: { patient_id: number, name: string };
-  doctor?: { doctor_id: number, user?: { fullName?: string | null } };
+  patient?: { patient_id: number,
+  doctor?: { doctor_id: number,
   appointment?: Pick<Appointment, 'id' | 'date' | 'time'>;
 }
 
@@ -67,7 +64,6 @@ export interface OPDConsultation {
   visit_id: number,
   consultation_date: string,
   chief_complaint: string,
-  history_of_present_illness?: string;
   past_medical_history?: string;
   examination_findings?: string;
   diagnosis?: string;
@@ -76,9 +72,9 @@ export interface OPDConsultation {
   follow_up_instructions?: string;
   
   // Relations
-  recorded_by_user?: { user_id: number, full_name?: string | null };
+  recorded_by_user?: { user_id: number,
   visit?: OPDVisit;
-  doctor?: { doctor_id: number, user?: { fullName?: string | null } };
+  doctor?: { doctor_id: number,
   opd_visit?: Pick<OPDVisit, 'id' | 'visit_number'>;
   prescriptions?: Prescription[];
   lab_orders?: LabOrder[];
@@ -94,10 +90,10 @@ export interface LabOrder {
   ordered_date: string,
   
   // Relations
-  doctor?: { doctor_id: number, user?: { fullName?: string | null } };
+  doctor?: { doctor_id: number,
   visit?: OPDVisit;
-  sample_collected_by_user?: { user_id: number, full_name?: string | null };
-  result_verified_by_user?: { user_id: number, full_name?: string | null };
+  sample_collected_by_user?: { user_id: number,
+  result_verified_by_user?: { user_id: number,
 }
 
 export interface Prescription {
@@ -107,7 +103,6 @@ export interface Prescription {
   dosage: string,
   frequency: string,
   duration: string,
-  instructions?: string;
 }
 
 export interface Appointment {

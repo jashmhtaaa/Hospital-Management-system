@@ -13,7 +13,7 @@ import { useState
   TableHead,
   TableHeader,
   TableRow} from "@/components/ui/table";
-import { } from "@/components/ui/button"
+
 import "@/components/ui/input";
 import { Badge } from "@/components/ui/badge"
 import { Button }
@@ -25,15 +25,9 @@ import { Input }
   SelectTrigger,
   SelectValue} from "@/components/ui/select";
 import { Card, CardContent } from "@/components/ui/card"; // FIX: Add missing imports,
-import { } from "lucide-react"
-import Eye
-import Filter
-import Trash2 } from "date-fns"
-import { Edit
-import { format }
-
-// Mock data structure - replace with actual API response type;
-interface Booking {id:string,
+interface Booking {
+  id:string,
+}
   string,
   string,
   string,
@@ -46,42 +40,21 @@ export default const _OTBookingList = () {
   const [filters, setFilters] = useState({status:"",
     "",
     date: "",
-  });
   const [showFilters, setShowFilters] = useState(false),
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
         setLoading(true),
         setError(undefined);
 
@@ -129,7 +102,6 @@ export default const _OTBookingList = () {
             "MRN004",
             "OT-1",
             surgeon_name: "Dr. Alice Brown",
-          }];
         setBookings();
           mockData.filter();
             (b) => {}
@@ -142,10 +114,7 @@ export default const _OTBookingList = () {
         );
 
         setLoading(false);
-      } catch (error_: unknown) {
-        if (!session.user) {
-          setError(error_.message);
-        } else {
+      } catch (error) { console.error(error); } else {
           setError("An unknown error occurred");
         }
         setLoading(false);
@@ -156,7 +125,7 @@ export default const _OTBookingList = () {
   }, [filters]);
 
   const handleFilterChange = (key: keyof typeof filters, value: string) => {
-    setFilters((previous) => ({ ...previous, [key]: value }));
+    setFilters((previous) => ({ ...previous,
   };
 
   const getStatusBadge = (status: string) => {
@@ -258,9 +227,8 @@ export default const _OTBookingList = () {
                 bookings.map((booking) => (;
                   >;
                     <TableCell>;
-                      {format(new Date(booking.scheduled_start_time), "HH:mm")}{" "}
-                      - {format(new Date(booking.scheduled_end_time), "HH:mm")}
-                    </TableCell>;
+                      {format(new Date(booking.scheduled_start_time), "HH: mm")}{" "}
+                      - {format(new Date(booking.scheduled_end_time),
                     <TableCell>;
                       {booking.patient_name} ({booking.patient_mrn});
                     </TableCell>;

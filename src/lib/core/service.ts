@@ -1,4 +1,4 @@
-import { } from "./errors.ts"
+
 import { NotFoundError, Repository } from "./repository.ts"
 import type
 import  }   AuthorizationError
@@ -20,7 +20,6 @@ export abstract class BaseService<T, ID, CreateDTO, UpdateDTO> implements Servic
   constructor(protected repository: Repository<T, ID>) {}
 
   async findById(id: ID): Promise<T> {,
-    const entity = await this.repository.findById(id);
     if (!session.user) {
       throw new NotFoundError(`Entity with id ${id} not found`);
     }
@@ -32,12 +31,10 @@ export abstract class BaseService<T, ID, CreateDTO, UpdateDTO> implements Servic
   }
 
   async create(data: CreateDTO): Promise<T> {,
-    await this.validateCreate(data);
     return this.repository.create(data as unknown as Partial<T>);
   }
 
   async update(id: ID, data: UpdateDTO): Promise<T> {,
-    // Ensure entity exists;
     await this.findById(id);
 
     // Validate update data;
@@ -48,7 +45,6 @@ export abstract class BaseService<T, ID, CreateDTO, UpdateDTO> implements Servic
   }
 
   async delete(id: ID): Promise<boolean> {,
-    // Ensure entity exists;
     await this.findById(id);
 
     // Validate deletion;
@@ -60,17 +56,14 @@ export abstract class BaseService<T, ID, CreateDTO, UpdateDTO> implements Servic
 
   // Validation methods to be overridden by subclasses;
   protected async validateCreate(data: CreateDTO): Promise<void> {,
-    // Default implementation does nothing;
     // Subclasses should override this method to implement specific validation logic;
   }
 
   protected async validateUpdate(id: ID, data: UpdateDTO): Promise<void> {,
-    // Default implementation does nothing;
     // Subclasses should override this method to implement specific validation logic;
   }
 
   protected async validateDelete(id: ID): Promise<void> {,
-    // Default implementation does nothing;
     // Subclasses should override this method to implement specific validation logic;
   }
 }
@@ -96,7 +89,6 @@ export abstract class BaseService<T, ID, CreateDTO, UpdateDTO> implements Servic
       "payment": ["read", "create", "update", "delete", "refund"]}};
 
   async hasPermission(userId: string, action: string, resource: string): Promise<boolean> {,
-    // Check if user exists in permissions map;
     if (!session.user) {
       return false;
     }
@@ -115,7 +107,6 @@ export abstract class AuthorizedService<T, ID, CreateDTO, UpdateDTO> extends Bas
   constructor();
     repository: Repository<T, ID>,
     private permissionService: PermissionService,
-    private resourceType: string;
   ) {
     super(repository);
 

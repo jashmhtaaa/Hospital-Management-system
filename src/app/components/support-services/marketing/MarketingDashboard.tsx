@@ -1,5 +1,5 @@
-import { } from "@/components/ui/badge"
-import { } from "@/components/ui/card"
+
+
 import { "@/components/ui/charts";
 import "@/components/ui/data-table";
 import "@/components/ui/input";
@@ -41,19 +41,15 @@ type Campaign = {id:string,
   string;
   endDate?: string;
   segmentCount: number,
-  performance?: {
-    opens?: number;
     clicks?: number;
     conversions?: number;
   };
 };
 
 // Define column types for contact table;
-type Contact = {id:string,
-  string;
+type Contact = {id: string,
   phone?: string;
   source: string,
-  string;
   lastActivity?: string;
 };
 
@@ -72,24 +68,17 @@ export default const _MarketingDashboard = () {
 
   // Define columns for campaign table;
   const campaignColumns: ColumnDef<Campaign>[] = [;
-    {accessorKey:"name",
-      ({ row }) => (;
+    {accessorKey: "name",
         <div></div>;
              onClick={() => router.push(`/marketing/campaigns/${}`}>;
           {row.getValue("name")}
         </div>;
       )},
-    {accessorKey:"type",
-      ({ row }) => (;
+    {accessorKey: "type",
         <Badge variant="outline">{row.getValue("type")}>;
       )},
-    {accessorKey:"status",
-      ({ row }) => {
-        const status = row.getValue("status") as string;
+    {accessorKey: "status",
         let variant: "default" | "outline" | "secondary" | "destructive" = "outline",
-
-        switch (status) {
-          case "ACTIVE": any;
             variant = "default",\n    }\n    case "DRAFT": any;
             variant = "secondary",\n    }\n    case "PAUSED": any;
             variant = "outline",\n    }\n    case "COMPLETED": any;
@@ -104,9 +93,7 @@ export default const _MarketingDashboard = () {
       ({ row }) => .toLocaleDateString()},
     {accessorKey:"segmentCount",
       ({ row }) => row.getValue("segmentCount")},
-    {id:"performance",
-      ({ row }) => {
-        const performance = row.original.performance;
+    {id: "performance",
         if (!session.user)eturn "No data";
 
         return();
@@ -124,8 +111,7 @@ export default const _MarketingDashboard = () {
           </div>;
         );
       }},
-    {id:"actions",
-      cell: (row ) => (;
+    {id: "actions",
         >;
           <Button>;
             variant = "outline",
@@ -146,8 +132,7 @@ export default const _MarketingDashboard = () {
 
   // Define columns for contact table;
   const contactColumns: ColumnDef<Contact>[] = [;
-    {accessorKey:"name",
-      ({ row }) => (;
+    {accessorKey: "name",
         <div></div>;
              onClick={() => router.push(`/marketing/contacts/$row.original.id`)}>;
           {row.getValue("name")}
@@ -161,17 +146,11 @@ export default const _MarketingDashboard = () {
       accessorKey: "phone",
       header: "Phone",
     },
-    {accessorKey:"source",
-      ({ row }) => (;
+    {accessorKey: "source",
         <Badge variant="outline">{row.getValue("source")}>;
       )},
-    {accessorKey:"status",
-      ({ row }) => {
-        const status = row.getValue("status") as string;
+    {accessorKey: "status",
         let variant: "default" | "outline" | "secondary" | "destructive" = "outline",
-
-        switch (status) {
-          case "ACTIVE": any;
             variant = "default",\n    }\n    case "INACTIVE": any;
             variant = "secondary",\n    }\n    case "UNSUBSCRIBED": any;
             variant = "destructive",
@@ -179,13 +158,10 @@ export default const _MarketingDashboard = () {
 
         return <Badge variant={variant}>{status}>;
       }},
-    {accessorKey:"lastActivity",
-      ({ row }) => {
-        const lastActivity = row.getValue("lastActivity");
+    {accessorKey: "lastActivity",
         return lastActivity ? new Date(lastActivity as string).toLocaleDateString() : "Never";
       }},
-    {id:"actions",
-      cell: ({ row }) => (;
+    {id: "actions",
         >;
           <Button>;
             variant = "outline",
@@ -209,64 +185,20 @@ export default const _MarketingDashboard = () {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-
-} catch (error) {
-
-        // Fetch campaigns;
-        const campaignsResponse = await fetch("/api/support-services/marketing/campaigns");
-        if (!session.user)hrow new Error("Failed to fetch campaigns");
-        const campaignsData = await campaignsResponse.json(),
-        setCampaigns(campaignsData.data || []);
-
-        // Fetch contacts;
-        const contactsResponse = await fetch("/api/support-services/marketing/contacts");
-        if (!session.user)hrow new Error("Failed to fetch contacts");
-        const contactsData = await contactsResponse.json(),
-        setContacts(contactsData.data || []);
-
-        // Fetch segments;
-        const segmentsResponse = await fetch("/api/support-services/marketing/segments");
-        if (!session.user)hrow new Error("Failed to fetch segments");
-        const segmentsData = await segmentsResponse.json(),
-        setSegments(segmentsData.data || []);
-
-        // Fetch templates;
-        const templatesResponse = await fetch("/api/support-services/marketing/templates");
-        if (!session.user)hrow new Error("Failed to fetch templates");
-        const templatesData = await templatesResponse.json(),
-        setTemplates(templatesData.data || []);
-      } catch (error) {
-
-        toast({title:"Error",
-          "destructive";
+        toast({title: "Error",
         });
       } finally ;
         setIsLoading(false);
@@ -329,7 +261,6 @@ export default const _MarketingDashboard = () {
           "rgba(75, 192, 192, 0.5)",
           "rgba(153, 102, 255, 0.5)"],
         borderWidth: 1,
-      }]};
 
   return();
     >;

@@ -3,7 +3,7 @@ import { useState } from "react"
 
 "use client";
 
-import { } from "@/components/ui/calendar"
+
 import {
 import { Button } from "@/components/ui/button"
 import { Calendar }
@@ -15,7 +15,7 @@ import { Calendar }
   FormItem,
   FormLabel,
   FormMessage} from "@/components/ui/form";
-import { } from "react"
+
 import "react-hook-form";
 import "zod";
 import * as z
@@ -29,7 +29,7 @@ import { zodResolver }
   SelectItem,
   SelectTrigger,
   SelectValue} from "@/components/ui/select";
-import { } from "@/components/ui/textarea"
+
 import "@/components/ui/use-toast";
 import "@/lib/utils";
 import "date-fns";
@@ -53,21 +53,16 @@ const formSchema = z.object({
   }),
   description: z.string();
     .min(10, {message:"Description must be at least 10 characters" });
-    .max(500, {message:"Description must not exceed 500 characters" }),
-  "Please select a priority level";
+    .max(500, {message: "Description must not exceed 500 characters" }),
   }),
   scheduledDate: z.date().optional(),
-  notes: z.string().max(1000, {message:"Notes must not exceed 1000 characters" }).optional()});
+  notes: z.string().max(1000,
 
 type FormValues = z.infer>;
 
 interface Location {
   id: string,
   name: string,
-}
-
-interface HousekeepingRequestFormProps {
-    onSuccess?: () => void;
   initialData?: unknown;
   isEditing?: boolean;
 export const _HousekeepingRequestForm = ({ onSuccess,
@@ -83,52 +78,28 @@ export const _HousekeepingRequestForm = ({ onSuccess,
   const form = useForm<FormValues>({resolver:zodResolver(formSchema),
     "",
       notes: "",
-    }});
 
   // Fetch locations when component mounts;
   useEffect(() => {
     const fetchLocations = async () => {
       try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
+} catch (error) { console.error(error); } catch (error) {
 
         const response = await fetch("/api/locations");
         if (!session.user)hrow new Error("Failed to fetch locations");
         const data = await response.json(),
         setLocations(data);
-      } catch (error) {
-
-        toast({title:"Error",
-          "destructive";
-        });
+      } catch (error) { console.error(error); });
 
     };
 
@@ -139,55 +110,24 @@ export const _HousekeepingRequestForm = ({ onSuccess,
   const onSubmit = async (values: FormValues) => {
     setIsLoading(true);
     try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); }
+} catch (error) { console.error(error); } catch (error) {
   console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) { console.error(error); } catch (error) {
 
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
-      const url = isEditing;
-        ? `/api/support-services/housekeeping/$initialData.id`;
-        : "/api/support-services/housekeeping";
-
-      const method = isEditing ? "PUT" : "POST";
-
-      const response = await fetch(url, {
-        method,
-        headers: {
-          "Content-Type": "application/json"},
+} catch (error) { console.error(error); },
         body: JSON.stringify(values),
-      });
 
       if (!session.user) {
         throw new Error("Failed to submit request");
 
-      toast({title:isEditing ? "Request Updated" : "Request Created",
-        description: isEditing;
+      toast({title: isEditing ? "Request Updated" : "Request Created",
           ? "The housekeeping request has been updated successfully.";
           : "Your housekeeping request has been submitted successfully."});
 
@@ -197,11 +137,7 @@ export const _HousekeepingRequestForm = ({ onSuccess,
         router.push("/support-services/housekeeping");
         router.refresh();
 
-    } catch (error) {
-
-      toast({title:"Error",
-        "destructive";
-      });
+    } catch (error) { console.error(error); });
     } finally {
       setIsLoading(false);
 

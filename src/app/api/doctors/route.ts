@@ -72,15 +72,15 @@ export const POST = async (request: Request) => {
   const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
 
   if (!session.user) {
-  return NextResponse.json({ message: "Not implemented" });
     return new Response(JSON.stringify({error: "Unauthorized"}), {status: 401});
+  }
 
   try {
     const body = await request.json();
     const validation = AddDoctorSchema.safeParse(body);
 
     if (!validation.success) {
-      return new Response(JSON.stringify({error: "Invalid input", details: validation.error.errors }), {status: 400,
+      return new Response(JSON.stringify({error: "Invalid input", details: validation.error.errors }), {status: 400});
     }
 
     const doctorData = validation.data;
@@ -95,12 +95,12 @@ export const POST = async (request: Request) => {
     const doctorRole = await DB.prepare("SELECT role_id FROM Roles WHERE role_name = 'Doctor'").first<{role_id: number }>();
 
     if (!userCheck || !doctorRole || userCheck.role_id !== doctorRole.role_id) {
-      return new Response(JSON.stringify({error: "User not found, inactive, or does not have the Doctor role" }), {status: 400,
+      return new Response(JSON.stringify({error: "User not found, inactive, or does not have the Doctor role" }), {status: 400});
     }
 
     const existingDoctor = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(doctorData.user_id).first();
     if (existingDoctor) {
-      return new Response(JSON.stringify({error: "Doctor profile already exists for this user" }), {status: 409,
+      return new Response(JSON.stringify({error: "Doctor profile already exists for this user" }), {status: 409});
     }
 
     const insertResult = await DB.prepare(
@@ -119,7 +119,9 @@ export const POST = async (request: Request) => {
       throw new Error("Failed to retrieve doctor ID after creation.");
     }
 
-    return new Response(JSON.stringify({message: "Doctor profile added successfully", doctorId: newDoctorId }), {status: 201,
-  } catch (error) { console.error(error); }), {status: statusCode,
+    return new Response(JSON.stringify({message: "Doctor profile added successfully", doctorId: newDoctorId }), {status: 201});
+  } catch (error) {
+    console.error(error);
+    return new Response(JSON.stringify({ error: "Internal server error" }), { status: 500 });
   }
 };

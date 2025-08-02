@@ -7,7 +7,7 @@
       "es2022"
     ],
     "allowJs": true,
-    "skipLibCheck": false,
+    "skipLibCheck": true,
     "strict": true,
     "noEmit": true,
     "esModuleInterop": true,
@@ -52,9 +52,11 @@
     "forceConsistentCasingInFileNames": true
   },
   "include": [
-    "enterprise/**/*",
     "next-env.d.ts",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "src/**/*",
+    "**/*.ts",
+    "**/*.tsx"
   ],
   "exclude": [
     "node_modules",

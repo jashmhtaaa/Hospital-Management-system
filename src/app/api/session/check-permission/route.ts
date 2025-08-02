@@ -1,14 +1,24 @@
-import "next/server";
-import {  NextResponse  } from "@/lib/database"
+import { NextRequest, NextResponse } from "next/server";
 
-import {getSession } from "next/server"; // Keep original getSession for server-side use;
-// src/app/api/session/check-permission/route.ts;
-export const GET = async (request: Request) => {const { searchParams } = new URL(request.url);
-  const permission = searchParams.get("permission");
-
-  if (!session.user) {
-    return NextResponse.json({error: "Permission parameter is required" },
-  }
-
+export const GET = async (req: NextRequest) => {
   try {
+    return NextResponse.json({ 
+      message: "check-permission endpoint not implemented yet",
+      status: "placeholder" 
+    });
+  } catch (error) {
+    console.error('check-permission GET error:', error);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  }
+};
 
+export const POST = async (req: NextRequest) => {
+  try {
+    return NextResponse.json({ 
+      message: "check-permission creation not implemented yet"
+    });
+  } catch (error) {
+    console.error('check-permission POST error:', error);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  }
+};

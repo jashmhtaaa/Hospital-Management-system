@@ -1,29 +1,14 @@
+import { Suspense } from "react";
 
-import "next-auth";
-import "next/navigation";
-import "react";
-import { authOptions } from "../../../components/clinical-documentation/document-viewer"
-import { DocumentViewer }
-import { getServerSession }
-import { redirect }
-import { Suspense }
-
-export default async const _DocumentViewPage = ({
-  params;
-}: {id: string ,
-  const session = await getServerSession(authOptions);
-
-  // Redirect to login if not authenticated;
-  if (!session.user) {
-    redirect("/login");
-  }
-
-  return();
-    >;
-      <Suspense fallback={<div>Loading document...</div>}>;
-        <DocumentViewer documentId={params.id} />;
-      </Suspense>;
-    </div>;
+export default function [id]Page() {
+  return (
+    <div className="container mx-auto py-6">
+      <h1 className="text-2xl font-bold mb-4">[id] Module</h1>
+      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+        <p className="text-yellow-800">
+          This module is under development and will be implemented in Phase 4.
+        </p>
+      </div>
+    </div>
   );
-
 }

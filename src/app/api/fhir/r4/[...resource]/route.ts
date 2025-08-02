@@ -1,19 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
 
-interface RouteContext {
-  params: { id: string };
-}
-
-export const GET = async (request: NextRequest, context: RouteContext) => {
+export const GET = async (req: NextRequest) => {
   try {
-    const { id } = context.params;
-    
-    // TODO: Implement Fhir R4 [...Resource] logic for ID: {id}
     return NextResponse.json({ 
-      id,
-      message: "Not implemented" 
+      message: "[...resource] endpoint not implemented yet",
+      status: "placeholder" 
     });
   } catch (error) {
+    console.error('[...resource] GET error:', error);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  }
+};
+
+export const POST = async (req: NextRequest) => {
+  try {
+    return NextResponse.json({ 
+      message: "[...resource] creation not implemented yet"
+    });
+  } catch (error) {
+    console.error('[...resource] POST error:', error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 };

@@ -1,5 +1,24 @@
-import "next/server";
-import "zod";
-import {NextRequest } from "next/server";
-import {prisma } from "next/server";
-import {z } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+
+export const GET = async (req: NextRequest) => {
+  try {
+    return NextResponse.json({ 
+      message: "payments endpoint not implemented yet",
+      status: "placeholder" 
+    });
+  } catch (error) {
+    console.error('payments GET error:', error);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  }
+};
+
+export const POST = async (req: NextRequest) => {
+  try {
+    return NextResponse.json({ 
+      message: "payments creation not implemented yet"
+    });
+  } catch (error) {
+    console.error('payments POST error:', error);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  }
+};

@@ -1,13 +1,45 @@
-import "@/lib/session";
-import "next/server";
-import {NextRequest } from "next/server";
-import {NextResponse } from "next/server";
-import {DB } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-const ALLOWED_ROLES_MANAGE = ["Admin", "Doctor"];
+interface RouteContext {
+  params: { id: string }
+}
 
-const getDoctorId = (pathname: string): number | null => {const parts = pathname.split("/");
-    const idStr = parts[parts.length - 2];
-    const id = Number.parseInt(idStr, 10);
-    return Number.isNaN(id) ? null : id;
+export const GET = async (req: NextRequest, context: RouteContext) => {
+  try {
+    const { id } = context.params;
+    return NextResponse.json({ 
+      message: "[id] by ID endpoint not implemented yet",
+      id,
+      status: "placeholder" 
+    });
+  } catch (error) {
+    console.error('[id] GET error:', error);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  }
+};
+
+export const PUT = async (req: NextRequest, context: RouteContext) => {
+  try {
+    const { id } = context.params;
+    return NextResponse.json({ 
+      message: "[id] update not implemented yet",
+      id
+    });
+  } catch (error) {
+    console.error('[id] PUT error:', error);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  }
+};
+
+export const DELETE = async (req: NextRequest, context: RouteContext) => {
+  try {
+    const { id } = context.params;
+    return NextResponse.json({ 
+      message: "[id] delete not implemented yet",
+      id
+    });
+  } catch (error) {
+    console.error('[id] DELETE error:', error);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  }
 };

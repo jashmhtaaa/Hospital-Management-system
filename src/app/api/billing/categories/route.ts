@@ -1,14 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
 
-/**
- * GET /api/billing/categories
- * Retrieves a list of distinct service item categories.
- */
-export const GET = async (request: NextRequest) => {
+export const GET = async (req: NextRequest) => {
   try {
-    // TODO: Implement billing categories logic
-    return NextResponse.json({ message: "Not implemented" });
+    return NextResponse.json({ 
+      message: "categories endpoint not implemented yet",
+      status: "placeholder" 
+    });
   } catch (error) {
+    console.error('categories GET error:', error);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  }
+};
+
+export const POST = async (req: NextRequest) => {
+  try {
+    return NextResponse.json({ 
+      message: "categories creation not implemented yet"
+    });
+  } catch (error) {
+    console.error('categories POST error:', error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 };

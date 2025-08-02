@@ -1,6 +1,24 @@
-import "@/lib/session";
-import "next/server";
-import {NextRequest } from "next/server";
-import {NextResponse } from "next/server";
-import {DB } from "next/server";
-import {getSession } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+
+export const GET = async (req: NextRequest) => {
+  try {
+    return NextResponse.json({ 
+      message: "tests endpoint not implemented yet",
+      status: "placeholder" 
+    });
+  } catch (error) {
+    console.error('tests GET error:', error);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  }
+};
+
+export const POST = async (req: NextRequest) => {
+  try {
+    return NextResponse.json({ 
+      message: "tests creation not implemented yet"
+    });
+  } catch (error) {
+    console.error('tests POST error:', error);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  }
+};

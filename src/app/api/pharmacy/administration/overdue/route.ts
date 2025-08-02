@@ -1,10 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
 
-export const GET = async (request: NextRequest) => {
+export const GET = async (req: NextRequest) => {
   try {
-    // TODO: Implement Pharmacy Administration Overdue logic
-    return NextResponse.json({ message: "Not implemented" });
+    return NextResponse.json({ 
+      message: "overdue endpoint not implemented yet",
+      status: "placeholder" 
+    });
   } catch (error) {
+    console.error('overdue GET error:', error);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  }
+};
+
+export const POST = async (req: NextRequest) => {
+  try {
+    return NextResponse.json({ 
+      message: "overdue creation not implemented yet"
+    });
+  } catch (error) {
+    console.error('overdue POST error:', error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 };

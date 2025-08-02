@@ -1,49 +1,14 @@
+import { Suspense } from "react";
 
-import "@prisma/client";
-import "next-auth";
-import "next/navigation";
-import "react";
-import { authOptions } from "../../../../components/clinical-documentation/document-editor"
-import { DocumentEditor }
-import { getServerSession }
-import { PrismaClient }
-import { redirect }
-import { Suspense }
-
-const prisma = new PrismaClient();
-
-export default async const _DocumentEditPage = ({
-  params;
-}: {id: string ,
-  const session = await getServerSession(authOptions);
-
-  // Redirect to login if not authenticated;
-  if (!session.user) {
-    redirect("/login");
-  }
-
-  // Check if document exists and is editable (would use real check in production);
-  // const document = await prisma.clinicalDocument.findUnique({
-  //   where: {id:params.id }
-  // });
-
-  // if (!session.user) {
-  //   redirect("/clinical-documentation");
-  // }
-
-  // if (!session.user) {
-  //   redirect(`/clinical-documentation/${}`;
-  // }
-
-  return();
-    <div className="container mx-auto py-6">;
-      <Suspense fallback={<div>Loading document editor...</div>}>;
-        <DocumentEditor>;
-          documentId={params.id}
-          patientId="pat_123456" // This would be fetched from the document in a real implementation;
-        />;
-      </Suspense>;
-    </div>;
+export default function EditPage() {
+  return (
+    <div className="container mx-auto py-6">
+      <h1 className="text-2xl font-bold mb-4">Edit Module</h1>
+      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+        <p className="text-yellow-800">
+          This module is under development and will be implemented in Phase 4.
+        </p>
+      </div>
+    </div>
   );
-
-})
+}

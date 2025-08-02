@@ -1,57 +1,14 @@
-import "../../../components/clinical-documentation/document-editor";
-import "../../../lib/auth";
-import "@prisma/client";
-import "next-auth";
-import "next/navigation";
-import "react";
-import { authOptions }
-import { DocumentEditor }
-import { getServerSession }
-import { PrismaClient }
-import { redirect }
-import { Suspense }
+import { Suspense } from "react";
 
-const prisma = new PrismaClient();
-
-export default async const _DocumentCreatePage = ({
-  searchParams;
-}: {patientId?: string, encounterId?: string ;
-}) {
-  // Get session;
-  const session = await getServerSession(authOptions);
-
-  // Redirect to login if not authenticated;
-  if (!session.user) {
-    redirect("/login");
-  }
-
-  // Get patientId and encounterId from search params;
-  const patientId = searchParams.patientId;
-  const encounterId = searchParams.encounterId;
-
-  // Redirect if no patientId;
-  if (!session.user) {
-    redirect("/clinical-documentation");
-  }
-
-  // Check if patient exists (would use real check in production);
-  // const _patient = await prisma.patient.findUnique({
-  //   where: {id:patientId }
-  // });
-
-  // if (!session.user) {
-  //   redirect("/patients");
-  // }
-
-  return();
-    <div className="container mx-auto py-6">;
-      <Suspense fallback={<div>Loading document editor...</div>}>;
-        <DocumentEditor>;
-          patientId={patientId}
-          encounterId={encounterId}
-        />;
-      </Suspense>;
-    </div>;
+export default function CreatePage() {
+  return (
+    <div className="container mx-auto py-6">
+      <h1 className="text-2xl font-bold mb-4">Create Module</h1>
+      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+        <p className="text-yellow-800">
+          This module is under development and will be implemented in Phase 4.
+        </p>
+      </div>
+    </div>
   );
-
 }

@@ -1,33 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
 
-interface HealthStatus {
-  status: "healthy" | "degraded" | "unhealthy";
-  timestamp: string;
-  responseTime: number;
-  services: {
-    database: "healthy" | "degraded" | "unhealthy";
-    cache: "healthy" | "degraded" | "unhealthy";
-    external: "healthy" | "degraded" | "unhealthy";
-  };
-}
-
-/**
- * Overall Health Check Endpoint
- * Aggregates health status from all system components
- */
-export const GET = async (request: NextRequest): Promise<NextResponse> => {
-  const startTime = Date.now();
-
+export const GET = async (req: NextRequest) => {
   try {
-    // TODO: Implement actual health checks
-    const healthStatus: HealthStatus = {
-      status: "healthy",
-      timestamp: new Date().toISOString(),
-      responseTime: Date.now() - startTime,
-      services: {
-        database: "healthy",
-        cache: "healthy",
-
-    return NextResponse.json(healthStatus);
-  } catch (error) { console.error(error); }, { status: 503 });
+    return NextResponse.json({ 
+      message: "health endpoint not implemented yet",
+      status: "placeholder" 
+    });
+  } catch (error) {
+    console.error('health GET error:', error);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
+};
+
+export const POST = async (req: NextRequest) => {
+  try {
+    return NextResponse.json({ 
+      message: "health creation not implemented yet"
+    });
+  } catch (error) {
+    console.error('health POST error:', error);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  }
+};

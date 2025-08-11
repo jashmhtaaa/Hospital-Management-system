@@ -396,7 +396,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
       - name: Download All Validation Results
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           path: compliance-results/
       - name: Generate Comprehensive Compliance Report

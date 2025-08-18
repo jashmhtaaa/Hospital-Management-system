@@ -26,7 +26,7 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: "\U0001F4E5 Checkout Repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
       - name: "\U0001F3D7\uFE0F Setup Node.js"
@@ -90,7 +90,7 @@ jobs:
           - shared
     steps:
       - name: "\U0001F4E5 Checkout Repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: "\U0001F3D7\uFE0F Setup Node.js"
         uses: actions/setup-node@v4
         with:
@@ -133,7 +133,7 @@ jobs:
           5s --health-retries 5
     steps:
       - name: "\U0001F4E5 Checkout Repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: "\U0001F3D7\uFE0F Setup Node.js"
         uses: actions/setup-node@v4
         with:
@@ -172,7 +172,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - name: "\U0001F4E5 Checkout Repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: "\U0001F3D7\uFE0F Setup Node.js"
         uses: actions/setup-node@v4
         with:
@@ -204,7 +204,7 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: "\U0001F4E5 Checkout Repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: "\U0001F3D7\uFE0F Setup Node.js"
         uses: actions/setup-node@v4
         with:
@@ -238,7 +238,7 @@ jobs:
     timeout-minutes: 45
     steps:
       - name: "\U0001F4E5 Checkout Repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: "\U0001F3D7\uFE0F Setup Node.js"
         uses: actions/setup-node@v4
         with:
@@ -272,7 +272,7 @@ jobs:
     timeout-minutes: 20
     steps:
       - name: "\U0001F4E5 Checkout Repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: "\U0001F3D7\uFE0F Setup Node.js"
         uses: actions/setup-node@v4
         with:
@@ -297,7 +297,7 @@ jobs:
       - unit-tests
     steps:
       - name: "\U0001F4E5 Checkout Repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: "\U0001F3D7\uFE0F Setup Node.js"
         uses: actions/setup-node@v4
         with:
@@ -347,7 +347,7 @@ jobs:
     environment: staging
     steps:
       - name: "\U0001F4E5 Checkout Repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: "\u2699\uFE0F Setup Kubectl"
         uses: azure/setup-kubectl@v4
         with:
@@ -376,7 +376,7 @@ jobs:
     environment: production
     steps:
       - name: "\U0001F4E5 Checkout Repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: "\u2699\uFE0F Setup Kubectl"
         uses: azure/setup-kubectl@v4
         with:
@@ -407,7 +407,7 @@ jobs:
     if: always()
     steps:
       - name: "\U0001F4E5 Checkout Repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: "\U0001F4CA Performance Monitoring"
         run: "npm run monitor: performance
 
@@ -428,7 +428,7 @@ jobs:
     if: always()
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
       - name: "\U0001F9F9 Clean Old Images"

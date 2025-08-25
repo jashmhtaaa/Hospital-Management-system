@@ -35,7 +35,7 @@ jobs:
     timeout-minutes: 45
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Setup Environment
         run: "echo \"\U0001F50D Starting OWASP ZAP baseline scan\"\necho \"Target URL:\
           \ ${{ env.TARGET_URL }}\"\necho \"Scan Intensity: ${{ env.SCAN_INTENSITY }}\"\
@@ -61,7 +61,7 @@ jobs:
     if: github.event.inputs.scan_intensity == 'high' || github.event_name == 'schedule'
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Run OWASP ZAP Full Scan
         uses: zaproxy/action-full-scan@v0.12.0
         with:
@@ -82,7 +82,7 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -157,7 +157,7 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Install Nuclei
         run:
           "wget -q https: //github.com/projectdiscovery/nuclei/releases/latest/download/nuclei_linux_amd64.zip
@@ -191,7 +191,7 @@ jobs:
     timeout-minutes: 20
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
@@ -307,9 +307,9 @@ jobs:
     if: always()
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Download All Artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           path: dast-results/
       - name: Generate Comprehensive Report

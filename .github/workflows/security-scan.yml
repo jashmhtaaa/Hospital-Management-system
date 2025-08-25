@@ -24,7 +24,7 @@ jobs:
           - sonar-security
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
       - name: Setup Node.js
@@ -33,7 +33,7 @@ jobs:
           node-version: 18
           cache: npm
       - name: Setup Java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: "17"
           distribution: temurin
@@ -94,7 +94,7 @@ jobs:
           - retire-js
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -147,7 +147,7 @@ jobs:
           - snyk-container
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Build Container Images
@@ -196,7 +196,7 @@ jobs:
     timeout-minutes: 20
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
@@ -244,7 +244,7 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
       - name: TruffleHog Secret Scan
@@ -280,9 +280,9 @@ jobs:
     if: always()
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Download All Security Reports
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           path: security-reports/
       - name: Setup Python
@@ -340,7 +340,7 @@ jobs:
           - 5432: 5432
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:

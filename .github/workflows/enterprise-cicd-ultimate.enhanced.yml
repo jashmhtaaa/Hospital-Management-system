@@ -68,7 +68,7 @@ jobs:
       changed_services: ${{ steps.changes.outputs.services }}
     steps:
       - name: "\U0001F4E5 Checkout Repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -109,7 +109,7 @@ jobs:
           - microservices
     steps:
       - name: "\U0001F4E5 Checkout Repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
       - name: "\U0001F3D7\uFE0F Setup Multi-Language Environment"
@@ -228,7 +228,7 @@ jobs:
           5s --health-retries 5
     steps:
       - name: "\U0001F4E5 Checkout Repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: "\U0001F3D7\uFE0F Setup Test Environment"
         uses: ./.github/actions/setup-test-environment
         with:
@@ -325,7 +325,7 @@ jobs:
       - pipeline-init
     steps:
       - name: "\U0001F4E5 Checkout Repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: "\U0001F3D7\uFE0F Setup Compliance Environment"
         uses: ./.github/actions/setup-environment
       - name: "\U0001F6E1\uFE0F HIPAA Compliance Validation"
@@ -374,7 +374,7 @@ jobs:
           - analytics-data-ingestion
     steps:
       - name: "\U0001F4E5 Checkout Repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: "\U0001F3D7\uFE0F Setup Docker Buildx"
         uses: docker/setup-buildx-action@v3
         with:
@@ -459,7 +459,7 @@ jobs:
       - pipeline-init
     steps:
       - name: "\U0001F4E5 Checkout Repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: "\U0001F527 Setup Terraform"
         uses: hashicorp/setup-terraform@v3
         with:
@@ -523,7 +523,7 @@ jobs:
     environment: staging
     steps:
       - name: "\U0001F4E5 Checkout Repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: "\U0001F527 Setup Kubernetes Access"
         run: 'echo "${{ secrets.KUBECONFIG_STAGING }}" | base64 -d > kubeconfig
 
@@ -564,7 +564,7 @@ jobs:
     environment: production
     steps:
       - name: "\U0001F4E5 Checkout Repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: "\U0001F527 Setup Production Environment"
         run: 'echo "${{ secrets.KUBECONFIG_PRODUCTION }}" | base64 -d > kubeconfig
 
@@ -610,7 +610,7 @@ jobs:
     if: ${{ always() && contains(needs.*.result, 'success') }}
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
       - name: "\U0001F4CA Generate Deployment Report"
@@ -643,7 +643,7 @@ jobs:
     if: always()
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
       - name: "\U0001F5C2\uFE0F Consolidate Artifacts"

@@ -24,16 +24,16 @@ jobs:
           - sonar-security
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: 18
           cache: npm
       - name: Setup Java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: "17"
           distribution: temurin
@@ -55,7 +55,7 @@ jobs:
           auditOn: push
       - name: CodeQL Security Analysis
         if: matrix.scanner == 'codeql'
-        uses: github/codeql-action/init@v3
+        uses: github/codeql-action/init@v4
         with:
           languages: javascript, java
           queries: security-extended,security-and-quality
@@ -68,7 +68,7 @@ jobs:
           '
       - name: Complete CodeQL Analysis
         if: matrix.scanner == 'codeql'
-        uses: github/codeql-action/analyze@v3
+        uses: github/codeql-action/analyze@v4
       - name: SonarQube Security Analysis
         if: matrix.scanner == 'sonar-security'
         uses: sonarqube-scanner-action@master
@@ -94,9 +94,9 @@ jobs:
           - retire-js
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: 18
           cache: npm
@@ -111,7 +111,7 @@ jobs:
           args: --severity-threshold=high --all-projects --json > snyk-report.json
       - name: OSSF Scorecard Analysis
         if: matrix.tool == 'ossf-scorecard'
-        uses: ossf/scorecard-action@v2.4.2
+        uses: ossf/scorecard-action@v2.4.3
         with:
           results_file: ossf-scorecard-results.sarif
           results_format: sarif
@@ -147,7 +147,7 @@ jobs:
           - snyk-container
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Build Container Images
@@ -167,7 +167,7 @@ jobs:
           severity: CRITICAL,HIGH,MEDIUM
       - name: Anchore Grype Scan
         if: matrix.scanner == 'grype'
-        uses: anchore/scan-action@v6
+        uses: anchore/scan-action@v7
         with:
           image: hms-frontend:security-scan
           severity-cutoff: medium
@@ -196,9 +196,9 @@ jobs:
     timeout-minutes: 20
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.11"
       - name: Install Security Tools
@@ -244,7 +244,7 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
       - name: TruffleHog Secret Scan
@@ -280,13 +280,13 @@ jobs:
     if: always()
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Download All Security Reports
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           path: security-reports/
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.11"
       - name: Install Report Generator Dependencies
@@ -340,9 +340,9 @@ jobs:
           - 5432: 5432
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: 18
           cache: npm

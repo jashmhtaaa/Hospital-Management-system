@@ -35,20 +35,20 @@ jobs:
     timeout-minutes: 45
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Setup Environment
         run: "echo \"\U0001F50D Starting OWASP ZAP baseline scan\"\necho \"Target URL:\
           \ ${{ env.TARGET_URL }}\"\necho \"Scan Intensity: ${{ env.SCAN_INTENSITY }}\"\
           \n"
       - name: Run OWASP ZAP Baseline Scan
-        uses: zaproxy/action-baseline@v0.14.0
+        uses: zaproxy/action-baseline@v0.15.0
         with:
           target: ${{ env.TARGET_URL }}
           rules_file_name: .github/workflows/zap-rules.tsv
           cmd_options: -a -j -m 10 -T 30
           fail_action: true
       - name: Upload ZAP Baseline Report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: always()
         with:
           name: zap-baseline-report
@@ -61,16 +61,16 @@ jobs:
     if: github.event.inputs.scan_intensity == 'high' || github.event_name == 'schedule'
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Run OWASP ZAP Full Scan
-        uses: zaproxy/action-full-scan@v0.12.0
+        uses: zaproxy/action-full-scan@v0.13.0
         with:
           target: ${{ env.TARGET_URL }}
           rules_file_name: .github/workflows/zap-rules.tsv
           cmd_options: -a -j -m 10 -T 60
           fail_action: false
       - name: Upload ZAP Full Scan Report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: always()
         with:
           name: zap-full-scan-report
@@ -82,9 +82,9 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 18
           cache: npm
@@ -145,7 +145,7 @@ jobs:
           \ api-security-results.json \\\n  --timeout-request 10000 \\\n  --insecure\
           \ || true\n  \n"
       - name: Upload API Security Test Results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: always()
         with:
           name: api-security-test-results
@@ -157,7 +157,7 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Install Nuclei
         run:
           "wget -q https: //github.com/projectdiscovery/nuclei/releases/latest/download/nuclei_linux_amd64.zip
@@ -179,7 +179,7 @@ jobs:
           \ \\\n  -severity critical,high,medium \\\n  -json -o nuclei-results.json\
           \ \\\n  -timeout 10 \\\n  -retries 2 || true\n  \n"
       - name: Upload Nuclei Results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: always()
         with:
           name: nuclei-scan-results
@@ -191,9 +191,9 @@ jobs:
     timeout-minutes: 20
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.11"
       - name: Install Python Dependencies
@@ -290,7 +290,7 @@ jobs:
           \ security issues found!\")\n        sys.exit(1)\n    else:\n        print(\"\
           \u2705 No critical healthcare security issues found\")\nEOF\n\npython healthcare_security_tests.py\n"
       - name: Upload Healthcare Security Results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: always()
         with:
           name: healthcare-security-results
@@ -307,9 +307,9 @@ jobs:
     if: always()
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Download All Artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         with:
           path: dast-results/
       - name: Generate Comprehensive Report
@@ -390,14 +390,14 @@ jobs:
           \ report generated\")\n\nif __name__ == \"__main__\":\n    generate_html_report()\n\
           EOF\n\npython generate_dast_report.py\n"
       - name: Upload Comprehensive DAST Report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: dast-comprehensive-report
           path: dast-comprehensive-report.html
           retention-days: 365
       - name: Comment on PR (if applicable)
         if: github.event_name == 'pull_request'
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: "github.rest.issues.createComment({\n  issue_number: context.issue.number,\n\
             \  owner: context.repo.owner,\n  repo: context.repo.repo,\n  body: '\U0001F50D\

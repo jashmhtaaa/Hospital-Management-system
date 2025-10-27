@@ -26,16 +26,16 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: "\U0001F4E5 Checkout Repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
       - name: "\U0001F3D7\uFE0F Setup Node.js"
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
       - name: "\u2615 Setup Java"
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: temurin
@@ -68,7 +68,7 @@ jobs:
         with:
           scanMetadataReportFile: target/sonar/report-task.txt
       - name: "\U0001F6E1\uFE0F CodeQL Analysis"
-        uses: github/codeql-action/analyze@v3
+        uses: github/codeql-action/analyze@v4
         with:
           languages: javascript,typescript,java
           queries: security-and-quality
@@ -90,14 +90,14 @@ jobs:
           - shared
     steps:
       - name: "\U0001F4E5 Checkout Repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: "\U0001F3D7\uFE0F Setup Node.js"
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
       - name: "\u2615 Setup Java"
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: temurin
@@ -133,14 +133,14 @@ jobs:
           5s --health-retries 5
     steps:
       - name: "\U0001F4E5 Checkout Repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: "\U0001F3D7\uFE0F Setup Node.js"
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
       - name: "\u2615 Setup Java"
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: temurin
@@ -172,9 +172,9 @@ jobs:
     timeout-minutes: 60
     steps:
       - name: "\U0001F4E5 Checkout Repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: "\U0001F3D7\uFE0F Setup Node.js"
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
@@ -193,7 +193,7 @@ jobs:
       - name: "\U0001F3AD Run E2E Tests"
         run: npm run test:e2e
       - name: "\U0001F4F8 Upload Test Screenshots"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: failure()
         with:
           name: e2e-screenshots
@@ -204,9 +204,9 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: "\U0001F4E5 Checkout Repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: "\U0001F3D7\uFE0F Setup Node.js"
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
@@ -238,9 +238,9 @@ jobs:
     timeout-minutes: 45
     steps:
       - name: "\U0001F4E5 Checkout Repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: "\U0001F3D7\uFE0F Setup Node.js"
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
@@ -257,7 +257,7 @@ jobs:
           "docker build -t hms-app .\ndocker run --rm -v /var/run/docker.sock: /var/run/docker.sock\
           \ \\\n  -v $PWD: /tmp aquasec/trivy:latest image hms-app\n  \n"
       - name: "\U0001F6E1\uFE0F OWASP ZAP Scan"
-        uses: zaproxy/action-full-scan@v0.12.0
+        uses: zaproxy/action-full-scan@v0.13.0
         with:
           target: http://localhost:3000
           rules_file_name: .zap/rules.tsv
@@ -272,9 +272,9 @@ jobs:
     timeout-minutes: 20
     steps:
       - name: "\U0001F4E5 Checkout Repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: "\U0001F3D7\uFE0F Setup Node.js"
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
@@ -297,14 +297,14 @@ jobs:
       - unit-tests
     steps:
       - name: "\U0001F4E5 Checkout Repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: "\U0001F3D7\uFE0F Setup Node.js"
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
       - name: "\u2615 Setup Java"
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: temurin
@@ -347,7 +347,7 @@ jobs:
     environment: staging
     steps:
       - name: "\U0001F4E5 Checkout Repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: "\u2699\uFE0F Setup Kubectl"
         uses: azure/setup-kubectl@v4
         with:
@@ -376,7 +376,7 @@ jobs:
     environment: production
     steps:
       - name: "\U0001F4E5 Checkout Repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: "\u2699\uFE0F Setup Kubectl"
         uses: azure/setup-kubectl@v4
         with:
@@ -407,7 +407,7 @@ jobs:
     if: always()
     steps:
       - name: "\U0001F4E5 Checkout Repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: "\U0001F4CA Performance Monitoring"
         run: "npm run monitor: performance
 
@@ -428,7 +428,7 @@ jobs:
     if: always()
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
       - name: "\U0001F9F9 Clean Old Images"
@@ -443,7 +443,7 @@ jobs:
           \ ** ${{ job.status }}\" >> deployment-report.md\necho \"**Timestamp: ** $(date)\"\
           \ >> deployment-report.md\n"
       - name: "\U0001F4E4 Upload Artifacts"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: deployment-report
           path: deployment-report.md

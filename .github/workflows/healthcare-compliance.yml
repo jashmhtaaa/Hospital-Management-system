@@ -30,9 +30,9 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.11"
       - name: Install Dependencies
@@ -177,7 +177,7 @@ jobs:
           \ Controls compliance issues found!\")\n    else:\n        print(\"\u2705\
           \ HIPAA Audit Controls compliance validated\")\nEOF\n\npython hipaa_audit_controls.py\n"
       - name: Upload HIPAA Validation Results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: hipaa-validation-results
           path: "hipaa-access-control-results.json
@@ -192,9 +192,9 @@ jobs:
     timeout-minutes: 20
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.11"
       - name: GDPR Data Protection Validation
@@ -282,7 +282,7 @@ jobs:
           \ compliance issues found!\")\n    else:\n        print(\"\u2705 GDPR Privacy\
           \ compliance validated\")\nEOF\n\npython gdpr_validation.py\n"
       - name: Upload GDPR Validation Results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: gdpr-validation-results
           path: gdpr-validation-results.json
@@ -293,9 +293,9 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.11"
       - name: FDA 21 CFR Part 11 Validation
@@ -379,7 +379,7 @@ jobs:
           \ else:\n        print(\"\u2705 FDA CFR compliance validated\")\nEOF\n\npython\
           \ fda_cfr_validation.py\n"
       - name: Upload FDA CFR Validation Results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: fda-cfr-validation-results
           path: fda-cfr-validation-results.json
@@ -394,9 +394,9 @@ jobs:
     if: always()
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Download All Validation Results
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         with:
           path: compliance-results/
       - name: Generate Comprehensive Compliance Report
@@ -522,14 +522,14 @@ jobs:
           \    else:\n        print(\"\u2705 Healthcare compliance validated successfully\"\
           )\nEOF\n\npython generate_compliance_report.py\n"
       - name: Upload Comprehensive Compliance Report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: healthcare-compliance-report
           path: healthcare-compliance-report.html
           retention-days: 365
       - name: Comment on PR (if applicable)
         if: github.event_name == 'pull_request'
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: "github.rest.issues.createComment({\n  issue_number: context.issue.number,\n\
             \  owner: context.repo.owner,\n  repo: context.repo.repo,\n  body: '\U0001F3E5\
